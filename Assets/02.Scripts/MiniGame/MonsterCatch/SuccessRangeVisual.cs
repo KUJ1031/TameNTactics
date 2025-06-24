@@ -5,6 +5,7 @@ public class SuccessRangeVisual : MonoBehaviour
 {
     [SerializeField] private Image image;
 
+    //각도만큼 이미지 셋팅
     public void SetRange(RotationRange range)
     {
         float min = Normalize360(range.Min);
