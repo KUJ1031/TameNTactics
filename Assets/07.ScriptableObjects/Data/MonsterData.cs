@@ -29,9 +29,9 @@ public enum Skill
 }
 public enum Personality
 {
-    소심함,
-    평범함,
-    호전적임
+    Timid,
+    Normal,
+    Aggressive,
 }
 
 [System.Serializable]

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &471335641901750275
+--- !u!1 &2551354816997272998
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5641067842815626847}
-  - component: {fileID: 7968446788925004083}
-  - component: {fileID: 5728326756648808467}
-  - component: {fileID: 5948922801177921040}
-  - component: {fileID: 8461424877438210070}
-  - component: {fileID: 5820353545738071429}
+  - component: {fileID: 6242390424395250019}
+  - component: {fileID: 1240734020081156377}
+  - component: {fileID: 2502464987828966512}
+  - component: {fileID: -5725129372566042733}
+  - component: {fileID: 7277804684741957112}
+  - component: {fileID: 2020339724222251188}
   m_Layer: 0
-  m_Name: Monster_Grass
+  m_Name: Monster_Iron
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5641067842815626847
+--- !u!4 &6242390424395250019
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471335641901750275}
+  m_GameObject: {fileID: 2551354816997272998}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: -3, z: 0}
+  m_LocalPosition: {x: 4, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &7968446788925004083
+--- !u!212 &1240734020081156377
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471335641901750275}
+  m_GameObject: {fileID: 2551354816997272998}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 0.7216981, g: 1, b: 0.72377896, a: 1}
+  m_Color: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -88,29 +88,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5728326756648808467
+--- !u!114 &2502464987828966512
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471335641901750275}
+  m_GameObject: {fileID: 2551354816997272998}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3aae53883602f3b4b83b5047cd42e511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 468187f0dfc5ec9428591245ba311912, type: 2}
+  monsterData: {fileID: 11400000, guid: f6adb78a362b91040a16465371d4b0f3, type: 2}
   monsterImageUI: {fileID: 0}
   infoText: {fileID: 0}
-  personality: 1
---- !u!61 &5948922801177921040
+  personality: 2
+--- !u!61 &-5725129372566042733
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471335641901750275}
+  m_GameObject: {fileID: 2551354816997272998}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -149,14 +149,14 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
---- !u!50 &8461424877438210070
+--- !u!50 &7277804684741957112
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471335641901750275}
+  m_GameObject: {fileID: 2551354816997272998}
   m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -176,13 +176,13 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5820353545738071429
+--- !u!114 &2020339724222251188
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471335641901750275}
+  m_GameObject: {fileID: 2551354816997272998}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eecb0a52b5b624c49b7afb921ace69c1, type: 3}

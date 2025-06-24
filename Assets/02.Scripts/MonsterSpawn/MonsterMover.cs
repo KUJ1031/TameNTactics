@@ -42,7 +42,7 @@ public class MonsterMover : MonoBehaviour
         bool inFactory = factoryBounds.bounds.Contains(player.position);
         isPlayerInSight = distance < sightRadius && inFactory;
 
-        if (monsterData.personality == Personality.소심함)
+        if (monsterData.personality == Personality.Timid)
         {
             if (isPlayerInSight && !isEscaping)
             {
@@ -62,14 +62,14 @@ public class MonsterMover : MonoBehaviour
 
         switch (monsterData.personality)
         {
-            case Personality.호전적임:
+            case Personality.Aggressive:
                 if (isPlayerInSight)
                     MoveToward(player.position, chaseSpeed);
                 else
                     Patrol();
                 break;
 
-            case Personality.소심함:
+            case Personality.Timid:
                 if (isEscaping)
                 {
                     MoveToward(escapeTarget, chaseSpeed);
@@ -80,7 +80,7 @@ public class MonsterMover : MonoBehaviour
                 }
                 break;
 
-            case Personality.평범함:
+            case Personality.Normal:
                     Patrol();
                 break;
         }
