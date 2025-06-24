@@ -1,92 +1,71 @@
 using System.Collections.Generic;
 using UnityEngine;
-[System.Serializable]
-public struct RotationRange
-{
-    public float Min; //범위 최소값
-    public float Max; //범위 최대값
-    public RotationRange(float min, float max)
-    {
-        Min = min; Max = max;
-    }
 
-    //각도체크
-    public bool Contains(float angle)
-    {
-        angle = NormalizeAngle180(angle);
-        float normalizedMin = NormalizeAngle180(Min);
-        float normalizedMax = NormalizeAngle180(Max);
-        if (normalizedMin <= normalizedMax)
-        {
-            return angle >= normalizedMin && angle <= normalizedMax;
-        }
-        else
-        {
-            return angle >= normalizedMin || angle <= normalizedMax;
-        }
-
-    }
-    private float NormalizeAngle180(float angle)
-    {
-        angle %= 360; // 0 ~ 360 범위로 먼저 만듬
-        if (angle > 180)
-        {
-            angle -= 360; // 180 초과면 360을 빼서 -180 ~ 180 범위로
-        }
-        else if (angle < -180)
-        {
-            angle += 360; // -180 미만이면 360을 더해서 -180 ~ 180 범위로
-        }
-        return angle;
-    }
-}
 public class RotatePoint : MonoBehaviour
 {
-    [SerializeField] private RectTransform point; //돌릴 객체
-    public float rotateSpeed = 1; //한바퀴 도는데 걸리는 시간
-    private float rotationSpeedDegree; //초당 회전 각도
-    [field: SerializeField] public bool isInSuccessZone { get; private set; }//성공여부
-    [SerializeField] private List<RotationRange> successRanges = new List<RotationRange>();//성공범위 리스트
+    [SerializeField] private RectTransform point; // 회전시킬 대상
+    [SerializeField] private float rotateSpeed = 1f; // 한 바퀴 도는 데 걸리는 시간(초)
+
+    [field: SerializeField] public bool isInSuccessZone { get; private set; }
+
+    private float rotationSpeedDegree; // 초당 회전 각도
+    private List<RotationRange> successRanges = new();
+
+    private void Start()
+    {
+        UpdateRotationSpeed();
+    }
 
     private void Update()
     {
-        if (point == null)
-        {
-            Debug.Log("회전할 Point가 할당되지 않았습니다. Inspector창을 확인해주세요");
+        if (point == null || rotateSpeed == 0f)
             return;
-        }
-        if (rotateSpeed == 0)//0일경우 멈춤
-        {
-            return;
-        }
-
-        rotationSpeedDegree = 360f / rotateSpeed;
 
         Vector3 curRotation = point.localEulerAngles;
-        curRotation.z -= rotationSpeedDegree * Time.deltaTime;
+        curRotation.z -= rotationSpeedDegree * Time.deltaTime; // 반시계 회전
         point.localEulerAngles = curRotation;
+
         CheckSuccessZone();
     }
 
+    /// <summary>
+    /// 성공 범위 설정 (외부에서 호출)
+    /// </summary>
+    public void SetRanges(List<RotationRange> ranges)
+    {
+        successRanges = ranges;
+    }
+
+    /// <summary>
+    /// 회전 속도 재계산
+    /// </summary>
+    private void UpdateRotationSpeed()
+    {
+        rotationSpeedDegree = (rotateSpeed > 0f) ? 360f / rotateSpeed : 0f;
+    }
+
+    /// <summary>
+    /// 현재 각도가 성공 범위에 포함되는지 확인
+    /// </summary>
     private void CheckSuccessZone()
     {
         isInSuccessZone = false;
-        float curRotation = point.localEulerAngles.z;
-        foreach (RotationRange range in successRanges)
+        float currentZ = point.localEulerAngles.z;
+
+        foreach (var range in successRanges)
         {
-            if (range.Contains(curRotation))
+            if (range.Contains(currentZ))
             {
                 isInSuccessZone = true;
                 break;
             }
         }
-        if (isInSuccessZone)
-        {
-            Debug.Log("성공");
-        }
-        else
-        {
-            Debug.Log("실패");
-        }
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        UpdateRotationSpeed(); // 에디터에서 rotateSpeed 바꿨을 때 즉시 반영
+    }
+#endif
 }
