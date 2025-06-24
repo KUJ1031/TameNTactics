@@ -119,30 +119,32 @@ public static class EnemyAIController
     }
 
     private static List<MonsterData> ChooseTargets(
-        SkillData skill, List<MonsterData> playerTeam, List<MonsterData> enemyTeam, MonsterData actor)
+        SkillData skill, List<MonsterData> targetTeam, List<MonsterData> actorTeam, MonsterData actor)
     {
         List<MonsterData> result = new List<MonsterData>();
 
         if (skill.isAreaAttack && skill.isTargetSelf)
         {
-            // 우리팀 전체 대상
-            result = enemyTeam.Where(m => m.curHp > 0).ToList();
+            // 공격팀 전체 대상
+            result = actorTeam.Where(m => m.curHp > 0).ToList();
         }
         else if (skill.isAreaAttack && !skill.isTargetSelf)
         {
-            // 상대팀 전체 대상
-            result = playerTeam.Where(m => m.curHp > 0).ToList();
+            // 타겟팀 전체 대상
+            result = targetTeam.Where(m => m.curHp > 0).ToList();
         }
         else if (!skill.isAreaAttack && skill.isTargetSelf)
         {
-            // 자기 자신
+            // 공격하는 자기 자신
             result.Add(actor);
         }
-        else
+        else if (skill.isTargetSingleAlly)
         {
-            // 단일 적 대상
-            var target = ChooseTarget(playerTeam, actor);
-            if (target != null) result.Add(target);
+            var possibleActorTeam = actorTeam.Where(m => m.curHp > 0).ToList();
+
+            var target = ChooseTarget(possibleActorTeam, actor);
+            
+            result.Add(target);
         }
 
         return result;

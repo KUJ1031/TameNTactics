@@ -8,18 +8,35 @@ public static class TypeChart
         {
             if (targetType.type == MonsterType.Water) return 0.5f;
             if (targetType.type == MonsterType.Grass) return 1.5f;
+            if (targetType.type == MonsterType.Steel) return 1.5f;
         }
         
         else if (attackerType.type == MonsterType.Water)
         {
+            if (targetType.type == MonsterType.Ground) return 0.5f;
             if (targetType.type == MonsterType.Fire) return 1.5f;
-            if (targetType.type == MonsterType.Grass) return 0.5f;
+            if (targetType.type == MonsterType.Steel) return 1.5f;
         }
         
         else if (attackerType.type == MonsterType.Grass)
         {
+            if (targetType.type == MonsterType.Steel) return 0.5f;
             if (targetType.type == MonsterType.Water) return 1.5f;
+            if (targetType.type == MonsterType.Ground) return 1.5f;
+        }
+        
+        else if (attackerType.type == MonsterType.Ground)
+        {
+            if (targetType.type == MonsterType.Grass) return 0.5f;
+            if (targetType.type == MonsterType.Fire) return 1.5f;
+            if (targetType.type == MonsterType.Water) return 1.5f;
+        }
+
+        else if (attackerType.type == MonsterType.Steel)
+        {
             if (targetType.type == MonsterType.Fire) return 0.5f;
+            if (targetType.type == MonsterType.Grass) return 1.5f;
+            if (targetType.type == MonsterType.Ground) return 1.5f;
         }
 
         return 1f;

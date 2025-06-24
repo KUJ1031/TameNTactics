@@ -2,12 +2,28 @@ using UnityEngine;
 
 public static class DamageCalculator
 {
-    public static float CalculateDamage(MonsterData attacker, MonsterData target)
+    public class DamageResult
     {
-        float baseDamage = attacker.attack * (100 / (target.defense + 100));
-        float crit = Random.value < attacker.criticalChance / 100 ? 1.5f : 1f;
+        public float damage;
+        public bool isCritical;
+        public float effectiveness;
+    }
+    
+    public static DamageResult CalculateDamage(MonsterData attacker, MonsterData target, SkillData skill)
+    {
+        float baseDamage = attacker.attack * skill.skillPower;
+        float defenseFactor = 100f / (target.defense + 100f);
+        bool isCrit = Random.value < attacker.criticalChance / 100f;
+        float crit = isCrit ? 1.5f : 1f;
         float effectiveness = TypeChart.GetEffectiveness(attacker, target);
-        
-        return baseDamage * crit * effectiveness;
+
+        float finalDamage = baseDamage * defenseFactor * crit * effectiveness;
+
+        return new DamageResult
+        {
+            damage = finalDamage,
+            isCritical = isCrit,
+            effectiveness = effectiveness
+        };
     }
 }
