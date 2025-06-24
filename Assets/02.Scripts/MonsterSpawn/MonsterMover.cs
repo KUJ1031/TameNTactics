@@ -31,6 +31,7 @@ public class MonsterMover : MonoBehaviour
 
         PickRandomDirection();
         InvokeRepeating(nameof(PickRandomDirection), 0f, 2f);
+        monsterData = GetComponent<Monster>()?.GetData();
     }
 
     private void Update()
@@ -80,7 +81,7 @@ public class MonsterMover : MonoBehaviour
                 break;
 
             case Personality.Normal:
-                    Patrol();
+                Patrol();
                 break;
         }
     }
