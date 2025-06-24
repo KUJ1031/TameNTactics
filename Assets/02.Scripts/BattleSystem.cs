@@ -20,6 +20,11 @@ public class BattleSystem : MonoBehaviour
         currentState = BattleState.Start;
     }
 
+    private void Update()
+    {
+        throw new NotImplementedException();
+    }
+
     void SetupBattle()
     {
         //배틀 화면 UI 전체 세팅

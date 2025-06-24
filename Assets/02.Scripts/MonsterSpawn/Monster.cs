@@ -41,7 +41,7 @@ public class Monster : MonoBehaviour
         sb.AppendLine($"<b>{monsterData.monsterName}</b>");
         sb.AppendLine($"Type: {monsterData.type}");
         sb.AppendLine($"Level: {monsterData.level}");
-        sb.AppendLine($"HP: {monsterData.maxHp}");
+        sb.AppendLine($"HP: {monsterData.curHp} / {monsterData.maxHp}");
         sb.AppendLine($"ATK: {monsterData.attack}");
         sb.AppendLine($"DEF: {monsterData.defense}");
         sb.AppendLine($"SPD: {monsterData.speed}");

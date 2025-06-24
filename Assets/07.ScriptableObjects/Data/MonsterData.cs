@@ -16,7 +16,8 @@ public enum AbilityType
     Attack,
     Defense,
     Speed,
-    Hp,
+    MaxHp,
+    CurHp,
     Critical,
 }
 
@@ -24,7 +25,6 @@ public enum Skill
 {
     PassiveSkill,
     ActiveSkill1,
-    ActiveSkill2,
     UltimateSkill,
 }
 
@@ -41,11 +41,15 @@ public class SkillData
     public Skill skillType;
     public string skillName;
     public float skillPower;
+    public int curUltimateCost;
     public bool isAreaAttack;
     public bool isTargetSelf;
     [TextArea]
     public string description;
     public Sprite icon;
+    [Header("궁극기 체크")]
+    public bool isUltimate;
+    public int ultimateCost;
 }
 
 [CreateAssetMenu(fileName = "NewMonster", menuName = "New Monster/Create New Monster")]
@@ -59,6 +63,7 @@ public class MonsterData : ScriptableObject
     [Header("능력치")]
     public int level;
     public float maxHp;
+    public float curHp;
     public float attack;
     public float defense;
     public float speed;
