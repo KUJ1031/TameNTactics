@@ -10,8 +10,6 @@ public class Monster : MonoBehaviour
     public Image monsterImageUI;
     public Text infoText;
 
-    public Personality personality;
-
     void Start()
     {
         if (monsterData != null)
@@ -35,7 +33,7 @@ public class Monster : MonoBehaviour
 
         // 디버그 출력
         Debug.Log($"[몬스터 정보]\n{info}");
-        Debug.Log($"성격 : {personality}");
+        Debug.Log($"성격 : {monsterData.personality}");
 
     }
 
@@ -50,16 +48,7 @@ public class Monster : MonoBehaviour
         sb.AppendLine($"ATK: {monsterData.attack}");
         sb.AppendLine($"DEF: {monsterData.defense}");
         sb.AppendLine($"SPD: {monsterData.speed}");
-        sb.AppendLine($"CRT: {monsterData.critical}");
-
-        if (monsterData.additionalStats != null && monsterData.additionalStats.Count > 0)
-        {
-            sb.AppendLine("추가 스탯:");
-            foreach (var stat in monsterData.additionalStats)
-            {
-                sb.AppendLine($" - {stat.abilityType}: {stat.value}");
-            }
-        }
+        sb.AppendLine($"CRT: {monsterData.criticalChance}");
 
         if (monsterData.skills != null && monsterData.skills.Count > 0)
         {

@@ -7,74 +7,95 @@ public static class EnemyAIController
     public class EnemyAction
     {
         public MonsterData actor;
-        public MonsterData target;
         public SkillData selectedSkill;
+
+        public MonsterData singleTarget;
+        public List<MonsterData> multiTargets;
     }
 
-    public static EnemyAction DecideEnemyAction(List<MonsterData> enemyMonsters,
-        List<MonsterData> playerMonsters)
+    public static EnemyAction DecideEnemyAction(List<MonsterData> enemyMonsters, List<MonsterData> playerMonsters)
     {
-        // 궁극기 코스트가 가득찬 몬스터가 공격
+        // 1. 궁극기 사용 가능한 몬스터가 있다면 우선
         foreach (var enemy in enemyMonsters)
         {
             if (enemy.curHp <= 0) continue;
 
-            var ultimateSkill = enemy.skills.FirstOrDefault(s => s.isUltimate && s.curUltimateCost >= s.ultimateCost);
+            var ultimateSkill = enemy.skills.FirstOrDefault(s =>
+                s.skillType == SkillType.UltimateSkill &&
+                s.curUltimateCost >= s.ultimateCost);
 
             if (ultimateSkill != null)
             {
-                return new EnemyAction()
+                var targets = ChooseTargets(ultimateSkill, playerMonsters, enemyMonsters, enemy);
+
+                return new EnemyAction
                 {
                     actor = enemy,
                     selectedSkill = ultimateSkill,
-                    target = ChooseTarget(playerMonsters, enemy)
+                    singleTarget = targets.Count == 1 ? targets[0] : null,
+                    multiTargets = targets.Count > 1 ? targets : null
                 };
             }
         }
 
-        // 상성 유리한 대상이 있을 경우 유리한 몬스터가 공격
+        // 2. 상성 유리한 대상이 있다면 ActiveSkill 사용
         foreach (var enemy in enemyMonsters)
         {
             if (enemy.curHp <= 0) continue;
 
-            bool hasAdvantage =
-                playerMonsters.Any(player => player.curHp > 0 && TypeChart.GetEffectiveness(enemy, player) > 1f);
+            bool hasAdvantage = playerMonsters.Any(player =>
+                player.curHp > 0 &&
+                TypeChart.GetEffectiveness(enemy, player) > 1f);
 
             if (hasAdvantage)
             {
-                return new EnemyAction()
+                var activeSkill = GetSkill(enemy, SkillType.ActiveSkill);
+                if (activeSkill != null)
                 {
-                    actor = enemy,
-                    selectedSkill = GetSkill(enemy, Skill.ActiveSkill1),
-                    target = ChooseTarget(playerMonsters, enemy)
-                };
+                    var targets = ChooseTargets(activeSkill, playerMonsters, enemyMonsters, enemy);
+
+                    return new EnemyAction
+                    {
+                        actor = enemy,
+                        selectedSkill = activeSkill,
+                        singleTarget = targets.Count == 1 ? targets[0] : null,
+                        multiTargets = targets.Count > 1 ? targets : null
+                    };
+                }
             }
         }
 
-        // 설정한 조건이 없다면 랜덤으로 정해진 몬스터가 공격
-        var aliveEnemies = enemyMonsters
-            .Where(m => m.curHp > 0)
-            .ToList();
-
+        // 3. 조건이 없으면 랜덤 몬스터가 ActiveSkill 사용
+        var aliveEnemies = enemyMonsters.Where(m => m.curHp > 0).ToList();
         if (aliveEnemies.Count == 0) return null;
 
         var randomEnemy = aliveEnemies[Random.Range(0, aliveEnemies.Count)];
-        return new EnemyAction()
+        var randomSkill = GetSkill(randomEnemy, SkillType.ActiveSkill);
+
+        if (randomSkill != null)
         {
-            actor = randomEnemy,
-            selectedSkill = GetSkill(randomEnemy, Skill.ActiveSkill1),
-            target = ChooseTarget(playerMonsters, randomEnemy)
-        };
+            var targets = ChooseTargets(randomSkill, playerMonsters, enemyMonsters, randomEnemy);
+
+            return new EnemyAction
+            {
+                actor = randomEnemy,
+                selectedSkill = randomSkill,
+                singleTarget = targets.Count == 1 ? targets[0] : null,
+                multiTargets = targets.Count > 1 ? targets : null
+            };
+        }
+
+        return null;
     }
 
-    private static SkillData GetSkill(MonsterData monster, Skill skillType)
+    private static SkillData GetSkill(MonsterData monster, SkillType skillType)
     {
         return monster.skills.FirstOrDefault(s => s.skillType == skillType);
     }
 
     private static MonsterData ChooseTarget(List<MonsterData> targetMonsters, MonsterData attacker)
     {
-        // 체력 50% 이하 중 가장 낮은 몬스터 순으로 정리
+        // 1. 체력 50% 이하 중 가장 낮은 몬스터
         var lowHp = targetMonsters
             .Where(m => m.curHp > 0 && m.curHp / m.maxHp <= 0.5f)
             .OrderBy(m => m.curHp)
@@ -82,7 +103,7 @@ public static class EnemyAIController
 
         if (lowHp.Count > 0) return lowHp[0];
 
-        // 상성이 유리한 몬스터 중 체력이 가장 낮은 몬스터 순으로 정리
+        // 2. 상성 유리하고 HP 낮은 몬스터
         var effective = targetMonsters
             .Where(m => m.curHp > 0 && TypeChart.GetEffectiveness(attacker, m) > 1f)
             .OrderBy(m => m.curHp)
@@ -90,13 +111,40 @@ public static class EnemyAIController
 
         if (effective.Count > 0) return effective[0];
 
-        // 그 외에 조건이 없을시에는 랜덤 대상 선택
-        var alive = targetMonsters
-            .Where(m => m.curHp > 0)
-            .ToList();
-
+        // 3. 랜덤 대상
+        var alive = targetMonsters.Where(m => m.curHp > 0).ToList();
         if (alive.Count > 0) return alive[Random.Range(0, alive.Count)];
 
         return null;
+    }
+
+    private static List<MonsterData> ChooseTargets(
+        SkillData skill, List<MonsterData> playerTeam, List<MonsterData> enemyTeam, MonsterData actor)
+    {
+        List<MonsterData> result = new List<MonsterData>();
+
+        if (skill.isAreaAttack && skill.isTargetSelf)
+        {
+            // 우리팀 전체 대상
+            result = enemyTeam.Where(m => m.curHp > 0).ToList();
+        }
+        else if (skill.isAreaAttack && !skill.isTargetSelf)
+        {
+            // 상대팀 전체 대상
+            result = playerTeam.Where(m => m.curHp > 0).ToList();
+        }
+        else if (!skill.isAreaAttack && skill.isTargetSelf)
+        {
+            // 자기 자신
+            result.Add(actor);
+        }
+        else
+        {
+            // 단일 적 대상
+            var target = ChooseTarget(playerTeam, actor);
+            if (target != null) result.Add(target);
+        }
+
+        return result;
     }
 }
