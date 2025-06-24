@@ -10,7 +10,6 @@ public class Monster : MonoBehaviour
     public Image monsterImageUI;
     public Text infoText;
 
-    public Personality personality;
 
     void Start()
     {
@@ -18,6 +17,11 @@ public class Monster : MonoBehaviour
         {
             ApplyMonsterData();
         }
+    }
+
+    public MonsterData GetData()
+    {
+        return monsterData;
     }
 
     void ApplyMonsterData()
@@ -35,7 +39,7 @@ public class Monster : MonoBehaviour
 
         // 디버그 출력
         Debug.Log($"[몬스터 정보]\n{info}");
-        Debug.Log($"성격 : {personality}");
+        Debug.Log($"성격 : {monsterData.personality}");
 
     }
 
@@ -46,31 +50,24 @@ public class Monster : MonoBehaviour
         sb.AppendLine($"<b>{monsterData.monsterName}</b>");
         sb.AppendLine($"Type: {monsterData.type}");
         sb.AppendLine($"Level: {monsterData.level}");
-        sb.AppendLine($"HP: {monsterData.maxHp}");
+        sb.AppendLine($"HP: {monsterData.curHp} / {monsterData.maxHp}");
         sb.AppendLine($"ATK: {monsterData.attack}");
         sb.AppendLine($"DEF: {monsterData.defense}");
         sb.AppendLine($"SPD: {monsterData.speed}");
-        sb.AppendLine($"CRT: {monsterData.critical}");
-
-        if (monsterData.additionalStats != null && monsterData.additionalStats.Count > 0)
-        {
-            sb.AppendLine("추가 스탯:");
-            foreach (var stat in monsterData.additionalStats)
-            {
-                sb.AppendLine($" - {stat.abilityType}: {stat.value}");
-            }
-        }
+        sb.AppendLine($"CRT: {monsterData.criticalChance}");
 
         if (monsterData.skills != null && monsterData.skills.Count > 0)
         {
             sb.AppendLine("스킬:");
             foreach (var skill in monsterData.skills)
             {
-                sb.AppendLine($" - {skill.skillType}: {skill.skillName}");
-                sb.AppendLine($"   {skill.description}");
+                // sb.AppendLine($" - {skill.skillType}: {skill.skillName}");
+                // sb.AppendLine($"   {skill.description}");
             }
         }
 
         return sb.ToString();
     }
+
+
 }
