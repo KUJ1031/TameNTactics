@@ -798,6 +798,8 @@ GameObject:
   - component: {fileID: 392523582}
   - component: {fileID: 392523581}
   - component: {fileID: 392523580}
+  - component: {fileID: 392523585}
+  - component: {fileID: 392523584}
   m_Layer: 5
   m_Name: MenuUI
   m_TagString: Untagged
@@ -889,6 +891,33 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &392523584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392523579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dad4e0d8a084e9f418e5d79f414d5a5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuButton: {fileID: 562327369}
+  menuPanel: {fileID: 1504841488}
+--- !u!114 &392523585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392523579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e627e3c97327834682eeff549d740d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuView: {fileID: 392523584}
 --- !u!1 &419120168
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,6 +930,8 @@ GameObject:
   - component: {fileID: 419120171}
   - component: {fileID: 419120170}
   - component: {fileID: 419120169}
+  - component: {fileID: 419120174}
+  - component: {fileID: 419120173}
   m_Layer: 5
   m_Name: FieldInfoUI
   m_TagString: Untagged
@@ -992,6 +1023,33 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &419120173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419120168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73c7d747fdb9c4643b9eb42918faceea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapNameText: {fileID: 1269115074}
+  playTimeText: {fileID: 329999121}
+--- !u!114 &419120174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419120168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab538fa15864f254b84fc62be81f1b76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieldInfoView: {fileID: 419120173}
 --- !u!1 &475778574
 GameObject:
   m_ObjectHideFlags: 0
@@ -4177,6 +4235,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1466805772}
   - {fileID: 419120172}
-  - {fileID: 1862157769}
   - {fileID: 1140677708}
   - {fileID: 392523583}
+  - {fileID: 1862157769}
