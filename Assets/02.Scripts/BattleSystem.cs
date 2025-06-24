@@ -1,18 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum BattleState
     {
-        
+        Start,
+        WaitingAction,
+        ExecuteMove,
+        ProcessDamage,
+        CheckFaint,
+        BattleEnd
+    }
+    
+    public BattleState currentState;
+
+    private void Start()
+    {
+        currentState = BattleState.Start;
     }
 
-    // Update is called once per frame
-    void Update()
+    void SetupBattle()
+    {
+        //배틀 화면 UI 전체 세팅
+    }
+
+    void SelectedMove()
     {
         
     }
+    
 }
