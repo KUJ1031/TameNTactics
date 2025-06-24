@@ -1,0 +1,27 @@
+using UnityEngine;
+
+public static class TypeChart
+{
+    public static float GetEffectiveness(MonsterData attackerType, MonsterData targetType)
+    {
+        if (attackerType.type == MonsterType.Fire)
+        {
+            if (targetType.type == MonsterType.Water) return 0.5f;
+            if (targetType.type == MonsterType.Grass) return 1.5f;
+        }
+        
+        else if (attackerType.type == MonsterType.Water)
+        {
+            if (targetType.type == MonsterType.Fire) return 1.5f;
+            if (targetType.type == MonsterType.Grass) return 0.5f;
+        }
+        
+        else if (attackerType.type == MonsterType.Grass)
+        {
+            if (targetType.type == MonsterType.Water) return 1.5f;
+            if (targetType.type == MonsterType.Fire) return 0.5f;
+        }
+
+        return 1f;
+    }
+}
