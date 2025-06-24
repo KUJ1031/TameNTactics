@@ -12,7 +12,7 @@ public class MonsterMover : MonoBehaviour
     private Vector2 startPosition;
     private BoxCollider2D factoryBounds;
     private Transform player;
-    private Monster monsterData;
+    private MonsterData monsterData;
 
     private bool isPlayerInSight = false;
     private bool isEscaping = false;
@@ -28,7 +28,6 @@ public class MonsterMover : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         startPosition = rb.position;
-        monsterData = GetComponent<Monster>();
 
         PickRandomDirection();
         InvokeRepeating(nameof(PickRandomDirection), 0f, 2f);
