@@ -61,13 +61,13 @@ public class Monster : MonoBehaviour
             sb.AppendLine("스킬:");
             foreach (var skill in monsterData.skills)
             {
-                // sb.AppendLine($" - {skill.skillType}: {skill.skillName}");
-                // sb.AppendLine($"   {skill.description}");
+               // sb.AppendLine($" - {skill.skillType}: {skill.skillName}");
+               // sb.AppendLine($"   {skill.description}");
             }
         }
 
         return sb.ToString();
     }
 
-
+    
 }
