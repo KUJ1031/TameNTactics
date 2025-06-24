@@ -4,28 +4,34 @@ using UnityEngine;
 
 public enum MonsterType
 {
-    Fire,
-    Water,
-    Grass,
-    Earth,
-    Iron,
+    불,
+    물,
+    풀,
+    땅,
+    철,
 }
 
 public enum AbilityType
 {
-    Attack,
-    Defense,
-    Speed,
+    공격력,
+    방어력,
+    스피드,
     Hp,
-    Critical,
+    치명타확률,
 }
 
 public enum Skill
 {
-    PassiveSkill,
-    ActiveSkill1,
-    ActiveSkill2,
-    UltimateSkill,
+    패시브,
+    액티브스킬1,
+    액티브스킬2,
+    궁극기,
+}
+public enum Personality
+{
+    Timid,
+    Normal,
+    Aggressive,
 }
 
 [System.Serializable]

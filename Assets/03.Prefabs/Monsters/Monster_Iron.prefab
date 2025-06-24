@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7277804684741957112}
   - component: {fileID: 2020339724222251188}
   m_Layer: 0
-  m_Name: Monster_Fire
+  m_Name: Monster_Iron
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 1, g: 0.5801887, b: 0.5801887, a: 1}
+  m_Color: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aae53883602f3b4b83b5047cd42e511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
+  monsterData: {fileID: 11400000, guid: f6adb78a362b91040a16465371d4b0f3, type: 2}
   monsterImageUI: {fileID: 0}
   infoText: {fileID: 0}
   personality: 2
