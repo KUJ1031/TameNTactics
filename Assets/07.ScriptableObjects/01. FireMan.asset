@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
+  m_Name: 01. FireMan
+  m_EditorClassIdentifier: 
+  monsterName: FireMan
+  monsterImage: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  type: 0
+  level: 1
+  maxHp: 10
+  attack: 10
+  defense: 10
+  speed: 10
+  critical: 5
+  additionalStats: []
+  skills:
+  - skillType: 0
+    skillName: "\uBD88\uD0C0\uB294 \uBAB8"
+    skillPower: 3
+    isAreaAttack: 1
+    isTargetSelf: 0
+    description: "\uB9E4 \uD134, \uBAA8\uB4E0 \uC0C1\uB300\uC5D0\uAC8C 3\uB9CC\uD07C\uC758
+      \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
+    icon: {fileID: 0}
+  - skillType: 1
+    skillName: "\uD654\uC5FC \uACF5\uACA9"
+    skillPower: 10
+    isAreaAttack: 0
+    isTargetSelf: 0
+    description: "\uD654\uC5FC\uC744 \uB0B4\uBFDC\uC2B5\uB2C8\uB2E4.\n\uC801 \uD55C
+      \uBA85\uC5D0\uAC8C 10\uC758 \uB370\uBBF8\uC9C0\uB97C \uC785\uD799\uB2C8\uB2E4."
+    icon: {fileID: 0}
+  - skillType: 2
+    skillName: "\uCCAD\uC5FC\uC758 \uC77C\uACA9"
+    skillPower: 7
+    isAreaAttack: 1
+    isTargetSelf: 0
+    description: "\uD478\uB978 \uBD88\uAF43\uC744 \uD06C\uAC8C \uD718\uB450\uB985\uB2C8\uB2E4.\n\uC801
+      \uC804\uCCB4\uC5D0\uAC8C 7\uC758 \uB370\uBBF8\uC9C0\uB97C \uC785\uD799\uB2C8\uB2E4."
+    icon: {fileID: 0}
+  - skillType: 3
+    skillName: "\uD50C\uB808\uC5B4\uC1FC\uD06C"
+    skillPower: 30
+    isAreaAttack: 0
+    isTargetSelf: 0
+    description: "\uBAB8 \uC804\uCCB4\uB97C \uBD88\uAF43\uC73C\uB85C \uB4A4\uB36E\uC740
+      \uB2E4\uC74C \uB9F9\uB82C\uD788 \uB3CC\uC9C4\uD569\uB2C8\uB2E4.\n\uC801 \uD55C
+      \uBA85\uC5D0\uAC8C 30\uC758 \uB370\uBBF8\uC9C0\uB97C \uC785\uD799\uB2C8\uB2E4."
+    icon: {fileID: 0}
