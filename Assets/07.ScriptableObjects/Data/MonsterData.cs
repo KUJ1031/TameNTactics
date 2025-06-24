@@ -4,28 +4,34 @@ using UnityEngine;
 
 public enum MonsterType
 {
-    Fire,
-    Water,
-    Grass,
-    Earth,
-    Iron,
+    불,
+    물,
+    풀,
+    땅,
+    철,
 }
 
 public enum AbilityType
 {
-    Attack,
-    Defense,
-    Speed,
-    MaxHp,
-    CurHp,
-    Critical,
+    공격력,
+    방어력,
+    스피드,
+    Hp,
+    치명타확률,
 }
 
 public enum Skill
 {
-    PassiveSkill,
-    ActiveSkill1,
-    UltimateSkill,
+    패시브,
+    액티브스킬1,
+    액티브스킬2,
+    궁극기,
+}
+public enum Personality
+{
+    Timid,
+    Normal,
+    Aggressive,
 }
 
 [System.Serializable]
@@ -41,15 +47,11 @@ public class SkillData
     public Skill skillType;
     public string skillName;
     public float skillPower;
-    public int curUltimateCost;
     public bool isAreaAttack;
     public bool isTargetSelf;
     [TextArea]
     public string description;
     public Sprite icon;
-    [Header("궁극기 체크")]
-    public bool isUltimate;
-    public int ultimateCost;
 }
 
 [CreateAssetMenu(fileName = "NewMonster", menuName = "New Monster/Create New Monster")]
@@ -63,7 +65,6 @@ public class MonsterData : ScriptableObject
     [Header("능력치")]
     public int level;
     public float maxHp;
-    public float curHp;
     public float attack;
     public float defense;
     public float speed;

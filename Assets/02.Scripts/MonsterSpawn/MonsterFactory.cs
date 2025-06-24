@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Monster 스크립트가 붙어있는 GameObject를 Factory로 사용하여 몬스터를 생성하는 스크립트
 public class MonsterFactory : MonoBehaviour
 {
     [Header("몬스터 프리팹 목록")]
@@ -13,7 +14,10 @@ public class MonsterFactory : MonoBehaviour
     [SerializeField] private float width;
     [SerializeField] private float height;
 
+    //몬스터 생성 시 최대 시도 횟수
     public int maxAttempts = 100;
+
+    // 생성된 몬스터의 위치를 저장하는 리스트
     private List<Vector3> usedPositions = new List<Vector3>();
 
     private void Start()
@@ -35,6 +39,7 @@ public class MonsterFactory : MonoBehaviour
         SpawnAllMonsters();
     }
 
+    // 모든 몬스터를 Factory 내에서 생성하는 메서드
     public void SpawnAllMonsters()
     {
         if (monsterPrefabs.Count == 0 || factoryParent == null)
@@ -50,6 +55,13 @@ public class MonsterFactory : MonoBehaviour
             {
                 GameObject monster = Instantiate(prefab, spawnPos, Quaternion.identity, factoryParent);
                 usedPositions.Add(spawnPos);
+
+                MonsterMover mover = monster.GetComponent<MonsterMover>();
+                if (mover != null)
+                {
+                    mover.SetMoveArea(factoryParent.GetComponentInChildren<BoxCollider2D>());
+                }
+
                 Debug.Log($"{monster.name} 생성 완료 @ {spawnPos}");
             }
             else
@@ -59,6 +71,7 @@ public class MonsterFactory : MonoBehaviour
         }
     }
 
+    // 몬스터를 생성할 수 있는 랜덤 위치를 Factory 내에서 찾는 메서드
     private Vector3 GetRandomPositionInFactory()
     {
         Vector3 center = factoryParent.position;

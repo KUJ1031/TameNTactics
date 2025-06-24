@@ -2,12 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Text;
 
+// MonsterData를 기반으로 몬스터 정보를 UI에 표시하는 스크립트
 public class Monster : MonoBehaviour
 {
     public MonsterData monsterData;
 
     public Image monsterImageUI;
     public Text infoText;
+
+    public Personality personality;
 
     void Start()
     {
@@ -32,6 +35,8 @@ public class Monster : MonoBehaviour
 
         // 디버그 출력
         Debug.Log($"[몬스터 정보]\n{info}");
+        Debug.Log($"성격 : {personality}");
+
     }
 
     string GenerateMonsterInfo()
