@@ -13,14 +13,18 @@ MonoBehaviour:
   m_Name: 02. WaterMan
   m_EditorClassIdentifier: 
   monsterName: WaterMan
-  monsterImage: {fileID: 0}
-  type: 1
+  monsterImage: {fileID: -9168505034414372217, guid: 08f27a6370ce3444b9bf3ed4df6e6b34, type: 3}
+  type: 0
   personality: 0
   level: 1
-  maxHp: 120
-  curHp: 120
-  attack: 100
-  defense: 80
-  speed: 100
-  criticalChance: 5
-  skills: []
+  maxHp: 15
+  curHp: 0
+  attack: 5
+  defense: 15
+  speed: 5
+  criticalChance: 0
+  skills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

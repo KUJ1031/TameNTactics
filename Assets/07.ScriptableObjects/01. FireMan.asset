@@ -13,14 +13,18 @@ MonoBehaviour:
   m_Name: 01. FireMan
   m_EditorClassIdentifier: 
   monsterName: FireMan
-  monsterImage: {fileID: 0}
+  monsterImage: {fileID: -7855327871636034459, guid: 8943f3cde4970e94b8df9534b704922d, type: 3}
   type: 0
-  personality: 0
+  personality: 2
   level: 1
-  maxHp: 85
-  curHp: 85
-  attack: 130
-  defense: 75
-  speed: 110
-  criticalChance: 5
-  skills: []
+  maxHp: 10
+  curHp: 0
+  attack: 10
+  defense: 10
+  speed: 10
+  criticalChance: 0
+  skills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

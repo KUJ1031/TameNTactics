@@ -13,14 +13,18 @@ MonoBehaviour:
   m_Name: 05. IronMan
   m_EditorClassIdentifier: 
   monsterName: IronMan
-  monsterImage: {fileID: 0}
+  monsterImage: {fileID: 784869815551342302, guid: 1bb660b4d78169147a2273c915cfb59a, type: 3}
   type: 4
-  personality: 0
+  personality: 2
   level: 1
-  maxHp: 100
-  curHp: 100
-  attack: 100
-  defense: 130
-  speed: 70
-  criticalChance: 5
-  skills: []
+  maxHp: 10
+  curHp: 0
+  attack: 15
+  defense: 5
+  speed: 10
+  criticalChance: 0
+  skills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

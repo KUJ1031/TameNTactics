@@ -13,14 +13,18 @@ MonoBehaviour:
   m_Name: 03. GrassMan
   m_EditorClassIdentifier: 
   monsterName: GrassMan
-  monsterImage: {fileID: 0}
-  type: 2
-  personality: 0
+  monsterImage: {fileID: 1745192818456827540, guid: 7ea332978c8f0754a9b62dadc9c6472f, type: 3}
+  type: 0
+  personality: 1
   level: 1
-  maxHp: 80
-  curHp: 80
-  attack: 100
-  defense: 90
-  speed: 130
-  criticalChance: 5
-  skills: []
+  maxHp: 10
+  curHp: 0
+  attack: 15
+  defense: 5
+  speed: 10
+  criticalChance: 0
+  skills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
