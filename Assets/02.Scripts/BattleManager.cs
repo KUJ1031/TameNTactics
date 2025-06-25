@@ -1,9 +1,7 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class BattleManager : MonoBehaviour
+public class BattleManager : Singleton<BattleManager>
 {
-    public MonsterData playerMonster;
-    public MonsterData enemyMonster;
-    
-    
+
 }
