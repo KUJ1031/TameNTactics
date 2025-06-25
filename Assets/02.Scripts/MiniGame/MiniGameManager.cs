@@ -15,10 +15,8 @@ public class MiniGameManager : MonoBehaviour
     private void Start()
     {
         ranges.Clear();
-        //아래를 기준으로 시계 방향으로 0~360
-        ranges.Add(new RotationRange(10, 30));
-        ranges.Add(new RotationRange(40, 80));
-        ranges.Add(new RotationRange(340, 350));
+
+        SetSuccessRanges(90);
 
         rotatePoint.SetRanges(ranges);
         spawner.SpawnRanges(ranges);
@@ -31,31 +29,33 @@ public class MiniGameManager : MonoBehaviour
         if (current && !wasInSuccessZone)
         {
             Debug.Log("성공");
-            //성공
         }
         else if (!current && wasInSuccessZone)
         {
             Debug.Log("실패");
-            //실패
         }
 
         wasInSuccessZone = current;
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.Space))//추후 인풋 변경
         {
-
+            rotatePoint.SetRotateSpeed(0);
+            //rotatePoint.isInSuccessZone 값을 전달(성공/실패)
         }
     }
 
-    //단일범위지정
-    public void SetSuccessRanges(float min, float max)
+    //랜덤 범위지정
+    public void SetSuccessRanges(float value)
     {
-        ranges.Clear();
+        if (value <= 0) { Debug.Log("SetSuccessRanges의 value가 0이하 입니다."); }
+
+        float min = Random.Range(-180, 180);
+        float max = min + value;
         ranges.Add(new RotationRange(min, max));
     }
     //여러 범위지정
-    public void SetSuccessRanges(List<RotationRange> newRanges)
-    {
-        ranges = newRanges;
-    }
+    //public void SetSuccessRanges(List<RotationRange> newRanges)
+    //{
+    //    ranges = newRanges;
+    //}
 }

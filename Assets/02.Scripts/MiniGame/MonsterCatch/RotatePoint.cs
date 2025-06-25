@@ -32,7 +32,12 @@ public class RotatePoint : MonoBehaviour
     {
         successRanges = ranges;
     }
-
+    //외부에서 속도 변경
+    public void SetRotateSpeed(float speed)
+    {
+        rotateSpeed = speed;
+        UpdateRotationSpeed();
+    }
     //회전속도 계산
     private void UpdateRotationSpeed()
     {
