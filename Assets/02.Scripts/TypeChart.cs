@@ -2,6 +2,7 @@ using UnityEngine;
 
 public static class TypeChart
 {
+    // 상성표입니다!
     public static float GetEffectiveness(MonsterData attackerType, MonsterData targetType)
     {
         if (attackerType.type == MonsterType.Fire)

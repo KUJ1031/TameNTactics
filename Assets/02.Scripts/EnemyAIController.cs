@@ -8,15 +8,14 @@ public static class EnemyAIController
     {
         public MonsterData actor;
         public SkillData selectedSkill;
-
-        public MonsterData singleTarget;
-        public List<MonsterData> multiTargets;
+        public List<MonsterData> targets;
     }
 
-    public static EnemyAction DecideEnemyAction(List<MonsterData> enemyMonsters, List<MonsterData> playerMonsters)
+    // 조건에 따른 공격을 실행할 몬스터 자동 선택!
+    public static EnemyAction DecideAction(List<MonsterData> actors, List<MonsterData> targetMonsters)
     {
         // 1. 궁극기 사용 가능한 몬스터가 있다면 우선
-        foreach (var enemy in enemyMonsters)
+        foreach (var enemy in actors)
         {
             if (enemy.curHp <= 0) continue;
 
@@ -26,73 +25,72 @@ public static class EnemyAIController
 
             if (ultimateSkill != null)
             {
-                var targets = ChooseTargets(ultimateSkill, playerMonsters, enemyMonsters, enemy);
+                var targets = ChooseTargets(ultimateSkill, targetMonsters, actors, enemy);
 
                 return new EnemyAction
                 {
                     actor = enemy,
                     selectedSkill = ultimateSkill,
-                    singleTarget = targets.Count == 1 ? targets[0] : null,
-                    multiTargets = targets.Count > 1 ? targets : null
+                    targets = targets
                 };
             }
         }
 
         // 2. 상성 유리한 대상이 있다면 ActiveSkill 사용
-        foreach (var enemy in enemyMonsters)
+        foreach (var enemy in actors)
         {
             if (enemy.curHp <= 0) continue;
 
-            bool hasAdvantage = playerMonsters.Any(player =>
+            bool hasAdvantage = targetMonsters.Any(player =>
                 player.curHp > 0 &&
                 TypeChart.GetEffectiveness(enemy, player) > 1f);
 
             if (hasAdvantage)
             {
-                var activeSkill = GetSkill(enemy, SkillType.ActiveSkill);
+                var activeSkill = enemy.skills.FirstOrDefault(s => s.skillType == SkillType.ActiveSkill);
                 if (activeSkill != null)
                 {
-                    var targets = ChooseTargets(activeSkill, playerMonsters, enemyMonsters, enemy);
+                    var targets = ChooseTargets(activeSkill, targetMonsters, actors, enemy);
 
                     return new EnemyAction
                     {
                         actor = enemy,
                         selectedSkill = activeSkill,
-                        singleTarget = targets.Count == 1 ? targets[0] : null,
-                        multiTargets = targets.Count > 1 ? targets : null
+                        targets = targets
                     };
                 }
             }
         }
 
         // 3. 조건이 없으면 랜덤 몬스터가 ActiveSkill 사용
-        var aliveEnemies = enemyMonsters.Where(m => m.curHp > 0).ToList();
+        var aliveEnemies = actors.Where(m => m.curHp > 0).ToList();
         if (aliveEnemies.Count == 0) return null;
 
         var randomEnemy = aliveEnemies[Random.Range(0, aliveEnemies.Count)];
-        var randomSkill = GetSkill(randomEnemy, SkillType.ActiveSkill);
+        var randomSkill = randomEnemy.skills.FirstOrDefault(s => s.skillType == SkillType.ActiveSkill);
 
         if (randomSkill != null)
         {
-            var targets = ChooseTargets(randomSkill, playerMonsters, enemyMonsters, randomEnemy);
+            var targets = ChooseTargets(randomSkill, targetMonsters, actors, randomEnemy);
 
             return new EnemyAction
             {
                 actor = randomEnemy,
                 selectedSkill = randomSkill,
-                singleTarget = targets.Count == 1 ? targets[0] : null,
-                multiTargets = targets.Count > 1 ? targets : null
+                targets = targets
             };
         }
 
         return null;
     }
 
-    private static SkillData GetSkill(MonsterData monster, SkillType skillType)
-    {
-        return monster.skills.FirstOrDefault(s => s.skillType == skillType);
-    }
+    // 정해진 스킬을 찾아서 사용 준비
+    // private static SkillData GetSkill(MonsterData monster, SkillType skillType)
+    // {
+    //     return monster.skills.FirstOrDefault(s => s.skillType == skillType);
+    // }
 
+    // 조건에 맞는 타겟 고르기
     private static MonsterData ChooseTarget(List<MonsterData> targetMonsters, MonsterData attacker)
     {
         // 1. 체력 50% 이하 중 가장 낮은 몬스터
@@ -118,33 +116,44 @@ public static class EnemyAIController
         return null;
     }
 
+    // 공격의 형태 고르기
     private static List<MonsterData> ChooseTargets(
         SkillData skill, List<MonsterData> targetTeam, List<MonsterData> actorTeam, MonsterData actor)
     {
         List<MonsterData> result = new List<MonsterData>();
 
+        // 공격팀 전체 대상
         if (skill.isAreaAttack && skill.isTargetSelf)
         {
-            // 공격팀 전체 대상
             result = actorTeam.Where(m => m.curHp > 0).ToList();
         }
+        
+        // 타겟팀 전체 대상
         else if (skill.isAreaAttack && !skill.isTargetSelf)
         {
-            // 타겟팀 전체 대상
             result = targetTeam.Where(m => m.curHp > 0).ToList();
-        }
+        } 
+        
+        // 공격하는 자기 자신
         else if (!skill.isAreaAttack && skill.isTargetSelf)
         {
-            // 공격하는 자기 자신
             result.Add(actor);
         }
+        
+        // 공격팀 중 하나 타겟
         else if (skill.isTargetSingleAlly)
         {
             var possibleActorTeam = actorTeam.Where(m => m.curHp > 0).ToList();
-
             var target = ChooseTarget(possibleActorTeam, actor);
-            
-            result.Add(target);
+            if (target != null) result.Add(target);
+        }
+        
+        // 타겟팀 중 하나 타겟
+        else
+        {
+            var possibleTargets = targetTeam.Where(m => m.curHp > 0).ToList();
+            var target = ChooseTarget(possibleTargets, actor);
+            if (target != null) result.Add(target);
         }
 
         return result;

@@ -9,6 +9,7 @@ public static class DamageCalculator
         public float effectiveness;
     }
     
+    // 데미지 계산!(공격 관련이라 힐도 이거 적용된다는거.. 추후에 디벨롭 하겠슴돠)
     public static DamageResult CalculateDamage(MonsterData attacker, MonsterData target, SkillData skill)
     {
         float baseDamage = attacker.attack * skill.skillPower;
