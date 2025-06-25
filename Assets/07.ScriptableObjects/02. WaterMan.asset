@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterName: WaterMan
   monsterImage: {fileID: 0}
-  type: 1
+  type: 0
   personality: 0
   level: 1
   maxHp: 15
