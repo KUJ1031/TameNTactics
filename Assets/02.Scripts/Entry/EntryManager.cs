@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,12 +7,32 @@ public class EntryManager : Singleton<EntryManager>
     public int maxEntryCount = 3;
 
     [Header("현재 출전 리스트")]
+    public List<MonsterData> allMonsters; // 에디터에서 5개 연결
     public List<MonsterData> selectedEntries = new List<MonsterData>();
 
-    // Entry에 몬스터 추가/해제 시에 사용될 이벤트
-    public event Action OnEntryChanged;
+    [Header("ScrollView 관련")]
+    public Transform contentPanel; // Content 객체
+    public GameObject monsterSlotPrefab; // MonsterSlot 프리팹
 
-    // 몬스터를 엔트리에 추가 또는 해제
+    public event System.Action OnEntryChanged;
+
+    void Start()
+    {
+        InitializeAllSlots();
+    }
+
+    void InitializeAllSlots()
+    {
+        foreach (Transform child in contentPanel)
+            Destroy(child.gameObject);
+
+        foreach (var monster in allMonsters)
+        {
+            GameObject slot = Instantiate(monsterSlotPrefab, contentPanel);
+            slot.GetComponent<MonsterSlot>().SetData(monster);
+        }
+    }
+
     public void ToggleEntry(MonsterData monster)
     {
         if (selectedEntries.Contains(monster))
@@ -25,7 +44,7 @@ public class EntryManager : Singleton<EntryManager>
         {
             if (selectedEntries.Count >= maxEntryCount)
             {
-                Debug.LogWarning("최대 출전 수가 초과");
+                Debug.LogWarning("최대 출전 수 초과");
                 return;
             }
 
@@ -33,11 +52,10 @@ public class EntryManager : Singleton<EntryManager>
             Debug.Log($"{monster.monsterName} 출전 등록");
         }
 
-        // UI 업데이트 등 후처리 (필요 시)
+        // UI 갱신
         OnEntryChanged?.Invoke();
     }
 
-    // 현재 출전 여부 확인
     public bool IsInEntry(MonsterData monster)
     {
         return selectedEntries.Contains(monster);

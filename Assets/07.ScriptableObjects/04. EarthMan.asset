@@ -13,48 +13,18 @@ MonoBehaviour:
   m_Name: 04. EarthMan
   m_EditorClassIdentifier: 
   monsterName: EarthMan
-  monsterImage: {fileID: 0}
-  type: 3
+  monsterImage: {fileID: 3537242770394404238, guid: 6909d108ca31dfa4abfec3a7aeb90ec2, type: 3}
+  type: 0
+  personality: 0
   level: 1
   maxHp: 10
+  curHp: 0
   attack: 15
   defense: 5
   speed: 10
-  critical: 5
-  additionalStats: []
+  criticalChance: 0
   skills:
-  - skillType: 0
-    skillName: "\uB454\uD568"
-    skillPower: 0.1
-    isAreaAttack: 0
-    isTargetSelf: 1
-    description: "\uC5D4\uD2B8\uB9AC\uC758 \uBAA8\uB4E0 \uBAAC\uC2A4\uD130\uC758
-      \uBC29\uC5B4\uB825\uC744 10% \uC62C\uB9BD\uB2C8\uB2E4."
-    icon: {fileID: 0}
-  - skillType: 1
-    skillName: "\uC9C4\uD759 \uBC1C\uC0AC"
-    skillPower: 1
-    isAreaAttack: 0
-    isTargetSelf: 0
-    description: "\uD759\uC744 \uB358\uC838 \uACF5\uACA9\uD569\uB2C8\uB2E4.\n\uC801
-      \uD55C \uBA85\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 100%\uB9CC\uD07C\uC758 \uD53C\uD574\uB97C
-      \uC785\uD799\uB2C8\uB2E4."
-    icon: {fileID: 0}
-  - skillType: 2
-    skillName: "\uC9F1\uB3CC \uB9C8\uAD6C \uB358\uC9C0\uAE30"
-    skillPower: 0.7
-    isAreaAttack: 1
-    isTargetSelf: 0
-    description: "\uC774\uD310\uC0AC\uD310 \uB3CC\uC744 \uB358\uC838 \uC801 \uC804\uCCB4\uB97C
-      \uACF5\uACA9\uD569\uB2C8\uB2E4.\n\uC801 \uC804\uCCB4\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
-      70%\uB9CC\uD07C\uC758 \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
-    icon: {fileID: 0}
-  - skillType: 3
-    skillName: "\uACF5\uD3EC\uC758 \uC4F4\uB9DB"
-    skillPower: 3.2
-    isAreaAttack: 0
-    isTargetSelf: 0
-    description: "\uBCF8\uC778\uC744 \uC9C1\uC811 \uB358\uC838 \uACF5\uACA9\uD569\uB2C8\uB2E4.\n\uC801
-      \uD55C \uBA85\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 320%\uB9CC\uD07C\uC758 \uD53C\uD574\uB97C
-      \uC785\uD799\uB2C8\uB2E4."
-    icon: {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
