@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8788825221316693582}
   - component: {fileID: 7389278158626286793}
   - component: {fileID: -5647321537434349867}
+  - component: {fileID: -1964651388745691584}
   m_Layer: 0
   m_Name: Monster_Water
   m_TagString: Untagged
@@ -132,7 +133,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.029805526, y: 0.9637113}
@@ -190,3 +191,16 @@ MonoBehaviour:
   patrolSpeed: 1
   chaseSpeed: 2
   sightRadius: 15
+--- !u!114 &-1964651388745691584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109435781629233495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e3d5b1d9caa28f4dbff76db0ae1473d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyMonster: {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}

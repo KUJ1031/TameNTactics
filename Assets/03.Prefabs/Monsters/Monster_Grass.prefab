@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5948922801177921040}
   - component: {fileID: 8461424877438210070}
   - component: {fileID: 5820353545738071429}
+  - component: {fileID: 8628960997211900919}
   m_Layer: 0
   m_Name: Monster_Grass
   m_TagString: Untagged
@@ -132,7 +133,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.034773096, y: 0.9637113}
@@ -190,3 +191,16 @@ MonoBehaviour:
   patrolSpeed: 1
   chaseSpeed: 2
   sightRadius: 15
+--- !u!114 &8628960997211900919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471335641901750275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e3d5b1d9caa28f4dbff76db0ae1473d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyMonster: {fileID: 11400000, guid: 468187f0dfc5ec9428591245ba311912, type: 2}
