@@ -5,7 +5,7 @@ public class SuccessRangeVisual : MonoBehaviour
 {
     [SerializeField] private Image image;
 
-    //각도만큼 이미지 셋팅
+    //주어진 범위(range)만큼 이미지 셋팅
     public void SetRange(RotationRange range)
     {
         float min = Normalize360(range.Min);
@@ -13,7 +13,7 @@ public class SuccessRangeVisual : MonoBehaviour
         float delta = (max >= min) ? max - min : 360f - (min - max);
 
         image.fillAmount = delta / 360f;
-        transform.localEulerAngles = new Vector3(0, 0, -min);
+        transform.localEulerAngles = new Vector3(0, 0, max);
     }
 
     private float Normalize360(float angle)

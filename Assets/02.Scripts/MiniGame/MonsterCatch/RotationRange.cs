@@ -9,6 +9,8 @@ public struct RotationRange
         Min = min; Max = max;
     }
 
+
+    //angle의 값이 Min~Max사이에 있는지 판별
     public bool Contains(float angle)
     {
         angle = NormalizeAngle180(angle);
@@ -21,6 +23,7 @@ public struct RotationRange
             return angle >= normalizedMin || angle <= normalizedMax;
     }
 
+    //각도를 -180 ~ 180으로 정규화.
     private float NormalizeAngle180(float angle)
     {
         angle %= 360;

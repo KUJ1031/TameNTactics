@@ -7,14 +7,19 @@ public class MiniGameManager : MonoBehaviour
     [SerializeField] private RotatePoint rotatePoint;
     [SerializeField] private SuccessRangeSpawner spawner;
 
-    [Header("성공 범위 설정")]
+    [Header("성공 범위")]
     [SerializeField] private List<RotationRange> ranges = new();
 
     private bool wasInSuccessZone = false;
 
     private void Start()
     {
-        SetSuccessRanges(45f, 90f);
+        ranges.Clear();
+        //아래를 기준으로 시계 방향으로 0~360
+        ranges.Add(new RotationRange(10, 30));
+        ranges.Add(new RotationRange(40, 80));
+        ranges.Add(new RotationRange(340, 350));
+
         rotatePoint.SetRanges(ranges);
         spawner.SpawnRanges(ranges);
     }
@@ -25,14 +30,21 @@ public class MiniGameManager : MonoBehaviour
 
         if (current && !wasInSuccessZone)
         {
+            Debug.Log("성공");
             //성공
         }
         else if (!current && wasInSuccessZone)
         {
+            Debug.Log("실패");
             //실패
         }
 
         wasInSuccessZone = current;
+
+        if (Input.GetKey(KeyCode.A))
+        {
+
+        }
     }
 
     //단일범위지정

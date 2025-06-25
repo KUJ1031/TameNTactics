@@ -24,29 +24,22 @@ public class RotatePoint : MonoBehaviour
         Vector3 curRotation = point.localEulerAngles;
         curRotation.z -= rotationSpeedDegree * Time.deltaTime; // 반시계 회전
         point.localEulerAngles = curRotation;
-
+        
         CheckSuccessZone();
     }
-
-    /// <summary>
-    /// 성공 범위 설정 (외부에서 호출)
-    /// </summary>
+    //성공범위 설정
     public void SetRanges(List<RotationRange> ranges)
     {
         successRanges = ranges;
     }
 
-    /// <summary>
-    /// 회전 속도 재계산
-    /// </summary>
+    //회전속도 계산
     private void UpdateRotationSpeed()
     {
         rotationSpeedDegree = (rotateSpeed > 0f) ? 360f / rotateSpeed : 0f;
     }
 
-    /// <summary>
-    /// 현재 각도가 성공 범위에 포함되는지 확인
-    /// </summary>
+    //성공 범위에 있는지 확인
     private void CheckSuccessZone()
     {
         isInSuccessZone = false;
