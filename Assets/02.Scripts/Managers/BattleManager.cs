@@ -189,7 +189,10 @@ public class BattleManager : Singleton<BattleManager>
 
         foreach (var monster in aliveBenchMonsters)
         {
-            MonsterStatsManager.AddExp(monster, getBenchExp);
+            if (aliveBenchMonsters != null)
+            {
+                MonsterStatsManager.AddExp(monster, getBenchExp);
+            }
         }
     }
 
