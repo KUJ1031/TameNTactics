@@ -19,7 +19,7 @@ public class SkillPresent : MonoBehaviour
                 Monster monster = hit.collider.GetComponent<Monster>();
                 if (monster != null)
                 {
-                    ShowMonsterSkills(monster.GetData(), monster.transform.position);
+                    ShowMonsterSkills(monster.GetData());
                 }
             }
 
@@ -28,10 +28,10 @@ public class SkillPresent : MonoBehaviour
         }
     }
 
-    private void ShowMonsterSkills(MonsterData monsterData, Vector3 worldPosition)
+    private void ShowMonsterSkills(MonsterData monsterData)
     {
         if (monsterData == null || monsterData.skills == null) return;
 
-        skillView.ShowSkillList(monsterData.skills, worldPosition);
+        skillView.ShowSkillList(monsterData.skills);
     }
 }

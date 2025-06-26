@@ -9,7 +9,7 @@ public class SkillView : MonoBehaviour
     [SerializeField] private Image skillSlot2;
     [SerializeField] private Transform skillPanel;
 
-    public void ShowSkillList(List<SkillData> skills, Vector3 worldPosition)
+    public void ShowSkillList(List<SkillData> skills)
     {
         // 1번 슬롯
         if (skills.Count >= 1 && skills[0] != null)
@@ -22,11 +22,6 @@ public class SkillView : MonoBehaviour
         {
             skillSlot2.sprite = skills[1].icon;
         }
-
-        // 스킬 패널 위치를 몬스터 오른쪽에서 보이게 설정
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
-        screenPos.x += 50f;
-        skillPanel.position = screenPos;
 
         skillPanel.gameObject.SetActive(true);
     }
