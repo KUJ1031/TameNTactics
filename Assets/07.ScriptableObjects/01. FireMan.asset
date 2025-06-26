@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: FireMan
   monsterImage: {fileID: -7855327871636034459, guid: 8943f3cde4970e94b8df9534b704922d, type: 3}
   type: 0
-  personality: 2
+  personality: 0
   level: 1
   maxHp: 10
   curHp: 0
