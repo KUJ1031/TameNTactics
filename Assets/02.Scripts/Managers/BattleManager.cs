@@ -2,16 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BattleManager : MonoBehaviour
+public class BattleManager : Singleton<BattleManager>
 {
     public List<MonsterData> playerTeam;
+    public List<MonsterData> benchMonsters;
     public List<MonsterData> enemyTeam;
+    public List<MonsterData> allPlayerMonsters;
 
-    private MonsterData selectedPlayerMonster;
-    private SkillData selectedSkill;
+    public MonsterData selectedPlayerMonster;
+    public SkillData selectedSkill;
     
-    private bool battleEnded = false;
-
+    public bool battleEnded = false;
+    
     public void InitializeTeams()
     {
         playerTeam = BattleTriggerManager.Instance.GetPlayerTeam();
@@ -27,36 +29,22 @@ public class BattleManager : MonoBehaviour
         Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterName))}");
     }
 
-
-    // 배틀 시작시 초기화
+    // 배틀 시작시 호출
     public void StartBattle()
     {
+        InitializeUltimateSkill(playerTeam);
+        InitializeUltimateSkill(enemyTeam);
+
         foreach (var monster in playerTeam)
         {
-            foreach (var skill in monster.skills)
-            {
-                if (skill.skillType == SkillType.UltimateSkill)
-                {
-                    skill.curUltimateCost = 0;
-                }
-            }
-        }
-        
-        foreach (var monster in enemyTeam)
-        {
-            foreach (var skill in monster.skills)
-            {
-                if (skill.skillType == SkillType.UltimateSkill)
-                {
-                    skill.curUltimateCost = 0;
-                }
-            }
+            MonsterStatsManager.RecalculateStats(monster);
         }
     }
 
     // 플레이어 몬스터 고르기
     public void SelectPlayerMonster(MonsterData selectedMonster)
     {
+        if (battleEnded) return;
         if (selectedMonster.curHp <= 0) return;
 
         selectedPlayerMonster = selectedMonster;
@@ -130,7 +118,7 @@ public class BattleManager : MonoBehaviour
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
             if (IsTeamDead(playerTeam))
             {
-                EndBattle(true);
+                EndBattle(false);
                 return;
             }
 
@@ -156,23 +144,73 @@ public class BattleManager : MonoBehaviour
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
             if (IsTeamDead(playerTeam))
             {
-                EndBattle(true);
+                EndBattle(false);
                 return;
             }
         }
     }
 
     // 스킬 사용
-    private void ExecuteSkill(MonsterData caster, SkillData skill, List<MonsterData> targets)
+    public void ExecuteSkill(MonsterData caster, SkillData skill, List<MonsterData> targets)
     {
         if (caster.curHp <= 0 || targets == null || targets.Count == 0) return;
 
         foreach (var target in targets.Where(t => t.curHp > 0))
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skill);
+            Debug.Log($"{caster.name}가 {target.name}에게 {result.damage} 데미지 " +
+                      $"(치명타: {result.isCritical},상성: {result.effectiveness})");
             target.curHp -= result.damage;
             if (target.curHp < 0) target.curHp = 0;
+            
+            IncreaseUltimateCost(target);
         }
+        
+        IncreaseUltimateCost(caster);
+    }
+
+    // 선택한 몬스터를 포획
+    public void CaptureSelectedEnemy(MonsterData target)
+    {
+        if (target.curHp <= 0)
+        {
+            Debug.Log($"{target.monsterName}는 이미 쓰러져 포획할 수 없습니다.");
+            return;
+        }
+
+        allPlayerMonsters.Add(target);
+        Debug.Log($"{target.monsterName}를(을) 포획했습니다!" +
+                  $"(현재 총 보유 수: {allPlayerMonsters.Count(m => m == target)})");
+    }
+
+    
+    // 배틀 보상(경험치, 골드) 로직
+    public void BattleReward(List<MonsterData> entryMonsters, List<MonsterData> benchMonsters)
+    {
+        int totalExp = enemyTeam.Sum(e => e.expReward);
+        int getBenchExp = Mathf.RoundToInt(totalExp * 0.7f);
+        int totalGold = enemyTeam.Sum(e => e.goldReward);
+        
+        // player.gold += totalGold;
+        
+        var aliveEntryMonsters = entryMonsters.Where(m => m.curHp > 0).ToList();
+        var aliveBenchMonsters = benchMonsters.Where(m => m.curHp > 0).ToList();
+
+        foreach (var monster in aliveEntryMonsters)
+        {
+            MonsterStatsManager.AddExp(monster, totalExp);
+        }
+
+        foreach (var monster in aliveBenchMonsters)
+        {
+            MonsterStatsManager.AddExp(monster, getBenchExp);
+        }
+    }
+
+    public void StartTurn()
+    {
+        IncreaseUltimateCostAll(playerTeam);
+        IncreaseUltimateCostAll(enemyTeam);
     }
     
     // 팀 죽었나요?
@@ -199,5 +237,62 @@ public class BattleManager : MonoBehaviour
     private void ShowTargetSelectionUI(List<MonsterData> targets)
     {
         // 타겟 선택 영역 표시 필요해욤!
+    }
+
+    // 호출 시 궁극기 코스트 0으로 초기화
+    public void InitializeUltimateSkill(List<MonsterData> team)
+    {
+        foreach (var monster in team)
+        {
+            foreach (var skill in monster.skills)
+            {
+                if (skill.skillType == SkillType.UltimateSkill)
+                {
+                    skill.curUltimateCost = 0;
+                }
+            }
+        }
+    }
+    
+    public void IncreaseUltimateCost(MonsterData monster)
+    {
+        foreach (var skill in monster.skills)
+        {
+            if (skill.skillType == SkillType.UltimateSkill)
+            {
+                skill.curUltimateCost = Mathf.Min(skill.maxUltimateCost, skill.curUltimateCost + 1);
+            }
+        }
+    }
+    
+    // 모든 몬스터 궁극기 코스트 하나씩 증가
+    public void IncreaseUltimateCostAll(List<MonsterData> team)
+    {
+        foreach (var monster in team)
+        {
+            foreach (var skill in monster.skills)
+            {
+                if (skill.skillType == SkillType.UltimateSkill)
+                {
+                    skill.curUltimateCost = Mathf.Min(skill.maxUltimateCost, skill.curUltimateCost + 1);
+                }
+            }
+        }
+    }
+    
+    public void CancelPlayerAction()
+    {
+        selectedPlayerMonster = null;
+        selectedSkill = null;
+    }
+    
+    public bool TryRunAway()
+    {
+        float chance = 0.5f;
+        bool success = Random.value < chance;
+
+        Debug.Log(success ? "도망 성공!" : "도망 실패!");
+
+        return success;
     }
 }
