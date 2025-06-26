@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BattleManager : MonoBehaviour
+public class BattleManager : Singleton<BattleManager>
 {
     public List<MonsterData> playerTeam;
     public List<MonsterData> benchMonsters;
@@ -34,6 +34,11 @@ public class BattleManager : MonoBehaviour
     {
         InitializeUltimateSkill(playerTeam);
         InitializeUltimateSkill(enemyTeam);
+
+        foreach (var monster in playerTeam)
+        {
+            MonsterStatsManager.RecalculateStats(monster);
+        }
     }
 
     // 플레이어 몬스터 고르기
@@ -157,9 +162,13 @@ public class BattleManager : MonoBehaviour
                       $"(치명타: {result.isCritical},상성: {result.effectiveness})");
             target.curHp -= result.damage;
             if (target.curHp < 0) target.curHp = 0;
+            
+            IncreaseUltimateCost(target);
         }
+        
+        IncreaseUltimateCost(caster);
     }
-    
+
     // 선택한 몬스터를 포획
     public void CaptureSelectedEnemy(MonsterData target)
     {
@@ -196,6 +205,12 @@ public class BattleManager : MonoBehaviour
         {
             MonsterStatsManager.AddExp(monster, getBenchExp);
         }
+    }
+
+    public void StartTurn()
+    {
+        IncreaseUltimateCostAll(playerTeam);
+        IncreaseUltimateCostAll(enemyTeam);
     }
     
     // 팀 죽었나요?
@@ -234,6 +249,32 @@ public class BattleManager : MonoBehaviour
                 if (skill.skillType == SkillType.UltimateSkill)
                 {
                     skill.curUltimateCost = 0;
+                }
+            }
+        }
+    }
+    
+    public void IncreaseUltimateCost(MonsterData monster)
+    {
+        foreach (var skill in monster.skills)
+        {
+            if (skill.skillType == SkillType.UltimateSkill)
+            {
+                skill.curUltimateCost = Mathf.Min(skill.maxUltimateCost, skill.curUltimateCost + 1);
+            }
+        }
+    }
+    
+    // 모든 몬스터 궁극기 코스트 하나씩 증가
+    public void IncreaseUltimateCostAll(List<MonsterData> team)
+    {
+        foreach (var monster in team)
+        {
+            foreach (var skill in monster.skills)
+            {
+                if (skill.skillType == SkillType.UltimateSkill)
+                {
+                    skill.curUltimateCost = Mathf.Min(skill.maxUltimateCost, skill.curUltimateCost + 1);
                 }
             }
         }

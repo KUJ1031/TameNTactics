@@ -1,5 +1,6 @@
 public static class MonsterStatsManager
 {
+    // 경험치 추가 & 레벨업 시 스텟 변화
     public static void AddExp(MonsterData monster, int expAmount)
     {
         monster.curExp += expAmount;
@@ -13,6 +14,7 @@ public static class MonsterStatsManager
         }
     }
 
+    // 레벨에 맞는 스텟 초기화
     public static void RecalculateStats(MonsterData monster)
     {
         monster.maxHp = monster.baseHp + 12 * (monster.level - 1);

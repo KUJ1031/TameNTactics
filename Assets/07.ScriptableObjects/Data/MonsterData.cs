@@ -55,7 +55,7 @@ public class MonsterData : ScriptableObject
 
     [Header("몬스터 정보")]
     public string spawnArea;
-    public string spawnTime;
+    public int spawnTime;
     [TextArea]
     public string description;
 }
