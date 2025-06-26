@@ -1,33 +1,68 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 전투 트리거를 통해 마지막으로 충돌한 적 몬스터의 데이터를 저장/제공하는 매니저
-/// 전투 씬 전환 또는 BattleManager에서 해당 데이터를 사용할 수 있도록 싱글톤으로 관리
+/// 전투 관련 정보를 저장하고 공유하는 매니저 (전투 씬 전환 전후에 사용)
+/// - 충돌한 몬스터
+/// - 적 팀
+/// - 플레이어 출전 팀
 /// </summary>
 public class BattleTriggerManager : Singleton<BattleTriggerManager>
 {
-    // 마지막으로 저장된 적 몬스터 정보
+    // 충돌한 적 몬스터
     private MonsterData lastMonster;
 
+    // 전투에 등장할 적 팀 (MonsterFactory에서 랜덤 구성)
+    private List<MonsterData> enemyTeam;
+
+    // 플레이어의 출전 팀 (EntryManager에서 선택된 몬스터 목록)
+    private List<MonsterData> playerTeam;
+
     /// <summary>
-    /// 외부에서 전투를 유발한 몬스터 데이터를 저장
-    /// BattleTrigger 등에서 호출됨
+    /// 충돌한 몬스터 저장
     /// </summary>
-    /// <param name="data">적 몬스터의 MonsterData</param>
     public void SetLastMonster(MonsterData data)
     {
         lastMonster = data;
     }
 
+    public MonsterData GetLastMonster() => lastMonster;
+
     /// <summary>
-    /// 저장된 마지막 몬스터 정보를 반환
-    /// BattleManager 등에서 호출하여 전투에 사용
+    /// 전투 적팀 저장
     /// </summary>
-    /// <returns>저장된 MonsterData 객체</returns>
-    public MonsterData GetLastMonster()
+    public void SetEnemyTeam(List<MonsterData> team)
     {
-        return lastMonster;
+        enemyTeam = team;
+    }
+
+    public List<MonsterData> GetEnemyTeam() => enemyTeam;
+
+    /// <summary>
+    /// 플레이어팀 저장
+    /// </summary>
+    public void SetPlayerTeam(List<MonsterData> team)
+    {
+        playerTeam = team;
+    }
+
+    public List<MonsterData> GetPlayerTeam() => playerTeam;
+
+    /// <summary>
+    /// EntryManager에서 플레이어 팀 자동 불러오기
+    /// </summary>
+    public void SyncPlayerTeamFromEntry()
+    {
+        playerTeam = new List<MonsterData>(EntryManager.Instance.selectedEntries);
+    }
+
+    /// <summary>
+    /// 전투 데이터 초기화 (전투 종료 후 등)
+    /// </summary>
+    public void ResetBattleData()
+    {
+        lastMonster = null;
+        enemyTeam = null;
+        playerTeam = null;
     }
 }

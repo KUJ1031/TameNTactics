@@ -1,23 +1,33 @@
 using UnityEngine;
+using System.Linq;
 
 public class PlayerBattleTrigger : MonoBehaviour
 {
+    public BattleManager battleManager;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // 닿은 오브젝트가 Monster인지 확인
         Monster monster = other.GetComponent<Monster>();
         if (monster == null) return;
 
         MonsterData enemyData = monster.GetData();
         if (enemyData == null) return;
 
-        // 적 몬스터 정보 저장
         BattleTriggerManager.Instance.SetLastMonster(enemyData);
 
-        // 전투 시작 (필요 시 주석 해제)
-       // BattleManager.Instance.StartBattle();
+        var factory = monster.transform.GetComponentInParent<MonsterFactory>();
+        if (factory == null) return;
 
-        // 몬스터 오브젝트 제거
-        Destroy(other.gameObject); // 혹은 전투가 끝난 후에 처리
+        var enemyTeam = factory.GetRandomEnemyTeam();
+        BattleTriggerManager.Instance.SetEnemyTeam(enemyTeam);
+        BattleTriggerManager.Instance.SetPlayerTeam(EntryManager.Instance.selectedEntries);
+        BattleTriggerManager.Instance.SetLastMonster(monster.GetData());
+
+        if (battleManager != null)
+        {
+            battleManager.InitializeTeams();
+            //battleManager.StartBattle();
+        }
+        UnityEngine.SceneManagement.SceneManager.LoadScene("SampleBattleScene");
+        Destroy(other.gameObject);
     }
 }
