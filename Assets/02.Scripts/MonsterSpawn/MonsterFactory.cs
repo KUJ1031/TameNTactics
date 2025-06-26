@@ -90,4 +90,44 @@ public class MonsterFactory : MonoBehaviour
 
         return Vector3.zero;
     }
+
+    public List<MonsterData> GetRandomEnemyTeam()
+    {
+        List<MonsterData> selectedTeam = new();
+        List<MonsterData> allData = new();
+
+        // 모든 MonsterData 수집 (Prefab 기준)
+        foreach (var prefab in monsterPrefabs)
+        {
+            Monster monster = prefab.GetComponent<Monster>();
+            if (monster != null && monster.GetData() != null)
+            {
+                allData.Add(monster.GetData());
+            }
+        }
+
+        // 충돌한 몬스터는 무조건 포함
+        MonsterData last = BattleTriggerManager.Instance.GetLastMonster();
+        if (last != null)
+        {
+            selectedTeam.Add(last);
+        }
+
+        // 총 팀 인원 수 정하기 (1~3명)
+        int totalCount = Random.Range(1, 4);
+
+        // 나머지 인원 무작위로 중복 허용 뽑기
+        int remainingCount = totalCount - selectedTeam.Count;
+        for (int i = 0; i < remainingCount; i++)
+        {
+            if (allData.Count == 0) break;
+
+            int randomIndex = Random.Range(0, allData.Count);
+            selectedTeam.Add(allData[randomIndex]); // 중복 허용이므로 Remove 안 함
+        }
+
+        return selectedTeam;
+    }
+
+
 }
