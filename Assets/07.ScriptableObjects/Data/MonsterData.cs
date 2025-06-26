@@ -22,6 +22,7 @@ public class MonsterData : ScriptableObject
 {
     [Header("기본 정보")]
     public string monsterName;
+    public int monsterID;
     public Sprite monsterImage;
     public MonsterType type;
     public Personality personality;

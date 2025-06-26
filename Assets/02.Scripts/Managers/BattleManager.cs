@@ -279,4 +279,20 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
     }
+    
+    public void CancelPlayerAction()
+    {
+        selectedPlayerMonster = null;
+        selectedSkill = null;
+    }
+    
+    public bool TryRunAway()
+    {
+        float chance = 0.5f;
+        bool success = Random.value < chance;
+
+        Debug.Log(success ? "도망 성공!" : "도망 실패!");
+
+        return success;
+    }
 }
