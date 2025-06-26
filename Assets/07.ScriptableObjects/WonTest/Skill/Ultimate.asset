@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Ultimate
   m_EditorClassIdentifier: 
   skillType: 2
-  skillName: 
-  skillPower: 0
+  passiveType: 0
+  skillName: "\uAD81\uADF9\uAE30"
+  skillPower: 1.5
   curUltimateCost: 0
-  ultimateCost: 0
+  maxUltimateCost: 5
   isTargetSingleAlly: 0
   isAreaAttack: 0
   isTargetSelf: 0
-  description: 
+  description: "150% \uAD81\uADF9\uAE30 \uB370\uBBF8\uC9C0 \uBA39\uC5B4\uB78F!"
   icon: {fileID: 0}
