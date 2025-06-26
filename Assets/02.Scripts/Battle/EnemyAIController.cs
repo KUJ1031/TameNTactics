@@ -21,7 +21,7 @@ public static class EnemyAIController
 
             var ultimateSkill = enemy.skills.FirstOrDefault(s =>
                 s.skillType == SkillType.UltimateSkill &&
-                s.curUltimateCost >= s.ultimateCost);
+                s.curUltimateCost >= s.maxUltimateCost);
 
             if (ultimateSkill != null)
             {
