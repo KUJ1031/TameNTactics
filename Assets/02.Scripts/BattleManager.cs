@@ -12,6 +12,22 @@ public class BattleManager : MonoBehaviour
     
     private bool battleEnded = false;
 
+    public void InitializeTeams()
+    {
+        playerTeam = BattleTriggerManager.Instance.GetPlayerTeam();
+        enemyTeam = BattleTriggerManager.Instance.GetEnemyTeam();
+
+        if (playerTeam == null || enemyTeam == null)
+        {
+            Debug.LogError("플레이어 팀 또는 적 팀이 설정되지 않았습니다!");
+            return;
+        }
+
+        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", playerTeam.Select(m => m.monsterName))}");
+        Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterName))}");
+    }
+
+
     // 배틀 시작시 초기화
     public void StartBattle()
     {
