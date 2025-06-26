@@ -5,12 +5,29 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     public List<MonsterData> playerTeam;
+    public List<MonsterData> benchMonsters;
     public List<MonsterData> enemyTeam;
+    public List<MonsterData> allPlayerMonsters;
 
-    private MonsterData selectedPlayerMonster;
-    private SkillData selectedSkill;
+    public MonsterData selectedPlayerMonster;
+    public SkillData selectedSkill;
     
-    private bool battleEnded = false;
+    public bool battleEnded = false;
+    
+    public void InitializeTeams()
+    {
+        playerTeam = BattleTriggerManager.Instance.GetPlayerTeam();
+        enemyTeam = BattleTriggerManager.Instance.GetEnemyTeam();
+
+        if (playerTeam == null || enemyTeam == null)
+        {
+            Debug.LogError("플레이어 팀 또는 적 팀이 설정되지 않았습니다!");
+            return;
+        }
+
+        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", playerTeam.Select(m => m.monsterName))}");
+        Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterName))}");
+    }
 
     // 배틀 시작시 호출
     public void StartBattle()
@@ -129,7 +146,7 @@ public class BattleManager : MonoBehaviour
     }
 
     // 스킬 사용
-    private void ExecuteSkill(MonsterData caster, SkillData skill, List<MonsterData> targets)
+    public void ExecuteSkill(MonsterData caster, SkillData skill, List<MonsterData> targets)
     {
         if (caster.curHp <= 0 || targets == null || targets.Count == 0) return;
 
@@ -140,6 +157,44 @@ public class BattleManager : MonoBehaviour
                       $"(치명타: {result.isCritical},상성: {result.effectiveness})");
             target.curHp -= result.damage;
             if (target.curHp < 0) target.curHp = 0;
+        }
+    }
+    
+    // 선택한 몬스터를 포획
+    public void CaptureSelectedEnemy(MonsterData target)
+    {
+        if (target.curHp <= 0)
+        {
+            Debug.Log($"{target.monsterName}는 이미 쓰러져 포획할 수 없습니다.");
+            return;
+        }
+
+        allPlayerMonsters.Add(target);
+        Debug.Log($"{target.monsterName}를(을) 포획했습니다!" +
+                  $"(현재 총 보유 수: {allPlayerMonsters.Count(m => m == target)})");
+    }
+
+    
+    // 배틀 보상(경험치, 골드) 로직
+    public void BattleReward(List<MonsterData> entryMonsters, List<MonsterData> benchMonsters)
+    {
+        int totalExp = enemyTeam.Sum(e => e.expReward);
+        int getBenchExp = Mathf.RoundToInt(totalExp * 0.7f);
+        int totalGold = enemyTeam.Sum(e => e.goldReward);
+        
+        // player.gold += totalGold;
+        
+        var aliveEntryMonsters = entryMonsters.Where(m => m.curHp > 0).ToList();
+        var aliveBenchMonsters = benchMonsters.Where(m => m.curHp > 0).ToList();
+
+        foreach (var monster in aliveEntryMonsters)
+        {
+            MonsterStatsManager.AddExp(monster, totalExp);
+        }
+
+        foreach (var monster in aliveBenchMonsters)
+        {
+            MonsterStatsManager.AddExp(monster, getBenchExp);
         }
     }
     
@@ -170,7 +225,7 @@ public class BattleManager : MonoBehaviour
     }
 
     // 호출 시 궁극기 코스트 0으로 초기화
-    private void InitializeUltimateSkill(List<MonsterData> team)
+    public void InitializeUltimateSkill(List<MonsterData> team)
     {
         foreach (var monster in team)
         {
@@ -182,10 +237,5 @@ public class BattleManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void BattleReward()
-    {
-        
     }
 }

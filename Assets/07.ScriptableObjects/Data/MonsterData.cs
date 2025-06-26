@@ -25,56 +25,38 @@ public class MonsterData : ScriptableObject
     public Sprite monsterImage;
     public MonsterType type;
     public Personality personality;
+    
+    [Header("기본 능력치")]
+    public int baseHp;
+    public int baseAttack;
+    public int baseDefense;
+    public int baseSpeed;
+    public int baseExp;
+    public int baseExpReward;
+    public int baseGoldReward;
 
-    [Header("능력치")]
+    [Header("현재 능력치")]
     public int level;
-    public float maxHp;
-    public float curHp;
-    public float attack;
-    public float defense;
-    public float speed;
-    public float criticalChance;
-    public float maxExp;
-    public float curExp;
+    public int maxHp;
+    public int curHp;
+    public int attack;
+    public int defense;
+    public int speed;
+    public int criticalChance;
+    public int maxExp;
+    public int curExp;
     
     [Header("배틀 리워드")]
-    public float expReward;
-    public float goldReward;
+    public int expReward;
+    public int goldReward;
 
     [Header("스킬 정보")]
     public List<SkillData> skills;
 
-    public void LevelUp()
-    {
-        level++;
-        
-        maxHp += 12f;
-        curHp = maxHp;
-        attack += 3f;
-        defense += 3f;
-        speed += 1f;
-        
-        
-        // switch (personality)
-        // {
-        //     case Personality.Timid:
-        //         attack += 2f;
-        //         defense += 3f;
-        //         speed += 2f;
-        //         break;
-        //     
-        //     case Personality.Aggressive:
-        //         attack += 4f;
-        //         defense += 2f;
-        //         speed += 1f;
-        //         break;
-        //     
-        //     case Personality.Normal:
-        //         attack += 3f;
-        //         defense += 3f;
-        //         speed += 1f;
-        //         break;
-        // }
-    }
+    [Header("몬스터 정보")]
+    public string spawnArea;
+    public string spawnTime;
+    [TextArea]
+    public string description;
 }
 
