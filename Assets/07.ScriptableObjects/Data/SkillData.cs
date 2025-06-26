@@ -15,6 +15,8 @@ public class SkillData : ScriptableObject
     public float skillPower;
     public int curUltimateCost;
     public int ultimateCost;
+
+    public bool isTargetSingleAlly;
     public bool isAreaAttack;
     public bool isTargetSelf;
     [TextArea]

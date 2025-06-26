@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 02. WaterMan
   m_EditorClassIdentifier: 
   monsterName: WaterMan
-  monsterImage: {fileID: 0}
+  monsterImage: {fileID: -9168505034414372217, guid: 08f27a6370ce3444b9bf3ed4df6e6b34, type: 3}
   type: 0
   personality: 0
   level: 1
