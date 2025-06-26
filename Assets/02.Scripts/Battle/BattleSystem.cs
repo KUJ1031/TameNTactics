@@ -3,11 +3,12 @@ using UnityEngine;
 public class BattleSystem : MonoBehaviour
 {
     private BaseBattleState currentState;
-    public BattleManager BattleManager;
+    public BattleManager battleManager;
 
     private void Start()
     {
-        BattleManager = BattleManager.Instance;
+        battleManager = BattleManager.Instance;
+        ChangeState(new PlayerMenuState(this));
     }
 
     private void Update()
