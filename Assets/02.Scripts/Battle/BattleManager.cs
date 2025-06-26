@@ -12,35 +12,17 @@ public class BattleManager : MonoBehaviour
     
     private bool battleEnded = false;
 
-    // 배틀 시작시 초기화
+    // 배틀 시작시 호출
     public void StartBattle()
     {
-        foreach (var monster in playerTeam)
-        {
-            foreach (var skill in monster.skills)
-            {
-                if (skill.skillType == SkillType.UltimateSkill)
-                {
-                    skill.curUltimateCost = 0;
-                }
-            }
-        }
-        
-        foreach (var monster in enemyTeam)
-        {
-            foreach (var skill in monster.skills)
-            {
-                if (skill.skillType == SkillType.UltimateSkill)
-                {
-                    skill.curUltimateCost = 0;
-                }
-            }
-        }
+        InitializeUltimateSkill(playerTeam);
+        InitializeUltimateSkill(enemyTeam);
     }
 
     // 플레이어 몬스터 고르기
     public void SelectPlayerMonster(MonsterData selectedMonster)
     {
+        if (battleEnded) return;
         if (selectedMonster.curHp <= 0) return;
 
         selectedPlayerMonster = selectedMonster;
@@ -114,7 +96,7 @@ public class BattleManager : MonoBehaviour
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
             if (IsTeamDead(playerTeam))
             {
-                EndBattle(true);
+                EndBattle(false);
                 return;
             }
 
@@ -140,7 +122,7 @@ public class BattleManager : MonoBehaviour
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
             if (IsTeamDead(playerTeam))
             {
-                EndBattle(true);
+                EndBattle(false);
                 return;
             }
         }
@@ -154,6 +136,8 @@ public class BattleManager : MonoBehaviour
         foreach (var target in targets.Where(t => t.curHp > 0))
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skill);
+            Debug.Log($"{caster.name}가 {target.name}에게 {result.damage} 데미지 " +
+                      $"(치명타: {result.isCritical},상성: {result.effectiveness})");
             target.curHp -= result.damage;
             if (target.curHp < 0) target.curHp = 0;
         }
@@ -183,5 +167,25 @@ public class BattleManager : MonoBehaviour
     private void ShowTargetSelectionUI(List<MonsterData> targets)
     {
         // 타겟 선택 영역 표시 필요해욤!
+    }
+
+    // 호출 시 궁극기 코스트 0으로 초기화
+    private void InitializeUltimateSkill(List<MonsterData> team)
+    {
+        foreach (var monster in team)
+        {
+            foreach (var skill in monster.skills)
+            {
+                if (skill.skillType == SkillType.UltimateSkill)
+                {
+                    skill.curUltimateCost = 0;
+                }
+            }
+        }
+    }
+
+    private void BattleReward()
+    {
+        
     }
 }
