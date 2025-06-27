@@ -15,10 +15,10 @@ public class BattleTriggerManager : Singleton<BattleTriggerManager>
     // 전투에 등장할 적 팀 (MonsterFactory에서 랜덤 구성)
     private List<MonsterData> enemyTeam;
 
-    // 플레이어의 출전 팀 (EntryManager에서 선택된 몬스터 목록)
+    // 플레이어의 출전 팀 (PlayerManager에서 battleEntry를 참조)
     private List<MonsterData> playerTeam;
 
-    /// 벤치에 있는 몬스터들 (EntryManager에서 관리)
+    // 벤치 몬스터 (PlayerManager에서 benchEntry를 참조)
     private List<MonsterData> benchMonsters;
 
     /// <summary>
@@ -52,14 +52,26 @@ public class BattleTriggerManager : Singleton<BattleTriggerManager>
     public List<MonsterData> GetPlayerTeam() => playerTeam;
 
     public void SetBenchMonsters(List<MonsterData> bench) => benchMonsters = bench;
+
     public List<MonsterData> GetBenchMonsters() => benchMonsters;
 
     /// <summary>
-    /// EntryManager에서 플레이어 팀 자동 불러오기
+    /// 플레이어 팀과 벤치 자동 동기화 (PlayerManager에서 가져옴)
     /// </summary>
-    public void SyncPlayerTeamFromEntry()
+    public void SyncPlayerTeamFromPlayer()
     {
-        playerTeam = new List<MonsterData>(EntryManager.Instance.selectedEntries);
+        var player = PlayerManager.Instance?.player;
+        if (player != null)
+        {
+            playerTeam = new List<MonsterData>(player.battleEntry);
+            benchMonsters = new List<MonsterData>(player.benchEntry);
+        }
+        else
+        {
+            Debug.LogWarning("플레이어가 존재하지 않아 팀을 불러올 수 없습니다.");
+            playerTeam = new List<MonsterData>();
+            benchMonsters = new List<MonsterData>();
+        }
     }
 
     /// <summary>
@@ -70,5 +82,6 @@ public class BattleTriggerManager : Singleton<BattleTriggerManager>
         lastMonster = null;
         enemyTeam = null;
         playerTeam = null;
+        benchMonsters = null;
     }
 }
