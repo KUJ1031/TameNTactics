@@ -12,13 +12,11 @@ public class BattleSelectPresent : MonoBehaviour
     private int currentIndex = 0;
     private bool isSkillPanelOpen = false;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         battleSelectView.attackButton.onClick.AddListener(OnAttackButtonClick);
     }
-
-    // Update is called once per frame
     void Update()
     {
         HandleMouseClick();
@@ -35,13 +33,19 @@ public class BattleSelectPresent : MonoBehaviour
 
     private void OnEnable()
     {
-        EntryManager.Instance.OnEntryChanged += InitializePlayerMonsters;
+        // EntryManager 대신 PlayerManager.player에 직접 접근
+        // Player 쪽에 OnEntryChanged 이벤트가 없으면 직접 초기화 호출
+        InitializePlayerMonsters();
+
+        // 만약 Player 클래스에 OnEntryChanged 이벤트가 있다면
+        // PlayerManager.Instance.player.OnEntryChanged += InitializePlayerMonsters;
     }
 
     private void OnDisable()
     {
-        EntryManager.Instance.OnEntryChanged -= InitializePlayerMonsters;
+        // PlayerManager.Instance.player.OnEntryChanged -= InitializePlayerMonsters;
     }
+
 
     private void HandleMouseClick()
     {
@@ -62,7 +66,6 @@ public class BattleSelectPresent : MonoBehaviour
         }
     }
 
-    // 키보드 입력에 따른 선택 몬스터 UI 이동
     private void HandleKeyboardInput()
     {
         if (playerMonsters.Count == 0) return;
@@ -79,7 +82,6 @@ public class BattleSelectPresent : MonoBehaviour
         }
     }
 
-    // 선택한 몬스터 강조하는 UI
     private void MoveSelectMonster(Monster monster)
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(monster.transform.position);
@@ -103,12 +105,20 @@ public class BattleSelectPresent : MonoBehaviour
     {
         playerMonsters.Clear();
 
-        List<MonsterData> selectedEntries = EntryManager.Instance.selectedEntries;
+        var player = PlayerManager.Instance?.player;
+        if (player == null)
+        {
+            selectMonsterImage.gameObject.SetActive(false);
+            return;
+        }
+
+        var battleEntries = player.battleEntry; // 전투 출전 멤버 리스트
+
         Monster[] allMonsters = FindObjectsOfType<Monster>();
 
         foreach (var monster in allMonsters)
         {
-            if (selectedEntries.Contains(monster.GetData()))
+            if (battleEntries.Contains(monster.GetData()))
             {
                 playerMonsters.Add(monster);
             }
