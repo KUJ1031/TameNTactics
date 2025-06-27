@@ -169,7 +169,6 @@ public class BattleManager : Singleton<BattleManager>
                   $"(현재 총 보유 수: {allPlayerMonsters.Count(m => m == target)})");
     }
 
-    
     // 배틀 보상(경험치, 골드) 로직
     public void BattleReward(List<MonsterData> entryMonsters, List<MonsterData> benchMonsters)
     {
