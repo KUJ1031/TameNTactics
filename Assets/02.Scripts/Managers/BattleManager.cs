@@ -25,6 +25,9 @@ public class BattleManager : Singleton<BattleManager>
         {
             MonsterStatsManager.RecalculateStats(monster);
         }
+        
+        // 기본 배틀 UI 초기화 세팅으로 실행
+        // 배틀에서 메뉴(공격, 인벤토리, 포섭, 도망)
     }
 
     // 플레이어 몬스터 고르기
