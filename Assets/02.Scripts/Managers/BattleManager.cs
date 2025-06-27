@@ -272,6 +272,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         playerTeam = BattleTriggerManager.Instance.GetPlayerTeam();
         enemyTeam = BattleTriggerManager.Instance.GetEnemyTeam();
+        benchMonsters = BattleTriggerManager.Instance.GetBenchMonsters();
 
         if (playerTeam == null || enemyTeam == null)
         {
@@ -280,6 +281,7 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         Debug.Log($"플레이어 팀 멤버: {string.Join(", ", playerTeam.Select(m => m.monsterName))}");
+        Debug.Log($"벤치 몬스터: {string.Join(", ", benchMonsters.Select(m => m.monsterName))}");
         Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterName))}");
     }
     
