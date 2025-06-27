@@ -4,7 +4,7 @@ public static class DamageCalculator
 {
     public class DamageResult
     {
-        public float damage;
+        public int damage;
         public bool isCritical;
         public float effectiveness;
     }
@@ -22,7 +22,7 @@ public static class DamageCalculator
 
         return new DamageResult
         {
-            damage = finalDamage,
+            damage = Mathf.RoundToInt(finalDamage),
             isCritical = isCrit,
             effectiveness = effectiveness
         };
