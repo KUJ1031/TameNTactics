@@ -11,6 +11,7 @@ public class SkillView : MonoBehaviour
 
     public void ShowSkillList(List<SkillData> skills)
     {
+        Debug.Log("몬스터가 가지고 있는 스킬을 보여줍니다.");
         // 1번 슬롯
         if (skills.Count >= 1 && skills[0] != null)
         {

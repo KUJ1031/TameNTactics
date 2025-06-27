@@ -27,14 +27,14 @@ public class PlayerBattleTrigger : MonoBehaviour
         var player = PlayerManager.Instance.player;
         BattleTriggerManager.Instance.SetPlayerTeam(player.battleEntry);
         BattleTriggerManager.Instance.SetBenchMonsters(player.benchEntry);
-
+        UnityEngine.SceneManagement.SceneManager.LoadScene("SampleBattleScene");
         if (battleManager != null)
         {
             battleManager.InitializeTeams();
             // battleManager.StartBattle();
         }
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("SampleBattleScene");
+        
 
         Destroy(other.gameObject); // 충돌한 적 제거
     }
