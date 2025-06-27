@@ -20,6 +20,7 @@ public class PlayerBattleTrigger : MonoBehaviour
         var enemyTeam = factory.GetRandomEnemyTeam();
         BattleTriggerManager.Instance.SetEnemyTeam(enemyTeam);
         BattleTriggerManager.Instance.SetPlayerTeam(EntryManager.Instance.selectedEntries);
+        BattleTriggerManager.Instance.SetBenchMonsters(EntryManager.Instance.benchMonsters);
         BattleTriggerManager.Instance.SetLastMonster(monster.GetData());
 
         if (battleManager != null)

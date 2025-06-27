@@ -9,6 +9,11 @@ public class EntryManager : Singleton<EntryManager>
     [Header("현재 출전 리스트")]
     public List<MonsterData> allMonsters = new List<MonsterData>(); // 출전 후보군, 시작 시 빈 리스트
     public List<MonsterData> selectedEntries = new List<MonsterData>();
+    public List<MonsterData> benchMonsters = new List<MonsterData>();
+
+    [Header("ScrollView 관련")]
+    public Transform contentPanel; // ScrollView Content (기존에 있던 변수)
+    public GameObject monsterSlotPrefab; // 몬스터 슬롯 프리팹 (기존에 있던 변수)
 
     public event System.Action OnEntryChanged;
 
@@ -43,27 +48,33 @@ public class EntryManager : Singleton<EntryManager>
     {
         bool isSelected = selectedEntries.Contains(monster);
 
-        if (isSelected)
+        if (isSelected) // 해제
         {
             if (selectedEntries.Count <= 1)
             {
                 Debug.LogWarning("최소 1마리는 출전해야 합니다.");
                 return;
             }
+
             selectedEntries.Remove(monster);
+            benchMonsters.Add(monster); // 다시 벤치로
         }
-        else
+        else // 출전
         {
             if (selectedEntries.Count >= maxEntryCount)
             {
                 Debug.LogWarning("최대 출전 수 초과");
                 return;
             }
+
             selectedEntries.Add(monster);
+            benchMonsters.Remove(monster); // 벤치에서 제외
         }
 
         OnEntryChanged?.Invoke();
     }
+
+
 
     public bool IsInEntry(MonsterData monster)
     {
@@ -89,6 +100,8 @@ public class EntryManager : Singleton<EntryManager>
         }
 
         allMonsters.Add(monster);
+        benchMonsters.Add(monster); // 등록된 후보만 bench에 들어간다
+
         InitializeAllSlots();  // UI 갱신
         return true;
     }
@@ -98,20 +111,16 @@ public class EntryManager : Singleton<EntryManager>
     /// </summary>
     public void RemoveCandidate(MonsterData monster)
     {
-        if (allMonsters.Contains(monster))
-        {
-            allMonsters.Remove(monster);
+        if (!allMonsters.Contains(monster)) return;
 
-            // 출전 상태면 해제
-            if (selectedEntries.Contains(monster))
-                selectedEntries.Remove(monster);
+        allMonsters.Remove(monster);
+        benchMonsters.Remove(monster);
+        selectedEntries.Remove(monster);
 
-            InitializeAllSlots();
-            OnEntryChanged?.Invoke();
-        }
+        InitializeAllSlots();
+        OnEntryChanged?.Invoke();
     }
 
-    [Header("ScrollView 관련")]
-    public Transform contentPanel; // ScrollView Content (기존에 있던 변수)
-    public GameObject monsterSlotPrefab; // 몬스터 슬롯 프리팹 (기존에 있던 변수)
+
+    
 }
