@@ -17,7 +17,7 @@ public class EntryManager : Singleton<EntryManager>
         InitializeAllSlots();
     }
 
-    void InitializeAllSlots()
+    public void InitializeAllSlots()
     {
         Debug.Log("[EntryManager] InitializeAllSlots 호출됨");
         foreach (Transform child in contentPanel)
