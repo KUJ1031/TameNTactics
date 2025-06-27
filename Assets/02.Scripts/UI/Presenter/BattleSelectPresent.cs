@@ -43,6 +43,7 @@ public class BattleSelectPresent : MonoBehaviour
         EntryManager.Instance.OnEntryChanged -= InitializePlayerMonsters;
     }
 
+    // 마우스 클릭으로 몬스터 선택 UI 이동
     private void HandleMouseClick()
     {
         if (Input.GetMouseButtonDown(0))
@@ -57,6 +58,7 @@ public class BattleSelectPresent : MonoBehaviour
                 {
                     currentIndex = playerMonsters.IndexOf(monster);
                     MoveSelectMonster(monster);
+                    BattleManager.Instance.SelectPlayerMonster(monster.monsterData);
                 }
             }
         }
@@ -82,6 +84,7 @@ public class BattleSelectPresent : MonoBehaviour
     // 선택한 몬스터 강조하는 UI
     private void MoveSelectMonster(Monster monster)
     {
+        Debug.Log("몬스터 선택");
         Vector3 screenPos = Camera.main.WorldToScreenPoint(monster.transform.position);
         selectMonsterImage.position = screenPos;
         selectMonsterImage.gameObject.SetActive(true);

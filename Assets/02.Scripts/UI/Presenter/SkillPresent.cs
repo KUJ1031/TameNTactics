@@ -17,14 +17,12 @@ public class SkillPresent : MonoBehaviour
             if (hit.collider != null)
             {
                 Monster monster = hit.collider.GetComponent<Monster>();
+                Debug.Log($"몬스터 클릭 {monster.GetData()}");
                 if (monster != null)
                 {
                     ShowMonsterSkills(monster.GetData());
                 }
             }
-
-            // 몬스터 외에 다른 부분을 클릭하면 패널 숨기기
-            skillView.HideSkills();
         }
     }
 
