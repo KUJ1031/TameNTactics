@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager>
 {
-    public List<MonsterData> playerTeam;
-    public List<MonsterData> benchMonsters;
+    public List<MonsterData> EntryMonsters => PlayerManager.Instance.player.entryMonsters;
+    public List<MonsterData> BenchMonsters => PlayerManager.Instance.player.benchEntry;
+    public List<MonsterData> OwendMonsters => PlayerManager.Instance.player.ownedMonsters;
+    
     public List<MonsterData> enemyTeam;
-    public List<MonsterData> allPlayerMonsters;
-
     public MonsterData selectedPlayerMonster;
     public SkillData selectedSkill;
 
@@ -18,10 +18,10 @@ public class BattleManager : Singleton<BattleManager>
     public void StartBattle()
     {
         InitializeTeams();
-        InitializeUltimateSkill(playerTeam);
+        InitializeUltimateSkill(EntryMonsters);
         InitializeUltimateSkill(enemyTeam);
 
-        foreach (var monster in playerTeam)
+        foreach (var monster in EntryMonsters)
         {
             MonsterStatsManager.RecalculateStats(monster);
         }
@@ -55,14 +55,14 @@ public class BattleManager : Singleton<BattleManager>
 
         else if (skill.isTargetSingleAlly)
         {
-            possibleTargets = playerTeam.Where(m => m.curHp > 0).ToList();
+            possibleTargets = EntryMonsters.Where(m => m.curHp > 0).ToList();
         }
 
         else if (skill.isAreaAttack)
         {
             if (skill.isTargetSelf)
             {
-                possibleTargets = playerTeam.Where(m => m.curHp > 0).ToList();
+                possibleTargets = EntryMonsters.Where(m => m.curHp > 0).ToList();
             }
 
             else
@@ -76,7 +76,7 @@ public class BattleManager : Singleton<BattleManager>
             possibleTargets = enemyTeam.Where(m => m.curHp > 0).ToList();
         }
 
-        ShowTargetSelectionUI(possibleTargets);
+        // ShowTargetSelectionUI(possibleTargets);
     }
 
     // 타겟 몬스터 선택
@@ -89,7 +89,7 @@ public class BattleManager : Singleton<BattleManager>
         if (selectedSkill.isAreaAttack)
         {
             selectedTargets = selectedSkill.isTargetSelf
-                ? playerTeam.Where(m => m.curHp > 0).ToList()
+                ? EntryMonsters.Where(m => m.curHp > 0).ToList()
                 : enemyTeam.Where(m => m.curHp > 0).ToList();
         }
 
@@ -98,14 +98,14 @@ public class BattleManager : Singleton<BattleManager>
             selectedTargets.Add(target);
         }
 
-        var enemyAction = EnemyAIController.DecideAction(enemyTeam, playerTeam);
+        var enemyAction = EnemyAIController.DecideAction(enemyTeam, EntryMonsters);
 
         bool playerGoesFirst = selectedPlayerMonster.speed >= enemyAction.actor.speed;
 
         if (playerGoesFirst)
         {
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(playerTeam))
+            if (IsTeamDead(EntryMonsters))
             {
                 EndBattle(false);
                 return;
@@ -131,7 +131,7 @@ public class BattleManager : Singleton<BattleManager>
             }
 
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(playerTeam))
+            if (IsTeamDead(EntryMonsters))
             {
                 EndBattle(false);
                 return;
@@ -167,22 +167,30 @@ public class BattleManager : Singleton<BattleManager>
             return;
         }
 
-        allPlayerMonsters.Add(target);
-        Debug.Log($"{target.monsterName}를(을) 포획했습니다!" +
-                  $"(현재 총 보유 수: {allPlayerMonsters.Count(m => m == target)})");
+        if (PlayerManager.Instance.player.entryMonsters.Count < 5)
+        {
+            EntryMonsters.Add(target);
+        }
+
+        else
+        {
+            OwendMonsters.Add(target);
+        }
+
+        Debug.Log($"{target.monsterName}를(을) 포획했습니다!");
     }
 
     // 배틀 보상(경험치, 골드) 로직
-    public void BattleReward(List<MonsterData> entryMonsters, List<MonsterData> benchMonsters)
+    public void BattleReward()
     {
         int totalExp = enemyTeam.Sum(e => e.expReward);
         int getBenchExp = Mathf.RoundToInt(totalExp * 0.7f);
         int totalGold = enemyTeam.Sum(e => e.goldReward);
 
-        // player.gold += totalGold;
+        PlayerManager.Instance.player.gold += totalGold;
 
-        var aliveEntryMonsters = entryMonsters.Where(m => m.curHp > 0).ToList();
-        var aliveBenchMonsters = benchMonsters.Where(m => m.curHp > 0).ToList();
+        var aliveEntryMonsters = EntryMonsters.Where(m => m.curHp > 0).ToList();
+        var aliveBenchMonsters = BenchMonsters.Where(m => m.curHp > 0).ToList();
 
         foreach (var monster in aliveEntryMonsters)
         {
@@ -191,16 +199,15 @@ public class BattleManager : Singleton<BattleManager>
 
         foreach (var monster in aliveBenchMonsters)
         {
-            if (aliveBenchMonsters != null)
             {
                 MonsterStatsManager.AddExp(monster, getBenchExp);
             }
         }
     }
 
-    public void StartTurn()
+    public void EndTurn()
     {
-        IncreaseUltimateCostAll(playerTeam);
+        IncreaseUltimateCostAll(EntryMonsters);
         IncreaseUltimateCostAll(enemyTeam);
     }
 
@@ -217,18 +224,18 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log(playerWin ? "승리 판넬" : "패배 판넬");
     }
 
-    // 스킬 목록 보여주세요!
-    private void ShowSkillSelectionUI(List<SkillData> skills)
-    {
-        // 스킬 선택 UI 필요 합니당!
-        // 스킬 이름, 설명 등
-    }
-
-    // 타겟을 나타내줘요!
-    private void ShowTargetSelectionUI(List<MonsterData> targets)
-    {
-        // 타겟 선택 영역 표시 필요해욤!
-    }
+    // // 스킬 목록 보여주세요!
+    // private void ShowSkillSelectionUI(List<SkillData> skills)
+    // {
+    //     // 스킬 선택 UI 필요 합니당!
+    //     // 스킬 이름, 설명 등
+    // }
+    //
+    // // 타겟을 나타내줘요!
+    // private void ShowTargetSelectionUI(List<MonsterData> targets)
+    // {
+    //     // 타겟 선택 영역 표시 필요해욤!
+    // }
 
     // 호출 시 궁극기 코스트 0으로 초기화
     public void InitializeUltimateSkill(List<MonsterData> team)
@@ -273,18 +280,16 @@ public class BattleManager : Singleton<BattleManager>
 
     public void InitializeTeams()
     {
-        playerTeam = BattleTriggerManager.Instance.GetPlayerTeam();
         enemyTeam = BattleTriggerManager.Instance.GetEnemyTeam();
-        benchMonsters = BattleTriggerManager.Instance.GetBenchMonsters();
 
-        if (playerTeam == null || enemyTeam == null)
+        if (EntryMonsters == null || enemyTeam == null)
         {
             Debug.LogError("플레이어 팀 또는 적 팀이 설정되지 않았습니다!");
             return;
         }
 
-        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", playerTeam.Select(m => m.monsterName))}");
-        Debug.Log($"벤치 몬스터: {string.Join(", ", benchMonsters.Select(m => m.monsterName))}");
+        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monsterName))}");
+        Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monsterName))}");
         Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterName))}");
     }
 

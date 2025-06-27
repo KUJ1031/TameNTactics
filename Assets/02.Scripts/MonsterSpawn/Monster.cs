@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text;
@@ -10,16 +11,55 @@ public class Monster : MonoBehaviour
     [Header("몬스터 정보 데이터")]
     public MonsterData monsterData;
 
+    [Header("능력치")]
+    public int level;
+    public int maxHp;
+    public int curHp;
+    public int attack;
+    public int defense;
+    public int speed;
+    public int criticalChance;
+    public int maxExp;
+    public int curExp;
+    public int baseExpReward;
+    public int baseGoldReward;
+    
+    [Header("배틀 리워드")]
+    public int expReward;
+    public int goldReward;
+
+    [Header("스킬 정보")]
+    public List<SkillData> skills;
+    
     [Header("UI 요소")]
     public Image monsterImageUI;   // 몬스터 이미지 출력용
     public Text infoText;          // 몬스터 상세 정보 출력용
 
+    private void LoadMonsterBaseStatData()
+    {
+        level = monsterData.level;
+        maxHp = monsterData.maxHp;
+        curHp = monsterData.curHp;
+        attack = monsterData.attack;
+        defense = monsterData.defense;
+        speed = monsterData.speed;
+        criticalChance = monsterData.criticalChance;
+        maxExp = monsterData.maxExp;
+        curExp = monsterData.curExp;
+        baseExpReward = monsterData.baseExpReward;
+        baseGoldReward = monsterData.baseGoldReward;
+        expReward = monsterData.expReward;
+        goldReward = monsterData.goldReward;
+        skills = new List<SkillData>(monsterData.skills);
+    }
+    
     // 시작 시 MonsterData가 할당되어 있으면 UI에 표시
     void Start()
     {
         if (monsterData != null)
         {
             ApplyMonsterData();
+            LoadMonsterBaseStatData();
         }
     }
 
@@ -60,18 +100,18 @@ public class Monster : MonoBehaviour
 
         sb.AppendLine($"<b>{monsterData.monsterName}</b>");
         sb.AppendLine($"Type: {monsterData.type}");
-        sb.AppendLine($"Level: {monsterData.level}");
-        sb.AppendLine($"HP: {monsterData.curHp} / {monsterData.maxHp}");
-        sb.AppendLine($"ATK: {monsterData.attack}");
-        sb.AppendLine($"DEF: {monsterData.defense}");
-        sb.AppendLine($"SPD: {monsterData.speed}");
-        sb.AppendLine($"CRT: {monsterData.criticalChance}");
+        sb.AppendLine($"Level: {level}");
+        sb.AppendLine($"HP: {curHp} / {maxHp}");
+        sb.AppendLine($"ATK: {attack}");
+        sb.AppendLine($"DEF: {defense}");
+        sb.AppendLine($"SPD: {speed}");
+        sb.AppendLine($"CRT: {criticalChance}");
 
         // 스킬 정보 (주석 처리됨)
-        if (monsterData.skills != null && monsterData.skills.Count > 0)
+        if (skills != null && skills.Count > 0)
         {
             sb.AppendLine("스킬:");
-            foreach (var skill in monsterData.skills)
+            foreach (var skill in skills)
             {
                 // 추후 필요 시 주석 해제
                 // sb.AppendLine($" - {skill.skillType}: {skill.skillName}");

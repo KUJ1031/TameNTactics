@@ -17,12 +17,12 @@ public static class MonsterStatsManager
     // 레벨에 맞는 스텟 초기화
     public static void RecalculateStats(MonsterData monster)
     {
-        monster.maxHp = monster.baseHp + 12 * (monster.level - 1);
-        monster.attack = monster.baseAttack + 3 * (monster.level - 1);
-        monster.defense = monster.baseDefense + 3 * (monster.level - 1);
-        monster.speed = monster.baseSpeed + 3 * (monster.level - 1);
-        monster.maxExp = monster.baseExp + 25 * (monster.level - 1);
-        monster.expReward = monster.baseExpReward + 25 * (monster.level - 1);
-        monster.goldReward = monster.baseGoldReward + 30 * (monster.level - 1);
+        monster.maxHp = monster.maxHp + 12 * (monster.level - 1);
+        monster.attack = monster.attack + 3 * (monster.level - 1);
+        monster.defense = monster.defense + 3 * (monster.level - 1);
+        monster.speed = monster.speed + 3 * (monster.level - 1);
+        monster.maxExp = monster.maxExp + 25 * (monster.level - 1);
+        monster.expReward = monster.expReward + 25 * (monster.level - 1);
+        monster.goldReward = monster.goldReward + 30 * (monster.level - 1);
     }
 }
