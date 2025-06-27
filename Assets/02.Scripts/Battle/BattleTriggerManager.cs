@@ -18,6 +18,9 @@ public class BattleTriggerManager : Singleton<BattleTriggerManager>
     // 플레이어의 출전 팀 (EntryManager에서 선택된 몬스터 목록)
     private List<MonsterData> playerTeam;
 
+    /// 벤치에 있는 몬스터들 (EntryManager에서 관리)
+    private List<MonsterData> benchMonsters;
+
     /// <summary>
     /// 충돌한 몬스터 저장
     /// </summary>
@@ -47,6 +50,9 @@ public class BattleTriggerManager : Singleton<BattleTriggerManager>
     }
 
     public List<MonsterData> GetPlayerTeam() => playerTeam;
+
+    public void SetBenchMonsters(List<MonsterData> bench) => benchMonsters = bench;
+    public List<MonsterData> GetBenchMonsters() => benchMonsters;
 
     /// <summary>
     /// EntryManager에서 플레이어 팀 자동 불러오기
