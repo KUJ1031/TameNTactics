@@ -8,17 +8,24 @@ public class EntryPresent : MonoBehaviour
 
     private void OnEnable()
     {
-        EntryManager.Instance.OnEntryChanged += UpdateEntryView;
+        if (PlayerManager.Instance != null && PlayerManager.Instance.player != null)
+        {
+            // Player 내 리스트 변화를 감지할 이벤트가 없으면 일단 바로 업데이트
+            UpdateEntryView();
+            // 만약 Player에 OnEntryChanged 같은 이벤트가 있다면 거기에 구독하는 것이 좋음
+        }
     }
 
     private void OnDisable()
     {
-        EntryManager.Instance.OnEntryChanged -= UpdateEntryView;
+
     }
 
     private void UpdateEntryView()
     {
-        var currentEntries = EntryManager.Instance.selectedEntries;
+        if (PlayerManager.Instance == null || PlayerManager.Instance.player == null) return;
+
+        var currentEntries = PlayerManager.Instance.player.battleEntry;
         entryView.SetEntries(currentEntries);
     }
 }
