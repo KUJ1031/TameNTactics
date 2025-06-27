@@ -45,7 +45,7 @@ public class MiniGameManager : MonoBehaviour
     }
 
     //랜덤 범위지정
-    public void SetSuccessRanges(float value)
+    private void SetSuccessRanges(float value)
     {
         if (value <= 0) { Debug.Log("SetSuccessRanges의 value가 0이하 입니다."); }
 
@@ -53,9 +53,9 @@ public class MiniGameManager : MonoBehaviour
         float max = min + value;
         ranges.Add(new RotationRange(min, max));
     }
-    //여러 범위지정
-    //public void SetSuccessRanges(List<RotationRange> newRanges)
-    //{
-    //    ranges = newRanges;
-    //}
+    
+    public void StartMiniGame()
+    {
+
+    }
 }

@@ -167,25 +167,25 @@ public class Player : MonoBehaviour
     }
 
     // 보스 클리어 체크 설정
-    public void SetplayerBossClearCheck(int bossId)
+    public void SetPlayerBossClearCheck(int bossId)
     {
         // 해당 보스 클리어 여부를 true로 설정
     }
 
     // 퀘스트 클리어 체크 설정
-    public void SetplayerQuestClearCheck(int questId)
+    public void SetPlayerQuestClearCheck(int questId)
     {
         // 해당 퀘스트 클리어 여부를 true로 설정
     }
 
     // 퍼즐 클리어 체크 설정
-    public void SetplayerPuzzleClearCheck(int puzzleId)
+    public void SetPlayerPuzzleClearCheck(int puzzleId)
     {
         // 해당 퍼즐 클리어 여부를 true로 설정
     }
 
     // 키 설정 변경
-    public void SetplayerKeySetting(string keyName, string keyValue)
+    public void SetPlayerKeySetting(string keyName, string keyValue)
     {
         // 해당 키 설정 값을 변경
     }
