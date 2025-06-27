@@ -56,11 +56,14 @@ public class BattleSelectPresent : MonoBehaviour
 
             if (hit.collider != null)
             {
+                Debug.Log("몬스터 클릭 진입");
                 Monster monster = hit.collider.GetComponent<Monster>();
-                if (monster != null && playerMonsters.Contains(monster))
+                //if (monster != null && playerMonsters.Contains(monster))
+                if (monster != null)
                 {
                     currentIndex = playerMonsters.IndexOf(monster);
                     MoveSelectMonster(monster);
+                    BattleManager.Instance.SelectPlayerMonster(monster.monsterData);
                 }
             }
         }
