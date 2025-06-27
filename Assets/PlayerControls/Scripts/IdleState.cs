@@ -26,6 +26,6 @@ public class Idlestate : IPlayerState
 
     public void OnUpdate(PlayerController player)
     {
-        
+        //.......
     }
 }
