@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109435781629233495}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -101,7 +101,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterData: {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}
-  monsterImageUI: {fileID: 0}
+  level: 0
+  maxHp: 0
+  curHp: 0
+  attack: 0
+  defense: 0
+  speed: 0
+  criticalChance: 0
+  maxExp: 0
+  curExp: 0
+  baseExpReward: 0
+  baseGoldReward: 0
+  expReward: 0
+  goldReward: 0
+  skills: []
+  monsterSpriteRenderer: {fileID: 1920828182994564605}
   infoText: {fileID: 0}
 --- !u!61 &8788825221316693582
 BoxCollider2D:

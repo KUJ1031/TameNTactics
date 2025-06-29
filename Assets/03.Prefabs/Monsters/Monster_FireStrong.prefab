@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7277804684741957112}
   - component: {fileID: 2020339724222251188}
   m_Layer: 0
-  m_Name: Monster_Fire
+  m_Name: Monster_FireStrong
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,14 +101,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterData: {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
-  level: 1
-  maxHp: 10
-  curHp: 10
-  attack: 10
-  defense: 10
-  speed: 10
-  criticalChance: 10
-  maxExp: 10
+  level: 3
+  maxHp: 20
+  curHp: 20
+  attack: 20
+  defense: 20
+  speed: 20
+  criticalChance: 20
+  maxExp: 20
   curExp: 0
   baseExpReward: 0
   baseGoldReward: 0

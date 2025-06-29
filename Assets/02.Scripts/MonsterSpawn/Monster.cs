@@ -32,10 +32,18 @@ public class Monster : MonoBehaviour
     public List<SkillData> skills;
     
     [Header("UI 요소")]
-    public Image monsterImageUI;   // 몬스터 이미지 출력용
+    public SpriteRenderer monsterSpriteRenderer;  // Image 대신 SpriteRenderer 사용
     public Text infoText;          // 몬스터 상세 정보 출력용
 
-    private void LoadMonsterBaseStatData()
+    //몬스터 생성자
+    public Monster(MonsterData data)
+    {
+        monsterData = data;
+        ApplyMonsterData();
+        LoadMonsterBaseStatData();
+
+    }
+    public void LoadMonsterBaseStatData()
     {
         level = monsterData.level;
         maxHp = monsterData.maxHp;
@@ -52,16 +60,6 @@ public class Monster : MonoBehaviour
         goldReward = monsterData.goldReward;
         skills = new List<SkillData>(monsterData.skills);
     }
-    
-    // 시작 시 MonsterData가 할당되어 있으면 UI에 표시
-    void Start()
-    {
-        if (monsterData != null)
-        {
-            ApplyMonsterData();
-            LoadMonsterBaseStatData();
-        }
-    }
 
     /// <summary>
     /// 외부에서 이 몬스터의 데이터를 가져갈 수 있도록 제공
@@ -74,19 +72,16 @@ public class Monster : MonoBehaviour
     /// <summary>
     /// UI에 몬스터 이미지 및 정보 텍스트 적용
     /// </summary>
-    void ApplyMonsterData()
+    public void ApplyMonsterData()
     {
-        // 이미지 적용
-        if (monsterImageUI != null)
-            monsterImageUI.sprite = monsterData.monsterImage;
+        if (monsterSpriteRenderer != null)
+            monsterSpriteRenderer.sprite = monsterData.monsterImage;
 
-        // 텍스트 정보 생성 및 적용
         string info = GenerateMonsterInfo();
 
         if (infoText != null)
             infoText.text = info;
 
-        // 디버그 로그 출력
         Debug.Log($"[몬스터 정보]\n{info}");
         Debug.Log($"성격 : {monsterData.personality}");
     }

@@ -8,17 +8,20 @@ public static class DamageCalculator
         public bool isCritical;
         public float effectiveness;
     }
-    
-    // 데미지 계산!(공격 관련이라 힐도 이거 적용된다는거.. 추후에 디벨롭 하겠슴돠)
-    public static DamageResult CalculateDamage(MonsterData attacker, MonsterData target, SkillData skill)
+
+    // 데미지 계산 (힐은 나중에 따로 구현 가능)
+    public static DamageResult CalculateDamage(Monster attacker, Monster target, SkillData skill)
     {
+        // 공격력, 방어력, 치명타 확률 등은 Monster 인스턴스 내 변수 사용
         float baseDamage = attacker.attack * skill.skillPower;
         float defenseFactor = 100f / (target.defense + 100f);
         bool isCrit = Random.value < attacker.criticalChance / 100f;
-        float crit = isCrit ? 1.5f : 1f;
-        float effectiveness = TypeChart.GetEffectiveness(attacker, target);
+        float critMultiplier = isCrit ? 1.5f : 1f;
 
-        float finalDamage = baseDamage * defenseFactor * crit * effectiveness;
+        // 타입 상성 계산은 MonsterData를 넘겨서 처리
+        float effectiveness = TypeChart.GetEffectiveness(attacker.monsterData, target.monsterData);
+
+        float finalDamage = baseDamage * defenseFactor * critMultiplier * effectiveness;
 
         return new DamageResult
         {
