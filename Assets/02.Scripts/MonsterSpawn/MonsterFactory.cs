@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Monster 스크립트가 붙어있는 GameObject를 Factory로 사용하여 몬스터를 생성하는 스크립트
@@ -92,32 +93,19 @@ public class MonsterFactory : MonoBehaviour
     {
         List<Monster> selectedTeam = new List<Monster>();
 
-        // 충돌한 몬스터 (Monster 인스턴스) 가져오기
-        Monster lastMonster = null;
-        var lastMonsterData = BattleTriggerManager.Instance.GetLastMonster();
-        if (lastMonsterData != null)
-        {
-            // 씬 내 몬스터 중에서 lastMonsterData 가진 몬스터 찾기
-            Monster[] monstersInScene = FindObjectsOfType<Monster>();
-            foreach (var m in monstersInScene)
-            {
-                if (m.monsterData == lastMonsterData)
-                {
-                    lastMonster = m;
-                    break;
-                }
-            }
-        }
+        // factoryParent 하위에 있는 몬스터들만 대상으로 필터링
+        Monster[] allFactoryMonsters = factoryParent.GetComponentsInChildren<Monster>();
 
-        if (lastMonster != null)
+        // 1. 충돌한 몬스터 포함
+        Monster lastMonster = BattleTriggerManager.Instance.GetLastMonster();
+        if (lastMonster != null && allFactoryMonsters.Contains(lastMonster))
         {
             selectedTeam.Add(lastMonster);
         }
 
-        // 씬 내 모든 몬스터 중 lastMonster 제외한 나머지 몬스터 목록
+        // 2. 나머지 후보 필터링
         List<Monster> candidates = new List<Monster>();
-        Monster[] allMonsters = FindObjectsOfType<Monster>();
-        foreach (var m in allMonsters)
+        foreach (var m in allFactoryMonsters)
         {
             if (m != lastMonster)
                 candidates.Add(m);
@@ -126,10 +114,8 @@ public class MonsterFactory : MonoBehaviour
         int totalCount = Random.Range(1, 4);
         int remainingCount = totalCount - selectedTeam.Count;
 
-        for (int i = 0; i < remainingCount; i++)
+        for (int i = 0; i < remainingCount && candidates.Count > 0; i++)
         {
-            if (candidates.Count == 0) break;
-
             int randomIndex = Random.Range(0, candidates.Count);
             selectedTeam.Add(candidates[randomIndex]);
             candidates.RemoveAt(randomIndex);
@@ -137,4 +123,5 @@ public class MonsterFactory : MonoBehaviour
 
         return selectedTeam;
     }
+
 }
