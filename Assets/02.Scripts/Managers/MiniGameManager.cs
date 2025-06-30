@@ -10,42 +10,23 @@ public class MiniGameManager : MonoBehaviour
     [Header("성공 범위")]
     [SerializeField] private List<RotationRange> ranges = new();
 
-    private bool wasInSuccessZone = false;
-
     private void Start()
     {
-        ranges.Clear();
-
-        SetSuccessRanges(90);
-
-        rotatePoint.SetRanges(ranges);
-        spawner.SpawnRanges(ranges);
+        StartMiniGame(10);
     }
 
     private void Update()
     {
-        bool current = rotatePoint.isInSuccessZone;
-
-        if (current && !wasInSuccessZone)
-        {
-            Debug.Log("성공");
-        }
-        else if (!current && wasInSuccessZone)
-        {
-            Debug.Log("실패");
-        }
-
-        wasInSuccessZone = current;
-
         if (Input.GetKey(KeyCode.Space))//추후 인풋 변경
         {
             rotatePoint.SetRotateSpeed(0);
+            Debug.Log(rotatePoint.isInSuccessZone);
             //rotatePoint.isInSuccessZone 값을 전달(성공/실패)
         }
     }
 
     //랜덤 범위지정
-    public void SetSuccessRanges(float value)
+    private void SetSuccessRanges(float value)
     {
         if (value <= 0) { Debug.Log("SetSuccessRanges의 value가 0이하 입니다."); }
 
@@ -53,9 +34,15 @@ public class MiniGameManager : MonoBehaviour
         float max = min + value;
         ranges.Add(new RotationRange(min, max));
     }
-    //여러 범위지정
-    //public void SetSuccessRanges(List<RotationRange> newRanges)
-    //{
-    //    ranges = newRanges;
-    //}
+    
+    //범위 0~100
+    public void StartMiniGame(float percent)
+    {
+        ranges.Clear();
+        float p = percent / 100f * 360f;
+        SetSuccessRanges(p);
+
+        rotatePoint.SetRanges(ranges);
+        spawner.SpawnRanges(ranges);
+    }
 }
