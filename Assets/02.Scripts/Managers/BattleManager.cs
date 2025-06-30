@@ -32,6 +32,7 @@ public class BattleManager : Singleton<BattleManager>
     public void SelectSkill(SkillData skill)
     {
         selectedSkill = skill;
+        
         List<Monster> possibleTargets = new();
 
         if (skill.isTargetSelf && !skill.isAreaAttack)
@@ -71,18 +72,18 @@ public class BattleManager : Singleton<BattleManager>
         if (playerGoesFirst)
         {
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
+            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
 
             ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
+            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
         }
         else
         {
             ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
+            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
 
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
+            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
         }
     }
 
@@ -226,9 +227,13 @@ public class BattleManager : Singleton<BattleManager>
         UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
     }
 
-    public void CancelPlayerAction()
+    public void CancelSelectedMonster()
     {
         selectedPlayerMonster = null;
+    }
+
+    public void CancelSelectedSkill()
+    {
         selectedSkill = null;
     }
 

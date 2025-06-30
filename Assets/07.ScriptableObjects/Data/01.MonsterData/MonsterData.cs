@@ -24,6 +24,8 @@ public class MonsterData : ScriptableObject
     public string monsterName;
     public int monsterID;
     public Sprite monsterImage;
+    public int encounterCount; // 만난 횟수
+    public int captureCount; // 잡은 횟수
     public MonsterType type;
     public Personality personality;
     

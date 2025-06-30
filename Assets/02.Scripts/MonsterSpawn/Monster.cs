@@ -13,7 +13,6 @@ public class Monster : MonoBehaviour
     
     [Header("기본 정보")]
     public string monsterName;
-    public int monsterID;
     public MonsterType type;
     public Personality personality;
 
