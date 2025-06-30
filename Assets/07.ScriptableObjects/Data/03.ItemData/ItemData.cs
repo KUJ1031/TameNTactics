@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-public struct ItemEffect
+
+[System.Serializable]
+public class ItemEffect
 {
-    ItemEffectType type;
-    int value;
+    public ItemEffectType type;
+    public int value;
 }
 public enum ItemEffectType
 {
