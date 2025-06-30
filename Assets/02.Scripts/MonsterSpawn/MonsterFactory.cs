@@ -36,7 +36,14 @@ public class MonsterFactory : MonoBehaviour
         {
             Debug.LogWarning("BoxCollider2D를 찾지 못했습니다. Factory 오브젝트에 추가해주세요.");
         }
-
+        Dictionary<MonsterData, GameObject> map = new();
+        foreach (var prefab in monsterPrefabs)
+        {
+            var monster = prefab.GetComponent<Monster>();
+            if (monster != null && monster.monsterData != null)
+                map[monster.monsterData] = prefab;
+        }
+        BattleTriggerManager.Instance.SetMonsterPrefabMap(map);
         SpawnAllMonsters();
     }
 
