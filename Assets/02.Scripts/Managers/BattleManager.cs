@@ -221,9 +221,9 @@ public class BattleManager : Singleton<BattleManager>
             return;
         }
 
-        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monster.monsterName))}");
-        Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monster.monsterName))}");
-        Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monster.monsterName))}");
+        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monsterData.monsterName))}");
+        Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monsterData.monsterName))}");
+        Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
         UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
     }
 

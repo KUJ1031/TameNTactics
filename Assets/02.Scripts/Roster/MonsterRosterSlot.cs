@@ -14,7 +14,7 @@ public class MonsterRosterSlot : MonoBehaviour, IPointerClickHandler
     public void SetData(Monster data)
     {
         monster = data;
-        monsterImage.sprite = data.monster.monsterImage; // Monster 안의 MonsterData 접근
+        monsterImage.sprite = data.monsterData.monsterImage; // Monster 안의 MonsterData 접근
         monsterImage.enabled = true;
         IsEmpty = false;
     }
