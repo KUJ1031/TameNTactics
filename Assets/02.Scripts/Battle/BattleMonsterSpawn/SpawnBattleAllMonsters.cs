@@ -8,11 +8,11 @@ public class SpawnBattleAllMonsters : MonoBehaviour
 
     private void Start()
     {
-        var alliesData = BattleTriggerManager.Instance.GetPlayerTeamData();
-        var enemiesData = BattleTriggerManager.Instance.GetEnemyTeamData();
+        var allies = BattleTriggerManager.Instance.GetPlayerTeam();
+        var enemies = BattleTriggerManager.Instance.GetEnemyTeam();
 
-        allySpawner.SpawnAllies(alliesData);
-        enemySpawner.SpawnEnemies(enemiesData);
+        allySpawner.SpawnAllies(allies);
+        enemySpawner.SpawnEnemies(enemies);
     }
 
 }

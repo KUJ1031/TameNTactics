@@ -4960,6 +4960,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: maxLevel
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: minLevel
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
       propertyPath: monsterPrefabs.Array.size
       value: 2
       objectReference: {fileID: 0}
