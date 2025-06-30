@@ -102,8 +102,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterData: {fileID: 11400000, guid: f6adb78a362b91040a16465371d4b0f3, type: 2}
   monsterName: 
-  type: 0
-  personality: 0
+  type: 4
+  personality: 2
   <Level>k__BackingField: 0
   <MaxHp>k__BackingField: 0
   <CurHp>k__BackingField: 0
