@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7277804684741957112}
   - component: {fileID: 2020339724222251188}
   m_Layer: 0
-  m_Name: Monster_Earth
+  m_Name: EarthMan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,8 +102,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterData: {fileID: 11400000, guid: e5bc2c82e7c46b741b5a33a82f0db101, type: 2}
   monsterName: 
-  type: 3
-  personality: 1
+  monsterID: 0
+  type: 0
+  personality: 0
   <Level>k__BackingField: 0
   <MaxHp>k__BackingField: 0
   <CurHp>k__BackingField: 0
