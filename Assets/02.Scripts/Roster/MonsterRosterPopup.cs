@@ -48,8 +48,8 @@ public class MonsterRosterPopup : MonoBehaviour
 
         currentMonster = monster;
 
-        monsterImage.sprite = monster.monsterData.monsterImage;
-        monsterNameText.text = monster.monsterData.monsterName;
+        monsterImage.sprite = monster.monster.monsterImage;
+        monsterNameText.text = monster.monster.monsterName;
 
         UpdateButtons();
 
@@ -89,7 +89,7 @@ public class MonsterRosterPopup : MonoBehaviour
 
         bool added = EntryManager.Instance.ToggleCandidate(currentMonster);
         if (added)
-            Debug.Log($"{currentMonster.monsterData.monsterName} 후보군에 추가됨");
+            Debug.Log($"{currentMonster.monster.monsterName} 후보군에 추가됨");
         else
             Debug.LogWarning("추가 실패: 최대치일 가능성 있음");
 
@@ -102,7 +102,7 @@ public class MonsterRosterPopup : MonoBehaviour
 
         bool removed = EntryManager.Instance.ToggleCandidate(currentMonster);
         if (!player.entryMonsters.Contains(currentMonster))
-            Debug.Log($"{currentMonster.monsterData.monsterName} 후보군에서 제거됨");
+            Debug.Log($"{currentMonster.monster.monsterName} 후보군에서 제거됨");
 
         UpdateButtons();
     }
@@ -113,7 +113,7 @@ public class MonsterRosterPopup : MonoBehaviour
 
         if (player.ownedMonsters.Remove(currentMonster))
         {
-            Debug.Log($"{currentMonster.monsterData.monsterName} 방출됨");
+            Debug.Log($"{currentMonster.monster.monsterName} 방출됨");
             MonsterRosterManager.Instance.InitializeRoster();  // UI 갱신
             Close();
         }
