@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7277804684741957112}
   - component: {fileID: 2020339724222251188}
   m_Layer: 0
-  m_Name: Monster_FireStrong
+  m_Name: IronMan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: -7855327871636034459, guid: 8943f3cde4970e94b8df9534b704922d, type: 3}
-  m_Color: {r: 1, g: 0.5801887, b: 0.5801887, a: 1}
+  m_Sprite: {fileID: 784869815551342302, guid: 1bb660b4d78169147a2273c915cfb59a, type: 3}
+  m_Color: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -100,10 +100,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aae53883602f3b4b83b5047cd42e511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
+  monsterData: {fileID: 11400000, guid: f6adb78a362b91040a16465371d4b0f3, type: 2}
   monsterName: 
+  monsterID: 0
   type: 0
-  personality: 2
+  personality: 0
   <Level>k__BackingField: 0
   <MaxHp>k__BackingField: 0
   <CurHp>k__BackingField: 0
@@ -150,18 +151,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.013104916, y: 0.9501066}
+  m_Offset: {x: 0.029805481, y: 0.9587437}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.44444448, y: -0.7733334}
-    oldSize: {x: 0.63, y: 0.75}
+    pivot: {x: 0.5172414, y: -1.1428572}
+    oldSize: {x: 0.58, y: 0.56}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7379017, y: 0.8598728}
+  m_Size: {x: 0.70194495, y: 0.79784465}
   m_EdgeRadius: 0
 --- !u!50 &7277804684741957112
 Rigidbody2D:
