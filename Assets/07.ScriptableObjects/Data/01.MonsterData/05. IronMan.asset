@@ -10,34 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
-  m_Name: 01. FireMan
+  m_Name: 05. IronMan
   m_EditorClassIdentifier: 
-  monsterName: FireMan
+  monsterName: IronMan
   monsterID: 0
-  monsterImage: {fileID: -7855327871636034459, guid: 8943f3cde4970e94b8df9534b704922d, type: 3}
-  type: 0
-  personality: 0
-  baseHp: 0
-  baseAttack: 0
-  baseDefense: 0
-  baseSpeed: 0
-  baseExp: 0
-  baseExpReward: 0
-  baseGoldReward: 0
-  level: 1
+  monsterImage: {fileID: 784869815551342302, guid: 1bb660b4d78169147a2273c915cfb59a, type: 3}
+  encounterCount: 0
+  captureCount: 0
+  type: 4
+  personality: 2
   maxHp: 10
-  curHp: 0
-  attack: 10
-  defense: 10
+  attack: 15
+  defense: 5
   speed: 10
   criticalChance: 0
   maxExp: 0
-  curExp: 0
   expReward: 0
   goldReward: 0
   skills:
-  - {fileID: 11400000, guid: c33cc18884acb7f41be1e0c872b5057c, type: 2}
-  - {fileID: 11400000, guid: f566a01646ea1f14583fb66a0155f2fc, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   spawnArea: 

@@ -10,21 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
-  m_Name: 03. GrassMan
+  m_Name: 02. WaterMan
   m_EditorClassIdentifier: 
-  monsterName: GrassMan
-  monsterImage: {fileID: 1745192818456827540, guid: 7ea332978c8f0754a9b62dadc9c6472f, type: 3}
-  type: 0
-  personality: 1
-  level: 1
-  maxHp: 10
-  curHp: 0
-  attack: 15
-  defense: 5
-  speed: 10
+  monsterName: WaterMan
+  monsterID: 0
+  monsterImage: {fileID: -9168505034414372217, guid: 08f27a6370ce3444b9bf3ed4df6e6b34, type: 3}
+  encounterCount: 0
+  captureCount: 0
+  type: 1
+  personality: 0
+  maxHp: 15
+  attack: 5
+  defense: 15
+  speed: 5
   criticalChance: 0
+  maxExp: 0
+  expReward: 0
+  goldReward: 0
   skills:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  spawnArea: 
+  spawnTime: 0
+  description: 
