@@ -28,17 +28,12 @@ public class MonsterData : ScriptableObject
     public Personality personality;
     
     [Header("능력치")]
-    public int level;
     public int maxHp;
-    public int curHp;
     public int attack;
     public int defense;
     public int speed;
     public int criticalChance;
     public int maxExp;
-    public int curExp;
-    public int baseExpReward;
-    public int baseGoldReward;
     
     [Header("배틀 리워드")]
     public int expReward;
