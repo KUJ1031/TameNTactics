@@ -23,12 +23,12 @@ public class PlayerBattleTrigger : MonoBehaviour
         var enemyTeam = factory.GetRandomEnemyTeam(); // List<Monster>
         BattleTriggerManager.Instance.SetEnemyTeam(enemyTeam);
 
-        var enemyDataList = enemyTeam.Select(m => m.monsterData).ToList();
+        var enemyDataList = enemyTeam.Select(m => m.monster).ToList();
         BattleTriggerManager.Instance.SetEnemyTeamData(enemyDataList);
 
         var player = PlayerManager.Instance.player;
         BattleTriggerManager.Instance.SetPlayerTeam(player.battleEntry);
-        var playerDataList = player.battleEntry.Select(m => m.monsterData).ToList();
+        var playerDataList = player.battleEntry.Select(m => m.monster).ToList();
         BattleTriggerManager.Instance.SetPlayerTeamData(playerDataList);
 
         BattleTriggerManager.Instance.SetBenchMonsters(player.benchEntry);

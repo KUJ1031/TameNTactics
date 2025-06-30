@@ -35,8 +35,8 @@ public class MonsterSlot : MonoBehaviour
 
         if (monster != null)
         {
-            monsterImageUI.sprite = monster.monsterData.monsterImage;
-            monsterNameText.text = monster.monsterData.monsterName;
+            monsterImageUI.sprite = monster.monster.monsterImage;
+            monsterNameText.text = monster.monster.monsterName;
         }
         else
         {

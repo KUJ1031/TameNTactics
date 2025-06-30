@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     // 몬스터 로스터에 추가
     public bool AddOwnedMonster(MonsterData monsterData)
     {
-        if (ownedMonsters.Exists(m => m.monsterData == monsterData))
+        if (ownedMonsters.Exists(m => m.monster == monsterData))
             return false;
 
         // ownedMonsters.Add(new Monster(monsterData));
@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
     // MonsterData 기준으로 검색할 때 사용
     public Monster FindMonsterByData(MonsterData data)
     {
-        return ownedMonsters.Find(m => m.monsterData == data);
+        return ownedMonsters.Find(m => m.monster == data);
     }
 
     // 아이템 추가
