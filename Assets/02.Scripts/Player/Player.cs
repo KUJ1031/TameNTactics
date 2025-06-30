@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         if (ownedMonsters.Exists(m => m.monsterData == monsterData))
             return false;
 
-        ownedMonsters.Add(new Monster(monsterData));
+        // ownedMonsters.Add(new Monster(monsterData));
         return true;
     }
 
