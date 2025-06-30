@@ -14,12 +14,7 @@ public class MiniGameManager : MonoBehaviour
 
     private void Start()
     {
-        ranges.Clear();
-
-        SetSuccessRanges(90);
-
-        rotatePoint.SetRanges(ranges);
-        spawner.SpawnRanges(ranges);
+        StartMiniGame(10);
     }
 
     private void Update()
@@ -54,8 +49,13 @@ public class MiniGameManager : MonoBehaviour
         ranges.Add(new RotationRange(min, max));
     }
     
-    public void StartMiniGame()
+    public void StartMiniGame(int percent)
     {
+        ranges.Clear();
+        int p = percent / 100 * 360;
+        SetSuccessRanges(p);
 
+        rotatePoint.SetRanges(ranges);
+        spawner.SpawnRanges(ranges);
     }
 }
