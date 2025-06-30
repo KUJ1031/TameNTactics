@@ -16,8 +16,8 @@ public class Monster : MonoBehaviour
     public int monsterID;
     public MonsterType type;
     public Personality personality;
-    
-    [field: Header("능력치")]
+
+    [field: Header("능력치")] 
     [field: SerializeField] public int Level { get; private set; }
     [field: SerializeField] public int MaxHp { get; private set; }
     [field: SerializeField] public int CurHp { get; private set; }
@@ -38,7 +38,7 @@ public class Monster : MonoBehaviour
     [Header("UI 요소")]
     public Sprite monsterSpriteRenderer; // Image 대신 SpriteRenderer 사용
     public Text infoText;          // 몬스터 상세 정보 출력용
-
+    
     private void Start()
     {
         ApplyMonsterData();
@@ -144,5 +144,11 @@ public class Monster : MonoBehaviour
         // 만약 curHp가 maxHp보다 크다면 맞춰줌
         if (CurHp > MaxHp)
             CurHp = MaxHp;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        CurHp -= damage;
+        if (CurHp < 0) CurHp = 0;
     }
 }

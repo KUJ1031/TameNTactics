@@ -24,7 +24,7 @@ public class BattleManager : Singleton<BattleManager>
 
     public void SelectPlayerMonster(Monster selectedMonster)
     {
-        if (battleEnded || selectedMonster.curHp <= 0) return;
+        if (battleEnded || selectedMonster.CurHp <= 0) return;
         selectedPlayerMonster = selectedMonster;
         // ShowSkillSelectionUI(selectedMonster.skills);
     }
@@ -40,17 +40,17 @@ public class BattleManager : Singleton<BattleManager>
         }
         else if (skill.isTargetSingleAlly)
         {
-            possibleTargets = EntryMonsters.Where(m => m.curHp > 0).ToList();
+            possibleTargets = EntryMonsters.Where(m => m.CurHp > 0).ToList();
         }
         else if (skill.isAreaAttack)
         {
             possibleTargets = skill.isTargetSelf
-                ? EntryMonsters.Where(m => m.curHp > 0).ToList()
-                : enemyTeam.Where(m => m.curHp > 0).ToList();
+                ? EntryMonsters.Where(m => m.CurHp > 0).ToList()
+                : enemyTeam.Where(m => m.CurHp > 0).ToList();
         }
         else
         {
-            possibleTargets = enemyTeam.Where(m => m.curHp > 0).ToList();
+            possibleTargets = enemyTeam.Where(m => m.CurHp > 0).ToList();
         }
 
         // ShowTargetSelectionUI(possibleTargets);
@@ -58,15 +58,15 @@ public class BattleManager : Singleton<BattleManager>
 
     public void SelectTargetMonster(Monster target)
     {
-        if (target.curHp <= 0) return;
+        if (target.CurHp <= 0) return;
 
         List<Monster> selectedTargets = selectedSkill.isAreaAttack
-            ? (selectedSkill.isTargetSelf ? EntryMonsters : enemyTeam).Where(m => m.curHp > 0).ToList()
+            ? (selectedSkill.isTargetSelf ? EntryMonsters : enemyTeam).Where(m => m.CurHp > 0).ToList()
             : new List<Monster> { target };
 
         var enemyAction = EnemyAIController.DecideAction(enemyTeam, EntryMonsters);
 
-        bool playerGoesFirst = selectedPlayerMonster.speed >= enemyAction.actor.speed;
+        bool playerGoesFirst = selectedPlayerMonster.Speed >= enemyAction.actor.Speed;
 
         if (playerGoesFirst)
         {
@@ -88,15 +88,14 @@ public class BattleManager : Singleton<BattleManager>
 
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
-        if (caster.curHp <= 0 || targets == null || targets.Count == 0) return;
+        if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
 
-        foreach (var target in targets.Where(t => t.curHp > 0))
+        foreach (var target in targets.Where(t => t.CurHp > 0))
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skill);
-            Debug.Log($"{caster.monsterData.monsterName}가 {target.monsterData.monsterName}에게 {result.damage} 데미지 (치명타: {result.isCritical}, 상성: {result.effectiveness})");
+            Debug.Log($"{caster.monsterName}가 {target.monsterName}에게 {result.damage} 데미지 (치명타: {result.isCritical}, 상성: {result.effectiveness})");
 
-            target.curHp -= result.damage;
-            if (target.curHp < 0) target.curHp = 0;
+            target.TakeDamage(result.damage);
 
             IncreaseUltimateCost(target);
         }
@@ -106,7 +105,7 @@ public class BattleManager : Singleton<BattleManager>
 
     public void CaptureSelectedEnemy(Monster target)
     {
-        if (target.curHp <= 0)
+        if (target.CurHp <= 0)
         {
             Debug.Log($"{target.monsterData.monsterName}는 이미 쓰러져 포획할 수 없습니다.");
             return;
@@ -134,10 +133,10 @@ public class BattleManager : Singleton<BattleManager>
 
         PlayerManager.Instance.player.gold += totalGold;
 
-        foreach (var monster in EntryMonsters.Where(m => m.curHp > 0))
+        foreach (var monster in EntryMonsters.Where(m => m.CurHp > 0))
             monster.AddExp(totalExp);
 
-        foreach (var monster in BenchMonsters.Where(m => m.curHp > 0))
+        foreach (var monster in BenchMonsters.Where(m => m.CurHp > 0))
             monster.AddExp(getBenchExp);
     }
 
@@ -149,7 +148,7 @@ public class BattleManager : Singleton<BattleManager>
 
     private bool IsTeamDead(List<Monster> team)
     {
-        return team.All(m => m.curHp <= 0);
+        return team.All(m => m.CurHp <= 0);
     }
 
     private void EndBattle(bool playerWin)
