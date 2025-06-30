@@ -21,9 +21,6 @@ public class BattleTriggerManager : Singleton<BattleTriggerManager>
     // 플레이어의 벤치 몬스터
     private List<Monster> benchMonsters;
 
-    private List<MonsterData> enemyTeamData;
-    private List<MonsterData> playerTeamData;
-
     /// <summary>
     /// 충돌한 몬스터 저장
     /// </summary>
@@ -48,6 +45,12 @@ public class BattleTriggerManager : Singleton<BattleTriggerManager>
         //몬스터 레벨 디버그
         foreach (var m in enemyTeam)
         {
+            if (m == null)
+            {
+                Debug.LogWarning("적 몬스터 리스트에 null이 포함되어 있음!");
+                continue;
+            }
+
             Debug.Log($"적 몬스터: {m.monsterData.monsterName}, 레벨: {m.Level}");
         }
         return enemyTeam;
@@ -87,11 +90,8 @@ public class BattleTriggerManager : Singleton<BattleTriggerManager>
             benchMonsters = new List<Monster>();
         }
     }
-    public void SetEnemyTeamData(List<Monster> list) => enemyTeamData = list;
-    public List<MonsterData> GetEnemyTeamData() => enemyTeamData;
-
-    public void SetPlayerTeamData(List<MonsterData> list) => playerTeamData = list;
-    public List<MonsterData> GetPlayerTeamData() => playerTeamData;
+    //public void SetEnemyTeamData(List<Monster> list) => enemyTeamData = list;
+    //public List<MonsterData> GetEnemyTeamData() => enemyTeamData;
     /// <summary>
     /// 전투 데이터 초기화 (전투 종료 후 등)
     /// </summary>

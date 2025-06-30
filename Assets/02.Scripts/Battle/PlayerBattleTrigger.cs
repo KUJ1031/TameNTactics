@@ -25,15 +25,9 @@ public class PlayerBattleTrigger : MonoBehaviour
         BattleTriggerManager.Instance.SetEnemyTeam(enemyTeam);
         Debug.Log($"적 팀 구성 완료: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
 
-        
-
-        var enemyDataList = enemyTeam.Select(m => m.monsterData).ToList();
-        BattleTriggerManager.Instance.SetEnemyTeamData(enemyDataList);
-
         var player = PlayerManager.Instance.player;
         BattleTriggerManager.Instance.SetPlayerTeam(player.battleEntry);
         var playerDataList = player.battleEntry.Select(m => m.monsterData).ToList();
-        BattleTriggerManager.Instance.SetPlayerTeamData(playerDataList);
 
         BattleTriggerManager.Instance.SetBenchMonsters(player.benchEntry);
 

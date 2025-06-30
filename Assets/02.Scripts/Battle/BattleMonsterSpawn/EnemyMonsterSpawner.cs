@@ -7,17 +7,17 @@ public class EnemyMonsterSpawner : MonoBehaviour
     public GameObject defaultMonsterPrefab;
     public Transform[] spawnPositions;
 
-    public void SpawnEnemies(List<MonsterData> enemies)
+    public void SpawnEnemies(List<Monster> enemies)
     {
         for (int i = 0; i < enemies.Count && i < spawnPositions.Length; i++)
         {
             var data = enemies[i];
             var go = Instantiate(defaultMonsterPrefab, spawnPositions[i].position, Quaternion.identity);
             var monster = go.GetComponent<Monster>();
-            monster.monsterData = data;
+            monster = data;
 
             monster.ApplyMonsterData(); // 외형 등 갱신
-            monster.LoadMonsterBaseStatData(); // 능력치 갱신
+            //monster.LoadMonsterBaseStatData(); // 능력치 갱신
         }
     }
 }

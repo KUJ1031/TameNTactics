@@ -17,7 +17,7 @@ public class BattleManager : Singleton<BattleManager>
 
     public void StartBattle()
     {
-        InitializeTeams();
+       // InitializeTeams();
         InitializeUltimateSkill(EntryMonsters);
         InitializeUltimateSkill(enemyTeam);
     }
