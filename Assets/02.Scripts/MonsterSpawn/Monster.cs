@@ -17,8 +17,9 @@ public class Monster : MonoBehaviour
     public MonsterType type;
     public Personality personality;
 
-    [field: Header("능력치")] 
-    [field: SerializeField] public int Level { get; private set; }
+    [field: Header("능력치")]
+    [field: SerializeField] public int Level { get; set; }
+
     [field: SerializeField] public int MaxHp { get; private set; }
     [field: SerializeField] public int CurHp { get; private set; }
     [field: SerializeField] public int Attack { get; private set; }
@@ -36,10 +37,10 @@ public class Monster : MonoBehaviour
     public List<SkillData> skills;
     
     [Header("UI 요소")]
-    public Sprite monsterSpriteRenderer; // Image 대신 SpriteRenderer 사용
+    public SpriteRenderer monsterSpriteRenderer; // Image 대신 SpriteRenderer 사용
     public Text infoText;          // 몬스터 상세 정보 출력용
     
-    private void Start()
+    private void Awake()
     {
         ApplyMonsterData();
         LoadMonsterBaseStatData();
@@ -47,6 +48,7 @@ public class Monster : MonoBehaviour
     
     public void LoadMonsterBaseStatData()
     {
+      //  Level = 1;
         MaxHp = monsterData.maxHp;
         CurHp = 0;
         Attack = monsterData.attack;
@@ -74,7 +76,7 @@ public class Monster : MonoBehaviour
     public void ApplyMonsterData()
     {
         if (monsterSpriteRenderer != null)
-            monsterSpriteRenderer = monsterData.monsterImage;
+            monsterSpriteRenderer.sprite = monsterData.monsterImage;
 
         string info = GenerateMonsterInfo();
 
@@ -150,5 +152,10 @@ public class Monster : MonoBehaviour
     {
         CurHp -= damage;
         if (CurHp < 0) CurHp = 0;
+    }
+
+    public void SetLevel(int level)
+    {
+        Level = level;
     }
 }

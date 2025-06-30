@@ -61,9 +61,9 @@ public class MonsterFactory : MonoBehaviour
                 Monster monster = monsterGO.GetComponent<Monster>();
                 if (monster != null)
                 {
-                    monster.Level = randomLevel;
-                    monster.monsterData.level = randomLevel; // 혹시 Stat 초기화할 때 사용한다면
-                    monster.LoadMonsterBaseStatData();       // level 반영된 Stat 적용
+                    monster.SetLevel(randomLevel); // 레벨 설정 메서드 호출
+                                                   // monster.monsterData.level = randomLevel; // 혹시 Stat 초기화할 때 사용한다면
+                   // monster.LoadMonsterBaseStatData();       // level 반영된 Stat 적용
                 }
 
                 // 이동 영역 설정

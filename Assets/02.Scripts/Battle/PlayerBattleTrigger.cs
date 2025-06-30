@@ -16,12 +16,16 @@ public class PlayerBattleTrigger : MonoBehaviour
         // 충돌한 몬스터 저장
         BattleTriggerManager.Instance.SetLastMonster(monster);
 
+
         // 적 팀 구성
         var factory = monster.transform.GetComponentInParent<MonsterFactory>();
         if (factory == null) return;
 
         var enemyTeam = factory.GetRandomEnemyTeam(); // List<Monster>
         BattleTriggerManager.Instance.SetEnemyTeam(enemyTeam);
+        Debug.Log($"적 팀 구성 완료: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
+
+        
 
         var enemyDataList = enemyTeam.Select(m => m.monsterData).ToList();
         BattleTriggerManager.Instance.SetEnemyTeamData(enemyDataList);
@@ -35,6 +39,7 @@ public class PlayerBattleTrigger : MonoBehaviour
 
         if (battleManager != null)
         {
+            
             battleManager.InitializeTeams();
             // battleManager.StartBattle();
         }       
