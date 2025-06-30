@@ -10106,6 +10106,34 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: maxLevel
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: minLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: monsterPrefab
+      value: 
+      objectReference: {fileID: 4522283486932235510, guid: a9e095c01c527b649ad940f6dd36578d, type: 3}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: monsterList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: monsterList.Array.data[0]
+      value: 
+      objectReference: {fileID: 7541708283098629720, guid: a9e095c01c527b649ad940f6dd36578d, type: 3}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: monsterList.Array.data[1]
+      value: 
+      objectReference: {fileID: 7541708283098629720, guid: 60e1fb82b20201341a51e9c2fdb42e72, type: 3}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: monsterList.Array.data[2]
+      value: 
+      objectReference: {fileID: 7541708283098629720, guid: 2783e96e947dd264684bf986ea946009, type: 3}
     - target: {fileID: 5899112251595952466, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
       propertyPath: m_Name
       value: MonsterFactory

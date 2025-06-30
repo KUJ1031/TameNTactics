@@ -40,12 +40,6 @@ public class Monster : MonoBehaviour
     public SpriteRenderer monsterSpriteRenderer; // Image 대신 SpriteRenderer 사용
     public Text infoText;          // 몬스터 상세 정보 출력용
     
-    //private void Start()
-    //{
-    //    //ApplyMonsterData();
-    //    LoadMonsterBaseStatData();
-    //}
-    
     public void Init()
     {
       //  Level = 1;
@@ -62,49 +56,82 @@ public class Monster : MonoBehaviour
         skills = new List<SkillData>(monsterData.skills);
     }
 
-    //몬스터 데이터 가져와서 반영
-    public void SetMonster(Monster sourceMonster)
+    //몬스터 데이터로 초기화
+    public void SetMonster(Monster newMonster)
     {
-        if (sourceMonster == null)
+        if (newMonster == null)
         {
             Debug.LogError("SetMonster: 복사할 sourceMonster가 null입니다.");
             return;
         }
         //몬스터 정보 데이터
-        this.monsterData = sourceMonster.monsterData;
+        monsterData = newMonster.monsterData;
 
         //기본 정보
-        this.monsterName = sourceMonster.monsterName;
-        this.monsterID = sourceMonster.monsterID;
-        this.type = sourceMonster.type;
-        this.personality = sourceMonster.personality;
+        monsterName = newMonster.monsterName;
+        monsterID = newMonster.monsterID;
+        type = newMonster.type;
+        personality = newMonster.personality;
 
         //능력치
-        this.Level = sourceMonster.Level;
-        this.MaxHp = sourceMonster.MaxHp;
-        this.CurHp = sourceMonster.CurHp;
-        this.Attack = sourceMonster.Attack;
-        this.Defense = sourceMonster.Defense;
-        this.Speed = sourceMonster.Speed;
-        this.CriticalChance = sourceMonster.CriticalChance;
-        this.MaxExp = sourceMonster.MaxExp;
-        this.CurExp = sourceMonster.CurExp;
+        Level = newMonster.Level;
+        MaxHp = newMonster.MaxHp;
+        CurHp = newMonster.CurHp;
+        Attack = newMonster.Attack;
+        Defense = newMonster.Defense;
+        Speed = newMonster.Speed;
+        CriticalChance = newMonster.CriticalChance;
+        MaxExp = newMonster.MaxExp;
+        CurExp = newMonster.CurExp;
 
         //배틀 리워드
-        this.ExpReward = sourceMonster.ExpReward;
-        this.GoldReward = sourceMonster.GoldReward;
+        ExpReward = newMonster.ExpReward;
+        GoldReward = newMonster.GoldReward;
         
         //스킬
-        if (sourceMonster.skills != null)
+        if (newMonster.skills != null)
         {
-            this.skills = new List<SkillData>(sourceMonster.skills);
+            skills = new List<SkillData>(newMonster.skills);
         }
         else
         {
-            this.skills = new List<SkillData>();
+            skills = new List<SkillData>();
         }
         //ApplyMonsterData();
     }
+
+    //몬스터데이터로 초기화
+    public void SetMonsterData(MonsterData data)
+    {
+        if (data == null)
+        {
+            return;
+        }
+
+        monsterData = data;
+
+        monsterName = data.monsterName;
+        monsterID = data.monsterID;
+        type = data.type;
+        personality = data.personality;
+
+        Level = 1; // 기본값
+
+        MaxHp = data.maxHp;
+        CurHp = MaxHp;
+        Attack = data.attack;
+        Defense = data.defense;
+        Speed = data.speed;
+        CriticalChance = data.criticalChance;
+        MaxExp = data.maxExp;
+        CurExp = 0;
+
+        ExpReward = data.expReward;
+        GoldReward = data.goldReward;
+
+        skills = new List<SkillData>(data.skills);
+    }
+
 
     /// <summary>
     /// 외부에서 이 몬스터의 데이터를 가져갈 수 있도록 제공

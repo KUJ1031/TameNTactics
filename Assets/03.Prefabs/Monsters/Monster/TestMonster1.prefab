@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4940315319504723348}
   - component: {fileID: 8645548347242120174}
   m_Layer: 0
-  m_Name: TestMonster2
+  m_Name: TestMonster1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: -7855327871636034459, guid: 8943f3cde4970e94b8df9534b704922d, type: 3}
+  m_Sprite: {fileID: -9168505034414372217, guid: 08f27a6370ce3444b9bf3ed4df6e6b34, type: 3}
   m_Color: {r: 0.5754717, g: 0.5076095, b: 0.5076095, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,10 +100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aae53883602f3b4b83b5047cd42e511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
+  monsterData: {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}
   monsterName: testMonster
   monsterID: 0
-  type: 0
+  type: 1
   personality: 0
   <Level>k__BackingField: 1
   <MaxHp>k__BackingField: 2
