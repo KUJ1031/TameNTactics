@@ -8,6 +8,10 @@ public class MonsterFactory : MonoBehaviour
     [Header("몬스터 프리팹 목록")]
     public List<GameObject> monsterPrefabs;
 
+    [Header("몬스터 레벨 범위")]
+    public int minLevel;
+    public int maxLevel;
+
     [Header("Factory 부모 오브젝트")]
     public Transform factoryParent;
 
@@ -52,19 +56,27 @@ public class MonsterFactory : MonoBehaviour
                 GameObject monsterGO = Instantiate(prefab, spawnPos, Quaternion.identity, factoryParent);
                 usedPositions.Add(spawnPos);
 
+                // 레벨 설정
+                int randomLevel = Random.Range(minLevel, maxLevel + 1);
+                Monster monster = monsterGO.GetComponent<Monster>();
+                if (monster != null)
+                {
+                    monster.Level = randomLevel;
+                    monster.monsterData.level = randomLevel; // 혹시 Stat 초기화할 때 사용한다면
+                    monster.LoadMonsterBaseStatData();       // level 반영된 Stat 적용
+                }
+
+                // 이동 영역 설정
                 MonsterMover mover = monsterGO.GetComponent<MonsterMover>();
                 if (mover != null)
                 {
                     mover.SetMoveArea(factoryParent.GetComponentInChildren<BoxCollider2D>());
                 }
 
-                Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}");
-            }
-            else
-            {
-                Debug.LogWarning($"{prefab.name}을(를) 생성할 위치를 찾지 못했습니다.");
+                Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {randomLevel}");
             }
         }
+
     }
 
     private Vector3 GetRandomPositionInFactory()

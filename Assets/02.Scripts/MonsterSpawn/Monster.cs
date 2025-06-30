@@ -12,7 +12,13 @@ public class Monster : MonoBehaviour
     public MonsterData monsterData;
 
     [Header("능력치")]
+    //읽기 전용 프로퍼티화
     public int level;
+    public int Level
+    {
+        get { return level; }
+        set { level = value; }
+    }
     public int maxHp;
     public int curHp;
     public int attack;
@@ -39,13 +45,23 @@ public class Monster : MonoBehaviour
     public Monster(MonsterData data)
     {
         monsterData = data;
-        ApplyMonsterData();
-        LoadMonsterBaseStatData();
+
+        //디버그로 몬스터의 모든 정보를 전부 출력
+        Debug.Log($"[몬스터 생성] 이름: {monsterData.monsterName}, ID: {monsterData.monsterID}, 타입: {monsterData.type}, 성격: {monsterData.personality}");
+        Debug.Log($"[몬스터 능력치] 레벨: {monsterData.level}, 최대 HP: {monsterData.maxHp}, 현재 HP: {monsterData.curHp}, 공격력: {monsterData.attack}, 방어력: {monsterData.defense}, 스피드: {monsterData.speed}, 크리티컬 확률: {monsterData.criticalChance}");
+        Debug.Log($"[몬스터 배틀 리워드] 경험치: {monsterData.expReward}, 골드: {monsterData.goldReward}");
+        Debug.Log($"[몬스터 스킬 정보] 스킬 개수: {monsterData.skills.Count}");
+        foreach (var skill in monsterData.skills)
+        {
+            Debug.Log($" - 스킬 이름: {skill.skillName}, 타입: {skill.skillType}, 설명: {skill.description}");
+        }
 
     }
     public void LoadMonsterBaseStatData()
     {
-        level = monsterData.level;
+        int appliedLevel = Level > 0 ? Level : monsterData.level;
+
+        level = appliedLevel;
         maxHp = monsterData.maxHp;
         curHp = monsterData.curHp;
         attack = monsterData.attack;
