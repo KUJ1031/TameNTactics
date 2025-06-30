@@ -24,10 +24,22 @@ public class SkillPresent : MonoBehaviour
                 Debug.Log($"몬스터 클릭 {monster.GetData()}");
                 if (monster != null)
                 {
-                    ShowMonsterSkills(monster.GetData());
+                    ShowMonsterSkills(monster);
                 }
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        EventBus.OnAttackModeEnabled += EnableAttackMode;
+        EventBus.OnAttackModeDisabled += DisableAttackMode;
+    }
+
+    private void OnDisable()
+    {
+        EventBus.OnAttackModeEnabled -= EnableAttackMode;
+        EventBus.OnAttackModeDisabled -= DisableAttackMode;
     }
 
     public void EnableAttackMode() => isAttackMode = true;
@@ -38,10 +50,10 @@ public class SkillPresent : MonoBehaviour
         skillView.HideSkills();
     }
 
-    private void ShowMonsterSkills(MonsterData monsterData)
+    private void ShowMonsterSkills(Monster monster)
     {
-        if (monsterData == null || monsterData.skills == null) return;
+        if (monster == null || monster.monsterData.skills == null) return;
 
-        skillView.ShowSkillList(monsterData.skills);
+        skillView.ShowSkillList(monster.monsterData.skills);
     }
 }

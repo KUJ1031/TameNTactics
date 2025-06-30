@@ -28,13 +28,13 @@ public class EntryPresent : MonoBehaviour
         var currentEntries = PlayerManager.Instance.player.battleEntry; // List<Monster>라고 가정
 
         // 만약 EntryView가 List<MonsterData>를 받는다면 MonsterData 리스트로 변환 필요
-        List<MonsterData> monsterDataList = new List<MonsterData>();
+        List<Monster> monsterData = new List<Monster>();
         foreach (var monster in currentEntries)
         {
             if (monster != null)
-                monsterDataList.Add(monster.GetData());
+                monsterData.Add(monster);
         }
 
-        entryView.SetEntries(monsterDataList);
+        entryView.SetEntries(monsterData);
     }
 }

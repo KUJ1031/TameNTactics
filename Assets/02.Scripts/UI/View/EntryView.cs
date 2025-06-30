@@ -6,7 +6,7 @@ public class EntryView : MonoBehaviour
 {
     public List<EntrySlot> entrySlots;
 
-    public void SetEntries(List<MonsterData> entries)
+    public void SetEntries(List<Monster> entries)
     {
         for (int i = 0; i < entries.Count; i++)
         {

@@ -17,11 +17,19 @@ public class SkillView : MonoBehaviour
         {
             skillSlot1.sprite = skills[0].icon;
         }
+        else if (skills[0] == null)
+        {
+            skillSlot1.sprite = null;
+        }
 
         // 2번 슬롯
         if (skills.Count >= 2 && skills[1] != null)
         {
             skillSlot2.sprite = skills[1].icon;
+        }
+        else if (skills[1] == null)
+        {
+            skillSlot2.sprite = null;
         }
 
         skillPanel.gameObject.SetActive(true);
