@@ -17,7 +17,7 @@ public static class EnemyAIController
         // 1. 궁극기 사용 가능한 몬스터가 있다면 우선
         foreach (var enemy in actors)
         {
-            if (enemy.curHp <= 0) continue;
+            if (enemy.CurHp <= 0) continue;
 
             var ultimateSkill = enemy.skills.FirstOrDefault(s =>
                 s.skillType == SkillType.UltimateSkill &&
@@ -39,10 +39,10 @@ public static class EnemyAIController
         // 2. 상성 유리한 대상이 있다면 ActiveSkill 사용
         foreach (var enemy in actors)
         {
-            if (enemy.curHp <= 0) continue;
+            if (enemy.CurHp <= 0) continue;
 
             bool hasAdvantage = targetMonsters.Any(player =>
-                player.curHp > 0 &&
+                player.CurHp > 0 &&
                 TypeChart.GetEffectiveness(enemy.monsterData, player.monsterData) > 1f);
 
             if (hasAdvantage)
@@ -63,7 +63,7 @@ public static class EnemyAIController
         }
 
         // 3. 조건이 없으면 랜덤 몬스터가 ActiveSkill 사용
-        var aliveEnemies = actors.Where(m => m.curHp > 0).ToList();
+        var aliveEnemies = actors.Where(m => m.CurHp > 0).ToList();
         if (aliveEnemies.Count == 0) return null;
 
         var randomEnemy = aliveEnemies[Random.Range(0, aliveEnemies.Count)];
@@ -89,22 +89,22 @@ public static class EnemyAIController
     {
         // 1. 체력 50% 이하 중 가장 낮은 몬스터
         var lowHp = targetMonsters
-            .Where(m => m.curHp > 0 && (float)m.curHp / m.maxHp <= 0.5f)
-            .OrderBy(m => m.curHp)
+            .Where(m => m.CurHp > 0 && (float)m.CurHp / m.MaxHp <= 0.5f)
+            .OrderBy(m => m.CurHp)
             .ToList();
 
         if (lowHp.Count > 0) return lowHp[0];
 
         // 2. 상성 유리하고 HP 낮은 몬스터
         var effective = targetMonsters
-            .Where(m => m.curHp > 0 && TypeChart.GetEffectiveness(attacker.monsterData, m.monsterData) > 1f)
-            .OrderBy(m => m.curHp)
+            .Where(m => m.CurHp > 0 && TypeChart.GetEffectiveness(attacker.monsterData, m.monsterData) > 1f)
+            .OrderBy(m => m.CurHp)
             .ToList();
 
         if (effective.Count > 0) return effective[0];
 
         // 3. 랜덤 대상
-        var alive = targetMonsters.Where(m => m.curHp > 0).ToList();
+        var alive = targetMonsters.Where(m => m.CurHp > 0).ToList();
         if (alive.Count > 0) return alive[Random.Range(0, alive.Count)];
 
         return null;
@@ -119,12 +119,12 @@ public static class EnemyAIController
         // 공격팀 전체 대상
         if (skill.isAreaAttack && skill.isTargetSelf)
         {
-            result = actorTeam.Where(m => m.curHp > 0).ToList();
+            result = actorTeam.Where(m => m.CurHp > 0).ToList();
         }
         // 타겟팀 전체 대상
         else if (skill.isAreaAttack && !skill.isTargetSelf)
         {
-            result = targetTeam.Where(m => m.curHp > 0).ToList();
+            result = targetTeam.Where(m => m.CurHp > 0).ToList();
         }
         // 공격하는 자기 자신
         else if (!skill.isAreaAttack && skill.isTargetSelf)
@@ -134,14 +134,14 @@ public static class EnemyAIController
         // 공격팀 중 하나 타겟
         else if (skill.isTargetSingleAlly)
         {
-            var possibleActorTeam = actorTeam.Where(m => m.curHp > 0).ToList();
+            var possibleActorTeam = actorTeam.Where(m => m.CurHp > 0).ToList();
             var target = ChooseTarget(possibleActorTeam, actor);
             if (target != null) result.Add(target);
         }
         // 타겟팀 중 하나 타겟
         else
         {
-            var possibleTargets = targetTeam.Where(m => m.curHp > 0).ToList();
+            var possibleTargets = targetTeam.Where(m => m.CurHp > 0).ToList();
             var target = ChooseTarget(possibleTargets, actor);
             if (target != null) result.Add(target);
         }
