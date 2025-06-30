@@ -20,13 +20,6 @@ public class BattleManager : Singleton<BattleManager>
         InitializeTeams();
         InitializeUltimateSkill(EntryMonsters);
         InitializeUltimateSkill(enemyTeam);
-
-        foreach (var monster in EntryMonsters)
-        {
-            MonsterStatsManager.RecalculateStats(monster);
-        }
-
-        // 전투 메뉴 UI 초기화 등
     }
 
     public void SelectPlayerMonster(Monster selectedMonster)
@@ -142,10 +135,10 @@ public class BattleManager : Singleton<BattleManager>
         PlayerManager.Instance.player.gold += totalGold;
 
         foreach (var monster in EntryMonsters.Where(m => m.curHp > 0))
-            MonsterStatsManager.AddExp(monster, totalExp);
+            monster.AddExp(totalExp);
 
         foreach (var monster in BenchMonsters.Where(m => m.curHp > 0))
-            MonsterStatsManager.AddExp(monster, getBenchExp);
+            monster.AddExp(getBenchExp);
     }
 
     public void EndTurn()
