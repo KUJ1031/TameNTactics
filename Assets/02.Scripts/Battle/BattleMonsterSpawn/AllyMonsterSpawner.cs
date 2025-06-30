@@ -14,7 +14,7 @@ public class AllyMonsterSpawner : MonoBehaviour
             var data = allies[i];
             var go = Instantiate(defaultMonsterPrefab, spawnPositions[i].position, Quaternion.identity);
             var monster = go.GetComponent<Monster>();
-            monster.monsterData = data;
+            monster.monster = data;
 
             monster.ApplyMonsterData(); // 외형 등 갱신
             monster.LoadMonsterBaseStatData(); // 능력치 갱신
