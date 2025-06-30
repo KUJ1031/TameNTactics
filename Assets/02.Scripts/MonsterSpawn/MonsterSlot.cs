@@ -16,7 +16,7 @@ public class MonsterSlot : MonoBehaviour
     public Button actionButton;                   // Equip / UnEquip 버튼
     public TextMeshProUGUI actionButtonText;      // 버튼 내 텍스트
 
-    private MonsterData currentData;              // 현재 슬롯에 할당된 몬스터 데이터
+    private Monster currentMonster;               // 현재 슬롯에 할당된 몬스터 인스턴스
 
     /// <summary>
     /// 버튼에 클릭 리스너 연결
@@ -27,15 +27,22 @@ public class MonsterSlot : MonoBehaviour
     }
 
     /// <summary>
-    /// 몬스터 데이터를 슬롯에 설정하고 UI 갱신
+    /// 몬스터 인스턴스를 슬롯에 설정하고 UI 갱신
     /// </summary>
-    public void SetData(MonsterData data)
+    public void SetData(Monster monster)
     {
-        currentData = data;
+        currentMonster = monster;
 
-        // UI 요소 반영
-        monsterImageUI.sprite = data.monsterImage;
-        monsterNameText.text = data.monsterName;
+        if (monster != null)
+        {
+            monsterImageUI.sprite = monster.monsterData.monsterImage;
+            monsterNameText.text = monster.monsterData.monsterName;
+        }
+        else
+        {
+            monsterImageUI.sprite = null;
+            monsterNameText.text = "";
+        }
 
         UpdateButtonUI(); // 버튼 상태 반영
     }
@@ -45,7 +52,9 @@ public class MonsterSlot : MonoBehaviour
     /// </summary>
     void OnClick()
     {
-        EntryManager.Instance.ToggleEntry(currentData); // 출전 토글
+        if (currentMonster == null) return;
+
+        EntryManager.Instance.ToggleEntry(currentMonster); // 출전 토글
         UpdateButtonUI(); // 즉시 UI 반영
     }
 
@@ -54,7 +63,7 @@ public class MonsterSlot : MonoBehaviour
     /// </summary>
     void UpdateButtonUI()
     {
-        if (EntryManager.Instance.IsInEntry(currentData))
+        if (currentMonster != null && EntryManager.Instance.IsInEntry(currentMonster))
             actionButtonText.text = "UnEquip";
         else
             actionButtonText.text = "Equip";

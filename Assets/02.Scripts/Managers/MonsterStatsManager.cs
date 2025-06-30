@@ -1,7 +1,7 @@
 public static class MonsterStatsManager
 {
     // 경험치 추가 & 레벨업 시 스텟 변화
-    public static void AddExp(MonsterData monster, int expAmount)
+    public static void AddExp(Monster monster, int expAmount)
     {
         monster.curExp += expAmount;
 
@@ -10,19 +10,25 @@ public static class MonsterStatsManager
             monster.curExp -= monster.maxExp;
             monster.level++;
             RecalculateStats(monster);
-            monster.curHp = monster.maxHp;
+            monster.curHp = monster.maxHp; // 레벨업 시 체력 회복
         }
     }
 
-    // 레벨에 맞는 스텟 초기화
-    public static void RecalculateStats(MonsterData monster)
+    // 레벨에 맞는 스탯 재계산
+    public static void RecalculateStats(Monster monster)
     {
-        monster.maxHp = monster.baseHp + 12 * (monster.level - 1);
-        monster.attack = monster.baseAttack + 3 * (monster.level - 1);
-        monster.defense = monster.baseDefense + 3 * (monster.level - 1);
-        monster.speed = monster.baseSpeed + 3 * (monster.level - 1);
-        monster.maxExp = monster.baseExp + 25 * (monster.level - 1);
-        monster.expReward = monster.baseExpReward + 25 * (monster.level - 1);
-        monster.goldReward = monster.baseGoldReward + 30 * (monster.level - 1);
+        int levelMinusOne = monster.level - 1;
+
+        monster.maxHp = monster.monsterData.maxHp + 12 * levelMinusOne;
+        monster.attack = monster.monsterData.attack + 3 * levelMinusOne;
+        monster.defense = monster.monsterData.defense + 3 * levelMinusOne;
+        monster.speed = monster.monsterData.speed + 3 * levelMinusOne;
+        monster.maxExp = monster.monsterData.maxExp + 25 * levelMinusOne;
+        monster.expReward = monster.monsterData.expReward + 25 * levelMinusOne;
+        monster.goldReward = monster.monsterData.goldReward + 30 * levelMinusOne;
+
+        // 만약 curHp가 maxHp보다 크다면 맞춰줌
+        if (monster.curHp > monster.maxHp)
+            monster.curHp = monster.maxHp;
     }
 }

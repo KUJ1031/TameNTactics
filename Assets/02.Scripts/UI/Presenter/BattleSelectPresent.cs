@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,40 +11,26 @@ public class BattleSelectPresent : MonoBehaviour
     private int currentIndex = 0;
     private bool isSkillPanelOpen = false;
 
-
     void Start()
     {
         battleSelectView.attackButton.onClick.AddListener(OnAttackButtonClick);
     }
+
     void Update()
     {
         HandleMouseClick();
         HandleKeyboardInput();
 
-        if (isSkillPanelOpen)
+        if (isSkillPanelOpen && Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                CloseSkillPanel();
-            }
+            CloseSkillPanel();
         }
     }
 
     private void OnEnable()
     {
-        // EntryManager 대신 PlayerManager.player에 직접 접근
-        // Player 쪽에 OnEntryChanged 이벤트가 없으면 직접 초기화 호출
         InitializePlayerMonsters();
-
-        // 만약 Player 클래스에 OnEntryChanged 이벤트가 있다면
-        // PlayerManager.Instance.player.OnEntryChanged += InitializePlayerMonsters;
     }
-
-    private void OnDisable()
-    {
-        // PlayerManager.Instance.player.OnEntryChanged -= InitializePlayerMonsters;
-    }
-
 
     private void HandleMouseClick()
     {
@@ -56,14 +41,12 @@ public class BattleSelectPresent : MonoBehaviour
 
             if (hit.collider != null)
             {
-                Debug.Log("몬스터 클릭 진입");
                 Monster monster = hit.collider.GetComponent<Monster>();
-                //if (monster != null && playerMonsters.Contains(monster))
-                if (monster != null)
+                if (monster != null && playerMonsters.Contains(monster))
                 {
                     currentIndex = playerMonsters.IndexOf(monster);
                     MoveSelectMonster(monster);
-                    BattleManager.Instance.SelectPlayerMonster(monster.monsterData);
+                    BattleManager.Instance.SelectPlayerMonster(monster);
                 }
             }
         }
@@ -115,17 +98,11 @@ public class BattleSelectPresent : MonoBehaviour
             return;
         }
 
-        var battleEntries = player.battleEntry; // 전투 출전 멤버 리스트
+        // player.battleEntry가 List<Monster>가 되어야 함
+        var battleEntries = player.battleEntry;
 
-        Monster[] allMonsters = FindObjectsOfType<Monster>();
-
-        foreach (var monster in allMonsters)
-        {
-            if (battleEntries.Contains(monster.GetData()))
-            {
-                playerMonsters.Add(monster);
-            }
-        }
+        // 직접 player.battleEntry를 복사해서 playerMonsters에 넣기
+        playerMonsters.AddRange(battleEntries);
 
         if (playerMonsters.Count > 0)
         {

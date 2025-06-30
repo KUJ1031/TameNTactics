@@ -27,16 +27,7 @@ public class MonsterData : ScriptableObject
     public MonsterType type;
     public Personality personality;
     
-    [Header("기본 능력치")]
-    public int baseHp;
-    public int baseAttack;
-    public int baseDefense;
-    public int baseSpeed;
-    public int baseExp;
-    public int baseExpReward;
-    public int baseGoldReward;
-
-    [Header("현재 능력치")]
+    [Header("능력치")]
     public int level;
     public int maxHp;
     public int curHp;
@@ -46,6 +37,8 @@ public class MonsterData : ScriptableObject
     public int criticalChance;
     public int maxExp;
     public int curExp;
+    public int baseExpReward;
+    public int baseGoldReward;
     
     [Header("배틀 리워드")]
     public int expReward;
