@@ -9,11 +9,10 @@ using System.Text;
 public class Monster : MonoBehaviour
 {
     [Header("몬스터 정보 데이터")]
-    public MonsterData monsterData;
+    public MonsterData monster;
     
     [Header("기본 정보")]
     public string monsterName;
-    public int monsterID;
     public MonsterType type;
     public Personality personality;
 
@@ -51,15 +50,15 @@ public class Monster : MonoBehaviour
       //  Level = 1;
         MaxHp = monsterData.maxHp;
         CurHp = 0;
-        Attack = monsterData.attack;
-        Defense = monsterData.defense;
-        Speed = monsterData.speed;
-        CriticalChance = monsterData.criticalChance;
-        MaxExp = monsterData.maxExp;
+        Attack = monster.attack;
+        Defense = monster.defense;
+        Speed = monster.speed;
+        CriticalChance = monster.criticalChance;
+        MaxExp = monster.maxExp;
         CurExp = 0;
-        ExpReward = monsterData.expReward;
-        GoldReward = monsterData.goldReward;
-        skills = new List<SkillData>(monsterData.skills);
+        ExpReward = monster.expReward;
+        GoldReward = monster.goldReward;
+        skills = new List<SkillData>(monster.skills);
     }
 
     /// <summary>
@@ -67,7 +66,7 @@ public class Monster : MonoBehaviour
     /// </summary>
     public MonsterData GetData()
     {
-        return monsterData;
+        return monster;
     }
 
     /// <summary>
@@ -84,7 +83,7 @@ public class Monster : MonoBehaviour
             infoText.text = info;
 
         Debug.Log($"[몬스터 정보]\n{info}");
-        Debug.Log($"성격 : {monsterData.personality}");
+        Debug.Log($"성격 : {monster.personality}");
     }
 
     /// <summary>

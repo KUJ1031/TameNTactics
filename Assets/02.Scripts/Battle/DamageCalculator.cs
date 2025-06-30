@@ -19,7 +19,7 @@ public static class DamageCalculator
         float critMultiplier = isCrit ? 1.5f : 1f;
 
         // 타입 상성 계산은 MonsterData를 넘겨서 처리
-        float effectiveness = TypeChart.GetEffectiveness(attacker.monsterData, target.monsterData);
+        float effectiveness = TypeChart.GetEffectiveness(attacker, target);
 
         float finalDamage = baseDamage * defenseFactor * critMultiplier * effectiveness;
 

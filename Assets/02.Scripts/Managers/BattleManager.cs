@@ -32,6 +32,7 @@ public class BattleManager : Singleton<BattleManager>
     public void SelectSkill(SkillData skill)
     {
         selectedSkill = skill;
+        
         List<Monster> possibleTargets = new();
 
         if (skill.isTargetSelf && !skill.isAreaAttack)
@@ -71,18 +72,18 @@ public class BattleManager : Singleton<BattleManager>
         if (playerGoesFirst)
         {
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
+            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
 
             ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
+            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
         }
         else
         {
             ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
+            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
 
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
+            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
         }
     }
 
@@ -107,7 +108,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         if (target.CurHp <= 0)
         {
-            Debug.Log($"{target.monsterData.monsterName}는 이미 쓰러져 포획할 수 없습니다.");
+            Debug.Log($"{target.monsterName}는 이미 쓰러져 포획할 수 없습니다.");
             return;
         }
 
@@ -122,14 +123,14 @@ public class BattleManager : Singleton<BattleManager>
             player.ownedMonsters.Add(target);
         }
 
-        Debug.Log($"{target.monsterData.monsterName}를 포획했습니다!");
+        Debug.Log($"{target.monsterName}를 포획했습니다!");
     }
 
     public void BattleReward()
     {
-        int totalExp = enemyTeam.Sum(e => e.monsterData.expReward);
+        int totalExp = enemyTeam.Sum(e => e.ExpReward);
         int getBenchExp = Mathf.RoundToInt(totalExp * 0.7f);
-        int totalGold = enemyTeam.Sum(e => e.monsterData.goldReward);
+        int totalGold = enemyTeam.Sum(e => e.GoldReward);
 
         PlayerManager.Instance.player.gold += totalGold;
 
@@ -220,15 +221,19 @@ public class BattleManager : Singleton<BattleManager>
             return;
         }
 
-        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monsterData.monsterName))}");
-        Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monsterData.monsterName))}");
-        Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
+        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monster.monsterName))}");
+        Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monster.monsterName))}");
+        Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monster.monsterName))}");
         UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
     }
 
-    public void CancelPlayerAction()
+    public void CancelSelectedMonster()
     {
         selectedPlayerMonster = null;
+    }
+
+    public void CancelSelectedSkill()
+    {
         selectedSkill = null;
     }
 

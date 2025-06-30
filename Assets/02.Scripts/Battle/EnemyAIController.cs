@@ -43,7 +43,7 @@ public static class EnemyAIController
 
             bool hasAdvantage = targetMonsters.Any(player =>
                 player.CurHp > 0 &&
-                TypeChart.GetEffectiveness(enemy.monsterData, player.monsterData) > 1f);
+                TypeChart.GetEffectiveness(enemy, player) > 1f);
 
             if (hasAdvantage)
             {
@@ -97,7 +97,7 @@ public static class EnemyAIController
 
         // 2. 상성 유리하고 HP 낮은 몬스터
         var effective = targetMonsters
-            .Where(m => m.CurHp > 0 && TypeChart.GetEffectiveness(attacker.monsterData, m.monsterData) > 1f)
+            .Where(m => m.CurHp > 0 && TypeChart.GetEffectiveness(attacker, m) > 1f)
             .OrderBy(m => m.CurHp)
             .ToList();
 
