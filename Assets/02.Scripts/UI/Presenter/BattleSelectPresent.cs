@@ -1,13 +1,16 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class BattleSelectPresent : MonoBehaviour
 {
     [SerializeField] private BattleSelectView battleSelectView;
     [SerializeField] private RectTransform selectMonsterImage;
 
-    private List<Monster> playerMonsters = new List<Monster>();
+    private List<Monster> playerMonsters = new();
     private int currentIndex = 0;
     private bool isSkillPanelOpen = false;
 
@@ -42,7 +45,8 @@ public class BattleSelectPresent : MonoBehaviour
             if (hit.collider != null)
             {
                 Monster monster = hit.collider.GetComponent<Monster>();
-                if (monster != null && playerMonsters.Contains(monster))
+
+                if (monster != null && playerMonsters.Any(m => m.monsterID == monster.monsterID))
                 {
                     currentIndex = playerMonsters.IndexOf(monster);
                     MoveSelectMonster(monster);
@@ -79,12 +83,14 @@ public class BattleSelectPresent : MonoBehaviour
     {
         isSkillPanelOpen = true;
         battleSelectView.ShowSkillPanel();
+        EventBus.OnAttackModeEnabled?.Invoke();
     }
 
     private void CloseSkillPanel()
     {
         isSkillPanelOpen = false;
         battleSelectView.HideSkillPanel();
+        EventBus.OnAttackModeDisabled?.Invoke();
     }
 
     private void InitializePlayerMonsters()

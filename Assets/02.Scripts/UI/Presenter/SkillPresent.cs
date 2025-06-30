@@ -6,8 +6,12 @@ public class SkillPresent : MonoBehaviour
 {
     [SerializeField] private SkillView skillView;
 
+    private bool isAttackMode = false;
+
     private void Update()
     {
+        if (!isAttackMode) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -20,16 +24,36 @@ public class SkillPresent : MonoBehaviour
                 Debug.Log($"몬스터 클릭 {monster.GetData()}");
                 if (monster != null)
                 {
-                    ShowMonsterSkills(monster.GetData());
+                    ShowMonsterSkills(monster);
                 }
             }
         }
     }
 
-    private void ShowMonsterSkills(MonsterData monsterData)
+    private void OnEnable()
     {
-        if (monsterData == null || monsterData.skills == null) return;
+        EventBus.OnAttackModeEnabled += EnableAttackMode;
+        EventBus.OnAttackModeDisabled += DisableAttackMode;
+    }
 
-        skillView.ShowSkillList(monsterData.skills);
+    private void OnDisable()
+    {
+        EventBus.OnAttackModeEnabled -= EnableAttackMode;
+        EventBus.OnAttackModeDisabled -= DisableAttackMode;
+    }
+
+    public void EnableAttackMode() => isAttackMode = true;
+
+    public void DisableAttackMode()
+    {
+        isAttackMode = false;
+        skillView.HideSkills();
+    }
+
+    private void ShowMonsterSkills(Monster monster)
+    {
+        if (monster == null || monster.monsterData.skills == null) return;
+
+        skillView.ShowSkillList(monster.monsterData.skills);
     }
 }

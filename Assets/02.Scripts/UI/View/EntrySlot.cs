@@ -8,9 +8,9 @@ public class EntrySlot : MonoBehaviour
 {
     public Image monsterImage;
 
-    public void SetMonster(MonsterData monster)
+    public void SetMonster(Monster monster)
     {
-        monsterImage.sprite = monster.monsterImage;
+        monsterImage.sprite = monster.monsterData.monsterImage;
         monsterImage.enabled = true;
     }
 
