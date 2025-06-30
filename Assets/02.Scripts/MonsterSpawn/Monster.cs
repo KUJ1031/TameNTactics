@@ -40,17 +40,17 @@ public class Monster : MonoBehaviour
     public SpriteRenderer monsterSpriteRenderer; // Image 대신 SpriteRenderer 사용
     public Text infoText;          // 몬스터 상세 정보 출력용
     
-    private void Awake()
-    {
-        ApplyMonsterData();
-        LoadMonsterBaseStatData();
-    }
+    //private void Start()
+    //{
+    //    //ApplyMonsterData();
+    //    LoadMonsterBaseStatData();
+    //}
     
-    public void LoadMonsterBaseStatData()
+    public void Init()
     {
       //  Level = 1;
         MaxHp = monsterData.maxHp;
-        CurHp = 0;
+        CurHp = MaxHp;
         Attack = monsterData.attack;
         Defense = monsterData.defense;
         Speed = monsterData.speed;
@@ -60,6 +60,50 @@ public class Monster : MonoBehaviour
         ExpReward = monsterData.expReward;
         GoldReward = monsterData.goldReward;
         skills = new List<SkillData>(monsterData.skills);
+    }
+
+    //몬스터 데이터 가져와서 반영
+    public void SetMonster(Monster sourceMonster)
+    {
+        if (sourceMonster == null)
+        {
+            Debug.LogError("SetMonster: 복사할 sourceMonster가 null입니다.");
+            return;
+        }
+        //몬스터 정보 데이터
+        this.monsterData = sourceMonster.monsterData;
+
+        //기본 정보
+        this.monsterName = sourceMonster.monsterName;
+        this.monsterID = sourceMonster.monsterID;
+        this.type = sourceMonster.type;
+        this.personality = sourceMonster.personality;
+
+        //능력치
+        this.Level = sourceMonster.Level;
+        this.MaxHp = sourceMonster.MaxHp;
+        this.CurHp = sourceMonster.CurHp;
+        this.Attack = sourceMonster.Attack;
+        this.Defense = sourceMonster.Defense;
+        this.Speed = sourceMonster.Speed;
+        this.CriticalChance = sourceMonster.CriticalChance;
+        this.MaxExp = sourceMonster.MaxExp;
+        this.CurExp = sourceMonster.CurExp;
+
+        //배틀 리워드
+        this.ExpReward = sourceMonster.ExpReward;
+        this.GoldReward = sourceMonster.GoldReward;
+        
+        //스킬
+        if (sourceMonster.skills != null)
+        {
+            this.skills = new List<SkillData>(sourceMonster.skills);
+        }
+        else
+        {
+            this.skills = new List<SkillData>();
+        }
+        //ApplyMonsterData();
     }
 
     /// <summary>

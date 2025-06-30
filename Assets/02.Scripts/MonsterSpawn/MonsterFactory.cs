@@ -43,7 +43,7 @@ public class MonsterFactory : MonoBehaviour
             if (monster != null && monster.monsterData != null)
                 map[monster.monsterData] = prefab;
         }
-        BattleTriggerManager.Instance.SetMonsterPrefabMap(map);
+        //BattleTriggerManager.Instance.SetMonsterPrefabMap(map);
         SpawnAllMonsters();
     }
 
@@ -108,7 +108,7 @@ public class MonsterFactory : MonoBehaviour
     /// <summary>
     /// 적 팀 몬스터 리스트를 Monster 인스턴스 기준으로 반환 (씬에 이미 생성된 몬스터들 중에서)
     /// </summary>
-    public List<Monster> GetRandomEnemyTeam()
+    public List<Monster> GetRandomEnemyTeam(Monster monster)
     {
         List<Monster> selectedTeam = new List<Monster>();
 
@@ -116,17 +116,16 @@ public class MonsterFactory : MonoBehaviour
         Monster[] allFactoryMonsters = factoryParent.GetComponentsInChildren<Monster>();
 
         // 1. 충돌한 몬스터 포함
-        Monster lastMonster = BattleTriggerManager.Instance.GetLastMonster();
-        if (lastMonster != null && allFactoryMonsters.Contains(lastMonster))
+        if (monster != null && allFactoryMonsters.Contains(monster))
         {
-            selectedTeam.Add(lastMonster);
+            selectedTeam.Add(monster);
         }
 
         // 2. 나머지 후보 필터링
         List<Monster> candidates = new List<Monster>();
         foreach (var m in allFactoryMonsters)
         {
-            if (m != lastMonster)
+            if (m != monster)
                 candidates.Add(m);
         }
 
@@ -138,6 +137,11 @@ public class MonsterFactory : MonoBehaviour
             int randomIndex = Random.Range(0, candidates.Count);
             selectedTeam.Add(candidates[randomIndex]);
             candidates.RemoveAt(randomIndex);
+        }
+        //레벨설정
+        foreach (Monster m in selectedTeam)
+        {
+            m.Level = Random.Range(minLevel, maxLevel + 1);
         }
 
         return selectedTeam;

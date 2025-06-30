@@ -211,46 +211,44 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    public void InitializeTeams()
-    {
-        var enemyInfoList = BattleTriggerManager.Instance.GetSerializedEnemyTeam();
-        enemyTeam = CreateMonstersFromSerializedInfo(enemyInfoList);
+    //public void InitializeTeams()
+    //{
 
-        if (EntryMonsters == null || enemyTeam == null)
-        {
-            Debug.LogError("플레이어 팀 또는 적 팀이 설정되지 않았습니다!");
-            return;
-        }
+    //    if (EntryMonsters == null || enemyTeam == null)
+    //    {
+    //        Debug.LogError("플레이어 팀 또는 적 팀이 설정되지 않았습니다!");
+    //        return;
+    //    }
 
-        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monsterData.monsterName))}");
-        Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monsterData.monsterName))}");
-        Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
-    }
+    //    Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monsterData.monsterName))}");
+    //    Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monsterData.monsterName))}");
+    //    Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
+    //    UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
+    //}
 
-    private List<Monster> CreateMonstersFromSerializedInfo(List<SerializableMonsterInfo> infoList)
-{
-    List<Monster> result = new();
+//    private List<Monster> CreateMonstersFromSerializedInfo(List<SerializableMonsterInfo> infoList)
+//{
+//    List<Monster> result = new();
 
-    foreach (var info in infoList)
-    {
-        var prefab = BattleTriggerManager.Instance.GetPrefabByData(info.monsterData);
-        if (prefab == null) continue;
+//    foreach (var info in infoList)
+//    {
+//        var prefab = BattleTriggerManager.Instance.GetPrefabByData(info.monsterData);
+//        if (prefab == null) continue;
 
-        var go = Instantiate(prefab); // 위치는 나중에 Spawner가 지정
-        var monster = go.GetComponent<Monster>();
-        if (monster == null) continue;
+//        var go = Instantiate(prefab); // 위치는 나중에 Spawner가 지정
+//        var monster = go.GetComponent<Monster>();
+//        if (monster == null) continue;
 
-        monster.monsterData = info.monsterData;
-        monster.SetLevel(info.level);
-        monster.LoadMonsterBaseStatData();
-        monster.TakeDamage(monster.MaxHp - info.curHp);
+//        monster.monsterData = info.monsterData;
+//        monster.SetLevel(info.level);
+//        monster.LoadMonsterBaseStatData();
+//        monster.TakeDamage(monster.MaxHp - info.curHp);
 
-        result.Add(monster);
-    }
+//        result.Add(monster);
+//    }
 
-    return result;
-}
+//    return result;
+//}
 
     public void CancelSelectedMonster()
     {

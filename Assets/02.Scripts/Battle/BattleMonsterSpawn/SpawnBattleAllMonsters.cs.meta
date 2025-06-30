@@ -3,7 +3,10 @@ guid: 73c64985ec1a5a240b4534e2465f4034
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - monsterPrefab: {fileID: 4522283486932235510, guid: a9e095c01c527b649ad940f6dd36578d, type: 3}
+  - allySpawner: {fileID: 5455583455022254013, guid: d7cf986bf32b45f42965131df7dcd0b5, type: 3}
+  - enemySpawner: {fileID: 4853538417283988847, guid: a81a8e193de4639458aa15cdb4b13f3f, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
