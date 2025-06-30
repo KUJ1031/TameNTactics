@@ -9,51 +9,54 @@ using UnityEngine;
 /// </summary>
 public class BattleTriggerManager : Singleton<BattleTriggerManager>
 {
-    // 충돌한 적 몬스터
-    private MonsterData lastMonster;
+    // 충돌한 적 몬스터 (Monster 인스턴스)
+    private Monster lastMonster;
 
-    // 전투에 등장할 적 팀 (MonsterFactory에서 랜덤 구성)
-    private List<MonsterData> enemyTeam;
+    // 전투에 등장할 적 팀
+    private List<Monster> enemyTeam;
 
-    // 플레이어의 출전 팀 (PlayerManager에서 battleEntry를 참조)
-    private List<MonsterData> playerTeam;
+    // 플레이어의 출전 팀
+    private List<Monster> playerTeam;
 
-    // 벤치 몬스터 (PlayerManager에서 benchEntry를 참조)
-    private List<MonsterData> benchMonsters;
+    // 플레이어의 벤치 몬스터
+    private List<Monster> benchMonsters;
+
+    private List<MonsterData> enemyTeamData;
+    private List<MonsterData> playerTeamData;
 
     /// <summary>
     /// 충돌한 몬스터 저장
     /// </summary>
-    public void SetLastMonster(MonsterData data)
+    public void SetLastMonster(Monster monster)
     {
-        lastMonster = data;
+        lastMonster = monster;
     }
 
-    public MonsterData GetLastMonster() => lastMonster;
+    public Monster GetLastMonster() => lastMonster;
 
     /// <summary>
     /// 전투 적팀 저장
     /// </summary>
-    public void SetEnemyTeam(List<MonsterData> team)
+    public void SetEnemyTeam(List<Monster> team)
     {
         enemyTeam = team;
     }
 
-    public List<MonsterData> GetEnemyTeam() => enemyTeam;
+    public List<Monster> GetEnemyTeam() => enemyTeam;
 
     /// <summary>
     /// 플레이어팀 저장
     /// </summary>
-    public void SetPlayerTeam(List<MonsterData> team)
+    public void SetPlayerTeam(List<Monster> team)
     {
         playerTeam = team;
     }
 
-    public List<MonsterData> GetPlayerTeam() => playerTeam;
+    public List<Monster> GetPlayerTeam() => playerTeam;
 
-    public void SetBenchMonsters(List<MonsterData> bench) => benchMonsters = bench;
+    public void SetBenchMonsters(List<Monster> bench) => benchMonsters = bench;
 
-    public List<MonsterData> GetBenchMonsters() => benchMonsters;
+    public List<Monster> GetBenchMonsters() => benchMonsters;
 
     /// <summary>
     /// 플레이어 팀과 벤치 자동 동기화 (PlayerManager에서 가져옴)
@@ -63,17 +66,21 @@ public class BattleTriggerManager : Singleton<BattleTriggerManager>
         var player = PlayerManager.Instance?.player;
         if (player != null)
         {
-            playerTeam = new List<MonsterData>(player.battleEntry);
-            benchMonsters = new List<MonsterData>(player.benchEntry);
+            playerTeam = new List<Monster>(player.battleEntry);
+            benchMonsters = new List<Monster>(player.benchEntry);
         }
         else
         {
             Debug.LogWarning("플레이어가 존재하지 않아 팀을 불러올 수 없습니다.");
-            playerTeam = new List<MonsterData>();
-            benchMonsters = new List<MonsterData>();
+            playerTeam = new List<Monster>();
+            benchMonsters = new List<Monster>();
         }
     }
+    public void SetEnemyTeamData(List<MonsterData> list) => enemyTeamData = list;
+    public List<MonsterData> GetEnemyTeamData() => enemyTeamData;
 
+    public void SetPlayerTeamData(List<MonsterData> list) => playerTeamData = list;
+    public List<MonsterData> GetPlayerTeamData() => playerTeamData;
     /// <summary>
     /// 전투 데이터 초기화 (전투 종료 후 등)
     /// </summary>

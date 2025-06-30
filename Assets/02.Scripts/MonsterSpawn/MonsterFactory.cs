@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Monster 스크립트가 붙어있는 GameObject를 Factory로 사용하여 몬스터를 생성하는 스크립트
@@ -14,15 +15,12 @@ public class MonsterFactory : MonoBehaviour
     [SerializeField] private float width;
     [SerializeField] private float height;
 
-    //몬스터 생성 시 최대 시도 횟수
     public int maxAttempts = 100;
 
-    // 생성된 몬스터의 위치를 저장하는 리스트
     private List<Vector3> usedPositions = new List<Vector3>();
 
     private void Start()
     {
-        // BoxCollider2D 기준으로 크기 자동 계산
         var collider = factoryParent.GetComponentInChildren<BoxCollider2D>();
         if (collider != null)
         {
@@ -35,11 +33,9 @@ public class MonsterFactory : MonoBehaviour
             Debug.LogWarning("BoxCollider2D를 찾지 못했습니다. Factory 오브젝트에 추가해주세요.");
         }
 
-        // 게임 시작 시 모든 몬스터 생성
         SpawnAllMonsters();
     }
 
-    // 모든 몬스터를 Factory 내에서 생성하는 메서드
     public void SpawnAllMonsters()
     {
         if (monsterPrefabs.Count == 0 || factoryParent == null)
@@ -53,16 +49,16 @@ public class MonsterFactory : MonoBehaviour
             Vector3 spawnPos = GetRandomPositionInFactory();
             if (spawnPos != Vector3.zero)
             {
-                GameObject monster = Instantiate(prefab, spawnPos, Quaternion.identity, factoryParent);
+                GameObject monsterGO = Instantiate(prefab, spawnPos, Quaternion.identity, factoryParent);
                 usedPositions.Add(spawnPos);
 
-                MonsterMover mover = monster.GetComponent<MonsterMover>();
+                MonsterMover mover = monsterGO.GetComponent<MonsterMover>();
                 if (mover != null)
                 {
                     mover.SetMoveArea(factoryParent.GetComponentInChildren<BoxCollider2D>());
                 }
 
-                Debug.Log($"{monster.name} 생성 완료 @ {spawnPos}");
+                Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}");
             }
             else
             {
@@ -71,7 +67,6 @@ public class MonsterFactory : MonoBehaviour
         }
     }
 
-    // 몬스터를 생성할 수 있는 랜덤 위치를 Factory 내에서 찾는 메서드
     private Vector3 GetRandomPositionInFactory()
     {
         Vector3 center = factoryParent.position;
@@ -91,43 +86,42 @@ public class MonsterFactory : MonoBehaviour
         return Vector3.zero;
     }
 
-    public List<MonsterData> GetRandomEnemyTeam()
+    /// <summary>
+    /// 적 팀 몬스터 리스트를 Monster 인스턴스 기준으로 반환 (씬에 이미 생성된 몬스터들 중에서)
+    /// </summary>
+    public List<Monster> GetRandomEnemyTeam()
     {
-        List<MonsterData> selectedTeam = new();
-        List<MonsterData> allData = new();
+        List<Monster> selectedTeam = new List<Monster>();
 
-        // 모든 MonsterData 수집 (Prefab 기준)
-        foreach (var prefab in monsterPrefabs)
+        // factoryParent 하위에 있는 몬스터들만 대상으로 필터링
+        Monster[] allFactoryMonsters = factoryParent.GetComponentsInChildren<Monster>();
+
+        // 1. 충돌한 몬스터 포함
+        Monster lastMonster = BattleTriggerManager.Instance.GetLastMonster();
+        if (lastMonster != null && allFactoryMonsters.Contains(lastMonster))
         {
-            Monster monster = prefab.GetComponent<Monster>();
-            if (monster != null && monster.GetData() != null)
-            {
-                allData.Add(monster.GetData());
-            }
+            selectedTeam.Add(lastMonster);
         }
 
-        // 충돌한 몬스터는 무조건 포함
-        MonsterData last = BattleTriggerManager.Instance.GetLastMonster();
-        if (last != null)
+        // 2. 나머지 후보 필터링
+        List<Monster> candidates = new List<Monster>();
+        foreach (var m in allFactoryMonsters)
         {
-            selectedTeam.Add(last);
+            if (m != lastMonster)
+                candidates.Add(m);
         }
 
-        // 총 팀 인원 수 정하기 (1~3명)
         int totalCount = Random.Range(1, 4);
-
-        // 나머지 인원 무작위로 중복 허용 뽑기
         int remainingCount = totalCount - selectedTeam.Count;
-        for (int i = 0; i < remainingCount; i++)
-        {
-            if (allData.Count == 0) break;
 
-            int randomIndex = Random.Range(0, allData.Count);
-            selectedTeam.Add(allData[randomIndex]); // 중복 허용이므로 Remove 안 함
+        for (int i = 0; i < remainingCount && candidates.Count > 0; i++)
+        {
+            int randomIndex = Random.Range(0, candidates.Count);
+            selectedTeam.Add(candidates[randomIndex]);
+            candidates.RemoveAt(randomIndex);
         }
 
         return selectedTeam;
     }
-
 
 }

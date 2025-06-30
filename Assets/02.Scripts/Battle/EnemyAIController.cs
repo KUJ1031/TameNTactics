@@ -6,13 +6,13 @@ public static class EnemyAIController
 {
     public class EnemyAction
     {
-        public MonsterData actor;
+        public Monster actor;
         public SkillData selectedSkill;
-        public List<MonsterData> targets;
+        public List<Monster> targets;
     }
 
     // 조건에 따른 공격을 실행할 몬스터 자동 선택!
-    public static EnemyAction DecideAction(List<MonsterData> actors, List<MonsterData> targetMonsters)
+    public static EnemyAction DecideAction(List<Monster> actors, List<Monster> targetMonsters)
     {
         // 1. 궁극기 사용 가능한 몬스터가 있다면 우선
         foreach (var enemy in actors)
@@ -43,7 +43,7 @@ public static class EnemyAIController
 
             bool hasAdvantage = targetMonsters.Any(player =>
                 player.curHp > 0 &&
-                TypeChart.GetEffectiveness(enemy, player) > 1f);
+                TypeChart.GetEffectiveness(enemy.monsterData, player.monsterData) > 1f);
 
             if (hasAdvantage)
             {
@@ -84,18 +84,12 @@ public static class EnemyAIController
         return null;
     }
 
-    // 정해진 스킬을 찾아서 사용 준비
-    // private static SkillData GetSkill(MonsterData monster, SkillType skillType)
-    // {
-    //     return monster.skills.FirstOrDefault(s => s.skillType == skillType);
-    // }
-
     // 조건에 맞는 타겟 고르기
-    private static MonsterData ChooseTarget(List<MonsterData> targetMonsters, MonsterData attacker)
+    private static Monster ChooseTarget(List<Monster> targetMonsters, Monster attacker)
     {
         // 1. 체력 50% 이하 중 가장 낮은 몬스터
         var lowHp = targetMonsters
-            .Where(m => m.curHp > 0 && m.curHp / m.maxHp <= 0.5f)
+            .Where(m => m.curHp > 0 && (float)m.curHp / m.maxHp <= 0.5f)
             .OrderBy(m => m.curHp)
             .ToList();
 
@@ -103,7 +97,7 @@ public static class EnemyAIController
 
         // 2. 상성 유리하고 HP 낮은 몬스터
         var effective = targetMonsters
-            .Where(m => m.curHp > 0 && TypeChart.GetEffectiveness(attacker, m) > 1f)
+            .Where(m => m.curHp > 0 && TypeChart.GetEffectiveness(attacker.monsterData, m.monsterData) > 1f)
             .OrderBy(m => m.curHp)
             .ToList();
 
@@ -117,29 +111,26 @@ public static class EnemyAIController
     }
 
     // 공격의 형태 고르기
-    private static List<MonsterData> ChooseTargets(
-        SkillData skill, List<MonsterData> targetTeam, List<MonsterData> actorTeam, MonsterData actor)
+    private static List<Monster> ChooseTargets(
+        SkillData skill, List<Monster> targetTeam, List<Monster> actorTeam, Monster actor)
     {
-        List<MonsterData> result = new List<MonsterData>();
+        List<Monster> result = new List<Monster>();
 
         // 공격팀 전체 대상
         if (skill.isAreaAttack && skill.isTargetSelf)
         {
             result = actorTeam.Where(m => m.curHp > 0).ToList();
         }
-        
         // 타겟팀 전체 대상
         else if (skill.isAreaAttack && !skill.isTargetSelf)
         {
             result = targetTeam.Where(m => m.curHp > 0).ToList();
-        } 
-        
+        }
         // 공격하는 자기 자신
         else if (!skill.isAreaAttack && skill.isTargetSelf)
         {
             result.Add(actor);
         }
-        
         // 공격팀 중 하나 타겟
         else if (skill.isTargetSingleAlly)
         {
@@ -147,7 +138,6 @@ public static class EnemyAIController
             var target = ChooseTarget(possibleActorTeam, actor);
             if (target != null) result.Add(target);
         }
-        
         // 타겟팀 중 하나 타겟
         else
         {

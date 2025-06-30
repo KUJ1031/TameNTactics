@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class MonsterRosterPopup : MonoBehaviour
 {
@@ -11,12 +12,11 @@ public class MonsterRosterPopup : MonoBehaviour
     public Image monsterImage;
     public TextMeshProUGUI monsterNameText;
 
-    public Button addCandidateBtn;   // 출전 후보군 추가 (entryMonsters)
+    public Button addCandidateBtn;   // 출전 후보군 추가
     public Button removeCandidateBtn;// 출전 후보군 제거
-    public Button releaseBtn;        // 방출 (ownedMonsters)
+    public Button releaseBtn;        // 방출
 
-    private MonsterData currentMonster;
-
+    private Monster currentMonster;
     private Player player;
 
     private void Awake()
@@ -28,7 +28,6 @@ public class MonsterRosterPopup : MonoBehaviour
         removeCandidateBtn.onClick.AddListener(OnClickRemoveCandidate);
         releaseBtn.onClick.AddListener(OnClickRelease);
 
-        // Player 참조 확보
         player = PlayerManager.Instance?.player;
         if (player == null)
         {
@@ -36,12 +35,21 @@ public class MonsterRosterPopup : MonoBehaviour
         }
     }
 
-    public void Open(MonsterData monster)
+    /// <summary>
+    /// 몬스터 정보 팝업 열기 (Monster 객체를 받음)
+    /// </summary>
+    public void Open(Monster monster)
     {
+        if (monster == null)
+        {
+            Debug.LogWarning("Open 호출 시 monster가 null입니다.");
+            return;
+        }
+
         currentMonster = monster;
 
-        monsterImage.sprite = monster.monsterImage;
-        monsterNameText.text = monster.monsterName;
+        monsterImage.sprite = monster.monsterData.monsterImage;
+        monsterNameText.text = monster.monsterData.monsterName;
 
         UpdateButtons();
 
@@ -53,51 +61,65 @@ public class MonsterRosterPopup : MonoBehaviour
         popupPanel.SetActive(false);
     }
 
-    void UpdateButtons()
+    /// <summary>
+    /// 출전 후보군 상태에 따라 버튼 활성화 상태 업데이트
+    /// </summary>
+    private void UpdateButtons()
     {
-        if (player == null)
+        if (player == null || currentMonster == null)
         {
-            addCandidateBtn.gameObject.SetActive(false);
-            removeCandidateBtn.gameObject.SetActive(false);
+            SetButtonsActive(false, false);
             return;
         }
 
-        bool isCandidate = player.entryMonsters.Contains(currentMonster);
+        bool isCandidate = player.entryMonsters.Any(m => m == currentMonster);
 
-        addCandidateBtn.gameObject.SetActive(!isCandidate);
-        removeCandidateBtn.gameObject.SetActive(isCandidate);
+        SetButtonsActive(!isCandidate, isCandidate);
     }
 
-    void OnClickAddCandidate()
+    private void SetButtonsActive(bool addActive, bool removeActive)
     {
-        if (player == null) return;
+        addCandidateBtn.gameObject.SetActive(addActive);
+        removeCandidateBtn.gameObject.SetActive(removeActive);
+    }
+
+    private void OnClickAddCandidate()
+    {
+        if (player == null || currentMonster == null) return;
 
         bool added = EntryManager.Instance.ToggleCandidate(currentMonster);
         if (added)
-            Debug.Log($"{currentMonster.monsterName} 후보군에 추가됨");
+            Debug.Log($"{currentMonster.monsterData.monsterName} 후보군에 추가됨");
         else
             Debug.LogWarning("추가 실패: 최대치일 가능성 있음");
 
         UpdateButtons();
     }
 
-    void OnClickRemoveCandidate()
+    private void OnClickRemoveCandidate()
     {
-        if (player == null) return;
+        if (player == null || currentMonster == null) return;
 
         bool removed = EntryManager.Instance.ToggleCandidate(currentMonster);
         if (!player.entryMonsters.Contains(currentMonster))
-            Debug.Log($"{currentMonster.monsterName} 후보군에서 제거됨");
+            Debug.Log($"{currentMonster.monsterData.monsterName} 후보군에서 제거됨");
 
         UpdateButtons();
     }
 
-    void OnClickRelease()
+    private void OnClickRelease()
     {
-        if (player == null) return;
+        if (player == null || currentMonster == null) return;
 
-        player.ownedMonsters.Remove(currentMonster);
-        MonsterRosterManager.Instance.InitializeRoster();  // UI 갱신
-        Close();
+        if (player.ownedMonsters.Remove(currentMonster))
+        {
+            Debug.Log($"{currentMonster.monsterData.monsterName} 방출됨");
+            MonsterRosterManager.Instance.InitializeRoster();  // UI 갱신
+            Close();
+        }
+        else
+        {
+            Debug.LogWarning("몬스터 방출 실패: 소유 몬스터 리스트에 없음");
+        }
     }
 }

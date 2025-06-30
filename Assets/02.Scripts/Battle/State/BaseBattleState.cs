@@ -1,7 +1,7 @@
 public abstract class BaseBattleState
 {
     protected BattleSystem battleSystem;
-
+    
     public BaseBattleState(BattleSystem system)
     {
         battleSystem = system;
