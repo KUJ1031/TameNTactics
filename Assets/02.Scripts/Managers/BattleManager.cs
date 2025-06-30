@@ -213,7 +213,8 @@ public class BattleManager : Singleton<BattleManager>
 
     public void InitializeTeams()
     {
-        enemyTeam = BattleTriggerManager.Instance.GetEnemyTeam();
+        var enemyInfoList = BattleTriggerManager.Instance.GetSerializedEnemyTeam();
+        enemyTeam = CreateMonstersFromSerializedInfo(enemyInfoList);
 
         if (EntryMonsters == null || enemyTeam == null)
         {
@@ -226,6 +227,30 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
         UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
     }
+
+    private List<Monster> CreateMonstersFromSerializedInfo(List<SerializableMonsterInfo> infoList)
+{
+    List<Monster> result = new();
+
+    foreach (var info in infoList)
+    {
+        var prefab = BattleTriggerManager.Instance.GetPrefabByData(info.monsterData);
+        if (prefab == null) continue;
+
+        var go = Instantiate(prefab); // 위치는 나중에 Spawner가 지정
+        var monster = go.GetComponent<Monster>();
+        if (monster == null) continue;
+
+        monster.monsterData = info.monsterData;
+        monster.SetLevel(info.level);
+        monster.LoadMonsterBaseStatData();
+        monster.TakeDamage(monster.MaxHp - info.curHp);
+
+        result.Add(monster);
+    }
+
+    return result;
+}
 
     public void CancelSelectedMonster()
     {
