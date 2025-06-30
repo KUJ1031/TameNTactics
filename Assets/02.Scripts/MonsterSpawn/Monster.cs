@@ -10,70 +10,53 @@ public class Monster : MonoBehaviour
 {
     [Header("몬스터 정보 데이터")]
     public MonsterData monsterData;
-
-    [Header("능력치")]
-    //읽기 전용 프로퍼티화
-    public int level;
-    public int Level
-    {
-        get { return level; }
-        set { level = value; }
-    }
-    public int maxHp;
-    public int curHp;
-    public int attack;
-    public int defense;
-    public int speed;
-    public int criticalChance;
-    public int maxExp;
-    public int curExp;
-    public int baseExpReward;
-    public int baseGoldReward;
     
-    [Header("배틀 리워드")]
-    public int expReward;
-    public int goldReward;
+    [Header("기본 정보")]
+    public string monsterName;
+    public int monsterID;
+    public MonsterType type;
+    public Personality personality;
+    
+    [field: Header("능력치")]
+    [field: SerializeField] public int Level { get; private set; }
+    [field: SerializeField] public int MaxHp { get; private set; }
+    [field: SerializeField] public int CurHp { get; private set; }
+    [field: SerializeField] public int Attack { get; private set; }
+    [field: SerializeField] public int Defense { get; private set;}
+    [field: SerializeField] public int Speed { get; private set; }
+    [field: SerializeField] public int CriticalChance { get; private set; }
+    [field: SerializeField] public int MaxExp { get; private set; }
+    [field: SerializeField] public int CurExp { get; private set; }
+    
+    [field: Header("배틀 리워드")]
+    [field: SerializeField] public int ExpReward { get; private set; }
+    [field: SerializeField] public int GoldReward { get; private set; }
 
     [Header("스킬 정보")]
     public List<SkillData> skills;
     
     [Header("UI 요소")]
-    public SpriteRenderer monsterSpriteRenderer;  // Image 대신 SpriteRenderer 사용
+    public Sprite monsterSpriteRenderer; // Image 대신 SpriteRenderer 사용
     public Text infoText;          // 몬스터 상세 정보 출력용
 
-    //몬스터 생성자
-    public Monster(MonsterData data)
+    private void Start()
     {
-        monsterData = data;
-
-        //디버그로 몬스터의 모든 정보를 전부 출력
-        Debug.Log($"[몬스터 생성] 이름: {monsterData.monsterName}, ID: {monsterData.monsterID}, 타입: {monsterData.type}, 성격: {monsterData.personality}");
-        Debug.Log($"[몬스터 능력치] 레벨: {monsterData.level}, 최대 HP: {monsterData.maxHp}, 현재 HP: {monsterData.curHp}, 공격력: {monsterData.attack}, 방어력: {monsterData.defense}, 스피드: {monsterData.speed}, 크리티컬 확률: {monsterData.criticalChance}");
-        Debug.Log($"[몬스터 배틀 리워드] 경험치: {monsterData.expReward}, 골드: {monsterData.goldReward}");
-        Debug.Log($"[몬스터 스킬 정보] 스킬 개수: {monsterData.skills.Count}");
-        foreach (var skill in monsterData.skills)
-        {
-            Debug.Log($" - 스킬 이름: {skill.skillName}, 타입: {skill.skillType}, 설명: {skill.description}");
-        }
-
+        ApplyMonsterData();
+        LoadMonsterBaseStatData();
     }
+    
     public void LoadMonsterBaseStatData()
     {
-        int appliedLevel = Level > 0 ? Level : monsterData.level;
-
-        level = appliedLevel;
-        maxHp = monsterData.maxHp;
-        curHp = monsterData.curHp;
-        attack = monsterData.attack;
-        defense = monsterData.defense;
-        speed = monsterData.speed;
-        criticalChance = monsterData.criticalChance;
-        maxExp = monsterData.maxExp;
-        curExp = monsterData.curExp;
-        baseExpReward = monsterData.baseExpReward;
-        baseGoldReward = monsterData.baseGoldReward;
-        expReward = monsterData.expReward;
-        goldReward = monsterData.goldReward;
+        MaxHp = monsterData.maxHp;
+        CurHp = 0;
+        Attack = monsterData.attack;
+        Defense = monsterData.defense;
+        Speed = monsterData.speed;
+        CriticalChance = monsterData.criticalChance;
+        MaxExp = monsterData.maxExp;
+        CurExp = 0;
+        ExpReward = monsterData.expReward;
+        GoldReward = monsterData.goldReward;
         skills = new List<SkillData>(monsterData.skills);
     }
 
@@ -91,7 +74,7 @@ public class Monster : MonoBehaviour
     public void ApplyMonsterData()
     {
         if (monsterSpriteRenderer != null)
-            monsterSpriteRenderer.sprite = monsterData.monsterImage;
+            monsterSpriteRenderer = monsterData.monsterImage;
 
         string info = GenerateMonsterInfo();
 
@@ -109,14 +92,14 @@ public class Monster : MonoBehaviour
     {
         StringBuilder sb = new StringBuilder();
 
-        sb.AppendLine($"<b>{monsterData.monsterName}</b>");
-        sb.AppendLine($"Type: {monsterData.type}");
-        sb.AppendLine($"Level: {level}");
-        sb.AppendLine($"HP: {curHp} / {maxHp}");
-        sb.AppendLine($"ATK: {attack}");
-        sb.AppendLine($"DEF: {defense}");
-        sb.AppendLine($"SPD: {speed}");
-        sb.AppendLine($"CRT: {criticalChance}");
+        sb.AppendLine($"<b>{monsterName}</b>");
+        sb.AppendLine($"Type: {type}");
+        sb.AppendLine($"Level: {Level}");
+        sb.AppendLine($"HP: {CurHp} / {MaxHp}");
+        sb.AppendLine($"ATK: {Attack}");
+        sb.AppendLine($"DEF: {Defense}");
+        sb.AppendLine($"SPD: {Speed}");
+        sb.AppendLine($"CRT: {CriticalChance}");
 
         // 스킬 정보 (주석 처리됨)
         if (skills != null && skills.Count > 0)
@@ -131,5 +114,35 @@ public class Monster : MonoBehaviour
         }
 
         return sb.ToString();
+    }
+    
+    public void AddExp(int expAmount)
+    {
+        CurExp += expAmount;
+
+        while (CurExp >= MaxExp && Level < 30)
+        {
+            CurExp -= MaxExp;
+            Level++;
+            RecalculateStats();
+            CurHp = MaxHp; // 레벨업 시 체력 회복
+        }
+    }
+    
+    public void RecalculateStats()
+    {
+        int levelMinusOne = Level - 1;
+
+        MaxHp = MaxHp + 12 * levelMinusOne;
+        Attack = Attack + 3 * levelMinusOne;
+        Defense = Defense + 3 * levelMinusOne;
+        Speed = Speed + 3 * levelMinusOne;
+        MaxExp = MaxExp + 25 * levelMinusOne;
+        ExpReward = ExpReward + 25 * levelMinusOne;
+        GoldReward = GoldReward + 30 * levelMinusOne;
+
+        // 만약 curHp가 maxHp보다 크다면 맞춰줌
+        if (CurHp > MaxHp)
+            CurHp = MaxHp;
     }
 }
