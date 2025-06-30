@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,6 +11,9 @@ public class BattleSelectPresent : MonoBehaviour
     private List<Monster> playerMonsters = new List<Monster>();
     private int currentIndex = 0;
     private bool isSkillPanelOpen = false;
+
+    public event Action OnAttackModeEnabled;
+    public event Action OnAttackModeDisabled;
 
     void Start()
     {
@@ -79,12 +83,14 @@ public class BattleSelectPresent : MonoBehaviour
     {
         isSkillPanelOpen = true;
         battleSelectView.ShowSkillPanel();
+        OnAttackModeEnabled?.Invoke();
     }
 
     private void CloseSkillPanel()
     {
         isSkillPanelOpen = false;
         battleSelectView.HideSkillPanel();
+        OnAttackModeDisabled?.Invoke();
     }
 
     private void InitializePlayerMonsters()
