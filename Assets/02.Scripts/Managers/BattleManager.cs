@@ -166,6 +166,19 @@ public class BattleManager : Singleton<BattleManager>
         // 전투 종료 UI 호출
     }
 
+    // private void ShowSkillSelectionUI(List<SkillData> skills)
+    // {
+    //     // 스킬 선택 UI 필요 합니당!
+    //     // 스킬 이름, 설명 등
+    // }
+    //
+    // // 타겟을 나타내줘요!
+    // private void ShowTargetSelectionUI(List<MonsterData> targets)
+    // {
+    //     // 타겟 선택 영역 표시 필요해욤!
+    // }
+
+
     public void InitializeUltimateSkill(List<Monster> team)
     {
         foreach (var monster in team)
