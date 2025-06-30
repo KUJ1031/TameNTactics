@@ -22,15 +22,15 @@ public class MonsterRosterManager : MonoBehaviour
     /// <summary>
     /// 플레이어가 소유한 몬스터 리스트를 가져옵니다.
     /// </summary>
-    private List<MonsterData> GetOwnedMonsters()
+    private List<Monster> GetOwnedMonsters()
     {
         var player = PlayerManager.Instance?.player;
         if (player == null)
         {
             Debug.LogWarning("플레이어 데이터가 없습니다.");
-            return new List<MonsterData>();
+            return new List<Monster>();
         }
-        return player.ownedMonsters;
+        return player.ownedMonsters; // List<Monster>로 변경된 것으로 가정
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class MonsterRosterManager : MonoBehaviour
     /// 몬스터 추가 (예: 게임 데이터에서 불러올 때)
     /// 플레이어의 ownedMonsters에 추가 후 UI 갱신
     /// </summary>
-    public void AddMonster(MonsterData monster)
+    public void AddMonster(Monster monster)
     {
         var player = PlayerManager.Instance?.player;
         if (player == null) return;
@@ -71,7 +71,7 @@ public class MonsterRosterManager : MonoBehaviour
     /// 몬스터 제거 (방출)
     /// 플레이어의 ownedMonsters에서 제거 후 출전 후보군에서도 제거
     /// </summary>
-    public void RemoveMonster(MonsterData monster)
+    public void RemoveMonster(Monster monster)
     {
         var player = PlayerManager.Instance?.player;
         if (player == null) return;
@@ -90,7 +90,7 @@ public class MonsterRosterManager : MonoBehaviour
     /// <summary>
     /// 출전 후보군에 등록 요청 (EntryManager의 AddCandidate 호출)
     /// </summary>
-    public bool RequestAddToEntryCandidates(MonsterData monster)
+    public bool RequestAddToEntryCandidates(Monster monster)
     {
         return EntryManager.Instance.ToggleCandidate(monster);
     }

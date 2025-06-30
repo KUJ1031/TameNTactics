@@ -1406,8 +1406,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1139607594}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &693450334
@@ -1450,11 +1449,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ownedMonsters:
-  - {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
-  - {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}
-  - {fileID: 11400000, guid: 468187f0dfc5ec9428591245ba311912, type: 2}
-  - {fileID: 11400000, guid: e5bc2c82e7c46b741b5a33a82f0db101, type: 2}
-  - {fileID: 11400000, guid: f6adb78a362b91040a16465371d4b0f3, type: 2}
+  - {fileID: 2502464987828966512, guid: 15fd544d254d37946aca8c237a5f6a06, type: 3}
+  - {fileID: 421921623601730281, guid: 14e49f082e86b0948b200489e39e64c7, type: 3}
+  - {fileID: 5728326756648808467, guid: c22eeff7b1823164fb34295a95cc44ee, type: 3}
+  - {fileID: 2502464987828966512, guid: 1a1d9d17acb2c1e42bf72b2988b238d0, type: 3}
+  - {fileID: 2502464987828966512, guid: 0d1f3f200a7b2fe4f86a45be78ff8153, type: 3}
+  - {fileID: 2502464987828966512, guid: 61d1ac5627fc8054ca5a4c40a79e406a, type: 3}
   entryMonsters: []
   battleEntry: []
   benchEntry: []
@@ -3375,7 +3375,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 693450333}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1139607595
 MonoBehaviour:
@@ -10247,10 +10247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ed28ec5b8fa1f41a8c0f0bd34e4574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTeam: []
-  benchMonsters: []
   enemyTeam: []
-  allPlayerMonsters: []
   selectedPlayerMonster: {fileID: 0}
   selectedSkill: {fileID: 0}
   battleEnded: 0
@@ -10364,6 +10361,7 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1139607594}
   - {fileID: 821627571}
   - {fileID: 693450333}
   - {fileID: 1498729166}

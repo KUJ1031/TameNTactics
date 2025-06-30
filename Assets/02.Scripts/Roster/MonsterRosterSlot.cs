@@ -8,20 +8,20 @@ public class MonsterRosterSlot : MonoBehaviour, IPointerClickHandler
     [Header("UI 연결")]
     public Image monsterImage;
 
-    private MonsterData monsterData;
+    private Monster monster; // MonsterData 대신 Monster
     public bool IsEmpty { get; private set; } = true;
 
-    public void SetData(MonsterData data)
+    public void SetData(Monster data)
     {
-        monsterData = data;
-        monsterImage.sprite = data.monsterImage;
+        monster = data;
+        monsterImage.sprite = data.monsterData.monsterImage; // Monster 안의 MonsterData 접근
         monsterImage.enabled = true;
         IsEmpty = false;
     }
 
     public void SetEmpty()
     {
-        monsterData = null;
+        monster = null;
         monsterImage.sprite = null;
         monsterImage.enabled = false;
         IsEmpty = true;
@@ -33,7 +33,8 @@ public class MonsterRosterSlot : MonoBehaviour, IPointerClickHandler
 
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            MonsterRosterPopup.Instance.Open(monsterData);
+            // MonsterRosterPopup도 Monster를 받도록 수정 필요
+            MonsterRosterPopup.Instance.Open(monster);
         }
     }
 }

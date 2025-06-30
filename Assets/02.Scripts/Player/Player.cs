@@ -5,16 +5,16 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("나의 전체 몬스터")]
-    public List<MonsterData> ownedMonsters = new List<MonsterData>();
+    public List<Monster> ownedMonsters = new();
 
     [Header("엔트리 등록 몬스터 (최대 5)")]
-    public List<MonsterData> entryMonsters = new List<MonsterData>();
+    public List<Monster> entryMonsters = new();
 
     [Header("전투 출전 몬스터 (최대 3)")]
-    public List<MonsterData> battleEntry = new List<MonsterData>();
+    public List<Monster> battleEntry = new();
 
     [Header("벤치 몬스터")]
-    public List<MonsterData> benchEntry = new List<MonsterData>();
+    public List<Monster> benchEntry = new();
 
     public int maxEntryCount = 5;
     public int maxBattleCount = 3;
@@ -35,59 +35,59 @@ public class Player : MonoBehaviour
     public Dictionary<int, bool> playerPuzzleClearCheck = new Dictionary<int, bool>();
 
     [Header("설정 정보")]
-    public Dictionary<string, string> playerKeySetting = new Dictionary<string, string>();
+    public Dictionary<string, string> playerKeySetting = new();
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     // 몬스터 로스터에 추가
-    public bool AddOwnedMonster(MonsterData monster)
+    public bool AddOwnedMonster(MonsterData monsterData)
     {
-        if (ownedMonsters.Contains(monster)) return false;
+        if (ownedMonsters.Exists(m => m.monsterData == monsterData))
+            return false;
 
-        ownedMonsters.Add(monster);
+        ownedMonsters.Add(new Monster(monsterData));
         return true;
     }
 
-    // 몬스터 로스터에서 제거
-    public bool RealeseMonster(MonsterData monster)
+    // 로스터에서 제거
+    public bool ReleaseMonster(Monster monster)
     {
         if (!ownedMonsters.Contains(monster)) return false;
 
-        // 엔트리에 존재하면 제거
         if (entryMonsters.Contains(monster))
-        {
-            ToggleEntry(monster); // 내부적으로 battleEntry, benchEntry 제거까지 수행
-        }
+            ToggleEntry(monster);
 
-        // 최종적으로 로스터에서 제거
         ownedMonsters.Remove(monster);
         return true;
     }
 
-    // 엔트리 토글 (추가/제거)
-    public bool ToggleEntry(MonsterData monster)
+    // 엔트리 토글
+    public bool ToggleEntry(Monster monster)
     {
         if (!ownedMonsters.Contains(monster)) return false;
 
         if (entryMonsters.Contains(monster))
         {
-            // 제거
             entryMonsters.Remove(monster);
-            battleEntry.Remove(monster); // 출전에서도 제거
+            battleEntry.Remove(monster);
             UpdateBenchEntry();
-            return false; // 제거됨
+            return false;
         }
         else
         {
-            // 추가
             if (entryMonsters.Count >= maxEntryCount) return false;
 
             entryMonsters.Add(monster);
             UpdateBenchEntry();
-            return true; // 추가됨
+            return true;
         }
     }
 
-    // 출전 팀 등록 (최대 3명)
-    public bool ToggleBattleEntry(MonsterData monster)
+    // 출전 토글
+    public bool ToggleBattleEntry(Monster monster)
     {
         if (!entryMonsters.Contains(monster)) return false;
 
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 벤치 리스트 갱신 (entryMonsters 중 battleEntry 제외한 것들)
+    // 벤치 갱신
     private void UpdateBenchEntry()
     {
         benchEntry.Clear();
@@ -119,76 +119,85 @@ public class Player : MonoBehaviour
     }
 
     // 출전 상태 확인
-    public bool IsInEntry(MonsterData monster) => entryMonsters.Contains(monster);
-    public bool IsInBattle(MonsterData monster) => battleEntry.Contains(monster);
+    public bool IsInEntry(Monster monster) => entryMonsters.Contains(monster);
+    public bool IsInBattle(Monster monster) => battleEntry.Contains(monster);
+
+    // MonsterData 기준으로 검색할 때 사용
+    public Monster FindMonsterByData(MonsterData data)
+    {
+        return ownedMonsters.Find(m => m.monsterData == data);
+    }
 
     // 아이템 추가
     public void AddItem(ItemData item)
     {
-        // 아이템을 인벤토리에 추가하는 기능
+        items.Add(item);
     }
 
     // 아이템 제거
     public void RemoveItem(ItemData item)
     {
-        // 인벤토리에서 아이템을 제거하는 기능
+        items.Remove(item);
     }
 
     // 골드 추가
     public void AddGold(int amount)
     {
-        // 플레이어의 골드를 증가시키는 기능
+        gold += amount;
     }
 
     // 골드 사용
     public bool UseGold(int amount)
     {
-        // 골드를 사용하고, 사용 성공 여부 반환
-        return false;
+        if (gold < amount) return false;
+        gold -= amount;
+        return true;
     }
 
     // 이름 설정
     public bool SetName(string name)
     {
-        // 플레이어 이름을 설정하는 기능
-        return false;
+        if (string.IsNullOrEmpty(name)) return false;
+        playerName = name;
+        return true;
     }
 
-    // 마지막 게임 시간 설정
     public void SetPlayerLastGameTime(string time)
     {
-        // 마지막 플레이 시간을 설정하는 기능
+        if (int.TryParse(time, out var result))
+            playerLastGameTime = result;
     }
 
-    // 마지막 위치 저장
     public void SetPlayerLastPosition(string pos)
     {
-        // 마지막 플레이 위치를 저장하는 기능
+        var split = pos.Split(',');
+        if (split.Length != 3) return;
+
+        if (float.TryParse(split[0], out float x) &&
+            float.TryParse(split[1], out float y) &&
+            float.TryParse(split[2], out float z))
+        {
+            playerLastPosition = new Vector3(x, y, z);
+        }
     }
 
-    // 보스 클리어 체크 설정
     public void SetplayerBossClearCheck(int bossId)
     {
-        // 해당 보스 클리어 여부를 true로 설정
+        playerBossClearCheck[bossId] = true;
     }
 
-    // 퀘스트 클리어 체크 설정
     public void SetplayerQuestClearCheck(int questId)
     {
-        // 해당 퀘스트 클리어 여부를 true로 설정
+        playerQuestClearCheck[questId] = true;
     }
 
-    // 퍼즐 클리어 체크 설정
     public void SetplayerPuzzleClearCheck(int puzzleId)
     {
-        // 해당 퍼즐 클리어 여부를 true로 설정
+        playerPuzzleClearCheck[puzzleId] = true;
     }
 
-    // 키 설정 변경
     public void SetplayerKeySetting(string keyName, string keyValue)
     {
-        // 해당 키 설정 값을 변경
+        playerKeySetting[keyName] = keyValue;
     }
-
-
 }

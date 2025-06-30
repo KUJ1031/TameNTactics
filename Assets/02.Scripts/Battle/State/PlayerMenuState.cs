@@ -1,16 +1,17 @@
 public class PlayerMenuState : BaseBattleState
 {
     public PlayerMenuState(BattleSystem system) : base(system) {}
-
+    
     public override void Enter()
     {
         battleSystem.battleManager.StartBattle();
-        // 메뉴 UI 띄우기
     }
 
     public override void Execute()
     {
-        // 입력 대기 및 버튼 선택 처리(여기서 아래 메서드 호출 하는 식)
+        // todo 입력 대기 버튼, 아래 메서드 호출해서 이동
+        // 클릭 혹은 선택
+        
     }
 
     public void OnAttackSelected()
@@ -35,6 +36,6 @@ public class PlayerMenuState : BaseBattleState
 
     public override void Exit()
     {
-        // 메뉴 UI 숨기기
+        // todo 메뉴 UI 숨기기
     }
 }

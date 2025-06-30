@@ -20,6 +20,7 @@ public class EntryManager : Singleton<EntryManager>
     public void InitializeAllSlots()
     {
         Debug.Log("[EntryManager] InitializeAllSlots 호출됨");
+
         foreach (Transform child in contentPanel)
             Destroy(child.gameObject);
 
@@ -33,7 +34,7 @@ public class EntryManager : Singleton<EntryManager>
         }
     }
 
-    public void ToggleEntry(MonsterData monster)
+    public void ToggleEntry(Monster monster)
     {
         Debug.Log("[EntryManager] ToggleEntry 호출됨");
         var player = PlayerManager.Instance.player;
@@ -60,11 +61,12 @@ public class EntryManager : Singleton<EntryManager>
 
             player.ToggleBattleEntry(monster); // 등록
         }
+
         InitializeAllSlots();
         OnEntryChanged?.Invoke();
     }
 
-    public bool IsInEntry(MonsterData monster)
+    public bool IsInEntry(Monster monster)
     {
         return PlayerManager.Instance.player.IsInBattle(monster);
     }
@@ -72,7 +74,7 @@ public class EntryManager : Singleton<EntryManager>
     [Header("출전 후보 최대 수 (최대 5)")]
     public int maxCandidateCount = 5;
 
-    public bool ToggleCandidate(MonsterData monster)
+    public bool ToggleCandidate(Monster monster)
     {
         var player = PlayerManager.Instance.player;
 
@@ -81,13 +83,9 @@ public class EntryManager : Singleton<EntryManager>
 
         bool result = player.ToggleEntry(monster);
 
-        if (result) // 추가 성공
+        if (result || !player.entryMonsters.Contains(monster))
         {
-            InitializeAllSlots();  // UI 갱신
-        }
-        else if (!player.entryMonsters.Contains(monster)) // 제거된 경우
-        {
-            InitializeAllSlots();  // 제거 후에도 UI 갱신 필요
+            InitializeAllSlots(); // 추가 또는 제거 시 모두 갱신
         }
 
         OnEntryChanged?.Invoke();
