@@ -50,7 +50,7 @@ public class MonsterFactory : MonoBehaviour
                 if (spawnPos != Vector3.zero)
                 {
                     //위치에 몬스터 생성
-                    GameObject monsterGO = Instantiate(monsterPrefab, spawnPos, Quaternion.identity);
+                    GameObject monsterGO = Instantiate(monsterPrefab, spawnPos, Quaternion.identity,transform);
                     usedPositions.Add(spawnPos);
 
                     //만들어진 기본몬스터의 데이터를  monsterList안의 값으로 변경

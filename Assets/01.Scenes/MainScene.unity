@@ -10134,6 +10134,22 @@ PrefabInstance:
       propertyPath: monsterList.Array.data[2]
       value: 
       objectReference: {fileID: 7541708283098629720, guid: 2783e96e947dd264684bf986ea946009, type: 3}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: monsterDataList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: monsterDataList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: monsterDataList.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}
+    - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
+      propertyPath: monsterDataList.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 468187f0dfc5ec9428591245ba311912, type: 2}
     - target: {fileID: 5899112251595952466, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
       propertyPath: m_Name
       value: MonsterFactory
