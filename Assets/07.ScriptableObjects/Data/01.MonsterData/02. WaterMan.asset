@@ -19,14 +19,14 @@ MonoBehaviour:
   captureCount: 0
   type: 1
   personality: 0
-  maxHp: 15
-  attack: 5
-  defense: 15
-  speed: 5
-  criticalChance: 0
-  maxExp: 0
-  expReward: 0
-  goldReward: 0
+  maxHp: 120
+  attack: 10
+  defense: 8
+  speed: 10
+  criticalChance: 5
+  maxExp: 20
+  expReward: 5
+  goldReward: 100
   skills:
   - {fileID: 11400000, guid: 798c79a70a8646b4d853a8a4dc80a85c, type: 2}
   - {fileID: 11400000, guid: 068c64dfc2ac864468d48659e2af284b, type: 2}
