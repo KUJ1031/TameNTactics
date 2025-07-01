@@ -100,21 +100,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aae53883602f3b4b83b5047cd42e511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 0}
-  level: 0
-  maxHp: 0
-  curHp: 0
-  attack: 0
-  defense: 0
-  speed: 0
-  criticalChance: 0
-  maxExp: 0
-  curExp: 0
-  baseExpReward: 0
-  baseGoldReward: 0
-  expReward: 0
-  goldReward: 0
-  skills: []
+  monsterData: {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
+  monsterName: testMonster
+  monsterID: 0
+  type: 0
+  personality: 0
+  <Level>k__BackingField: 1
+  <MaxHp>k__BackingField: 2
+  <CurHp>k__BackingField: 2
+  <Attack>k__BackingField: 3
+  <Defense>k__BackingField: 3
+  <Speed>k__BackingField: 4
+  <CriticalChance>k__BackingField: 4
+  <MaxExp>k__BackingField: 5
+  <CurExp>k__BackingField: 4
+  <ExpReward>k__BackingField: 2
+  <GoldReward>k__BackingField: 2
+  skills:
+  - {fileID: 11400000, guid: 798c79a70a8646b4d853a8a4dc80a85c, type: 2}
+  - {fileID: 11400000, guid: f566a01646ea1f14583fb66a0155f2fc, type: 2}
+  - {fileID: 11400000, guid: 068c64dfc2ac864468d48659e2af284b, type: 2}
   monsterSpriteRenderer: {fileID: 2426422173835833499}
   infoText: {fileID: 0}
 --- !u!61 &1101448352551092586

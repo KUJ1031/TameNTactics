@@ -40,17 +40,11 @@ public class Monster : MonoBehaviour
     public SpriteRenderer monsterSpriteRenderer; // Image 대신 SpriteRenderer 사용
     public Text infoText;          // 몬스터 상세 정보 출력용
     
-    private void Awake()
-    {
-        ApplyMonsterData();
-        LoadMonsterBaseStatData();
-    }
-    
-    public void LoadMonsterBaseStatData()
+    public void Init()
     {
       //  Level = 1;
         MaxHp = monsterData.maxHp;
-        CurHp = 0;
+        CurHp = MaxHp;
         Attack = monsterData.attack;
         Defense = monsterData.defense;
         Speed = monsterData.speed;
@@ -61,6 +55,83 @@ public class Monster : MonoBehaviour
         GoldReward = monsterData.goldReward;
         skills = new List<SkillData>(monsterData.skills);
     }
+
+    //몬스터 데이터로 초기화
+    public void SetMonster(Monster newMonster)
+    {
+        if (newMonster == null)
+        {
+            Debug.LogError("SetMonster: 복사할 sourceMonster가 null입니다.");
+            return;
+        }
+        //몬스터 정보 데이터
+        monsterData = newMonster.monsterData;
+
+        //기본 정보
+        monsterName = newMonster.monsterName;
+        monsterID = newMonster.monsterID;
+        type = newMonster.type;
+        personality = newMonster.personality;
+
+        //능력치
+        Level = newMonster.Level;
+        MaxHp = newMonster.MaxHp;
+        CurHp = newMonster.CurHp;
+        Attack = newMonster.Attack;
+        Defense = newMonster.Defense;
+        Speed = newMonster.Speed;
+        CriticalChance = newMonster.CriticalChance;
+        MaxExp = newMonster.MaxExp;
+        CurExp = newMonster.CurExp;
+
+        //배틀 리워드
+        ExpReward = newMonster.ExpReward;
+        GoldReward = newMonster.GoldReward;
+        
+        //스킬
+        if (newMonster.skills != null)
+        {
+            skills = new List<SkillData>(newMonster.skills);
+        }
+        else
+        {
+            skills = new List<SkillData>();
+        }
+        //ApplyMonsterData();
+    }
+
+    //몬스터데이터로 초기화
+    public void SetMonsterData(MonsterData data)
+    {
+        if (data == null)
+        {
+            return;
+        }
+
+        monsterData = data;
+
+        monsterName = data.monsterName;
+        monsterID = data.monsterID;
+        type = data.type;
+        personality = data.personality;
+
+        Level = 1; // 기본값
+
+        MaxHp = data.maxHp;
+        CurHp = MaxHp;
+        Attack = data.attack;
+        Defense = data.defense;
+        Speed = data.speed;
+        CriticalChance = data.criticalChance;
+        MaxExp = data.maxExp;
+        CurExp = 0;
+
+        ExpReward = data.expReward;
+        GoldReward = data.goldReward;
+
+        skills = new List<SkillData>(data.skills);
+    }
+
 
     /// <summary>
     /// 외부에서 이 몬스터의 데이터를 가져갈 수 있도록 제공
