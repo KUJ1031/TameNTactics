@@ -4868,10 +4868,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player:
-    ownedMonsters: []
-    entryMonsters: []
-    battleEntry: []
-    benchEntry: []
     maxEntryCount: 5
     maxBattleCount: 3
     items: []
@@ -4883,9 +4879,9 @@ MonoBehaviour:
   playerController: {fileID: 1474460494349215163, guid: c04c1bc6bb08e2b42bf5e83c8ae464c9, type: 3}
   playerPrefab: {fileID: 4335299216011354816, guid: c04c1bc6bb08e2b42bf5e83c8ae464c9, type: 3}
   testMonsterList:
-  - {fileID: 7541708283098629720, guid: a9e095c01c527b649ad940f6dd36578d, type: 3}
-  - {fileID: 7541708283098629720, guid: 60e1fb82b20201341a51e9c2fdb42e72, type: 3}
-  - {fileID: 7541708283098629720, guid: 2783e96e947dd264684bf986ea946009, type: 3}
+  - {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
+  - {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}
+  - {fileID: 11400000, guid: 468187f0dfc5ec9428591245ba311912, type: 2}
 --- !u!1 &1960627704
 GameObject:
   m_ObjectHideFlags: 0
@@ -10010,8 +10006,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ed28ec5b8fa1f41a8c0f0bd34e4574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTeam: []
-  selectedPlayerMonster: {fileID: 0}
   selectedSkill: {fileID: 0}
   battleEnded: 0
 --- !u!1001 &978610560738400586
@@ -10125,15 +10119,15 @@ PrefabInstance:
     - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
       propertyPath: monsterList.Array.data[0]
       value: 
-      objectReference: {fileID: 7541708283098629720, guid: a9e095c01c527b649ad940f6dd36578d, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
       propertyPath: monsterList.Array.data[1]
       value: 
-      objectReference: {fileID: 7541708283098629720, guid: 60e1fb82b20201341a51e9c2fdb42e72, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
       propertyPath: monsterList.Array.data[2]
       value: 
-      objectReference: {fileID: 7541708283098629720, guid: 2783e96e947dd264684bf986ea946009, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4603431086874568705, guid: 14004554f24c21e42b86a45cdf14db17, type: 3}
       propertyPath: monsterDataList.Array.size
       value: 3

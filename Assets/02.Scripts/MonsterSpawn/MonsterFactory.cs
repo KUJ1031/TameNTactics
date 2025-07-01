@@ -53,16 +53,20 @@ public class MonsterFactory : MonoBehaviour
                     GameObject monsterGO = Instantiate(monsterPrefab, spawnPos, Quaternion.identity,transform);
                     usedPositions.Add(spawnPos);
 
-                    //만들어진 기본몬스터의 데이터를  monsterList안의 값으로 변경
-                    Monster newMonster = monsterGO.GetComponent<Monster>();
+                    //만들어진 기본몬스터의 데이터를 monsterList안의 값으로 변경
+                    MonsterCharacter newMonster = monsterGO.GetComponent<MonsterCharacter>();
                     if (monsterData != null)
-                    {
-                        newMonster.SetMonsterData(monsterData);
-
+                    {   
+                        //새 Monster 데이터 생성
+                        Monster m = new Monster();
                         int randomLevel = Random.Range(minLevel, maxLevel + 1);
-                        newMonster.SetLevel(randomLevel); // 레벨 설정 메서드 호출
-                        // monster.monsterData.level = randomLevel; // 혹시 Stat 초기화할 때 사용한다면
-                        // monster.LoadMonsterBaseStatData();       // level 반영된 Stat 적용
+
+                        //생성된 Monster에 데이터,레벨 적용
+                        m.SetMonsterData(monsterData);
+                        m.SetLevel(randomLevel);
+                        
+                        //만들어진 몬스터에 Monster데이터 추가
+                        newMonster.Init(m);
                     }
 
                     // 이동 영역 설정
@@ -72,7 +76,7 @@ public class MonsterFactory : MonoBehaviour
                         mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
                     }
 
-                    Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {newMonster.Level}");
+                    Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {newMonster.monster.Level}");
                 }
                 else { Debug.Log("몬스터 생성 실패 : Vector3.zero"); }
             }
@@ -118,18 +122,15 @@ public class MonsterFactory : MonoBehaviour
             int randomMonster = Random.Range(0, monsterDataList.Count);
 
             //몬스터 클래스 생성
-            GameObject dummy = new GameObject();
-            Monster m = dummy.AddComponent<Monster>();
+            Monster m = new Monster();
             m.SetMonsterData(monsterDataList[randomMonster]);
-         
             selectedTeam.Add(m);
-            Destroy(dummy);
         }
 
         //레벨설정
         foreach (Monster m in selectedTeam)
         {
-            m.Level = Random.Range(minLevel, maxLevel + 1);
+            m.SetLevel(Random.Range(minLevel, maxLevel + 1));
         }
 
         return selectedTeam;
