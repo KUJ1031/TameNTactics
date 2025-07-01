@@ -74,8 +74,8 @@ public class BattleSelectPresent : MonoBehaviour
 
     private void MoveSelectMonster(Monster monster)
     {
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(monster.transform.position);
-        selectMonsterImage.position = screenPos;
+        //Vector3 screenPos = Camera.main.WorldToScreenPoint(monster.transform.position);
+        //selectMonsterImage.position = screenPos;
         selectMonsterImage.gameObject.SetActive(true);
     }
 

@@ -33,8 +33,7 @@ public class SpawnBattleAllMonsters : MonoBehaviour
             GameObject enemyMonster = Instantiate(monsterPrefab, spawnPointTransform);
  
             //객체 값 수정
-            Monster monsterScript = enemyMonster.GetComponent<Monster>();
-            monsterScript.SetMonster(monsterList[i]);
+            enemyMonster.GetComponent<MonsterCharacter>().Init(monsterList[i]);
         }
     }
 }
