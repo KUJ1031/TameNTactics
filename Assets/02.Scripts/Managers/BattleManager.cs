@@ -148,12 +148,17 @@ public class BattleManager : Singleton<BattleManager>
         IncreaseUltimateCostAll(enemyTeam);
     }
 
-    private bool IsTeamDead(List<Monster> team)
+    public bool IsTeamDead(List<Monster> team)
     {
-        return team.All(m => m.CurHp <= 0);
+        if (team.Count == 0 || team.All(m => m.CurHp <= 0))
+        {
+            return true;
+        }
+        
+        return false;
     }
 
-    private void EndBattle(bool playerWin)
+    public void EndBattle(bool playerWin)
     {
         battleEnded = true;
         Debug.Log(playerWin ? "승리!" : "패배!");
@@ -268,4 +273,6 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log(success ? "도망 성공!" : "도망 실패!");
         return success;
     }
+    
+    
 }
