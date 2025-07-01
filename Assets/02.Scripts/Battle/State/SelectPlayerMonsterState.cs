@@ -1,17 +1,30 @@
 using UnityEngine.UIElements;
+using UnityEngine;
 
 public class SelectPlayerMonsterState : BaseBattleState
 {
     public SelectPlayerMonsterState(BattleSystem system) : base(system) {}
-
+    
     public override void Enter()
     {
-        // todo 플레이어 몬스터를 고를수 있는 상태
+        // todo 플레이어 몬스터 선택 UI 띄우기
+        
+        Debug.Log("플레이어 몬스터 선택 상태로 진입했습니다. 몬스터를 선택하세요.");
     }
-
     public override void Execute()
     {
-        // todo 선택한 부분 빛나면서 고르는거 대기 상태
-        // todo 버튼 클릭을 받으면
+        // todo 방향키 혹은 마우스 위에 올려놓을 시 빛나면서 고르는거 대기 상태
+        UIManager.Instance.battleUIManager.HandleMouseClick();
+    }
+
+    public void OnMonsterSelected(Monster monster)
+    {
+        BattleManager.Instance.SelectPlayerMonster(monster);
+        battleSystem.ChangeState(new SelectSkillState(battleSystem));
+    }
+
+    public void OnCancelSelected()
+    {
+        battleSystem.ChangeState(new PlayerMenuState(battleSystem));
     }
 }
