@@ -4,14 +4,14 @@ public class PlayerMenuState : BaseBattleState
     
     public override void Enter()
     {
-        battleSystem.battleManager.StartBattle();
+        // todo 배틀 기본 화면 띄우기(행동 고르는 메뉴)
+        BattleManager.Instance.StartBattle();
     }
 
     public override void Execute()
     {
-        // todo 입력 대기 버튼, 아래 메서드 호출해서 이동
-        // 클릭 혹은 선택
-        
+        // todo 메뉴 클릭 혹은 방향키로 고르기
+        // todo 몬스터 애니메이션 idle 상태(기본 자세)
     }
 
     public void OnAttackSelected()
