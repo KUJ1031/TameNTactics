@@ -14,10 +14,11 @@ public class BattleManager : Singleton<BattleManager>
     public SkillData selectedSkill;
 
     public bool battleEnded = false;
-
+    
     public void StartBattle()
     {
        // InitializeTeams();
+       // 전투 시작시 초기화 되는 것들 적용 해야 되는것들 추가
         InitializeUltimateSkill(EntryMonsters);
         InitializeUltimateSkill(enemyTeam);
     }
@@ -147,12 +148,17 @@ public class BattleManager : Singleton<BattleManager>
         IncreaseUltimateCostAll(enemyTeam);
     }
 
-    private bool IsTeamDead(List<Monster> team)
+    public bool IsTeamDead(List<Monster> team)
     {
-        return team.All(m => m.CurHp <= 0);
+        if (team.Count == 0 || team.All(m => m.CurHp <= 0))
+        {
+            return true;
+        }
+        
+        return false;
     }
 
-    private void EndBattle(bool playerWin)
+    public void EndBattle(bool playerWin)
     {
         battleEnded = true;
         Debug.Log(playerWin ? "승리!" : "패배!");
@@ -267,4 +273,6 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log(success ? "도망 성공!" : "도망 실패!");
         return success;
     }
+    
+    
 }

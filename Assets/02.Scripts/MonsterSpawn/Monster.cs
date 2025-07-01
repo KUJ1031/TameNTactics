@@ -125,13 +125,13 @@ public class Monster
     {
         int levelMinusOne = Level - 1;
 
-        MaxHp = MaxHp + 12 * levelMinusOne;
-        Attack = Attack + 3 * levelMinusOne;
-        Defense = Defense + 3 * levelMinusOne;
-        Speed = Speed + 3 * levelMinusOne;
-        MaxExp = MaxExp + 25 * levelMinusOne;
-        ExpReward = ExpReward + 25 * levelMinusOne;
-        GoldReward = GoldReward + 30 * levelMinusOne;
+        MaxHp = monsterData.maxHp + 12 * levelMinusOne;
+        Attack = monsterData.attack + 3 * levelMinusOne;
+        Defense = monsterData.defense + 3 * levelMinusOne;
+        Speed = monsterData.speed + 3 * levelMinusOne;
+        MaxExp = monsterData.maxExp + 25 * levelMinusOne;
+        ExpReward = monsterData.expReward + 25 * levelMinusOne;
+        GoldReward = monsterData.goldReward + 30 * levelMinusOne;
 
         // 만약 curHp가 maxHp보다 크다면 맞춰줌
         if (CurHp > MaxHp)

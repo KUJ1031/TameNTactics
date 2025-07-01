@@ -14,6 +14,8 @@ public static class EnemyAIController
     // 조건에 따른 공격을 실행할 몬스터 자동 선택!
     public static EnemyAction DecideAction(List<Monster> actors, List<Monster> targetMonsters)
     {
+        if (actors == null || targetMonsters == null) return null;
+        
         // 1. 궁극기 사용 가능한 몬스터가 있다면 우선
         foreach (var enemy in actors)
         {
