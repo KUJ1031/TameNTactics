@@ -5,15 +5,16 @@ public class PlayerBattleTrigger : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //충돌한 객체 저장
-        MonsterFactory factory;
-        Monster monster;
-
-        factory = other.GetComponentInParent<MonsterFactory>();
-        monster = other.GetComponent<Monster>();
-
+        //충돌 객체 정보 가지고오기
+        MonsterFactory factory = other.GetComponentInParent<MonsterFactory>();
         if (factory == null) return;
+        
+        MonsterCharacter character = other.GetComponent<MonsterCharacter>();
+        if (character == null) return;
+        
+        Monster monster = character.monster;
         if (monster == null) return;
+
 
         // 적 팀 구성
         List<Monster> enemyTeam = factory.GetRandomEnemyTeam(monster);

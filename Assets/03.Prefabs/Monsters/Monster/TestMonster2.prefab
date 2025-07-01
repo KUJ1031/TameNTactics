@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 9156584988526063555}
   - component: {fileID: 2426422173835833499}
-  - component: {fileID: 7541708283098629720}
   - component: {fileID: 1101448352551092586}
   - component: {fileID: 4940315319504723348}
   - component: {fileID: 8645548347242120174}
+  - component: {fileID: -8668943117081542148}
   m_Layer: 0
   m_Name: TestMonster2
   m_TagString: Untagged
@@ -88,40 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7541708283098629720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4522283486932235510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3aae53883602f3b4b83b5047cd42e511, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 468187f0dfc5ec9428591245ba311912, type: 2}
-  monsterName: testMonster
-  monsterID: 0
-  type: 2
-  personality: 0
-  <Level>k__BackingField: 1
-  <MaxHp>k__BackingField: 2
-  <CurHp>k__BackingField: 2
-  <Attack>k__BackingField: 3
-  <Defense>k__BackingField: 3
-  <Speed>k__BackingField: 4
-  <CriticalChance>k__BackingField: 4
-  <MaxExp>k__BackingField: 5
-  <CurExp>k__BackingField: 4
-  <ExpReward>k__BackingField: 2
-  <GoldReward>k__BackingField: 2
-  skills:
-  - {fileID: 11400000, guid: 798c79a70a8646b4d853a8a4dc80a85c, type: 2}
-  - {fileID: 11400000, guid: f566a01646ea1f14583fb66a0155f2fc, type: 2}
-  - {fileID: 11400000, guid: 068c64dfc2ac864468d48659e2af284b, type: 2}
-  monsterSpriteRenderer: {fileID: 2426422173835833499}
-  infoText: {fileID: 0}
 --- !u!61 &1101448352551092586
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -209,3 +175,15 @@ MonoBehaviour:
   patrolSpeed: 1
   chaseSpeed: 2
   sightRadius: 15
+--- !u!114 &-8668943117081542148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4522283486932235510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 703ae52b3f7986e4c9af0d0c29b49a4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

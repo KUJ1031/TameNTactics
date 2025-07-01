@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     public PlayerController playerController;   // 플레이어 조작 클래스
     public GameObject playerPrefab;             //실제 플레이어
 
-    public List<Monster> testMonsterList; //테스트용 플레이어 몬스터들(추후 삭제)
+    public List<MonsterData> testMonsterList; //테스트용 플레이어 몬스터들(추후 삭제)
 
 
     private void Awake()
@@ -31,9 +31,11 @@ public class PlayerManager : MonoBehaviour
         //test Monster add
         for(int i = 0; i < testMonsterList.Count; i++)
         {
-            player.AddOwnedMonster(testMonsterList[i]);
-            player.ToggleEntry(testMonsterList[i]);
-            player.ToggleBattleEntry(testMonsterList[i]);
+            Monster m = new Monster();
+            m.SetMonsterData(testMonsterList[i]);
+            player.AddOwnedMonster(m);
+            player.ToggleEntry(m);
+            player.ToggleBattleEntry(m);
         }
         Debug.Log("PlayerManager : ownedMonsters.Count = " + player.ownedMonsters.Count);
         Debug.Log("PlayerManager : entryMonsters.Count = " + player.entryMonsters.Count);
