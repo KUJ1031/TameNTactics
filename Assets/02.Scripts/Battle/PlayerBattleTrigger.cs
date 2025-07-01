@@ -1,43 +1,30 @@
 using UnityEngine;
-using System.Linq;
+using System.Collections.Generic;
 
 public class PlayerBattleTrigger : MonoBehaviour
 {
-    public BattleManager battleManager;
-
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Monster monster = other.GetComponent<Monster>();
+        //충돌 객체 정보 가지고오기
+        MonsterFactory factory = other.GetComponentInParent<MonsterFactory>();
+        if (factory == null) return;
+        
+        MonsterCharacter character = other.GetComponent<MonsterCharacter>();
+        if (character == null) return;
+        
+        Monster monster = character.monster;
         if (monster == null) return;
-
-        MonsterData enemyData = monster.GetData();
-        if (enemyData == null) return;
-
-        // 충돌한 몬스터 저장
-        BattleTriggerManager.Instance.SetLastMonster(monster);
 
 
         // 적 팀 구성
-        var factory = monster.transform.GetComponentInParent<MonsterFactory>();
-        if (factory == null) return;
+        List<Monster> enemyTeam = factory.GetRandomEnemyTeam(monster);
 
-        var enemyTeam = factory.GetRandomEnemyTeam(); // List<Monster>
-        BattleTriggerManager.Instance.SetEnemyTeam(enemyTeam);
-        Debug.Log($"적 팀 구성 완료: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
-
-        var player = PlayerManager.Instance.player;
-        BattleTriggerManager.Instance.SetPlayerTeam(player.battleEntry);
-        var playerDataList = player.battleEntry.Select(m => m.monsterData).ToList();
-
-        BattleTriggerManager.Instance.SetBenchMonsters(player.benchEntry);
-
-        if (battleManager != null)
-        {
-            
-            battleManager.InitializeTeams();
-            // battleManager.StartBattle();
-        }       
+        //적 팀 배틀메니저로
+        BattleManager.Instance.enemyTeam = enemyTeam;
 
         Destroy(other.gameObject); // 충돌한 적 제거
+        
+        //씬이동
+        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
     }
 }

@@ -7,7 +7,6 @@ public class BattleSystem : Singleton<BattleSystem>
 
     private void Start()
     {
-        battleManager = BattleManager.Instance;
         ChangeState(new PlayerMenuState(this));
     }
 

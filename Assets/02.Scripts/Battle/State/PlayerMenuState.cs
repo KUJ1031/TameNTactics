@@ -13,9 +13,8 @@ public class PlayerMenuState : BaseBattleState
 
     public override void Execute()
     {
-        // todo 입력 대기 버튼, 아래 메서드 호출해서 이동
-        // 클릭 혹은 선택
-        
+        // todo 메뉴 클릭 혹은 방향키로 고르기
+        // todo 몬스터 애니메이션 idle 상태(기본 자세)
     }
 
     public void OnAttackSelected()

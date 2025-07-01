@@ -1,58 +1,39 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class SpawnBattleAllMonsters : MonoBehaviour
 {
-    public AllyMonsterSpawner allySpawner;
-    public EnemyMonsterSpawner enemySpawner;
+    private List<Monster> playerTeam;   //플레이어 몬스터 리스트
+    private List<Monster> enemyTeam;    //적 몬스터 리스트
+
+    public GameObject monsterPrefab;    //몬스터 기본 프리팹
+
+    public Transform allySpawner;       //아군 생성 위치
+    public Transform enemySpawner;      //적군 생성 위치
 
     private void Start()
     {
-        // Serializable → Monster로 변환
-        var serialized = BattleTriggerManager.Instance.GetSerializedPlayerTeam();
-        var enemies = CreateMonsterList(BattleTriggerManager.Instance.GetSerializedEnemyTeam());
-        var allies = CreateMonsterList(BattleTriggerManager.Instance.GetSerializedPlayerTeam());
-
-        Debug.Log($"플레이어 팀 몬스터: {string.Join(", ", allies.Select(m => m.monsterData.monsterName))}");
-        Debug.Log($"적 팀 몬스터: {string.Join(", ", enemies.Select(m => m.monsterData.monsterName))}");
-
-        allySpawner.SpawnAllies(allies);
-        enemySpawner.SpawnEnemies(enemies);
-
-        BattleManager.Instance.enemyTeam = enemies;
+        playerTeam = PlayerManager.Instance.player.battleEntry;
+        enemyTeam = BattleManager.Instance.enemyTeam;
+        
+        CreateMonster(playerTeam, allySpawner);
+        CreateMonster(enemyTeam, enemySpawner);
     }
 
-    private List<Monster> CreateMonsterList(List<SerializableMonsterInfo> infos)
+    //위치에 몬스터 생성
+    private void CreateMonster(List<Monster> monsterList, Transform Spawner)
     {
-        List<Monster> monsters = new();
+        for (int i = 0; i < monsterList.Count; i++)
+        {   
+            //스폰위치 찾기
+            string spawnPointName = "SpawnPoint_" + (i + 1);
+            Transform spawnPointTransform = Spawner.Find(spawnPointName);
 
-        foreach (var info in infos)
-        {
-            // Resources 폴더에서 이름으로 프리팹 자동 로딩
-            var prefab = Resources.Load<GameObject>($"Monsters/{info.monsterData.monsterName}");
-            if (prefab == null)
-            {
-                Debug.LogWarning($"[CreateMonsterList] 프리팹 없음: {info.monsterData.monsterName}");
-                continue;
-            }
-
-            var go = Instantiate(prefab);
-            var monster = go.GetComponent<Monster>();
-            if (monster == null)
-            {
-                Debug.LogWarning($"[CreateMonsterList] Monster 컴포넌트 없음: {info.monsterData.monsterName}");
-                continue;
-            }
-
-            monster.monsterData = info.monsterData;
-            monster.SetLevel(info.level);
-            monster.TakeDamage(monster.MaxHp - info.curHp);
-
-            monsters.Add(monster);
+            //스폰 위치에 객체 생성
+            GameObject enemyMonster = Instantiate(monsterPrefab, spawnPointTransform);
+ 
+            //객체 값 수정
+            enemyMonster.GetComponent<MonsterCharacter>().Init(monsterList[i]);
         }
-
-        return monsters;
     }
-
 }

@@ -14,10 +14,11 @@ public class BattleManager : Singleton<BattleManager>
     public SkillData selectedSkill;
 
     public bool battleEnded = false;
-
+    
     public void StartBattle()
     {
        // InitializeTeams();
+       // 전투 시작시 초기화 되는 것들 적용 해야 되는것들 추가
         InitializeUltimateSkill(EntryMonsters);
         InitializeUltimateSkill(enemyTeam);
     }
@@ -147,12 +148,17 @@ public class BattleManager : Singleton<BattleManager>
         IncreaseUltimateCostAll(enemyTeam);
     }
 
-    private bool IsTeamDead(List<Monster> team)
+    public bool IsTeamDead(List<Monster> team)
     {
-        return team.All(m => m.CurHp <= 0);
+        if (team.Count == 0 || team.All(m => m.CurHp <= 0))
+        {
+            return true;
+        }
+        
+        return false;
     }
 
-    private void EndBattle(bool playerWin)
+    public void EndBattle(bool playerWin)
     {
         battleEnded = true;
         Debug.Log(playerWin ? "승리!" : "패배!");
@@ -211,46 +217,44 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    public void InitializeTeams()
-    {
-        var enemyInfoList = BattleTriggerManager.Instance.GetSerializedEnemyTeam();
-        enemyTeam = CreateMonstersFromSerializedInfo(enemyInfoList);
+    //public void InitializeTeams()
+    //{
 
-        if (EntryMonsters == null || enemyTeam == null)
-        {
-            Debug.LogError("플레이어 팀 또는 적 팀이 설정되지 않았습니다!");
-            return;
-        }
+    //    if (EntryMonsters == null || enemyTeam == null)
+    //    {
+    //        Debug.LogError("플레이어 팀 또는 적 팀이 설정되지 않았습니다!");
+    //        return;
+    //    }
 
-        Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monsterData.monsterName))}");
-        Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monsterData.monsterName))}");
-        Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
-    }
+    //    Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monsterData.monsterName))}");
+    //    Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monsterData.monsterName))}");
+    //    Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
+    //    UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
+    //}
 
-    private List<Monster> CreateMonstersFromSerializedInfo(List<SerializableMonsterInfo> infoList)
-{
-    List<Monster> result = new();
+//    private List<Monster> CreateMonstersFromSerializedInfo(List<SerializableMonsterInfo> infoList)
+//{
+//    List<Monster> result = new();
 
-    foreach (var info in infoList)
-    {
-        var prefab = BattleTriggerManager.Instance.GetPrefabByData(info.monsterData);
-        if (prefab == null) continue;
+//    foreach (var info in infoList)
+//    {
+//        var prefab = BattleTriggerManager.Instance.GetPrefabByData(info.monsterData);
+//        if (prefab == null) continue;
 
-        var go = Instantiate(prefab); // 위치는 나중에 Spawner가 지정
-        var monster = go.GetComponent<Monster>();
-        if (monster == null) continue;
+//        var go = Instantiate(prefab); // 위치는 나중에 Spawner가 지정
+//        var monster = go.GetComponent<Monster>();
+//        if (monster == null) continue;
 
-        monster.monsterData = info.monsterData;
-        monster.SetLevel(info.level);
-        monster.LoadMonsterBaseStatData();
-        monster.TakeDamage(monster.MaxHp - info.curHp);
+//        monster.monsterData = info.monsterData;
+//        monster.SetLevel(info.level);
+//        monster.LoadMonsterBaseStatData();
+//        monster.TakeDamage(monster.MaxHp - info.curHp);
 
-        result.Add(monster);
-    }
+//        result.Add(monster);
+//    }
 
-    return result;
-}
+//    return result;
+//}
 
     public void CancelSelectedMonster()
     {
@@ -269,4 +273,6 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log(success ? "도망 성공!" : "도망 실패!");
         return success;
     }
+    
+    
 }
