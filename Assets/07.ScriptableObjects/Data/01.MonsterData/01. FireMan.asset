@@ -28,8 +28,8 @@ MonoBehaviour:
   expReward: 0
   goldReward: 0
   skills:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 798c79a70a8646b4d853a8a4dc80a85c, type: 2}
+  - {fileID: 11400000, guid: 068c64dfc2ac864468d48659e2af284b, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   spawnArea: 

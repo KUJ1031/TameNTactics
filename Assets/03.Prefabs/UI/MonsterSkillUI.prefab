@@ -162,7 +162,6 @@ GameObject:
   - component: {fileID: 4740485882556137581}
   - component: {fileID: 8482671681361629158}
   - component: {fileID: 8368235499810146072}
-  - component: {fileID: 2013660631667713355}
   - component: {fileID: 282227851518667870}
   m_Layer: 5
   m_Name: MonsterSkillUI
@@ -254,19 +253,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2013660631667713355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5018849659410706846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 409210d6bf17b424dbe35c6d3a681baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillView: {fileID: 282227851518667870}
 --- !u!114 &282227851518667870
 MonoBehaviour:
   m_ObjectHideFlags: 0
