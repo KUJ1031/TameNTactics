@@ -6,7 +6,7 @@ public class MoveState : IPlayerState
 {
     public void OnEnter(PlayerController player)
     {
-        Debug.Log("MoveState 진입");
+       // Debug.Log("MoveState 진입");
     }
 
     public void OnExit(PlayerController player)

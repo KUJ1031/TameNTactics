@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 6134838127188763571}
   - component: {fileID: 2081121008417651140}
   - component: {fileID: 2750832206156403292}
-  - component: {fileID: 3845066750573735072}
   m_Layer: 5
   m_Name: BattleSelectPanel
   m_TagString: Untagged
@@ -182,24 +181,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &3845066750573735072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2023638448458322889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98623198d02a6034bad1a2e9c17b8eee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackButton: {fileID: 3127922395214095286}
-  attackInventoryButton: {fileID: 5025268619316385101}
-  embraceButton: {fileID: 2429160833158573171}
-  runButton: {fileID: 4451792208289100027}
-  selectMonsterImage: {fileID: 0}
-  skillPanel: {fileID: 0}
 --- !u!1 &2971902612728284177
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,7 +435,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1661577258514698289}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BattleUIButtonHandler, Assembly-CSharp
+        m_MethodName: OnAttackButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3340629632523085311
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +568,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5910851264380919020}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BattleUIButtonHandler, Assembly-CSharp
+        m_MethodName: OnCaptureButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4333537074851351254
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,7 +727,7 @@ GameObject:
   - component: {fileID: 2954866013302515346}
   - component: {fileID: 7986210047637181103}
   - component: {fileID: 1756546398103508428}
-  - component: {fileID: 1212067579823910968}
+  - component: {fileID: 5692882681738816713}
   m_Layer: 5
   m_Name: BattleSelectUI
   m_TagString: Untagged
@@ -814,7 +819,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1212067579823910968
+--- !u!114 &5692882681738816713
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -830,8 +835,9 @@ MonoBehaviour:
   attackInventoryButton: {fileID: 5025268619316385101}
   embraceButton: {fileID: 2429160833158573171}
   runButton: {fileID: 4451792208289100027}
-  selectMonsterImage: {fileID: 5600110731748191813}
+  selectPanel: {fileID: 2023638448458322889}
   skillPanel: {fileID: 0}
+  selectMonsterImage: {fileID: 5600110731748191813}
 --- !u!1 &6738650655302467503
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,7 +958,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6277138201876790243}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BattleUIButtonHandler, Assembly-CSharp
+        m_MethodName: OnRunButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7914398324923467161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,7 +1091,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8466451687223782612}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BattleUIButtonHandler, Assembly-CSharp
+        m_MethodName: OnInventoryButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8484284916789180441
 GameObject:
   m_ObjectHideFlags: 0

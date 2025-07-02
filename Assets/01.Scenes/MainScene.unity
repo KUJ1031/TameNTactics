@@ -410,14 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eefbccf68f47e84696ae9c0b8364609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  battleSelectView: {fileID: 0}
-  entryView: {fileID: 0}
-  fieldInfoView: {fileID: 0}
-  menuView: {fileID: 0}
-  skillView: {fileID: 0}
-  selectMonsterImage: {fileID: 0}
-  allySpawner: {fileID: 0}
-  enemySpawner: {fileID: 0}
+  battleUIManager: {fileID: 0}
 --- !u!4 &368072011
 Transform:
   m_ObjectHideFlags: 0

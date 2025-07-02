@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class BattleSystem : MonoBehaviour
+public class BattleSystem : Singleton<BattleSystem>
 {
     private BaseBattleState currentState;
+    public BaseBattleState CurrentState => currentState;
 
     private void Start()
     {

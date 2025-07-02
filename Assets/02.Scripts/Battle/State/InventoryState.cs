@@ -1,3 +1,4 @@
+using UnityEngine;
 public class InventoryState : BaseBattleState
 {
     public InventoryState(BattleSystem system) : base(system) {}
@@ -5,6 +6,7 @@ public class InventoryState : BaseBattleState
     public override void Enter()
     {
         // todo 인벤토리 UI창 띄우기
+        Debug.Log("인벤토리 상태로 진입했습니다. 아이템을 선택하세요.");
     }
 
     public override void Execute()
