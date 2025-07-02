@@ -16,7 +16,6 @@ public class MonsterRosterManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeRoster();
     }
 
     /// <summary>
@@ -49,7 +48,7 @@ public class MonsterRosterManager : MonoBehaviour
             var slot = slotObj.GetComponent<MonsterRosterSlot>();
             slot.SetData(monster);
         }
-        PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player); // 플레이어 데이터 저장
+        
     }
 
     /// <summary>
@@ -66,6 +65,7 @@ public class MonsterRosterManager : MonoBehaviour
             player.ownedMonsters.Add(monster);
             InitializeRoster();
         }
+        PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player); // 플레이어 데이터 저장
     }
 
     /// <summary>
@@ -86,6 +86,7 @@ public class MonsterRosterManager : MonoBehaviour
 
             InitializeRoster();
         }
+        PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player); // 플레이어 데이터 저장
     }
 
     /// <summary>

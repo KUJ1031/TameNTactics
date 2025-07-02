@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 04. EarthMan
   m_EditorClassIdentifier: 
   monsterName: EarthMan
-  monsterID: 0
+  monsterID: 4
   monsterImage: {fileID: 3537242770394404238, guid: 6909d108ca31dfa4abfec3a7aeb90ec2, type: 3}
   encounterCount: 0
   captureCount: 0
