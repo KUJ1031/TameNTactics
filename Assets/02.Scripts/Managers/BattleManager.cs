@@ -26,7 +26,7 @@ public class BattleManager : Singleton<BattleManager>
 
     public void SelectPlayerMonster(Monster selectedMonster)
     {
-       // if (battleEnded || selectedMonster.CurHp <= 0) return;
+        if (selectedMonster.CurHp <= 0) return;
         selectedPlayerMonster = selectedMonster;
         // ShowSkillSelectionUI(selectedMonster.skills);
     }
@@ -92,18 +92,17 @@ public class BattleManager : Singleton<BattleManager>
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
         if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
-
-        foreach (var target in targets.Where(t => t.CurHp > 0))
-        {
-            var result = DamageCalculator.CalculateDamage(caster, target, skill);
-            Debug.Log($"{caster.monsterName}가 {target.monsterName}에게 {result.damage} 데미지 (치명타: {result.isCritical}, 상성: {result.effectiveness})");
-
-            target.TakeDamage(result.damage);
-
-            IncreaseUltimateCost(target);
-        }
-
+        
+        ISkillEffect effect = SkillFactory.GetSkillEffect(skill);
+        if (effect == null) return;
+        
+        effect.Execute(caster, targets);
+        
         IncreaseUltimateCost(caster);
+        foreach (var t in targets)
+        {
+            IncreaseUltimateCost(t);
+        }
     }
 
     public void CaptureSelectedEnemy(Monster target)
@@ -143,7 +142,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.AddExp(getBenchExp);
     }
 
-    public void EndTurn()
+    public void IncreaseUltCostAllMonsters()
     {
         IncreaseUltimateCostAll(EntryMonsters);
         IncreaseUltimateCostAll(enemyTeam);
@@ -165,20 +164,7 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log(playerWin ? "승리!" : "패배!");
         // 전투 종료 UI 호출
     }
-
-    // private void ShowSkillSelectionUI(List<SkillData> skills)
-    // {
-    //     // 스킬 선택 UI 필요 합니당!
-    //     // 스킬 이름, 설명 등
-    // }
-    //
-    // // 타겟을 나타내줘요!
-    // private void ShowTargetSelectionUI(List<MonsterData> targets)
-    // {
-    //     // 타겟 선택 영역 표시 필요해욤!
-    // }
-
-
+    
     public void InitializeUltimateSkill(List<Monster> team)
     {
         foreach (var monster in team)
@@ -217,56 +203,7 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
     }
-
-    //public void InitializeTeams()
-    //{
-
-    //    if (EntryMonsters == null || enemyTeam == null)
-    //    {
-    //        Debug.LogError("플레이어 팀 또는 적 팀이 설정되지 않았습니다!");
-    //        return;
-    //    }
-
-    //    Debug.Log($"플레이어 팀 멤버: {string.Join(", ", EntryMonsters.Select(m => m.monsterData.monsterName))}");
-    //    Debug.Log($"벤치 몬스터: {string.Join(", ", BenchMonsters.Select(m => m.monsterData.monsterName))}");
-    //    Debug.Log($"적 팀 멤버: {string.Join(", ", enemyTeam.Select(m => m.monsterData.monsterName))}");
-    //    UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
-    //}
-
-//    private List<Monster> CreateMonstersFromSerializedInfo(List<SerializableMonsterInfo> infoList)
-//{
-//    List<Monster> result = new();
-
-//    foreach (var info in infoList)
-//    {
-//        var prefab = BattleTriggerManager.Instance.GetPrefabByData(info.monsterData);
-//        if (prefab == null) continue;
-
-//        var go = Instantiate(prefab); // 위치는 나중에 Spawner가 지정
-//        var monster = go.GetComponent<Monster>();
-//        if (monster == null) continue;
-
-//        monster.monsterData = info.monsterData;
-//        monster.SetLevel(info.level);
-//        monster.LoadMonsterBaseStatData();
-//        monster.TakeDamage(monster.MaxHp - info.curHp);
-
-//        result.Add(monster);
-//    }
-
-//    return result;
-//}
-
-    public void CancelSelectedMonster()
-    {
-        selectedPlayerMonster = null;
-    }
-
-    public void CancelSelectedSkill()
-    {
-        selectedSkill = null;
-    }
-
+    
     public bool TryRunAway()
     {
         float chance = 0.5f;
@@ -274,6 +211,4 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log(success ? "도망 성공!" : "도망 실패!");
         return success;
     }
-    
-    
 }

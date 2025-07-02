@@ -7,6 +7,9 @@ public static class SkillFactory
     {
         { "FlareStrike", data => new FlareStrike(data) },
         { "ToxicBite", data => new ToxicBite(data) },
+        { "WaterSlash", data => new WaterSlash(data) },
+        { "SteelSlash", data => new SteelSlash(data) },
+        { "GroundSmash", data => new GroundSmash(data) }
     };
 
     public static ISkillEffect GetSkillEffect(SkillData data)

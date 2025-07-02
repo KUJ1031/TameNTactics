@@ -12,13 +12,13 @@ public class FlareStrike : ISkillEffect
     
     public void Execute(Monster caster, List<Monster> targets)
     {
-        if (skillData == null) return;
-        if (targets == null || targets.Count == 0) return;
+        if (skillData == null || targets == null || targets.Count == 0) return;
         
         foreach (var target in targets)
         {
-            int damage = Mathf.RoundToInt(caster.Attack * skillData.skillPower);
-            target.TakeDamage(damage);
+            var result = DamageCalculator.CalculateDamage(caster, target, skillData);
+            
+            target.TakeDamage(result.damage);
 
             if (Random.value < 0.2f)
             {
