@@ -23,32 +23,42 @@ public class PlayerManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        PlayerSaveManager.Instance.LoadPlayerData(); // 플레이어 데이터 불러오기
     }
 
     private void Start()
     {
-        Debug.Log("PlayerManager : testMonsterList.Count = " + testMonsterList.Count);
-        //test Monster add
-        for(int i = 0; i < testMonsterList.Count; i++)
-        {
-            Monster m = new Monster();
-            m.SetMonsterData(testMonsterList[i]);
-            player.AddOwnedMonster(m);
-            player.ToggleEntry(m);
-            player.ToggleBattleEntry(m);
-        }
-        Debug.Log("PlayerManager : ownedMonsters.Count = " + player.ownedMonsters.Count);
-        Debug.Log("PlayerManager : entryMonsters.Count = " + player.entryMonsters.Count);
-        Debug.Log("PlayerManager : battleEntry.Count = " + player.battleEntry.Count);
-        Debug.Log("PlayerManager : benchEntry.Count = " + player.benchEntry.Count);
+        // 1. 저장된 데이터가 있는지 시도해서 불러옴
+        Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
 
-        SpawnPlayerCharacter();
-        // 플레이어 로스터 초기화
-        MonsterRosterManager.Instance.InitializeRoster();
-        // 플레이어 엔트리 초기화
+        if (loadedPlayer != null)
+        {
+            // 2. 불러온 데이터를 현재 플레이어에 반영
+            player = loadedPlayer;
+            PlayerManager.Instance.player = loadedPlayer;
+            Debug.Log("저장된 플레이어 데이터를 불러왔습니다.");
+        }
+        else
+        {
+            Debug.Log("저장된 데이터가 없으므로 테스트 몬스터 생성");
+            for (int i = 0; i < testMonsterList.Count; i++)
+            {
+                Monster m = new Monster();
+                m.SetMonsterData(testMonsterList[i]);
+                player.AddOwnedMonster(m);
+                player.ToggleEntry(m);
+                player.ToggleBattleEntry(m);
+            }
+        }
+
+        // 3. 엔트리 및 UI 초기화
         EntryManager.Instance.InitializeAllSlots();
+        MonsterRosterManager.Instance.InitializeRoster();
+
+        // 4. 플레이어 오브젝트 생성 및 초기화
+        SpawnPlayerCharacter(player);
+
+        PlayerSaveManager.Instance.SavePlayerData(player); // 플레이어 데이터 저장
+
     }
 
     /// <summary>
@@ -67,7 +77,7 @@ public class PlayerManager : MonoBehaviour
         player = newPlayer;
     }
 
-    private void SpawnPlayerCharacter()
+    private void SpawnPlayerCharacter(Player loadedPlayer)
     {
         //프리팹으로 플레이어 생성
         GameObject playerInstance = Instantiate(playerPrefab);
@@ -77,7 +87,7 @@ public class PlayerManager : MonoBehaviour
 
         if (controller != null)
         {
-            controller.Init(this.player);
+            controller.Init(loadedPlayer);  // 불러온 데이터를 Init에 넘김
         }
         else
         {

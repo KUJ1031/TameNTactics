@@ -7,7 +7,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
 {
     public void SavePlayerData(Player player)
     {
-        player = PlayerManager.Instance.player;
+        PlayerManager.Instance.player = player;
         // 플레이어 데이터를 저장하는 로직을 구현합니다.
         // Json
         string json = JsonUtility.ToJson(player, true);
