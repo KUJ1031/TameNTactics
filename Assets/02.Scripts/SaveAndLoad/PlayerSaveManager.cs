@@ -36,10 +36,10 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             Debug.Log("플레이어 총 플레이 시간: " + player.totalPlaytime);
             Debug.Log("플레이어 마지막 게임 시간: " + player.playerLastGameTime);
             Debug.Log("플레이어 마지막 위치: " + player.playerLastPosition);
-            Debug.Log("플레이어 보스 클리어 정보: " + string.Join(", ", player.playerBossClearCheck.Select(kv => kv.Key + ": " + kv.Value)));
-            Debug.Log("플레이어 퀘스트 클리어 정보: " + string.Join(", ", player.playerQuestClearCheck.Select(kv => kv.Key + ": " + kv.Value)));
-            Debug.Log("플레이어 퍼즐 클리어 정보: " + string.Join(", ", player.playerPuzzleClearCheck.Select(kv => kv.Key + ": " + kv.Value)));
-            Debug.Log("플레이어 키 설정 정보: " + string.Join(", ", player.playerKeySetting.Select(kv => kv.Key + ": " + kv.Value)));
+            Debug.Log("플레이어 보스 클리어 정보: " + string.Join(", ", player.playerBossClearCheck.ToDictionary().Select(kv => kv.Key + ": " + kv.Value)));
+            Debug.Log("플레이어 퀘스트 클리어 정보: " + string.Join(", ", player.playerQuestClearCheck.ToDictionary().Select(kv => kv.Key + ": " + kv.Value)));
+            Debug.Log("플레이어 퍼즐 클리어 정보: " + string.Join(", ", player.playerPuzzleClearCheck.ToDictionary().Select(kv => kv.Key + ": " + kv.Value)));
+            Debug.Log("플레이어 키 설정 정보: " + string.Join(", ", player.playerKeySetting.ToDictionary().Select(kv => kv.Key + ": " + kv.Value)));
 
 
             return player;
