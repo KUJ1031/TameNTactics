@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 03. GrassMan
   m_EditorClassIdentifier: 
   monsterName: GrassMan
-  monsterID: 0
+  monsterID: 3
   monsterImage: {fileID: 1745192818456827540, guid: 7ea332978c8f0754a9b62dadc9c6472f, type: 3}
   encounterCount: 0
   captureCount: 0
