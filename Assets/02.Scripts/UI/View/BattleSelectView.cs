@@ -12,7 +12,9 @@ public class BattleSelectView : MonoBehaviour
 
     [SerializeField] private GameObject selectPanel;
     [SerializeField] private GameObject skillPanel;
+    [SerializeField] private GameObject gaugePanel;
     [SerializeField] private RectTransform selectMonsterImage;
+    [SerializeField] private Canvas gaugeCanvas;
 
     // 배틀 중의 선택지 Panel 나타냄
     public void ShowSkillPanel()
@@ -26,6 +28,14 @@ public class BattleSelectView : MonoBehaviour
     {
         skillPanel.SetActive(false);
         selectPanel.SetActive(true);
+    }
+
+    public void InitiateGauge(Vector3 screenPos)
+    {
+        GameObject gauge = Instantiate(gaugePanel, gaugeCanvas.transform);
+
+        gauge.transform.position = screenPos;
+        gauge.SetActive(true);
     }
 
     public void MoveSelectMonster(Transform tr)

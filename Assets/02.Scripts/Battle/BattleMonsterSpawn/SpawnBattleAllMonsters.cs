@@ -16,9 +16,11 @@ public class SpawnBattleAllMonsters : MonoBehaviour
     {
         playerTeam = PlayerManager.Instance.player.battleEntry;
         enemyTeam = BattleManager.Instance.enemyTeam;
-        
+
         CreateMonster(playerTeam, allySpawner);
         CreateMonster(enemyTeam, enemySpawner);
+
+        UIManager.Instance.battleUIManager.SettingMonsterGauge(allySpawner, enemySpawner);
     }
 
     //위치에 몬스터 생성

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -63,5 +66,32 @@ public class BattleUIManager : MonoBehaviour
         if (monsterData == null || monsterData.skills == null) return;
 
         skillView.ShowSkillList(monsterData.skills);
+    }
+
+    public void SettingMonsterGauge(Transform ally, Transform enemy)
+    {
+        Debug.Log("SettingMonsterGauge : 몬스터 찾아오기");
+        List<MonsterCharacter> monsterList = new();
+
+        MonsterCharacter[] allyChildren = ally.GetComponentsInChildren<MonsterCharacter>();
+        MonsterCharacter[] enemyChildren = enemy.GetComponentsInChildren<MonsterCharacter>();
+
+        for (int i = 0; i < allyChildren.Length; i++)
+        {
+            monsterList.Add(allyChildren[i]);
+        }
+
+        for (int i = 0; i < enemyChildren.Length; i++)
+        {
+            monsterList.Add(enemyChildren[i]);
+        }
+
+        for (int i = 0; i < monsterList.Count; i++)
+        {
+            Debug.Log("게이지를 생성합니다.");
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterList[i].transform.position);
+
+            battleSelectView.InitiateGauge(screenPos);
+        }
     }
 }
