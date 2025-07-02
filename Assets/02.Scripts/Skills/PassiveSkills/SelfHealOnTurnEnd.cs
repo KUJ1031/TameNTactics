@@ -10,6 +10,6 @@ public class SelfHealOnTurnEnd : IPassiveSkill
     }
 
     public void OnBattleStart(Monster self, List<Monster> allies) { }
-    public void OnDamaged(Monster self, int damage, int reflectDamage) { }
-    public bool TryEscape(Monster self, bool isGuaranteedEscape) => false;
+    public void OnDamaged(Monster self, int damage, Monster actor) { }
+    public bool TryEscape(Monster self, ref bool isGuaranteedEscape) => false;
 }

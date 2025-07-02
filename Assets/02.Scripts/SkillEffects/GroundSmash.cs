@@ -15,8 +15,8 @@ public class GroundSmash : ISkillEffect
     {
         foreach (var target in targets)
         {
-            int damage = Mathf.RoundToInt(caster.Attack * skillData.skillPower);
-            target.TakeDamage(damage);
+            var result = DamageCalculator.CalculateDamage(caster, target, skillData);
+            BattleManager.Instance.DealDamage(target, result.damage, caster);
 
             if (Random.value < 0.3f)
             {

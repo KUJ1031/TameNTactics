@@ -9,6 +9,8 @@ public class BattleManager : Singleton<BattleManager>
     public List<Monster> OwnedMonsters => PlayerManager.Instance.player.ownedMonsters;
 
     public List<Monster> enemyTeam;
+    
+    public List<Monster> possibleTargets = new();
 
     public Monster selectedPlayerMonster;
     public SkillData selectedSkill;
@@ -17,25 +19,46 @@ public class BattleManager : Singleton<BattleManager>
     
     public void StartBattle()
     {
-       // InitializeTeams();
-       // 전투 시작시 초기화 되는 것들 적용 해야 되는것들 추가
         InitializeUltimateSkill(BattleEntry);
         InitializeUltimateSkill(enemyTeam);
         
+        foreach (var monster in BattleEntry)
+        {
+            monster.InitializePassiveSkills();
+            monster.TriggerOnBattleStart(BattleEntry);
+        }
+
+        foreach (var monster in enemyTeam)
+        {
+            monster.InitializePassiveSkills();
+            monster.TriggerOnBattleStart(enemyTeam);
+        }
+    }
+
+    public void EndTurn()
+    {
+        foreach (var monster in BattleEntry)
+            monster.TriggerOnTurnEnd();
+
+        foreach (var monster in enemyTeam)
+            monster.TriggerOnTurnEnd();
+    }
+    
+    public void DealDamage(Monster target, int damage, Monster attacker)
+    {
+        target.TakeDamage(damage);
+        target.TriggerOnDamaged(damage, attacker);
     }
 
     public void SelectPlayerMonster(Monster selectedMonster)
     {
         if (selectedMonster.CurHp <= 0) return;
         selectedPlayerMonster = selectedMonster;
-        // ShowSkillSelectionUI(selectedMonster.skills);
     }
 
     public void SelectSkill(SkillData skill)
     {
         selectedSkill = skill;
-
-        List<Monster> possibleTargets = new();
 
         if (skill.isTargetSelf && !skill.isAreaAttack)
         {
@@ -55,8 +78,6 @@ public class BattleManager : Singleton<BattleManager>
         {
             possibleTargets = enemyTeam.Where(m => m.CurHp > 0).ToList();
         }
-
-        // ShowTargetSelectionUI(possibleTargets);
     }
 
     public void SelectTargetMonster(Monster target)
@@ -87,6 +108,9 @@ public class BattleManager : Singleton<BattleManager>
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
             if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
         }
+
+        EndTurn();
+        IncreaseUltCostAllMonsters();
     }
 
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
@@ -206,6 +230,15 @@ public class BattleManager : Singleton<BattleManager>
     
     public bool TryRunAway()
     {
+        foreach (var monster in BattleEntry)
+        {
+            if (monster.TryRunAwayWithPassive(out bool isGuaranteed) && isGuaranteed)
+            {
+                Debug.Log("도망 100% 성공!");
+                return true;
+            }
+        }
+        
         float chance = 0.5f;
         bool success = Random.value < chance;
         Debug.Log(success ? "도망 성공!" : "도망 실패!");

@@ -17,8 +17,7 @@ public class FlareStrike : ISkillEffect
         foreach (var target in targets)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            
-            target.TakeDamage(result.damage);
+            BattleManager.Instance.DealDamage(target, result.damage, caster);
 
             if (Random.value < 0.2f)
             {

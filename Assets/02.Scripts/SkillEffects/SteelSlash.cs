@@ -20,8 +20,9 @@ public class SteelSlash : ISkillEffect
         foreach (var target in targets)
         {
             int speedDelta = Mathf.RoundToInt(caster.Speed * 0.1f);
-            int damage = Mathf.RoundToInt(caster.Attack * skillData.skillPower);
-            target.TakeDamage(damage);
+            var result = DamageCalculator.CalculateDamage(caster, target, skillData);
+            
+            BattleManager.Instance.DealDamage(target, result.damage, caster);
             caster.SpeedUpEffect(speedDelta);
         }
     }

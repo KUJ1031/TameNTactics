@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EscapeMaster : MonoBehaviour
+public class EscapeMaster : IPassiveSkill
 {
-    // Start is called before the first frame update
-    void Start()
+    public bool TryEscape(Monster self, ref bool isGuaranteedEscape)
     {
-        
+        isGuaranteedEscape = true;
+        return true;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void OnBattleStart(Monster self, List<Monster> monsters) {}
+    public void OnDamaged(Monster self, int damage, Monster actor) {}
+    public void OnTurnEnd(Monster self) {}
 }

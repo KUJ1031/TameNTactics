@@ -1,18 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReflectDamage : MonoBehaviour
+public class ReflectDamage : IPassiveSkill
 {
-    // Start is called before the first frame update
-    void Start()
+    public void OnDamaged(Monster self, int damage, Monster actor)
     {
-        
+        if (actor != null)
+        {
+            int reflectDamage = Mathf.RoundToInt(damage * 0.2f);
+            actor.TakeDamage(reflectDamage);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void OnBattleStart(Monster self, List<Monster> allies) { }
+    public void OnTurnEnd(Monster self) { }
+    public bool TryEscape(Monster self, ref bool isGuaranteedEscape) => false;
 }
