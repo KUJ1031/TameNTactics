@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager>
 {
-    public List<Monster> EntryMonsters => PlayerManager.Instance.player.battleEntry;
+    public List<Monster> BattleEntry => PlayerManager.Instance.player.battleEntry;
     public List<Monster> BenchMonsters => PlayerManager.Instance.player.benchEntry;
     public List<Monster> OwnedMonsters => PlayerManager.Instance.player.ownedMonsters;
 
@@ -19,7 +19,7 @@ public class BattleManager : Singleton<BattleManager>
     {
        // InitializeTeams();
        // 전투 시작시 초기화 되는 것들 적용 해야 되는것들 추가
-        InitializeUltimateSkill(EntryMonsters);
+        InitializeUltimateSkill(BattleEntry);
         InitializeUltimateSkill(enemyTeam);
         
     }
@@ -43,12 +43,12 @@ public class BattleManager : Singleton<BattleManager>
         }
         else if (skill.isTargetSingleAlly)
         {
-            possibleTargets = EntryMonsters.Where(m => m.CurHp > 0).ToList();
+            possibleTargets = BattleEntry.Where(m => m.CurHp > 0).ToList();
         }
         else if (skill.isAreaAttack)
         {
             possibleTargets = skill.isTargetSelf
-                ? EntryMonsters.Where(m => m.CurHp > 0).ToList()
+                ? BattleEntry.Where(m => m.CurHp > 0).ToList()
                 : enemyTeam.Where(m => m.CurHp > 0).ToList();
         }
         else
@@ -64,10 +64,10 @@ public class BattleManager : Singleton<BattleManager>
         if (target.CurHp <= 0) return;
 
         List<Monster> selectedTargets = selectedSkill.isAreaAttack
-            ? (selectedSkill.isTargetSelf ? EntryMonsters : enemyTeam).Where(m => m.CurHp > 0).ToList()
+            ? (selectedSkill.isTargetSelf ? BattleEntry : enemyTeam).Where(m => m.CurHp > 0).ToList()
             : new List<Monster> { target };
 
-        var enemyAction = EnemyAIController.DecideAction(enemyTeam, EntryMonsters);
+        var enemyAction = EnemyAIController.DecideAction(enemyTeam, BattleEntry);
 
         bool playerGoesFirst = selectedPlayerMonster.Speed >= enemyAction.actor.Speed;
 
@@ -77,12 +77,12 @@ public class BattleManager : Singleton<BattleManager>
             if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
 
             ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
+            if (IsTeamDead(BattleEntry)) { EndBattle(false); return; }
         }
         else
         {
             ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(EntryMonsters)) { EndBattle(false); return; }
+            if (IsTeamDead(BattleEntry)) { EndBattle(false); return; }
 
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
             if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
@@ -135,7 +135,7 @@ public class BattleManager : Singleton<BattleManager>
 
         PlayerManager.Instance.player.gold += totalGold;
 
-        foreach (var monster in EntryMonsters.Where(m => m.CurHp > 0))
+        foreach (var monster in BattleEntry.Where(m => m.CurHp > 0))
             monster.AddExp(totalExp);
 
         foreach (var monster in BenchMonsters.Where(m => m.CurHp > 0))
@@ -144,7 +144,7 @@ public class BattleManager : Singleton<BattleManager>
 
     public void IncreaseUltCostAllMonsters()
     {
-        IncreaseUltimateCostAll(EntryMonsters);
+        IncreaseUltimateCostAll(BattleEntry);
         IncreaseUltimateCostAll(enemyTeam);
     }
 

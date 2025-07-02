@@ -33,6 +33,7 @@ public class Monster
     public List<SkillData> skills;
      
     private List<StatusEffect> activeStatusEffects = new();
+    private List<IPassiveSkill> passiveSkills = new();
     
     //몬스터 데이터로 초기화
     public void SetMonster(Monster newMonster)
@@ -141,6 +142,17 @@ public class Monster
             CurHp = MaxHp;
     }
 
+    public void PowerUp(int amount)
+    {
+        Attack += amount;
+    }
+
+    public void PowerDown(int amount)
+    {
+        Attack -= amount;
+        if (Attack < 0) Attack = 0;
+    }
+    
     public void Heal(int amount)
     {
         CurHp += amount;
@@ -205,6 +217,31 @@ public class Monster
         foreach (var effect in expired)
         {
             activeStatusEffects.Remove(effect);
+        }
+    }
+
+    public void InitializePassiveSkills()
+    {
+        passiveSkills.Clear();
+
+        foreach (var skill in skills)
+        {
+            if (skill.skillType == SkillType.PassiveSkill)
+            {
+                var passive = PassiveSkillFactory.Get(skill.passiveType);
+                if (passive != null)
+                {
+                    passiveSkills.Add(passive);
+                }
+            }
+        }
+    }
+
+    public void TriggerOnBattleStart(List<Monster> monsters)
+    {
+        foreach (var passive in passiveSkills)
+        {
+            passive.OnBattleStart(this, monsters);
         }
     }
 }
