@@ -14,20 +14,6 @@ public class BattleSelectView : MonoBehaviour
     [SerializeField] private GameObject skillPanel;
     [SerializeField] private RectTransform selectMonsterImage;
 
-
-    // 배틀씬 진입 시 메뉴 진입
-    public void OnBattleSelectMenu()
-    {
-        if (selectPanel.activeSelf == true)
-        {
-            selectPanel.SetActive(false);
-        }
-        else
-        {
-            selectPanel.SetActive(true);
-        }
-    }
-
     // 배틀 중의 선택지 Panel 나타냄
     public void ShowSkillPanel()
     {
@@ -45,7 +31,14 @@ public class BattleSelectView : MonoBehaviour
     public void MoveSelectMonster(Transform tr)
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(tr.position);
-        selectMonsterImage.position = screenPos;
+
+        Canvas canvas = selectMonsterImage.GetComponentInParent<Canvas>();
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out localPoint);
+
+        selectMonsterImage.localPosition = localPoint;
         selectMonsterImage.gameObject.SetActive(true);
     }
 }

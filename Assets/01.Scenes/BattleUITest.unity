@@ -832,7 +832,7 @@ PrefabInstance:
     - target: {fileID: 5692882681738816713, guid: ba8807ac2cffa9649af1166228e77d68, type: 3}
       propertyPath: skillPanel
       value: 
-      objectReference: {fileID: 5161610338235016208}
+      objectReference: {fileID: 5903698232949415826}
     - target: {fileID: 8321145943335140148, guid: ba8807ac2cffa9649af1166228e77d68, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

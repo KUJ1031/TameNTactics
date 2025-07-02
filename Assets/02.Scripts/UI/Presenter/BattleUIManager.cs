@@ -25,7 +25,7 @@ public class BattleUIManager : MonoBehaviour
         EventBus.OnAttackModeEnabled?.Invoke();
     }
 
-    public void CloseSkillPanel()
+    public void IntoBattleMenuSelect()
     {
         isSkillPanelOpen = false;
         battleSelectView.HideSkillPanel();
