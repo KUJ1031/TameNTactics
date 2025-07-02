@@ -49,6 +49,7 @@ public class MonsterRosterManager : MonoBehaviour
             var slot = slotObj.GetComponent<MonsterRosterSlot>();
             slot.SetData(monster);
         }
+        PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player); // 플레이어 데이터 저장
     }
 
     /// <summary>

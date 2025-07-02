@@ -18,7 +18,7 @@ MonoBehaviour:
   encounterCount: 0
   captureCount: 0
   type: 2
-  personality: 1
+  personality: 0
   maxHp: 80
   attack: 10
   defense: 9
@@ -29,9 +29,8 @@ MonoBehaviour:
   goldReward: 100
   skills:
   - {fileID: 11400000, guid: 798c79a70a8646b4d853a8a4dc80a85c, type: 2}
+  - {fileID: 11400000, guid: c33cc18884acb7f41be1e0c872b5057c, type: 2}
   - {fileID: 11400000, guid: 068c64dfc2ac864468d48659e2af284b, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
   spawnArea: 
   spawnTime: 0
   description: 
