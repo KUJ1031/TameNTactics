@@ -10,22 +10,36 @@ public class BattleSelectView : MonoBehaviour
     public Button embraceButton;
     public Button runButton;
 
+    [SerializeField] private GameObject selectPanel;
+    [SerializeField] private GameObject skillPanel;
     [SerializeField] private RectTransform selectMonsterImage;
 
-    public GameObject skillPanel;
+
+    // 배틀씬 진입 시 메뉴 진입
+    public void OnBattleSelectMenu()
+    {
+        if (selectPanel.activeSelf == true)
+        {
+            selectPanel.SetActive(false);
+        }
+        else
+        {
+            selectPanel.SetActive(true);
+        }
+    }
 
     // 배틀 중의 선택지 Panel 나타냄
     public void ShowSkillPanel()
     {
         skillPanel.SetActive(true);
-        gameObject.SetActive(false);
+        selectPanel.SetActive(false);
     }
 
     // 배틀 중의 선택지 Panel 숨김
     public void HideSkillPanel()
     {
         skillPanel.SetActive(false);
-        gameObject.SetActive(true);
+        selectPanel.SetActive(true);
     }
 
     public void MoveSelectMonster(Transform tr)

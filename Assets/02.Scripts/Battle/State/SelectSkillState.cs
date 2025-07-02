@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class SelectSkillState : BaseBattleState
 {
-    public SelectSkillState(BattleSystem system) : base(system) {}
+    public SelectSkillState(BattleSystem system) : base(system) { }
 
     public override void Enter()
     {
         Debug.Log("스킬 선택 상태로 진입했습니다. 스킬을 선택하세요.");
         // todo 스킬UI 보여주기
+        MonsterData monsterCharacter = BattleManager.Instance.selectedPlayerMonster.monsterData;
+        UIManager.Instance.battleUIManager.ShowMonsterSkills(monsterCharacter);
     }
 
     public override void Execute()
