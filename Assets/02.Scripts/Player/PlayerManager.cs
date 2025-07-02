@@ -23,10 +23,7 @@ public class PlayerManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
 
-    private void Start()
-    {
         // 1. 저장된 데이터가 있는지 시도해서 불러옴
         Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
 
@@ -58,7 +55,7 @@ public class PlayerManager : MonoBehaviour
         SpawnPlayerCharacter(player);
 
         PlayerSaveManager.Instance.SavePlayerData(player); // 플레이어 데이터 저장
-
+        Debug.Log("플레이어 데이터 초기화 완료: " + player);
     }
 
     /// <summary>

@@ -15,6 +15,15 @@ public class GameTimeFlow : MonoBehaviour
     [Header("시간을 표시할 TextMeshProUGUI")]
     public TextMeshProUGUI timeText;
 
+    void Start()
+    {
+        //Player player = PlayerSaveManager.Instance.LoadPlayerData();
+        //PlayerManager.Instance.player = player;
+
+        Debug.Log("게임 시작 시 플레이어 시간 불러오기: " + PlayerManager.Instance.player.playerLastGameTime);
+        timer = PlayerManager.Instance.player.playerLastGameTime;
+    }
+
     void Update()
     {
         // 매 프레임마다 실제 시간 누적
@@ -43,5 +52,14 @@ public class GameTimeFlow : MonoBehaviour
         {
             this.timeText.text = timeString;
         }
+    }
+    void OnApplicationQuit()
+    {
+        // 플레이어에 현재 시간 저장
+        PlayerManager.Instance.player.playerLastGameTime = timer;
+
+        // 저장 실행
+        PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player);
+        Debug.Log("게임 종료 시 플레이어 시간 저장: " + timer);
     }
 }
