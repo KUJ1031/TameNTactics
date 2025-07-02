@@ -21,7 +21,7 @@ public class SkillPresent : MonoBehaviour
             if (hit.collider != null)
             {
                 Monster monster = hit.collider.GetComponent<Monster>();
-                Debug.Log($"몬스터 클릭 {monster.GetData()}");
+                Debug.Log($"몬스터 클릭 {monster.monsterData}");
                 if (monster != null)
                 {
                     ShowMonsterSkills(monster);

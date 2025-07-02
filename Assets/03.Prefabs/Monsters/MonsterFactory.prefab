@@ -139,14 +139,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687769ba24397b640a18b93cd0a85384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterPrefabs:
-  - {fileID: 2551354816997272998, guid: 15fd544d254d37946aca8c237a5f6a06, type: 3}
-  - {fileID: 471335641901750275, guid: c22eeff7b1823164fb34295a95cc44ee, type: 3}
-  - {fileID: 109435781629233495, guid: 14e49f082e86b0948b200489e39e64c7, type: 3}
-  factoryParent: {fileID: 3385603920655728648}
+  monsterList: []
+  monsterPrefab: {fileID: 4522283486932235510, guid: a9e095c01c527b649ad940f6dd36578d, type: 3}
+  minLevel: 0
+  maxLevel: 0
   width: 0
   height: 0
-  maxAttempts: 100
 --- !u!61 &3977480312929031467
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -176,7 +174,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

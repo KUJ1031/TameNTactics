@@ -43,7 +43,7 @@ public class MonsterMover : MonoBehaviour
         startPosition = rb.position;
 
         // 몬스터 데이터 참조
-        monsterData = GetComponent<Monster>()?.GetData();
+        monsterData = GetComponent<MonsterCharacter>()?.monster.monsterData;
     }
 
     private void Update()

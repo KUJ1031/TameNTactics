@@ -1,13 +1,12 @@
 using UnityEngine;
 
-public class BattleSystem : MonoBehaviour
+public class BattleSystem : Singleton<BattleSystem>
 {
     private BaseBattleState currentState;
-    public BattleManager battleManager;
+    public BaseBattleState CurrentState => currentState;
 
     private void Start()
     {
-        battleManager = BattleManager.Instance;
         ChangeState(new PlayerMenuState(this));
     }
 

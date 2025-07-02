@@ -1,94 +1,92 @@
 using System.Collections.Generic;
-using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 
-// Monster 스크립트가 붙어있는 GameObject를 Factory로 사용하여 몬스터를 생성하는 스크립트
+//필드에 몬스터 스폰
 public class MonsterFactory : MonoBehaviour
 {
     [Header("몬스터 프리팹 목록")]
-    public List<GameObject> monsterPrefabs;
+    [SerializeField] private List<MonsterData> monsterDataList;  //스폰 몬스터
+    [SerializeField] private GameObject monsterPrefab;  //몬스터 기본 프리팹
 
     [Header("몬스터 레벨 범위")]
-    public int minLevel;
-    public int maxLevel;
-
-    [Header("Factory 부모 오브젝트")]
-    public Transform factoryParent;
+    [SerializeField] private int minLevel;  //스폰 몬스터 레벨 최소값
+    [SerializeField] private int maxLevel;  //스폰 몬스터 레벨 최대값
 
     [Header("BoxCollider2D로부터 계산된 스폰 영역 (읽기 전용)")]
-    [SerializeField] private float width;
-    [SerializeField] private float height;
+    [SerializeField, ReadOnly] private float width;
+    [SerializeField, ReadOnly] private float height;
 
-    public int maxAttempts = 100;
-
-    private List<Vector3> usedPositions = new List<Vector3>();
+    private int maxAttempts = 100; //스폰시 겹치지 않게 시도하는 횟수
+    private List<Vector3> usedPositions = new List<Vector3>(); //이미 스폰된 위치들
 
     private void Start()
     {
-        var collider = factoryParent.GetComponentInChildren<BoxCollider2D>();
+        var collider = GetComponentInChildren<BoxCollider2D>();
         if (collider != null)
         {
-            width = collider.size.x * factoryParent.localScale.x;
-            height = collider.size.y * factoryParent.localScale.y;
+            width = collider.size.x * transform.localScale.x;
+            height = collider.size.y * transform.localScale.y;
             Debug.Log($"BoxCollider2D 크기 자동 설정됨: width={width}, height={height}");
         }
         else
         {
             Debug.LogWarning("BoxCollider2D를 찾지 못했습니다. Factory 오브젝트에 추가해주세요.");
         }
-        Dictionary<MonsterData, GameObject> map = new();
-        foreach (var prefab in monsterPrefabs)
-        {
-            var monster = prefab.GetComponent<Monster>();
-            if (monster != null && monster.monsterData != null)
-                map[monster.monsterData] = prefab;
-        }
-        BattleTriggerManager.Instance.SetMonsterPrefabMap(map);
+
         SpawnAllMonsters();
     }
 
+    //몬스터 스폰
     public void SpawnAllMonsters()
     {
-        if (monsterPrefabs.Count == 0 || factoryParent == null)
+        if (monsterDataList != null && monsterDataList.Count > 0)
         {
-            Debug.LogWarning("프리팹 목록 또는 부모가 설정되지 않았습니다.");
-            return;
-        }
-
-        foreach (var prefab in monsterPrefabs)
-        {
-            Vector3 spawnPos = GetRandomPositionInFactory();
-            if (spawnPos != Vector3.zero)
+            foreach (MonsterData monsterData in monsterDataList)
             {
-                GameObject monsterGO = Instantiate(prefab, spawnPos, Quaternion.identity, factoryParent);
-                usedPositions.Add(spawnPos);
+                //스폰위치 생성(실패시 Vector3.zero 반환)
+                Vector3 spawnPos = GetRandomPositionInFactory();
 
-                // 레벨 설정
-                int randomLevel = Random.Range(minLevel, maxLevel + 1);
-                Monster monster = monsterGO.GetComponent<Monster>();
-                if (monster != null)
+                if (spawnPos != Vector3.zero)
                 {
-                    monster.SetLevel(randomLevel); // 레벨 설정 메서드 호출
-                                                   // monster.monsterData.level = randomLevel; // 혹시 Stat 초기화할 때 사용한다면
-                   // monster.LoadMonsterBaseStatData();       // level 반영된 Stat 적용
-                }
+                    //위치에 몬스터 생성
+                    GameObject monsterGO = Instantiate(monsterPrefab, spawnPos, Quaternion.identity,transform);
+                    usedPositions.Add(spawnPos);
 
-                // 이동 영역 설정
-                MonsterMover mover = monsterGO.GetComponent<MonsterMover>();
-                if (mover != null)
-                {
-                    mover.SetMoveArea(factoryParent.GetComponentInChildren<BoxCollider2D>());
-                }
+                    //만들어진 기본몬스터의 데이터를 monsterList안의 값으로 변경
+                    MonsterCharacter newMonster = monsterGO.GetComponent<MonsterCharacter>();
+                    if (monsterData != null)
+                    {   
+                        //새 Monster 데이터 생성
+                        Monster m = new Monster();
+                        int randomLevel = Random.Range(minLevel, maxLevel + 1);
 
-                Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {randomLevel}");
+                        //생성된 Monster에 데이터,레벨 적용
+                        m.SetMonsterData(monsterData);
+                        m.SetLevel(randomLevel);
+                        
+                        //만들어진 몬스터에 Monster데이터 추가
+                        newMonster.Init(m);
+                    }
+
+                    // 이동 영역 설정
+                    MonsterMover mover = monsterGO.GetComponent<MonsterMover>();
+                    if (mover != null)
+                    {
+                        mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
+                    }
+
+                    Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {newMonster.monster.Level}");
+                }
+                else { Debug.Log("몬스터 생성 실패 : Vector3.zero"); }
             }
         }
-
     }
 
+    //스폰장소 랜덤 생성
     private Vector3 GetRandomPositionInFactory()
     {
-        Vector3 center = factoryParent.position;
+        Vector3 center = transform.position;
 
         for (int i = 0; i < maxAttempts; i++)
         {
@@ -105,42 +103,36 @@ public class MonsterFactory : MonoBehaviour
         return Vector3.zero;
     }
 
-    /// <summary>
-    /// 적 팀 몬스터 리스트를 Monster 인스턴스 기준으로 반환 (씬에 이미 생성된 몬스터들 중에서)
-    /// </summary>
-    public List<Monster> GetRandomEnemyTeam()
+    //특정 몬스터를 포함한 랜덤 몬스터리스트 생성
+    public List<Monster> GetRandomEnemyTeam(Monster monster)
     {
         List<Monster> selectedTeam = new List<Monster>();
 
-        // factoryParent 하위에 있는 몬스터들만 대상으로 필터링
-        Monster[] allFactoryMonsters = factoryParent.GetComponentsInChildren<Monster>();
-
-        // 1. 충돌한 몬스터 포함
-        Monster lastMonster = BattleTriggerManager.Instance.GetLastMonster();
-        if (lastMonster != null && allFactoryMonsters.Contains(lastMonster))
+        //충돌한 몬스터 포함
+        if (monster != null)
         {
-            selectedTeam.Add(lastMonster);
+            selectedTeam.Add(monster);
         }
 
-        // 2. 나머지 후보 필터링
-        List<Monster> candidates = new List<Monster>();
-        foreach (var m in allFactoryMonsters)
+        //추가로 넣을 몬스터 개수 (0,1,2)
+        int moreAddMonsterCount = Random.Range(0, 3);
+        for (int i = 0; i < moreAddMonsterCount; i++)
         {
-            if (m != lastMonster)
-                candidates.Add(m);
+            //종류도 랜덤으로 추가
+            int randomMonster = Random.Range(0, monsterDataList.Count);
+
+            //몬스터 클래스 생성
+            Monster m = new Monster();
+            m.SetMonsterData(monsterDataList[randomMonster]);
+            selectedTeam.Add(m);
         }
 
-        int totalCount = Random.Range(1, 4);
-        int remainingCount = totalCount - selectedTeam.Count;
-
-        for (int i = 0; i < remainingCount && candidates.Count > 0; i++)
+        //레벨설정
+        foreach (Monster m in selectedTeam)
         {
-            int randomIndex = Random.Range(0, candidates.Count);
-            selectedTeam.Add(candidates[randomIndex]);
-            candidates.RemoveAt(randomIndex);
+            m.SetLevel(Random.Range(minLevel, maxLevel + 1));
         }
 
         return selectedTeam;
     }
-
 }

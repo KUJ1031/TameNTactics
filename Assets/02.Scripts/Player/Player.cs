@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Player : MonoBehaviour
+public class Player
 {
     [Header("나의 전체 몬스터")]
     public List<Monster> ownedMonsters = new();
@@ -37,22 +37,20 @@ public class Player : MonoBehaviour
     [Header("설정 정보")]
     public Dictionary<string, string> playerKeySetting = new();
 
-    private void Awake()
+    // Owned에 추가
+    public bool AddOwnedMonster(Monster monster)
     {
-        DontDestroyOnLoad(gameObject);
-    }
-
-    // 몬스터 로스터에 추가
-    public bool AddOwnedMonster(MonsterData monsterData)
-    {
-        if (ownedMonsters.Exists(m => m.monsterData == monsterData))
+        if (monster == null || monster.monsterData == null)
+        {
             return false;
-
-        // ownedMonsters.Add(new Monster(monsterData));
+        }
+        ownedMonsters.Add(monster);
         return true;
+
+        
     }
 
-    // 로스터에서 제거
+    //Owned에서 제거
     public bool ReleaseMonster(Monster monster)
     {
         if (!ownedMonsters.Contains(monster)) return false;
@@ -181,22 +179,22 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SetplayerBossClearCheck(int bossId)
+    public void SetPlayerBossClearCheck(int bossId)
     {
         playerBossClearCheck[bossId] = true;
     }
 
-    public void SetplayerQuestClearCheck(int questId)
+    public void SetPlayerQuestClearCheck(int questId)
     {
         playerQuestClearCheck[questId] = true;
     }
 
-    public void SetplayerPuzzleClearCheck(int puzzleId)
+    public void SetPlayerPuzzleClearCheck(int puzzleId)
     {
         playerPuzzleClearCheck[puzzleId] = true;
     }
 
-    public void SetplayerKeySetting(string keyName, string keyValue)
+    public void SetPlayerKeySetting(string keyName, string keyValue)
     {
         playerKeySetting[keyName] = keyValue;
     }

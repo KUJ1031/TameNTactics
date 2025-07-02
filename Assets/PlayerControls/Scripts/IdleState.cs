@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class Idlestate : IPlayerState
 {
@@ -14,11 +16,11 @@ public class Idlestate : IPlayerState
 
     }
 
-    public void OnHandlelnput(PlayerController player, PlayerinputAction inputs)
+
+    public void OnHandlelnput(PlayerController player)
     {
-        //가만히 있기 때문에 입력을 처리하지 않음
-        Vector2 move = inputs.Player.Move.ReadValue<Vector2>();
-        if(move!=Vector2.zero)
+        Vector2 moves = player.moveAction.ReadValue<Vector2>();
+        if (moves != Vector2.zero)
         {
             player.ChanageState(new MoveState()); //이동 상태로 전환
         }
