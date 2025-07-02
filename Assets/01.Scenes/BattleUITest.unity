@@ -224,7 +224,7 @@ MonoBehaviour:
   skillView: {fileID: 1563213026374987012}
   entryView: {fileID: 0}
   menuView: {fileID: 0}
-  fieldInfoView: {fileID: 0}
+  battleSystem: {fileID: 0}
 --- !u!4 &117401386
 Transform:
   m_ObjectHideFlags: 0
@@ -829,6 +829,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5692882681738816713, guid: ba8807ac2cffa9649af1166228e77d68, type: 3}
+      propertyPath: skillPanel
+      value: 
+      objectReference: {fileID: 5903698232949415826}
     - target: {fileID: 8321145943335140148, guid: ba8807ac2cffa9649af1166228e77d68, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -853,7 +857,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: ba8807ac2cffa9649af1166228e77d68, type: 3}
 --- !u!114 &833932257442055780 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3845066750573735072, guid: ba8807ac2cffa9649af1166228e77d68, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5692882681738816713, guid: ba8807ac2cffa9649af1166228e77d68, type: 3}
   m_PrefabInstance: {fileID: 833932257442055779}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BattleUIManager : MonoBehaviour
@@ -12,32 +8,15 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private SkillView skillView;
     [SerializeField] private EntryView entryView;
     [SerializeField] private MenuView menuView;
-    [SerializeField] private FieldInfoView fieldInfoView;
 
-    //private List<Monster> playerMonsters = new();
-    //private int currentIndex = 0;
+    public BattleSystem battleSystem;
+
     private bool isSkillPanelOpen = false;
 
     void Start()
     {
         battleSelectView.attackButton.onClick.AddListener(OnAttackButtonClick);
     }
-
-    //void Update()
-    //{
-    //    HandleMouseClick();
-    //    //HandleKeyboardInput();
-
-    //    if (isSkillPanelOpen && Input.GetKeyDown(KeyCode.Escape))
-    //    {
-    //        CloseSkillPanel();
-    //    }
-    //}
-
-    //private void OnEnable()
-    //{
-    //    InitializePlayerMonsters();
-    //}
 
     public void OnAttackButtonClick()
     {
@@ -46,55 +25,38 @@ public class BattleUIManager : MonoBehaviour
         EventBus.OnAttackModeEnabled?.Invoke();
     }
 
-    public void CloseSkillPanel()
+    public void IntoBattleMenuSelect()
     {
         isSkillPanelOpen = false;
         battleSelectView.HideSkillPanel();
         EventBus.OnAttackModeDisabled?.Invoke();
     }
 
-    public void HandleMouseClick()
+    // 내 몬스터 혹은 상대 몬스터 선택 시 강조 표시 이동
+    public void SelectMonster()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                Debug.Log("다른 요소를 클릭함");
+                return;
+            }
+
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 
             if (hit.collider != null)
             {
-                MonsterData monsterCharacter = hit.collider.GetComponent<MonsterCharacter>().monster.monsterData;
+                MonsterCharacter monsterCharacter = hit.collider.GetComponent<MonsterCharacter>();
 
                 if (monsterCharacter != null)
                 {
-                   // battleSelectView.MoveSelectMonster(hit.transform);
-                    ShowMonsterSkills(monsterCharacter);
+                    battleSelectView.MoveSelectMonster(monsterCharacter.transform);
                 }
             }
         }
     }
-
-    //public void HandleKeyboardInput()
-    //{
-    //    if (playerMonsters.Count == 0) return;
-
-    //    if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-    //    {
-    //        currentIndex = (currentIndex + 1) % playerMonsters.Count;
-    //        MoveSelectMonster(playerMonsters[currentIndex]);
-    //    }
-    //    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-    //    {
-    //        currentIndex = (currentIndex - 1 + playerMonsters.Count) % playerMonsters.Count;
-    //        MoveSelectMonster(playerMonsters[currentIndex]);
-    //    }
-    //}
-
-    //private void MoveSelectMonster(Transform tr)
-    //{
-    //    Vector3 screenPos = Camera.main.WorldToScreenPoint(tr.position);
-    //    selectMonsterImage.position = screenPos;
-    //    selectMonsterImage.gameObject.SetActive(true);
-    //}
 
     public void ShowMonsterSkills(MonsterData monsterData)
     {
@@ -102,32 +64,4 @@ public class BattleUIManager : MonoBehaviour
 
         skillView.ShowSkillList(monsterData.skills);
     }
-
-    //private void InitializePlayerMonsters()
-    //{
-    //    playerMonsters.Clear();
-
-    //    var player = PlayerManager.Instance?.player;
-    //    if (player == null)
-    //    {
-    //        selectMonsterImage.gameObject.SetActive(false);
-    //        return;
-    //    }
-
-    //    // player.battleEntry가 List<Monster>가 되어야 함
-    //    var battleEntries = player.battleEntry;
-
-    //    // 직접 player.battleEntry를 복사해서 playerMonsters에 넣기
-    //    playerMonsters.AddRange(battleEntries);
-
-    //    if (playerMonsters.Count > 0)
-    //    {
-    //        currentIndex = Mathf.Clamp(currentIndex, 0, playerMonsters.Count - 1);
-    //        MoveSelectMonster(playerMonsters[currentIndex]);
-    //    }
-    //    else
-    //    {
-    //        selectMonsterImage.gameObject.SetActive(false);
-    //    }
-    //}
 }
