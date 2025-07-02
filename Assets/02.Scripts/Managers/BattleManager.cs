@@ -25,7 +25,7 @@ public class BattleManager : Singleton<BattleManager>
 
     public void SelectPlayerMonster(Monster selectedMonster)
     {
-        if (battleEnded || selectedMonster.CurHp <= 0) return;
+       // if (battleEnded || selectedMonster.CurHp <= 0) return;
         selectedPlayerMonster = selectedMonster;
         // ShowSkillSelectionUI(selectedMonster.skills);
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class SpawnBattleAllMonsters : MonoBehaviour
@@ -24,16 +25,19 @@ public class SpawnBattleAllMonsters : MonoBehaviour
     private void CreateMonster(List<Monster> monsterList, Transform Spawner)
     {
         for (int i = 0; i < monsterList.Count; i++)
-        {   
-            //스폰위치 찾기
+        {
             string spawnPointName = "SpawnPoint_" + (i + 1);
             Transform spawnPointTransform = Spawner.Find(spawnPointName);
 
             //스폰 위치에 객체 생성
             GameObject enemyMonster = Instantiate(monsterPrefab, spawnPointTransform);
- 
             //객체 값 수정
             enemyMonster.GetComponent<MonsterCharacter>().Init(monsterList[i]);
+
+            var monsterChar = enemyMonster.GetComponent<MonsterCharacter>();
+
+            var clickable = enemyMonster.GetComponent<MonsterSelecter>();
+            clickable?.Initialize(monsterChar.monster); // Monster 데이터 넘기기
         }
     }
 }
