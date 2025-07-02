@@ -17,5 +17,10 @@ public class MonsterSelecter : MonoBehaviour
         {
             state.OnMonsterSelected(monster);
         }
+
+        if (BattleSystem.Instance.CurrentState is SelectTargetState enemyState)
+        {
+            enemyState.OnSelectTargetMonster(monster);
+        }
     }
 }

@@ -96,7 +96,7 @@ public class BattleUIManager : MonoBehaviour
     //    selectMonsterImage.gameObject.SetActive(true);
     //}
 
-    private void ShowMonsterSkills(MonsterData monsterData)
+    public void ShowMonsterSkills(MonsterData monsterData)
     {
         if (monsterData == null || monsterData.skills == null) return;
 

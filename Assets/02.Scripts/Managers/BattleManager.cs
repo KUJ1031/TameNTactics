@@ -21,6 +21,7 @@ public class BattleManager : Singleton<BattleManager>
        // 전투 시작시 초기화 되는 것들 적용 해야 되는것들 추가
         InitializeUltimateSkill(EntryMonsters);
         InitializeUltimateSkill(enemyTeam);
+        
     }
 
     public void SelectPlayerMonster(Monster selectedMonster)
@@ -33,7 +34,7 @@ public class BattleManager : Singleton<BattleManager>
     public void SelectSkill(SkillData skill)
     {
         selectedSkill = skill;
-        
+
         List<Monster> possibleTargets = new();
 
         if (skill.isTargetSelf && !skill.isAreaAttack)
