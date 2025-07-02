@@ -66,7 +66,7 @@ public class BattleUIManager : MonoBehaviour
 
                 if (monsterCharacter != null)
                 {
-                    battleSelectView.MoveSelectMonster(hit.transform);
+                   // battleSelectView.MoveSelectMonster(hit.transform);
                     ShowMonsterSkills(monsterCharacter);
                 }
             }
