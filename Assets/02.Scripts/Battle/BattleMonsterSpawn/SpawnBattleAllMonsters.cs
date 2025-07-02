@@ -38,6 +38,13 @@ public class SpawnBattleAllMonsters : MonoBehaviour
 
             var clickable = enemyMonster.GetComponent<MonsterSelecter>();
             clickable?.Initialize(monsterChar.monster); // Monster 데이터 넘기기
+
+            //스킬 보여주기
+            Debug.Log($"[SpawnBattleAllMonsters] {monsterChar.monster.monsterName} 스킬 개수: {monsterChar.monster.skills.Count}");
+            foreach (var skill in monsterChar.monster.skills)
+            {
+                Debug.Log($"[SpawnBattleAllMonsters] {monsterChar.monster.monsterName} 스킬: {skill.skillName}");
+            }
         }
     }
 }

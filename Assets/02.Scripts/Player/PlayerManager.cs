@@ -23,6 +23,8 @@ public class PlayerManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        PlayerSaveManager.Instance.LoadPlayerData(); // 플레이어 데이터 불러오기
     }
 
     private void Start()
@@ -41,7 +43,13 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("PlayerManager : entryMonsters.Count = " + player.entryMonsters.Count);
         Debug.Log("PlayerManager : battleEntry.Count = " + player.battleEntry.Count);
         Debug.Log("PlayerManager : benchEntry.Count = " + player.benchEntry.Count);
+
         SpawnPlayerCharacter();
+        // 플레이어 로스터 초기화
+        MonsterRosterManager.Instance.InitializeRoster();
+        // 플레이어 엔트리 초기화
+        EntryManager.Instance.InitializeAllSlots();
+        PlayerSaveManager.Instance.SavePlayerData(player); // 플레이어 데이터 저장
     }
 
     /// <summary>
