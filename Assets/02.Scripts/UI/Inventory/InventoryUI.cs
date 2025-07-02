@@ -10,7 +10,7 @@ public class InventoryUI : MonoBehaviour
 
     private ItemInstance selectedItem;
 
-    public List<ItemInstance> items; // 외부에서 주입 (예: PlayerManager.Player.inventory)
+    public List<ItemInstance> items;
 
     private void Start()
     {
@@ -78,7 +78,6 @@ public class InventoryUI : MonoBehaviour
         {
             ItemEffect effect = selectedItem.data.itemEffects[i];
             Debug.Log($"[사용] {effect.type} +{effect.value}");
-            // TODO: 실제 효과 적용 로직
         }
 
         selectedItem.quantity -= 1;
