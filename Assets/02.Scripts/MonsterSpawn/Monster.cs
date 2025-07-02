@@ -31,6 +31,8 @@ public class Monster
     [Header("스킬 정보")]
     public List<SkillData> skills;
      
+    private List<StatusEffect> activeStatusEffects = new();
+    
     //몬스터 데이터로 초기화
     public void SetMonster(Monster newMonster)
     {
@@ -138,6 +140,23 @@ public class Monster
             CurHp = MaxHp;
     }
 
+    public void Heal(int amount)
+    {
+        CurHp += amount;
+        if (CurHp >= MaxHp) CurHp = MaxHp;
+    }
+
+    public void SpeedDownEffect(int amount)
+    {
+        Speed -= amount;
+        if (Speed < 0) Speed = 0;
+    }
+
+    public void RecoverSpeed(int amount)
+    {
+        Speed += amount;
+    }
+
     //피해받기
     public void TakeDamage(int damage)
     {
@@ -149,6 +168,37 @@ public class Monster
     public void SetLevel(int level)
     {
         Level = level;
-        //레벨마다 오르는 능려치 처리
+        //레벨마다 오르는 능력치 처리
+    }
+
+    public void ApplyStatus(StatusEffect effect)
+    {
+        foreach (var existing in activeStatusEffects)
+        {
+            if (existing.Name == effect.Name) return;
+        }
+        
+        activeStatusEffects.Add(effect);
+    }
+
+    public void OnTurnStart()
+    {
+        List<StatusEffect> expired = new();
+
+        foreach (var effect in activeStatusEffects)
+        {
+            effect.OnTurnStart(this);
+            effect.duration--;
+
+            if (effect.duration <= 0)
+            {
+                expired.Add(effect);
+            }
+        }
+
+        foreach (var effect in expired)
+        {
+            activeStatusEffects.Remove(effect);
+        }
     }
 }
