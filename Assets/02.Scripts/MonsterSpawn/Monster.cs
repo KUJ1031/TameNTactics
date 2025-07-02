@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Monster
 {
     [Header("몬스터 정보 데이터")]

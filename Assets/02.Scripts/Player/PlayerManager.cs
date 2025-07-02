@@ -49,7 +49,6 @@ public class PlayerManager : MonoBehaviour
         MonsterRosterManager.Instance.InitializeRoster();
         // 플레이어 엔트리 초기화
         EntryManager.Instance.InitializeAllSlots();
-        PlayerSaveManager.Instance.SavePlayerData(player); // 플레이어 데이터 저장
     }
 
     /// <summary>
