@@ -152,7 +152,12 @@ public class Monster
         if (Speed < 0) Speed = 0;
     }
 
-    public void RecoverSpeed(int amount)
+    public void SpeedUpEffect(int amount)
+    {
+        Speed += amount;
+    }
+
+    public void RecoverUpSpeed(int amount)
     {
         Speed += amount;
     }

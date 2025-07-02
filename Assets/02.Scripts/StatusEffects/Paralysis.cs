@@ -22,7 +22,7 @@ public class Paralysis : StatusEffect
 
         if (duration == 1)
         {
-            target.RecoverSpeed(appliedAmount);
+            target.RecoverUpSpeed(appliedAmount);
         }
     }
 }

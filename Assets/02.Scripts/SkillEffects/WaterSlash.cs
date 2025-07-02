@@ -13,6 +13,9 @@ public class WaterSlash : ISkillEffect
 
     public void Execute(Monster caster, List<Monster> targets)
     {
+        if (skillData == null) return;
+        if (targets == null || targets.Count == 0) return;
+        
         foreach (var target in targets)
         {
             int damage = Mathf.RoundToInt(caster.Attack * skillData.skillPower);
