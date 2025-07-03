@@ -24,13 +24,7 @@ public class SelectTargetState : BaseBattleState
     public void OnSelectTargetMonster(Monster monster)
     {
         BattleManager.Instance.SelectTargetMonster(monster);
-        // todo 공격 관련 애니메이션
-        
-        if (!BattleManager.Instance.battleEnded)
-        {
-            BattleManager.Instance.IncreaseUltCostAllMonsters();
-            battleSystem.ChangeState(new PlayerMenuState(battleSystem));
-        }
+        battleSystem.ChangeState(new PlayerMenuState(battleSystem));
     }
 
     public void OnCancelSelectTarget()

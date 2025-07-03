@@ -12,7 +12,7 @@ public class SelectPlayerMonsterState : BaseBattleState
     public override void Execute()
     {
         // todo 방향키 혹은 마우스 위에 올려놓을 시 빛나면서 고르는거 대기 상태
-        UIManager.Instance.battleUIManager.SelectMonster();
+        // UIManager.Instance.battleUIManager.SelectMonster();
     }
 
     public void OnMonsterSelected(Monster monster)
