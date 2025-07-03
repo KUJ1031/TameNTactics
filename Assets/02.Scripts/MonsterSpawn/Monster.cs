@@ -207,7 +207,7 @@ public class Monster
     {
         foreach (var existing in activeStatusEffects)
         {
-            if (existing.Name == effect.Name) return;
+            if (existing.Type == effect.Type) return;
         }
         
         activeStatusEffects.Add(effect);
@@ -242,7 +242,7 @@ public class Monster
         {
             if (skill.skillType == SkillType.PassiveSkill)
             {
-                var passive = PassiveSkillFactory.Get(skill.passiveType);
+                var passive = PassiveSkillFactory.Get(skill.passiveSkillList);
                 if (passive != null)
                 {
                     passiveSkills.Add(passive);
