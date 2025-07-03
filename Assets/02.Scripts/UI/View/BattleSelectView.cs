@@ -30,12 +30,23 @@ public class BattleSelectView : MonoBehaviour
         selectPanel.SetActive(true);
     }
 
-    public void InitiateGauge(Vector3 screenPos)
+    public GameObject InitiateGauge(Vector3 screenPos)
     {
         GameObject gauge = Instantiate(gaugePanel, gaugeCanvas.transform);
 
         gauge.transform.position = screenPos;
         gauge.SetActive(true);
+
+        return gauge;
+    }
+
+    public void SetGauge(GameObject gauge, float hpRatio, float ultimateRatio)
+    {
+        Image hpBar = gauge.transform.GetChild(0).GetComponent<Image>();
+        Image ultimateBar = gauge.transform.GetChild(1).GetComponent<Image>();
+
+        hpBar.fillAmount = hpRatio;
+        ultimateBar.fillAmount = ultimateRatio;
     }
 
     public void MoveSelectMonster(Transform tr)

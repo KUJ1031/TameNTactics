@@ -15,6 +15,7 @@ public class BattleUIManager : MonoBehaviour
     public BattleSystem battleSystem;
 
     private bool isSkillPanelOpen = false;
+    private Dictionary<Monster, GameObject> monsterBattleInfo = new();
 
     void Start()
     {
@@ -68,9 +69,10 @@ public class BattleUIManager : MonoBehaviour
         skillView.ShowSkillList(monsterData.skills);
     }
 
+
+    // 배틀씬 진입 시 몬스터 체력, 궁극기 게이지 세팅
     public void SettingMonsterGauge(Transform ally, Transform enemy)
     {
-        Debug.Log("SettingMonsterGauge : 몬스터 찾아오기");
         List<MonsterCharacter> monsterList = new();
 
         MonsterCharacter[] allyChildren = ally.GetComponentsInChildren<MonsterCharacter>();
@@ -91,7 +93,19 @@ public class BattleUIManager : MonoBehaviour
             Debug.Log("게이지를 생성합니다.");
             Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterList[i].transform.position);
 
-            battleSelectView.InitiateGauge(screenPos);
+            GameObject gauge = battleSelectView.InitiateGauge(screenPos);
+            monsterBattleInfo.Add(monsterList[i].monster, gauge);
         }
+    }
+
+    public void UpdateGauge(Monster monster, SkillData skillData)
+    {
+        Debug.Log("UpdateGauge진입");
+        GameObject gauge = monsterBattleInfo[monster];
+
+        float hpRatio = (float)monster.CurHp / monster.MaxHp;
+        float ultimateRatio = (float)skillData.curUltimateCost / skillData.maxUltimateCost;
+
+        battleSelectView.SetGauge(gauge, hpRatio, ultimateRatio);
     }
 }

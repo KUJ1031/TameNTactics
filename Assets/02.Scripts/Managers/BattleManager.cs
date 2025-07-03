@@ -1,18 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : Singleton<BattleManager>
 {
     public List<Monster> BattleEntry => PlayerManager.Instance.player.battleEntry;
     public List<Monster> BenchMonsters => PlayerManager.Instance.player.benchEntry;
     public List<Monster> OwnedMonsters => PlayerManager.Instance.player.ownedMonsters;
-    
+
     public List<Monster> enemyTeam;
 
     public List<Monster> BattleEntryTeam { get; private set; } = new();
     public List<Monster> BattleEnemyTeam { get; private set; } = new();
-    
+
     public List<Monster> possibleTargets = new();
 
     public Monster selectedPlayerMonster;
@@ -51,12 +54,12 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
     }
-    
+
     public void StartBattle()
     {
         InitializeUltimateSkill(BattleEntryTeam);
         InitializeUltimateSkill(BattleEnemyTeam);
-        
+
         foreach (var monster in BattleEntryTeam)
         {
             monster.InitializePassiveSkills();
@@ -78,7 +81,7 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var monster in BattleEnemyTeam)
             monster.TriggerOnTurnEnd();
     }
-    
+
     public void DealDamage(Monster target, int damage, Monster attacker)
     {
         target.TakeDamage(damage);
@@ -151,16 +154,17 @@ public class BattleManager : Singleton<BattleManager>
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
         if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
-        
+
         ISkillEffect effect = NormalSkillFactory.GetSkillEffect(skill);
         if (effect == null) return;
-        
+
         effect.Execute(caster, targets);
-        
+
         IncreaseUltimateCost(caster);
         foreach (var t in targets)
         {
             IncreaseUltimateCost(t);
+            UIManager.Instance.battleUIManager.UpdateGauge(t, skill);
         }
     }
 
@@ -211,7 +215,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             return true;
         }
-        
+
         return false;
     }
 
@@ -221,7 +225,7 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log(playerWin ? "승리!" : "패배!");
         // 전투 종료 UI 호출
     }
-    
+
     public void InitializeUltimateSkill(List<Monster> team)
     {
         foreach (var monster in team)
@@ -260,7 +264,7 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
     }
-    
+
     public bool TryRunAway()
     {
         foreach (var monster in BattleEntryTeam)
@@ -271,7 +275,7 @@ public class BattleManager : Singleton<BattleManager>
                 return true;
             }
         }
-        
+
         float chance = 0.5f;
         bool success = Random.value < chance;
         Debug.Log(success ? "도망 성공!" : "도망 실패!");
