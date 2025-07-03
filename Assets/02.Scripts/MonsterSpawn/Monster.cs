@@ -24,6 +24,8 @@ public class Monster
     [field: SerializeField] public int CriticalChance { get; private set; }
     [field: SerializeField] public int MaxExp { get; private set; }
     [field: SerializeField] public int CurExp { get; private set; }
+    [field: SerializeField] public int MaxUltimateCost { get; private set; }
+    [field: SerializeField] public int CurUltimateCost { get; private set; }
     
     [field: Header("배틀 리워드")]
     [field: SerializeField] public int ExpReward { get; private set; }
@@ -111,6 +113,8 @@ public class Monster
         CriticalChance = data.criticalChance;
         MaxExp = data.maxExp;
         CurExp = 0;
+        MaxUltimateCost = data.MaxUltimateCost;
+        CurUltimateCost = 0;
 
         ExpReward = data.expReward;
         GoldReward = data.goldReward;
@@ -286,5 +290,16 @@ public class Monster
             }
         }
         return false;
+    }
+
+    public void InitializeUltimateCost()
+    {
+        CurUltimateCost = 0;
+    }
+
+    public void IncreaseUltimateCost()
+    {
+        CurUltimateCost++;
+        CurUltimateCost = Mathf.Min(CurUltimateCost, MaxUltimateCost);
     }
 }

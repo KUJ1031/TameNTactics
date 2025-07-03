@@ -21,11 +21,10 @@ public static class EnemyAIController
         {
             if (enemy.CurHp <= 0) continue;
 
-            var ultimateSkill = enemy.skills.FirstOrDefault(s =>
-                s.skillType == SkillType.UltimateSkill &&
-                s.curUltimateCost >= s.maxUltimateCost);
+            var ultimateSkill = enemy.skills.FirstOrDefault(s => s.skillType == SkillType.UltimateSkill);
+            bool maxUltCost = enemy.CurUltimateCost >= enemy.MaxUltimateCost;
 
-            if (ultimateSkill != null)
+            if (ultimateSkill != null && maxUltCost)
             {
                 var targets = ChooseTargets(ultimateSkill, targetMonsters, actors, enemy);
 

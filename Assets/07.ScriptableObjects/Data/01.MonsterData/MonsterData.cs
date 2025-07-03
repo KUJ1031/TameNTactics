@@ -36,6 +36,7 @@ public class MonsterData : ScriptableObject
     public int speed;
     public int criticalChance;
     public int maxExp;
+    public int MaxUltimateCost;
     
     [Header("배틀 리워드")]
     public int expReward;

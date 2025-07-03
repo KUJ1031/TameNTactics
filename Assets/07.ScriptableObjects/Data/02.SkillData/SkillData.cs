@@ -40,8 +40,6 @@ public class SkillData : ScriptableObject
     public UltimateSkillList ultimateSkillList;
     public string skillName;
     public float skillPower;
-    public int curUltimateCost;
-    public int maxUltimateCost;
 
     public bool isTargetSingleAlly;
     public bool isAreaAttack;
