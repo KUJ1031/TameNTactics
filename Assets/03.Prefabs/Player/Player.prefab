@@ -173,8 +173,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c4c28f5e088af1498fe9f9636b69f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lnputActions: {fileID: -944628639613478452, guid: c63559c45af8f6a418f54908a1529e08, type: 3}
   movespeed: 5
   rb: {fileID: 3372695136810900190}
+  moveAction:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: eedb560c-2d03-47b9-8e1f-23eea927dce7
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!114 &5386130186702065940
 MonoBehaviour:
   m_ObjectHideFlags: 0

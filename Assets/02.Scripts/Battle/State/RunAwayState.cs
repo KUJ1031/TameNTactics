@@ -20,7 +20,7 @@ public class RunAwayState : BaseBattleState
     private void EnemyAttack()
     {
         List<Monster> enemyTeam = BattleManager.Instance.enemyTeam;
-        List<Monster> entryTeam = BattleManager.Instance.EntryMonsters;
+        List<Monster> entryTeam = BattleManager.Instance.BattleEntry;
         var enemyAction = EnemyAIController.DecideAction(enemyTeam, entryTeam);
         
         BattleManager.Instance.ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);

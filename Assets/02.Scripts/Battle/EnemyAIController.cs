@@ -49,7 +49,7 @@ public static class EnemyAIController
 
             if (hasAdvantage)
             {
-                var activeSkill = enemy.skills.FirstOrDefault(s => s.skillType == SkillType.ActiveSkill);
+                var activeSkill = enemy.skills.FirstOrDefault(s => s.skillType == SkillType.NormalSkill);
                 if (activeSkill != null)
                 {
                     var targets = ChooseTargets(activeSkill, targetMonsters, actors, enemy);
@@ -69,7 +69,7 @@ public static class EnemyAIController
         if (aliveEnemies.Count == 0) return null;
 
         var randomEnemy = aliveEnemies[Random.Range(0, aliveEnemies.Count)];
-        var randomSkill = randomEnemy.skills.FirstOrDefault(s => s.skillType == SkillType.ActiveSkill);
+        var randomSkill = randomEnemy.skills.FirstOrDefault(s => s.skillType == SkillType.NormalSkill);
 
         if (randomSkill != null)
         {

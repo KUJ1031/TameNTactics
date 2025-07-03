@@ -4913,6 +4913,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player:
+    ownedMonsters: []
+    entryMonsters: []
+    battleEntry: []
+    benchEntry: []
     maxEntryCount: 5
     maxBattleCount: 3
     items: []
@@ -4927,6 +4931,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
   - {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}
   - {fileID: 11400000, guid: 468187f0dfc5ec9428591245ba311912, type: 2}
+  - {fileID: 11400000, guid: e5bc2c82e7c46b741b5a33a82f0db101, type: 2}
+  - {fileID: 11400000, guid: f6adb78a362b91040a16465371d4b0f3, type: 2}
 --- !u!1 &1960627704
 GameObject:
   m_ObjectHideFlags: 0
@@ -10051,6 +10057,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ed28ec5b8fa1f41a8c0f0bd34e4574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyTeam: []
+  selectedPlayerMonster:
+    monsterData: {fileID: 0}
+    monsterName: 
+    monsterID: 0
+    type: 0
+    personality: 0
+    <Level>k__BackingField: 1
+    <MaxHp>k__BackingField: 0
+    <CurHp>k__BackingField: 0
+    <Attack>k__BackingField: 0
+    <Defense>k__BackingField: 0
+    <Speed>k__BackingField: 0
+    <CriticalChance>k__BackingField: 0
+    <MaxExp>k__BackingField: 0
+    <CurExp>k__BackingField: 0
+    <ExpReward>k__BackingField: 0
+    <GoldReward>k__BackingField: 0
+    skills: []
   selectedSkill: {fileID: 0}
   battleEnded: 0
 --- !u!1001 &978610560738400586
