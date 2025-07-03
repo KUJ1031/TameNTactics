@@ -837,6 +837,7 @@ MonoBehaviour:
   runButton: {fileID: 4451792208289100027}
   selectPanel: {fileID: 2023638448458322889}
   skillPanel: {fileID: 0}
+  gaugePanel: {fileID: 2285872911564272583, guid: 4e8d1e26a1541d549b1f760f80bd4ba9, type: 3}
   selectMonsterImage: {fileID: 5600110731748191813}
 --- !u!1 &6738650655302467503
 GameObject:
