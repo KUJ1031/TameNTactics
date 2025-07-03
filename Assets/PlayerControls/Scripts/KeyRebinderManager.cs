@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class KeyRebinderManager : MonoBehaviour
 {
@@ -11,6 +12,13 @@ public class KeyRebinderManager : MonoBehaviour
     private KeyBindableField currentField;
     public GameObject CheckUI;
     public GameObject CompleteUI;
+
+    [Header("플레이어 키 설정 UI")]
+    public GameObject PlayerKeySettingUI;
+
+    [Header("UI 버튼 연결")]
+    public Button playerKeySettingButton;
+    public Button exitButton; // UI에서 버튼을 연결
 
     private void Awake()
     {
@@ -23,6 +31,18 @@ public class KeyRebinderManager : MonoBehaviour
     private void Start()
     {
         RefreshAllKeyFields();
+    }
+
+    // 플레이어 키 설정 UI를 열기 위한 버튼 클릭 이벤트
+    public void OnPlayerKeySettingButton()
+    {
+        PlayerKeySettingUI.gameObject.SetActive(true);
+    }
+
+    // 플레이어 키 설정 UI를 닫기 위한 버튼 클릭 이벤트
+    public void OnExitButton()
+    {
+        PlayerKeySettingUI.gameObject.SetActive(false);
     }
     //사용지기 입력할 준비가 된 필드 지정
     public void SetActiveField(KeyBindableField field)
@@ -72,6 +92,19 @@ public class KeyRebinderManager : MonoBehaviour
     {
         string key = $"{actionMap}.{actionName}.{bindingIndex}";
         PlayerPrefs.SetString(key, overridePath);
+
+        //JSON으로 플레이어 키 설정값 저장
+        if (PlayerManager.Instance != null && PlayerManager.Instance.player != null)
+        {
+            PlayerManager.Instance.player.playerKeySetting[key] = overridePath;
+            Debug.Log("PlayerManager 키셋팅 : " + PlayerManager.Instance.player.playerKeySetting[key] + overridePath);
+            PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerManager 또는 Player 인스턴스가 초기화되지 않았습니다.");
+        }
+
         PlayerPrefs.Save();
     }
     //Player
@@ -135,6 +168,34 @@ public class KeyRebinderManager : MonoBehaviour
         foreach (var field in fields)
         {
             field.UpdateKeyDisplay();
+        }
+    }
+
+
+    // 플레이어의 현재 키 바인딩을 Player 인스턴스에 저장
+    public void SaveCurrentBindingsToPlayer(Player player)
+    {
+        if (player == null || PlayerManager.Instance.player.playerKeySetting == null) return;
+
+        foreach (var map in inputActions.actionMaps)
+        {
+            foreach (var action in map.actions)
+            {
+                for (int i = 0; i < action.bindings.Count; i++)
+                {
+                    var binding = action.bindings[i];
+                    if (!binding.isPartOfComposite) // 조합 키 제외
+                    {
+                        string key = $"{map.name}.{action.name}.{i}";
+                        string value = binding.overridePath ?? binding.effectivePath;
+
+                        if (!string.IsNullOrEmpty(value))
+                        {
+                            player.playerKeySetting[key] = value;
+                        }
+                    }
+                }
+            }
         }
     }
 

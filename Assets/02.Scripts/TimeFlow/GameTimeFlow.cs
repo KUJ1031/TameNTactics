@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 게임 내 시간 흐름을 시뮬레이션하고,
@@ -8,76 +9,81 @@ using UnityEngine;
 /// </summary>
 public class GameTimeFlow : Singleton<GameTimeFlow>
 {
-    [Header("하루가 흐르는 실제 시간(초 단위)")]
+    [Header("시간 흐름 설정")]
     public float dayLengthInSeconds = 2880f; // 게임 내 하루 = 48분
+    private float timer;
 
-    private float timer; // 실제 경과 시간 누적
-
-    [Header("시간을 표시할 TextMeshProUGUI")]
+    [Header("시간 UI")]
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI playTimeText;
 
-    void Start()
+    [Header("낮/밤 오버레이 - 이미지 방식")]
+    public Image overlayImage; // Canvas에 어두운 Image 사용
+    public Color dayColor = new Color(0, 0, 0, 0);
+    public Color nightColor = new Color(0, 0, 0, 0.5f);
+
+    private void Start()
     {
-        //Player player = PlayerSaveManager.Instance.LoadPlayerData();
-        //PlayerManager.Instance.player = player;
         timer = PlayerManager.Instance.player.playerLastGameTime;
     }
 
-    void Update()
+    private void Update()
     {
-        // 매 프레임마다 실제 시간 누적
         timer += Time.deltaTime;
+        UpdateTimeDisplay();
+        UpdateDayNightOverlay();
+    }
 
-        // 게임 내 1시간이 흐르기 위한 실제 시간 계산
+    private void UpdateTimeDisplay()
+    {
         float secondsPerGameHour = dayLengthInSeconds / 24f;
-
-        // 현재 게임 시간 (0~24 사이의 부동소수점 숫자)
         float gameHours = (timer / secondsPerGameHour) % 24f;
 
-        // 정수 시(hour)와 분(minute) 계산
         int hours24 = Mathf.FloorToInt(gameHours);
         int minutes = Mathf.FloorToInt((gameHours - hours24) * 60f);
 
-        // 24시간제를 12시간제로 변환
         string period = hours24 < 12 ? "AM" : "PM";
         int hours12 = hours24 % 12;
-        if (hours12 == 0) hours12 = 12; // 0시는 12AM, 12시는 12PM
+        if (hours12 == 0) hours12 = 12;
 
-        // 시계 형식 문자열 생성
         string timeString = string.Format("{0:00}:{1:00} {2}", hours12, minutes, period);
 
-        // UI에 시간 표시
-        if (this.timeText != null)
-        {
-            this.timeText.text = timeString;
-        }
-        // 플레이 시간 표시
-        if (this.playTimeText != null)
+        if (timeText != null) timeText.text = timeString;
+
+        // 총 플레이 시간 텍스트
+        if (playTimeText != null)
         {
             TimeSpan timeSpan = TimeSpan.FromSeconds(timer);
-            this.playTimeText.text = "플레이 시간: " + timeSpan.ToString(@"hh\:mm\:ss");
+            playTimeText.text = "플레이 시간: " + timeSpan.ToString(@"hh\:mm\:ss");
         }
-        // 플레이어에 현재 시간 저장
-       // PlayerManager.Instance.player.playerLastGameTime = timer;
+    }
 
-        // 플레이어에 현재 플레이 시간 저장
-       // PlayerManager.Instance.player.totalPlaytime += Mathf.FloorToInt(timer);
+    private void UpdateDayNightOverlay()
+    {
+        float percentOfDay = (timer % dayLengthInSeconds) / dayLengthInSeconds;
+        float t = Mathf.Sin((percentOfDay - 0.25f) * Mathf.PI * 2f) * 0.5f + 0.5f;
+
+        if (overlayImage != null)
+        {
+            overlayImage.color = Color.Lerp(nightColor, dayColor, t);
+        }
     }
 
     public float GetCurrentTimer() => timer;
+
     public void SetTimer(float newTime)
     {
         timer = newTime;
         PlayerManager.Instance.player.playerLastGameTime = newTime;
         UpdatePlayTimeText(PlayerManager.Instance.player.totalPlaytime);
     }
+
     public void UpdatePlayTimeText(int totalPlaytime)
     {
         TimeSpan timeSpan = TimeSpan.FromSeconds(totalPlaytime);
-        if (this.playTimeText != null)
+        if (playTimeText != null)
         {
-            this.playTimeText.text = "플레이 시간: " + timeSpan.ToString(@"hh\:mm\:ss");
+            playTimeText.text = "플레이 시간: " + timeSpan.ToString(@"hh\:mm\:ss");
         }
     }
 }
