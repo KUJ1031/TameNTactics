@@ -545,6 +545,9 @@ MonoBehaviour:
   dayLengthInSeconds: 2880
   timeText: {fileID: 436557018}
   playTimeText: {fileID: 1027906419}
+  overlayImage: {fileID: 1747933718}
+  dayColor: {r: 0, g: 0, b: 0, a: 0}
+  nightColor: {r: 0, g: 0, b: 0, a: 0.5}
 --- !u!4 &280497442
 Transform:
   m_ObjectHideFlags: 0
@@ -2153,54 +2156,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &917723294
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 917723296}
-  - component: {fileID: 917723295}
-  m_Layer: 0
-  m_Name: DayNightController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &917723295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 917723294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b96b1d0098403c740904952bb7aa9d9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overlayImage: {fileID: 1747933718}
-  cycleDuration: 2880
-  dayColor: {r: 0.9776412, g: 1, b: 0.8156863, a: 0}
-  nightColor: {r: 0.05, g: 0.05, b: 0.2, a: 0.9490196}
---- !u!4 &917723296
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 917723294}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -960, y: -540, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 970237539}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &970237538
 GameObject:
   m_ObjectHideFlags: 0
@@ -2231,7 +2186,6 @@ RectTransform:
   m_Children:
   - {fileID: 1747933720}
   - {fileID: 280497442}
-  - {fileID: 917723296}
   m_Father: {fileID: 1962672633}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -5747,7 +5701,6 @@ GameObject:
   - component: {fileID: 1962672632}
   - component: {fileID: 1962672631}
   - component: {fileID: 1962672630}
-  - component: {fileID: 1962672634}
   - component: {fileID: 1962672635}
   m_Layer: 5
   m_Name: Screen
@@ -5841,20 +5794,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1962672634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962672629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc475bd082ff2b041bdaf4305baadc2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overlay: {fileID: 1962672635}
-  cycleDuration: 2880
 --- !u!225 &1962672635
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10771,6 +10710,8 @@ MonoBehaviour:
     <CriticalChance>k__BackingField: 0
     <MaxExp>k__BackingField: 0
     <CurExp>k__BackingField: 0
+    <MaxUltimateCost>k__BackingField: 0
+    <CurUltimateCost>k__BackingField: 0
     <ExpReward>k__BackingField: 0
     <GoldReward>k__BackingField: 0
     skills: []
