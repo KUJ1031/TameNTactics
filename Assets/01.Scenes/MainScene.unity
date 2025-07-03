@@ -420,7 +420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ae4c075485e584693fc918e7e1c3eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerChar: {fileID: 0}
 --- !u!4 &109196939
 Transform:
   m_ObjectHideFlags: 0
@@ -1873,6 +1872,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 772442549}
   m_CullTransparentMesh: 1
+--- !u!1 &781278906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 781278908}
+  - component: {fileID: 781278907}
+  m_Layer: 0
+  m_Name: SaveLoadButtonConnector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &781278907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781278906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67f686860e8bc54da95ae1a0553c93e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveButton: {fileID: 1719169137}
+  loadButton: {fileID: 392980037}
+--- !u!4 &781278908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781278906}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &821627570
 GameObject:
   m_ObjectHideFlags: 0
@@ -5582,79 +5627,6 @@ MonoBehaviour:
   contentPanel: {fileID: 1862128298}
   monsterSlotPrefab: {fileID: 48501270491077085, guid: 9d5fad4b81afe364ca8bdbd08a58feba, type: 3}
   maxCandidateCount: 5
---- !u!1 &1945917362
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1945917363}
-  - component: {fileID: 1945917364}
-  m_Layer: 0
-  m_Name: PlayerManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1945917363
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1945917362}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1945917364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1945917362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45a09c95fa1d7494194cd8ef2be41fa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player:
-    ownedMonsters: []
-    entryMonsters: []
-    battleEntry: []
-    benchEntry: []
-    maxEntryCount: 5
-    maxBattleCount: 3
-    items: []
-    gold: 0
-    playerName: 
-    totalPlaytime: 0
-    playerLastGameTime: 0
-    playerLastPosition: {x: 0, y: 0, z: 0}
-    playerBossClearCheck:
-      pairs: []
-    playerQuestClearCheck:
-      pairs: []
-    playerPuzzleClearCheck:
-      pairs: []
-    playerKeySetting:
-      pairs: []
-  playerController: {fileID: 1474460494349215163, guid: c04c1bc6bb08e2b42bf5e83c8ae464c9, type: 3}
-  playerPrefab: {fileID: 4335299216011354816, guid: c04c1bc6bb08e2b42bf5e83c8ae464c9, type: 3}
-  testMonsterList:
-  - {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
-  - {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}
-  - {fileID: 11400000, guid: 468187f0dfc5ec9428591245ba311912, type: 2}
-  - {fileID: 11400000, guid: e5bc2c82e7c46b741b5a33a82f0db101, type: 2}
-  - {fileID: 11400000, guid: f6adb78a362b91040a16465371d4b0f3, type: 2}
 --- !u!1 &1960627704
 GameObject:
   m_ObjectHideFlags: 0
@@ -10970,7 +10942,7 @@ SceneRoots:
   - {fileID: 1528078205}
   - {fileID: 1332751440}
   - {fileID: 485019497}
-  - {fileID: 1945917363}
   - {fileID: 368072011}
   - {fileID: 109196939}
   - {fileID: 1383974201}
+  - {fileID: 781278908}

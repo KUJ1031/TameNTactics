@@ -9,15 +9,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         var flow = GameTimeFlow.Instance;
         player.playerLastGameTime = flow.GetCurrentTimer();
         player.totalPlaytime += Mathf.FloorToInt(flow.GetCurrentTimer());
-
-        if (PlayerManager.Instance.playerController != null)
-        {
-            player.playerLastPosition = PlayerManager.Instance.playerController.transform.position;
-        }
-        else
-        {
-            Debug.LogWarning("playerController가 할당되지 않아 위치를 저장하지 못했습니다.");
-        }
+        player.playerLastPosition = PlayerManager.Instance.playerController.transform.position;
 
         string json = JsonUtility.ToJson(player, true);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/playerData.json", json);

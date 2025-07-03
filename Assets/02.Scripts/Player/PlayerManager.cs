@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -23,40 +24,39 @@ public class PlayerManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
 
-        SpawnPlayerCharacter(player);
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-        //// 1. 저장된 데이터가 있는지 시도해서 불러옴
-        //Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
-        //if (loadedPlayer != null)
-        //{
-        //    // 2. 불러온 데이터를 현재 플레이어에 반영
-        //    player = loadedPlayer;
-        //    PlayerManager.Instance.player = loadedPlayer;
-        //    Debug.Log("저장된 플레이어 데이터를 불러왔습니다.");
-        //}
-        //else
-        //{
-        //    Debug.Log("저장된 데이터가 없으므로 테스트 몬스터 생성");
-        //    for (int i = 0; i < testMonsterList.Count; i++)
-        //    {
-        //        Monster m = new Monster();
-        //        m.SetMonsterData(testMonsterList[i]);
-        //        player.AddOwnedMonster(m);
-        //        player.ToggleEntry(m);
-        //        player.ToggleBattleEntry(m);
-        //    }
-        //}
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainScene")
+        {
+            // 1. 저장된 데이터가 있는지 시도해서 불러옴
+            Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
 
-        // 3. 엔트리 및 UI 초기화
-        EntryManager.Instance.InitializeAllSlots();
-        MonsterRosterManager.Instance.InitializeRoster();
-
-        // 4. 플레이어 오브젝트 생성 및 초기화
-        
-
-      //  PlayerSaveManager.Instance.SavePlayerData(player); // 플레이어 데이터 저장
+            if (loadedPlayer == null)
+            {
+                Debug.Log("저장된 데이터가 없으므로 테스트 몬스터 생성");
+                for (int i = 0; i < testMonsterList.Count; i++)
+                {
+                    Monster m = new Monster();
+                    m.SetMonsterData(testMonsterList[i]);
+                    player.AddOwnedMonster(m);
+                    player.ToggleEntry(m);
+                    player.ToggleBattleEntry(m);
+                }
+            }
+            SpawnPlayerCharacter(player);
+        }
     }
 
     /// <summary>
