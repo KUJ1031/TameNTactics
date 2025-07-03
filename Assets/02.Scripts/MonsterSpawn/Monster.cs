@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class Monster
 {
     [Header("몬스터 정보 데이터")]
     public MonsterData monsterData;
-    
+
     [Header("기본 정보")]
     public string monsterName;
     public int monsterID;
@@ -19,31 +20,38 @@ public class Monster
     [field: SerializeField] public int MaxHp { get; private set; }
     [field: SerializeField] public int CurHp { get; private set; }
     [field: SerializeField] public int Attack { get; private set; }
-    [field: SerializeField] public int Defense { get; private set;}
+    [field: SerializeField] public int Defense { get; private set; }
     [field: SerializeField] public int Speed { get; private set; }
     [field: SerializeField] public int CriticalChance { get; private set; }
     [field: SerializeField] public int MaxExp { get; private set; }
     [field: SerializeField] public int CurExp { get; private set; }
     [field: SerializeField] public int MaxUltimateCost { get; private set; }
     [field: SerializeField] public int CurUltimateCost { get; private set; }
-    
+    [field: SerializeField] public float CaughtDate { get; private set; }
+    [field: SerializeField] public float TimeTogether { get; private set; }
+    [field: SerializeField] public string CaughtLocation { get; private set; }
+
+
     [field: Header("배틀 리워드")]
     [field: SerializeField] public int ExpReward { get; private set; }
     [field: SerializeField] public int GoldReward { get; private set; }
 
     [Header("스킬 정보")]
     public List<SkillData> skills;
-    
+
     // 배틀 중 변경되는 스텟
     public int CurMaxHp { get; private set; }
     public int CurAttack { get; private set; }
     public int CurDefense { get; private set; }
     public int CurSpeed { get; private set; }
     public int CurCriticalChance { get; private set; }
-     
+
     private List<StatusEffect> activeStatusEffects = new();
     private List<IPassiveSkill> passiveSkills = new();
-    
+
+    public Action<Monster> HpChange;
+    public Action<Monster> ultimateCostChange;
+
     //몬스터 데이터로 초기화
     public void SetMonster(Monster newMonster)
     {
@@ -75,7 +83,7 @@ public class Monster
         //배틀 리워드
         ExpReward = newMonster.ExpReward;
         GoldReward = newMonster.GoldReward;
-        
+
         //스킬
         if (newMonster.skills != null)
         {
@@ -145,7 +153,7 @@ public class Monster
         CurSpeed = Speed;
         CurCriticalChance = CriticalChance;
     }
-    
+
     // 레벨에따른 스탯 조정
     public void RecalculateStats()
     {
@@ -170,11 +178,12 @@ public class Monster
         CurAttack -= amount;
         if (CurAttack < 0) CurAttack = 0;
     }
-    
+
     public void Heal(int amount)
     {
         CurHp += amount;
         if (CurHp >= CurMaxHp) CurHp = CurMaxHp;
+        HpChange?.Invoke(this);
     }
 
     public void SpeedDownEffect(int amount)
@@ -198,6 +207,7 @@ public class Monster
     {
         CurHp -= damage;
         if (CurHp < 0) CurHp = 0;
+        HpChange?.Invoke(this);
     }
 
     //레벨설정
@@ -213,7 +223,7 @@ public class Monster
         {
             if (existing.Type == effect.Type) return;
         }
-        
+
         activeStatusEffects.Add(effect);
     }
 
@@ -301,5 +311,13 @@ public class Monster
     {
         CurUltimateCost++;
         CurUltimateCost = Mathf.Min(CurUltimateCost, MaxUltimateCost);
+        ultimateCostChange?.Invoke(this);
+    }
+
+    public void DecreaseUltimateCost()
+    {
+        CurUltimateCost--;
+        CurUltimateCost = Mathf.Clamp(CurUltimateCost, 0, MaxUltimateCost);
+        ultimateCostChange?.Invoke(this);
     }
 }

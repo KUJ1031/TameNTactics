@@ -49,6 +49,20 @@ public class BattleSelectView : MonoBehaviour
         ultimateBar.fillAmount = ultimateRatio;
     }
 
+    public void SetHpGauge(GameObject gauge, float hpRatio)
+    {
+        Image hpBar = gauge.transform.GetChild(0).GetComponent<Image>();
+
+        hpBar.fillAmount = hpRatio;
+    }
+
+    public void SetUltimateGauge(GameObject gauge, float ultimateRatio)
+    {
+        Image ultimateBar = gauge.transform.GetChild(1).GetComponent<Image>();
+
+        ultimateBar.fillAmount = ultimateRatio;
+    }
+
     public void MoveSelectMonster(Transform tr)
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(tr.position);

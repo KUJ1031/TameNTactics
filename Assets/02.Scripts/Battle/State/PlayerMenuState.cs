@@ -8,7 +8,6 @@ public class PlayerMenuState : BaseBattleState
     {
         Debug.Log("플레이어 메뉴 상태로 진입했습니다. 행동을 선택하세요.");
         UIManager.Instance.battleUIManager.IntoBattleMenuSelect();
-        BattleManager.Instance.StartBattle();
     }
 
     public override void Execute()

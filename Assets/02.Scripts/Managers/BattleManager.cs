@@ -7,12 +7,12 @@ public class BattleManager : Singleton<BattleManager>
     public List<Monster> BattleEntry => PlayerManager.Instance.player.battleEntry;
     public List<Monster> BenchMonsters => PlayerManager.Instance.player.benchEntry;
     public List<Monster> OwnedMonsters => PlayerManager.Instance.player.ownedMonsters;
-    
+
     public List<Monster> enemyTeam;
 
     public List<Monster> BattleEntryTeam { get; private set; } = new();
     public List<Monster> BattleEnemyTeam { get; private set; } = new();
-    
+
     public List<Monster> possibleTargets = new();
 
     public Monster selectedPlayerMonster;
@@ -51,17 +51,19 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
     }
-    
+
     public void StartBattle()
     {
         InitializeUltCost(BattleEntryTeam);
         InitializeUltCost(BattleEnemyTeam);
-        
+
         foreach (var monster in BattleEntryTeam)
         {
             monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
             monster.TriggerOnBattleStart(BattleEntryTeam);
+            Debug.Log($"Entry Monster의 현재 최대 체력 : {monster.CurMaxHp}");
+            Debug.Log($"Entry Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
 
         foreach (var monster in BattleEnemyTeam)
@@ -69,6 +71,8 @@ public class BattleManager : Singleton<BattleManager>
             monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
             monster.TriggerOnBattleStart(BattleEnemyTeam);
+            Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
+            Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
     }
 
@@ -80,7 +84,7 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var monster in BattleEnemyTeam)
             monster.TriggerOnTurnEnd();
     }
-    
+
     public void DealDamage(Monster target, int damage, Monster attacker)
     {
         target.TakeDamage(damage);
@@ -153,12 +157,12 @@ public class BattleManager : Singleton<BattleManager>
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
         if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
-        
+
         ISkillEffect effect = NormalSkillFactory.GetSkillEffect(skill);
         if (effect == null) return;
-        
+
         effect.Execute(caster, targets);
-        
+
         IncreaseUltCost(caster);
         foreach (var t in targets)
         {
@@ -213,7 +217,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             return true;
         }
-        
+
         return false;
     }
 
@@ -223,7 +227,7 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log(playerWin ? "승리!" : "패배!");
         // 전투 종료 UI 호출
     }
-    
+
     public void InitializeUltCost(List<Monster> team)
     {
         foreach (var monster in team)
@@ -244,7 +248,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.IncreaseUltimateCost();
         }
     }
-    
+
     public bool TryRunAway()
     {
         foreach (var monster in BattleEntryTeam)
@@ -255,7 +259,7 @@ public class BattleManager : Singleton<BattleManager>
                 return true;
             }
         }
-        
+
         float chance = 0.5f;
         bool success = Random.value < chance;
         Debug.Log(success ? "도망 성공!" : "도망 실패!");

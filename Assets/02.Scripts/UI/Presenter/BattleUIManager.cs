@@ -98,14 +98,36 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void UpdateGauge(Monster monster, SkillData skillData)
+    public void UpdateGauge(Monster monster)
     {
         Debug.Log("UpdateGauge진입");
         GameObject gauge = monsterBattleInfo[monster];
 
-        float hpRatio = (float)monster.CurHp / monster.MaxHp;
-        float ultimateRatio = (float)skillData.curUltimateCost / skillData.maxUltimateCost;
+        float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
+        float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
 
         battleSelectView.SetGauge(gauge, hpRatio, ultimateRatio);
     }
+
+    public void UpdateHpGauge(Monster monster)
+    {
+        Debug.Log("UpdateHpGauge 진입");
+        GameObject gauge = monsterBattleInfo[monster];
+
+        float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
+
+        battleSelectView.SetHpGauge(gauge, hpRatio);
+    }
+
+    public void UpdateUltimateGauge(Monster monster)
+    {
+        Debug.Log("UpdateUltimateGauge 진입");
+        GameObject gauge = monsterBattleInfo[monster];
+
+        float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
+
+        battleSelectView.SetUltimateGauge(gauge, ultimateRatio);
+    }
+
+    //public void UpdateUltimateGauge()
 }
