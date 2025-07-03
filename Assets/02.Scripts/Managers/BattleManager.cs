@@ -152,7 +152,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
         
-        ISkillEffect effect = SkillFactory.GetSkillEffect(skill);
+        ISkillEffect effect = NormalSkillFactory.GetSkillEffect(skill);
         if (effect == null) return;
         
         effect.Execute(caster, targets);

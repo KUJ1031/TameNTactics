@@ -242,7 +242,7 @@ public class Monster
         {
             if (skill.skillType == SkillType.PassiveSkill)
             {
-                var passive = PassiveSkillFactory.Get(skill.passiveType);
+                var passive = PassiveSkillFactory.Get(skill.passiveSkillList);
                 if (passive != null)
                 {
                     passiveSkills.Add(passive);

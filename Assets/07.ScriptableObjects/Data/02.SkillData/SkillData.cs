@@ -7,7 +7,7 @@ public enum SkillType
     UltimateSkill,
 }
 
-public enum PassiveSkillType
+public enum PassiveSkillList
 {
     None,
     AllyTypeBoost,     // 배틀 시작 시 같은 속성 공격력 UP
@@ -17,7 +17,7 @@ public enum PassiveSkillType
     EscapeMaster       // 도망 100% 성공
 }
 
-public enum NormalSkillType
+public enum NormalSkillList
 {
     FlareStrike,
     ToxicBite,
@@ -26,7 +26,7 @@ public enum NormalSkillType
     GroundSmash
 }
 
-public enum UltimateSkillType
+public enum UltimateSkillList
 {
     None
 }
@@ -35,9 +35,9 @@ public enum UltimateSkillType
 public class SkillData : ScriptableObject
 {
     public SkillType skillType;
-    public PassiveSkillType passiveType;
-    public NormalSkillType normalType;
-    public UltimateSkillType ultimateType;
+    public PassiveSkillList passiveSkillList;
+    public NormalSkillList normalSkillList;
+    public UltimateSkillList ultimateSkillList;
     public string skillName;
     public float skillPower;
     public int curUltimateCost;
