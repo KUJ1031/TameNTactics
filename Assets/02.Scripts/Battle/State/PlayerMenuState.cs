@@ -8,6 +8,7 @@ public class PlayerMenuState : BaseBattleState
     {
         // todo 배틀 기본 화면 띄우기(행동 고르는 메뉴)
         Debug.Log("플레이어 메뉴 상태로 진입했습니다. 행동을 선택하세요.");
+        BattleManager.Instance.FindSpawnMonsters();
         UIManager.Instance.battleUIManager.IntoBattleMenuSelect();
         BattleManager.Instance.StartBattle();
     }
