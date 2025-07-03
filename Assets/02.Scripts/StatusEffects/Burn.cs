@@ -4,9 +4,7 @@ public class Burn : StatusEffect
 {
     private int damagePerTurn;
 
-    public Burn(int duration) : base(duration){}
-
-    public override string Name => "화상";
+    public Burn(int duration) : base(StatusEffectType.Burn, duration){}
 
     public override void OnTurnStart(Monster target)
     {

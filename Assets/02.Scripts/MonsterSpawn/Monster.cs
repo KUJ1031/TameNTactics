@@ -207,7 +207,7 @@ public class Monster
     {
         foreach (var existing in activeStatusEffects)
         {
-            if (existing.Name == effect.Name) return;
+            if (existing.Type == effect.Type) return;
         }
         
         activeStatusEffects.Add(effect);
