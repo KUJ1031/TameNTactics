@@ -4,17 +4,17 @@ using UnityEngine;
 
 public static class PassiveSkillFactory
 {
-    private static Dictionary<PassiveSkillType, Func<IPassiveSkill>> creators = new()
+    private static Dictionary<PassiveSkillList, Func<IPassiveSkill>> creators = new()
     {
-        { PassiveSkillType.AllyTypeBoost, () => new AllyTypeBoost() },
-        { PassiveSkillType.SelfHealOnTurnEnd, () => new SelfHealOnTurnEnd() },
-        { PassiveSkillType.ReflectDamage, () => new ReflectDamage() },
-        { PassiveSkillType.EscapeMaster, () => new EscapeMaster() },
-        { PassiveSkillType.LowHpAttackBoost, () => new LowHpAttackBoost() }
+        { PassiveSkillList.AllyTypeBoost, () => new AllyTypeBoost() },
+        { PassiveSkillList.SelfHealOnTurnEnd, () => new SelfHealOnTurnEnd() },
+        { PassiveSkillList.ReflectDamage, () => new ReflectDamage() },
+        { PassiveSkillList.EscapeMaster, () => new EscapeMaster() },
+        { PassiveSkillList.LowHpAttackBoost, () => new LowHpAttackBoost() }
     };
 
-    public static IPassiveSkill Get(PassiveSkillType type)
+    public static IPassiveSkill Get(PassiveSkillList list)
     {
-        return creators.TryGetValue(type, out var creator) ? creator() : null;
+        return creators.TryGetValue(list, out var creator) ? creator() : null;
     }
 }

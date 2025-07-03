@@ -63,7 +63,6 @@ public class EntryManager : Singleton<EntryManager>
         }
 
         InitializeAllSlots();
-        PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player); // 플레이어 데이터 저장
         OnEntryChanged?.Invoke();
     }
 

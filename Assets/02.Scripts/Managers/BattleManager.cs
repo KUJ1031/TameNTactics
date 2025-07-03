@@ -7,8 +7,11 @@ public class BattleManager : Singleton<BattleManager>
     public List<Monster> BattleEntry => PlayerManager.Instance.player.battleEntry;
     public List<Monster> BenchMonsters => PlayerManager.Instance.player.benchEntry;
     public List<Monster> OwnedMonsters => PlayerManager.Instance.player.ownedMonsters;
-
+    
     public List<Monster> enemyTeam;
+
+    public List<Monster> BattleEntryTeam { get; private set; } = new();
+    public List<Monster> BattleEnemyTeam { get; private set; } = new();
     
     public List<Monster> possibleTargets = new();
 
@@ -16,31 +19,65 @@ public class BattleManager : Singleton<BattleManager>
     public SkillData selectedSkill;
 
     public bool battleEnded = false;
+
+    public void FindSpawnMonsters()
+    {
+        BattleEntryTeam.Clear();
+        BattleEnemyTeam.Clear();
+
+        GameObject allyObj = GameObject.Find("AllySpawner");
+        GameObject enemyObj = GameObject.Find("EnemySpawner");
+
+        if (allyObj == null || enemyObj == null) return;
+
+        Transform allySpawner = allyObj.transform;
+        Transform enemySpawner = enemyObj.transform;
+
+        foreach (Transform spawnPoint in allySpawner)
+        {
+            MonsterCharacter monsterChar = spawnPoint.GetComponentInChildren<MonsterCharacter>();
+            if (monsterChar != null && monsterChar.monster != null)
+            {
+                BattleEntryTeam.Add(monsterChar.monster);
+            }
+        }
+
+        foreach (Transform spawnPoint in enemySpawner)
+        {
+            MonsterCharacter monsterChar = spawnPoint.GetComponentInChildren<MonsterCharacter>();
+            if (monsterChar != null && monsterChar.monster != null)
+            {
+                BattleEnemyTeam.Add(monsterChar.monster);
+            }
+        }
+    }
     
     public void StartBattle()
     {
-        InitializeUltimateSkill(BattleEntry);
-        InitializeUltimateSkill(enemyTeam);
+        InitializeUltCost(BattleEntryTeam);
+        InitializeUltCost(BattleEnemyTeam);
         
-        foreach (var monster in BattleEntry)
+        foreach (var monster in BattleEntryTeam)
         {
+            monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
-            monster.TriggerOnBattleStart(BattleEntry);
+            monster.TriggerOnBattleStart(BattleEntryTeam);
         }
 
-        foreach (var monster in enemyTeam)
+        foreach (var monster in BattleEnemyTeam)
         {
+            monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
-            monster.TriggerOnBattleStart(enemyTeam);
+            monster.TriggerOnBattleStart(BattleEnemyTeam);
         }
     }
 
     public void EndTurn()
     {
-        foreach (var monster in BattleEntry)
+        foreach (var monster in BattleEntryTeam)
             monster.TriggerOnTurnEnd();
 
-        foreach (var monster in enemyTeam)
+        foreach (var monster in BattleEnemyTeam)
             monster.TriggerOnTurnEnd();
     }
     
@@ -85,28 +122,28 @@ public class BattleManager : Singleton<BattleManager>
         if (target.CurHp <= 0) return;
 
         List<Monster> selectedTargets = selectedSkill.isAreaAttack
-            ? (selectedSkill.isTargetSelf ? BattleEntry : enemyTeam).Where(m => m.CurHp > 0).ToList()
+            ? (selectedSkill.isTargetSelf ? BattleEntryTeam : BattleEnemyTeam).Where(m => m.CurHp > 0).ToList()
             : new List<Monster> { target };
 
-        var enemyAction = EnemyAIController.DecideAction(enemyTeam, BattleEntry);
+        var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
-        bool playerGoesFirst = selectedPlayerMonster.Speed >= enemyAction.actor.Speed;
+        bool playerGoesFirst = selectedPlayerMonster.CurSpeed >= enemyAction.actor.CurSpeed;
 
         if (playerGoesFirst)
         {
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
+            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
 
             ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(BattleEntry)) { EndBattle(false); return; }
+            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
         }
         else
         {
             ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(BattleEntry)) { EndBattle(false); return; }
+            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
 
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(enemyTeam)) { EndBattle(true); return; }
+            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
         }
 
         EndTurn();
@@ -117,15 +154,15 @@ public class BattleManager : Singleton<BattleManager>
     {
         if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
         
-        ISkillEffect effect = SkillFactory.GetSkillEffect(skill);
+        ISkillEffect effect = NormalSkillFactory.GetSkillEffect(skill);
         if (effect == null) return;
         
         effect.Execute(caster, targets);
         
-        IncreaseUltimateCost(caster);
+        IncreaseUltCost(caster);
         foreach (var t in targets)
         {
-            IncreaseUltimateCost(t);
+            IncreaseUltCost(t);
         }
     }
 
@@ -137,15 +174,13 @@ public class BattleManager : Singleton<BattleManager>
             return;
         }
 
-        var player = PlayerManager.Instance.player;
-
-        if (player.entryMonsters.Count < 5)
+        if (BenchMonsters.Count < 2)
         {
-            player.entryMonsters.Add(target);
+            BenchMonsters.Add(target);
         }
         else
         {
-            player.ownedMonsters.Add(target);
+            OwnedMonsters.Add(target);
         }
 
         Debug.Log($"{target.monsterName}를 포획했습니다!");
@@ -153,13 +188,13 @@ public class BattleManager : Singleton<BattleManager>
 
     public void BattleReward()
     {
-        int totalExp = enemyTeam.Sum(e => e.ExpReward);
+        int totalExp = BattleEnemyTeam.Sum(e => e.ExpReward);
         int getBenchExp = Mathf.RoundToInt(totalExp * 0.7f);
-        int totalGold = enemyTeam.Sum(e => e.GoldReward);
+        int totalGold = BattleEnemyTeam.Sum(e => e.GoldReward);
 
         PlayerManager.Instance.player.gold += totalGold;
 
-        foreach (var monster in BattleEntry.Where(m => m.CurHp > 0))
+        foreach (var monster in BattleEntryTeam.Where(m => m.CurHp > 0))
             monster.AddExp(totalExp);
 
         foreach (var monster in BenchMonsters.Where(m => m.CurHp > 0))
@@ -168,8 +203,8 @@ public class BattleManager : Singleton<BattleManager>
 
     public void IncreaseUltCostAllMonsters()
     {
-        IncreaseUltimateCostAll(BattleEntry);
-        IncreaseUltimateCostAll(enemyTeam);
+        IncreaseUltimateCostTeam(BattleEntryTeam);
+        IncreaseUltimateCostTeam(BattleEnemyTeam);
     }
 
     public bool IsTeamDead(List<Monster> team)
@@ -189,48 +224,30 @@ public class BattleManager : Singleton<BattleManager>
         // 전투 종료 UI 호출
     }
     
-    public void InitializeUltimateSkill(List<Monster> team)
+    public void InitializeUltCost(List<Monster> team)
     {
         foreach (var monster in team)
         {
-            foreach (var skill in monster.skills)
-            {
-                if (skill.skillType == SkillType.UltimateSkill)
-                {
-                    skill.curUltimateCost = 0;
-                }
-            }
+            monster.InitializeUltimateCost();
         }
     }
 
-    public void IncreaseUltimateCost(Monster monster)
+    public void IncreaseUltCost(Monster monster)
     {
-        foreach (var skill in monster.skills)
-        {
-            if (skill.skillType == SkillType.UltimateSkill)
-            {
-                skill.curUltimateCost = Mathf.Min(skill.maxUltimateCost, skill.curUltimateCost + 1);
-            }
-        }
+        monster.IncreaseUltimateCost();
     }
 
-    public void IncreaseUltimateCostAll(List<Monster> team)
+    public void IncreaseUltimateCostTeam(List<Monster> team)
     {
         foreach (var monster in team)
         {
-            foreach (var skill in monster.skills)
-            {
-                if (skill.skillType == SkillType.UltimateSkill)
-                {
-                    skill.curUltimateCost = Mathf.Min(skill.maxUltimateCost, skill.curUltimateCost + 1);
-                }
-            }
+            monster.IncreaseUltimateCost();
         }
     }
     
     public bool TryRunAway()
     {
-        foreach (var monster in BattleEntry)
+        foreach (var monster in BattleEntryTeam)
         {
             if (monster.TryRunAwayWithPassive(out bool isGuaranteed) && isGuaranteed)
             {

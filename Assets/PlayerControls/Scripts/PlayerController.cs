@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
         inputActions = new PlayerinputAction();
     }
 
+
     private void OnEnable()
     {
         inputActions.Player.Enable();
