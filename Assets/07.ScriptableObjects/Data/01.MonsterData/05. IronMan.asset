@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: 05. IronMan
   m_EditorClassIdentifier: 
   monsterName: IronMan
-  monsterID: 0
+  monsterID: 5
   monsterImage: {fileID: 784869815551342302, guid: 1bb660b4d78169147a2273c915cfb59a, type: 3}
   encounterCount: 0
   captureCount: 0
-  type: 4
-  personality: 2
+  type: 0
+  personality: 0
   maxHp: 100
   attack: 10
   defense: 13
@@ -28,10 +28,9 @@ MonoBehaviour:
   expReward: 5
   goldReward: 100
   skills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 798c79a70a8646b4d853a8a4dc80a85c, type: 2}
+  - {fileID: 11400000, guid: c33cc18884acb7f41be1e0c872b5057c, type: 2}
+  - {fileID: 11400000, guid: 068c64dfc2ac864468d48659e2af284b, type: 2}
   spawnArea: 
   spawnTime: 0
   description: 

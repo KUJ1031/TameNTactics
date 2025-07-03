@@ -30,12 +30,12 @@ public class Player
     public Vector3 playerLastPosition;
 
     [Header("진행 정보")]
-    public Dictionary<int, bool> playerBossClearCheck = new Dictionary<int, bool>();
-    public Dictionary<int, bool> playerQuestClearCheck = new Dictionary<int, bool>();
-    public Dictionary<int, bool> playerPuzzleClearCheck = new Dictionary<int, bool>();
+    public SerializableDictionary<int, bool> playerBossClearCheck = new();
+    public SerializableDictionary<int, bool> playerQuestClearCheck = new();
+    public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();
 
     [Header("설정 정보")]
-    public Dictionary<string, string> playerKeySetting = new();
+    public SerializableDictionary<string, string> playerKeySetting = new();
 
     // Owned에 추가
     public bool AddOwnedMonster(Monster monster)
@@ -46,6 +46,8 @@ public class Player
         }
         ownedMonsters.Add(monster);
         return true;
+
+        
     }
 
     //Owned에서 제거

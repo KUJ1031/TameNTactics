@@ -13,7 +13,7 @@ public class SelectCaptureTargetState : BaseBattleState
     public void OnSelectCaptureTarget(Monster target)
     {
         List<Monster> enemyTeam = BattleManager.Instance.enemyTeam;
-        List<Monster> entryTeam = BattleManager.Instance.EntryMonsters;
+        List<Monster> entryTeam = BattleManager.Instance.BattleEntry;
         var enemyAction = EnemyAIController.DecideAction(enemyTeam, entryTeam);
         
         // todo 미니게임 성공시 잡기

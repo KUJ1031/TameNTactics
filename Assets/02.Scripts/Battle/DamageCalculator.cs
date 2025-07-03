@@ -13,7 +13,7 @@ public static class DamageCalculator
     public static DamageResult CalculateDamage(Monster attacker, Monster target, SkillData skill)
     {
         // 공격력, 방어력, 치명타 확률 등은 Monster 인스턴스 내 변수 사용
-        float baseDamage = attacker.Attack * skill.skillPower;
+        float baseDamage = attacker.CurAttack * skill.skillPower;
         float defenseFactor = 100f / (target.Defense + 100f);
         bool isCrit = Random.value < attacker.CriticalChance / 100f;
         float critMultiplier = isCrit ? 1.5f : 1f;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Monster
 {
     [Header("몬스터 정보 데이터")]
@@ -30,7 +31,17 @@ public class Monster
 
     [Header("스킬 정보")]
     public List<SkillData> skills;
+    
+    // 배틀 중 변경되는 스텟
+    public int CurMaxHp { get; private set; }
+    public int CurAttack { get; private set; }
+    public int CurDefense { get; private set; }
+    public int CurSpeed { get; private set; }
+    public int CurCriticalChance { get; private set; }
      
+    private List<StatusEffect> activeStatusEffects = new();
+    private List<IPassiveSkill> passiveSkills = new();
+    
     //몬스터 데이터로 초기화
     public void SetMonster(Monster newMonster)
     {
@@ -120,7 +131,18 @@ public class Monster
             CurHp = MaxHp; // 레벨업 시 체력 회복
         }
     }
+
+    // 배틀 시작 전 사용!
+    public void InitializeBattleStats()
+    {
+        CurMaxHp = MaxHp;
+        CurAttack = Attack;
+        CurDefense = Defense;
+        CurSpeed = Speed;
+        CurCriticalChance = CriticalChance;
+    }
     
+    // 레벨에따른 스탯 조정
     public void RecalculateStats()
     {
         int levelMinusOne = Level - 1;
@@ -132,10 +154,39 @@ public class Monster
         MaxExp = monsterData.maxExp + 25 * levelMinusOne;
         ExpReward = monsterData.expReward + 25 * levelMinusOne;
         GoldReward = monsterData.goldReward + 30 * levelMinusOne;
+    }
 
-        // 만약 curHp가 maxHp보다 크다면 맞춰줌
-        if (CurHp > MaxHp)
-            CurHp = MaxHp;
+    public void PowerUp(int amount)
+    {
+        CurAttack += amount;
+    }
+
+    public void PowerDown(int amount)
+    {
+        CurAttack -= amount;
+        if (CurAttack < 0) CurAttack = 0;
+    }
+    
+    public void Heal(int amount)
+    {
+        CurHp += amount;
+        if (CurHp >= CurMaxHp) CurHp = CurMaxHp;
+    }
+
+    public void SpeedDownEffect(int amount)
+    {
+        CurSpeed -= amount;
+        if (CurSpeed < 0) CurSpeed = 0;
+    }
+
+    public void SpeedUpEffect(int amount)
+    {
+        CurSpeed += amount;
+    }
+
+    public void RecoverUpSpeed(int amount)
+    {
+        CurSpeed += amount;
     }
 
     //피해받기
@@ -149,6 +200,91 @@ public class Monster
     public void SetLevel(int level)
     {
         Level = level;
-        //레벨마다 오르는 능려치 처리
+        //레벨마다 오르는 능력치 처리
+    }
+
+    public void ApplyStatus(StatusEffect effect)
+    {
+        foreach (var existing in activeStatusEffects)
+        {
+            if (existing.Name == effect.Name) return;
+        }
+        
+        activeStatusEffects.Add(effect);
+    }
+
+    public void OnTurnStart()
+    {
+        List<StatusEffect> expired = new();
+
+        foreach (var effect in activeStatusEffects)
+        {
+            effect.OnTurnStart(this);
+            effect.duration--;
+
+            if (effect.duration <= 0)
+            {
+                expired.Add(effect);
+            }
+        }
+
+        foreach (var effect in expired)
+        {
+            activeStatusEffects.Remove(effect);
+        }
+    }
+
+    public void InitializePassiveSkills()
+    {
+        passiveSkills.Clear();
+
+        foreach (var skill in skills)
+        {
+            if (skill.skillType == SkillType.PassiveSkill)
+            {
+                var passive = PassiveSkillFactory.Get(skill.passiveType);
+                if (passive != null)
+                {
+                    passiveSkills.Add(passive);
+                }
+            }
+        }
+    }
+
+    public void TriggerOnBattleStart(List<Monster> monsters)
+    {
+        foreach (var passive in passiveSkills)
+        {
+            passive.OnBattleStart(this, monsters);
+        }
+    }
+
+    public void TriggerOnTurnEnd()
+    {
+        foreach (var passive in passiveSkills)
+        {
+            passive.OnTurnEnd(this);
+        }
+    }
+
+    public void TriggerOnDamaged(int damage, Monster actor)
+    {
+        foreach (var passive in passiveSkills)
+        {
+            passive.OnDamaged(this, damage, actor);
+        }
+    }
+
+    public bool TryRunAwayWithPassive(out bool isGuaranteed)
+    {
+        isGuaranteed = false;
+        foreach (var passive in passiveSkills)
+        {
+            if (passive.TryEscape(this, ref isGuaranteed))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

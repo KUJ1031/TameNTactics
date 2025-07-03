@@ -14,7 +14,6 @@ public class EntryManager : Singleton<EntryManager>
 
     private void Start()
     {
-        InitializeAllSlots();
     }
 
     public void InitializeAllSlots()
@@ -32,6 +31,7 @@ public class EntryManager : Singleton<EntryManager>
             GameObject slot = Instantiate(monsterSlotPrefab, contentPanel);
             slot.GetComponent<MonsterSlot>().SetData(monster);
         }
+        
     }
 
     public void ToggleEntry(Monster monster)
@@ -63,6 +63,7 @@ public class EntryManager : Singleton<EntryManager>
         }
 
         InitializeAllSlots();
+        PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player); // 플레이어 데이터 저장
         OnEntryChanged?.Invoke();
     }
 
