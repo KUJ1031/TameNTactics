@@ -3,22 +3,24 @@ using UnityEngine;
 public enum SkillType
 {
     PassiveSkill,
-    ActiveSkill,
+    NormalSkill,
     UltimateSkill,
 }
 
 public enum PassiveSkillType
 {
     None,
-    TeamAttackUp,          // 팀 전체 공격력 5% 증가
-    GainSpeedOnHit,        // 피격 시 본인 스피드 +10
-    TeamHealEachTurn,      // 매 턴 끝에 팀원 최대체력 10% 회복
-    ReduceEnemySpeedOnHit, // 공격 시 상대 스피드 -5
+    AllyTypeBoost,     // 배틀 시작 시 같은 속성 공격력 UP
+    SelfHealOnTurnEnd, // 턴 종료 시 체력 회복
+    LowHpAttackBoost,  // 체력 50% 이하 시 공격력 UP
+    ReflectDamage,     // 피격 시 데미지 반사
+    EscapeMaster       // 도망 100% 성공
 }
 
 [CreateAssetMenu(fileName = "New Skill Data", menuName = "Skill Data")]
 public class SkillData : ScriptableObject
 {
+    public string skillId;
     public SkillType skillType;
     public PassiveSkillType passiveType;
     public string skillName;

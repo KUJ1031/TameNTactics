@@ -28,7 +28,7 @@ public class SelectTargetState : BaseBattleState
         
         if (!BattleManager.Instance.battleEnded)
         {
-            BattleManager.Instance.EndTurn();
+            BattleManager.Instance.IncreaseUltCostAllMonsters();
             battleSystem.ChangeState(new PlayerMenuState(battleSystem));
         }
     }
