@@ -125,7 +125,7 @@ public class BattleManager : Singleton<BattleManager>
 
         var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
-        bool playerGoesFirst = selectedPlayerMonster.Speed >= enemyAction.actor.Speed;
+        bool playerGoesFirst = selectedPlayerMonster.CurSpeed >= enemyAction.actor.CurSpeed;
 
         if (playerGoesFirst)
         {
