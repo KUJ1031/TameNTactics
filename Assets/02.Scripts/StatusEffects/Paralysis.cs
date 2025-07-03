@@ -6,11 +6,8 @@ public class Paralysis : StatusEffect
     private bool isApplied = false;
     private int appliedAmount;
 
-    public Paralysis(int duration) : base(duration) {}
+    public Paralysis(int duration) : base(StatusEffectType.Paralysis, duration) {}
     
-    
-    public override string Name => "마비";
-
     public override void OnTurnStart(Monster target)
     {
         if (!isApplied)
