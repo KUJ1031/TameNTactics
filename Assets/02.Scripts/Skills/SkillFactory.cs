@@ -3,24 +3,25 @@ using System.Collections.Generic;
 
 public static class SkillFactory
 {
-    private static Dictionary<string, Func<SkillData, ISkillEffect>> skillEffectCreators = new()
+    private static Dictionary<NormalSkillType, Func<SkillData, ISkillEffect>> normalSkillCreators = new()
     {
-        { "FlareStrike", data => new FlareStrike(data) },
-        { "ToxicBite", data => new ToxicBite(data) },
-        { "WaterSlash", data => new WaterSlash(data) },
-        { "SteelSlash", data => new SteelSlash(data) },
-        { "GroundSmash", data => new GroundSmash(data) }
+        { NormalSkillType.FlareStrike, data => new FlareStrike(data) },
+        { NormalSkillType.ToxicBite, data => new ToxicBite(data) },
+        { NormalSkillType.WaterSlash, data => new WaterSlash(data) },
+        { NormalSkillType.SteelSlash, data => new SteelSlash(data) },
+        { NormalSkillType.GroundSmash, data => new GroundSmash(data) }
     };
 
     public static ISkillEffect GetSkillEffect(SkillData data)
     {
-        if (data == null || string.IsNullOrEmpty(data.skillId)) return null;
+        if (data == null) return null;
 
-        if (skillEffectCreators.TryGetValue(data.skillId, out var creator))
+        if (data.skillType == SkillType.NormalSkill &&
+            normalSkillCreators.TryGetValue(data.normalType, out var creator))
         {
             return creator(data);
         }
-        
+
         return null;
     }
 }

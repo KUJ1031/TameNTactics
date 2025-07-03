@@ -17,12 +17,27 @@ public enum PassiveSkillType
     EscapeMaster       // 도망 100% 성공
 }
 
+public enum NormalSkillType
+{
+    FlareStrike,
+    ToxicBite,
+    WaterSlash,
+    SteelSlash,
+    GroundSmash
+}
+
+public enum UltimateSkillType
+{
+    None
+}
+
 [CreateAssetMenu(fileName = "New Skill Data", menuName = "Skill Data")]
 public class SkillData : ScriptableObject
 {
-    public string skillId;
     public SkillType skillType;
     public PassiveSkillType passiveType;
+    public NormalSkillType normalType;
+    public UltimateSkillType ultimateType;
     public string skillName;
     public float skillPower;
     public int curUltimateCost;
