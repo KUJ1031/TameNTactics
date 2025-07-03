@@ -203,8 +203,8 @@ public class BattleManager : Singleton<BattleManager>
 
     public void IncreaseUltCostAllMonsters()
     {
-        IncreaseUltimateCostAll(BattleEntryTeam);
-        IncreaseUltimateCostAll(BattleEnemyTeam);
+        IncreaseUltimateCostTeam(BattleEntryTeam);
+        IncreaseUltimateCostTeam(BattleEnemyTeam);
     }
 
     public bool IsTeamDead(List<Monster> team)
@@ -237,7 +237,7 @@ public class BattleManager : Singleton<BattleManager>
         monster.IncreaseUltimateCost();
     }
 
-    public void IncreaseUltimateCostAll(List<Monster> team)
+    public void IncreaseUltimateCostTeam(List<Monster> team)
     {
         foreach (var monster in team)
         {
