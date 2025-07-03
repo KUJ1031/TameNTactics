@@ -12,7 +12,9 @@ public class BattleSelectView : MonoBehaviour
 
     [SerializeField] private GameObject selectPanel;
     [SerializeField] private GameObject skillPanel;
+    [SerializeField] private GameObject gaugePanel;
     [SerializeField] private RectTransform selectMonsterImage;
+    [SerializeField] private Canvas gaugeCanvas;
 
     // 배틀 중의 선택지 Panel 나타냄
     public void ShowSkillPanel()
@@ -26,6 +28,39 @@ public class BattleSelectView : MonoBehaviour
     {
         skillPanel.SetActive(false);
         selectPanel.SetActive(true);
+    }
+
+    public GameObject InitiateGauge(Vector3 screenPos)
+    {
+        GameObject gauge = Instantiate(gaugePanel, gaugeCanvas.transform);
+
+        gauge.transform.position = screenPos;
+        gauge.SetActive(true);
+
+        return gauge;
+    }
+
+    public void SetGauge(GameObject gauge, float hpRatio, float ultimateRatio)
+    {
+        Image hpBar = gauge.transform.GetChild(0).GetComponent<Image>();
+        Image ultimateBar = gauge.transform.GetChild(1).GetComponent<Image>();
+
+        hpBar.fillAmount = hpRatio;
+        ultimateBar.fillAmount = ultimateRatio;
+    }
+
+    public void SetHpGauge(GameObject gauge, float hpRatio)
+    {
+        Image hpBar = gauge.transform.GetChild(0).GetComponent<Image>();
+
+        hpBar.fillAmount = hpRatio;
+    }
+
+    public void SetUltimateGauge(GameObject gauge, float ultimateRatio)
+    {
+        Image ultimateBar = gauge.transform.GetChild(1).GetComponent<Image>();
+
+        ultimateBar.fillAmount = ultimateRatio;
     }
 
     public void MoveSelectMonster(Transform tr)

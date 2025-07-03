@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,6 +15,7 @@ public class BattleUIManager : MonoBehaviour
     public BattleSystem battleSystem;
 
     private bool isSkillPanelOpen = false;
+    private Dictionary<Monster, GameObject> monsterBattleInfo = new();
 
     void Start()
     {
@@ -64,4 +68,66 @@ public class BattleUIManager : MonoBehaviour
 
         skillView.ShowSkillList(monsterData.skills);
     }
+
+
+    // 배틀씬 진입 시 몬스터 체력, 궁극기 게이지 세팅
+    public void SettingMonsterGauge(Transform ally, Transform enemy)
+    {
+        List<MonsterCharacter> monsterList = new();
+
+        MonsterCharacter[] allyChildren = ally.GetComponentsInChildren<MonsterCharacter>();
+        MonsterCharacter[] enemyChildren = enemy.GetComponentsInChildren<MonsterCharacter>();
+
+        for (int i = 0; i < allyChildren.Length; i++)
+        {
+            monsterList.Add(allyChildren[i]);
+        }
+
+        for (int i = 0; i < enemyChildren.Length; i++)
+        {
+            monsterList.Add(enemyChildren[i]);
+        }
+
+        for (int i = 0; i < monsterList.Count; i++)
+        {
+            Debug.Log("게이지를 생성합니다.");
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterList[i].transform.position);
+
+            GameObject gauge = battleSelectView.InitiateGauge(screenPos);
+            monsterBattleInfo.Add(monsterList[i].monster, gauge);
+        }
+    }
+
+    public void UpdateGauge(Monster monster)
+    {
+        Debug.Log("UpdateGauge진입");
+        GameObject gauge = monsterBattleInfo[monster];
+
+        float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
+        float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
+
+        battleSelectView.SetGauge(gauge, hpRatio, ultimateRatio);
+    }
+
+    public void UpdateHpGauge(Monster monster)
+    {
+        Debug.Log("UpdateHpGauge 진입");
+        GameObject gauge = monsterBattleInfo[monster];
+
+        float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
+
+        battleSelectView.SetHpGauge(gauge, hpRatio);
+    }
+
+    public void UpdateUltimateGauge(Monster monster)
+    {
+        Debug.Log("UpdateUltimateGauge 진입");
+        GameObject gauge = monsterBattleInfo[monster];
+
+        float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
+
+        battleSelectView.SetUltimateGauge(gauge, ultimateRatio);
+    }
+
+    //public void UpdateUltimateGauge()
 }
