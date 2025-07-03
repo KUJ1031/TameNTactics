@@ -7,8 +7,11 @@ public class BattleManager : Singleton<BattleManager>
     public List<Monster> BattleEntry => PlayerManager.Instance.player.battleEntry;
     public List<Monster> BenchMonsters => PlayerManager.Instance.player.benchEntry;
     public List<Monster> OwnedMonsters => PlayerManager.Instance.player.ownedMonsters;
-
+    
     public List<Monster> enemyTeam;
+
+    public List<Monster> BattleEntryTeam { get; private set; } = new();
+    public List<Monster> BattleEnemyTeam { get; private set; } = new();
     
     public List<Monster> possibleTargets = new();
 
@@ -16,6 +19,38 @@ public class BattleManager : Singleton<BattleManager>
     public SkillData selectedSkill;
 
     public bool battleEnded = false;
+
+    public void FindSpawnMonsters()
+    {
+        BattleEntryTeam.Clear();
+        BattleEnemyTeam.Clear();
+
+        GameObject allyObj = GameObject.Find("AllySpawner");
+        GameObject enemyObj = GameObject.Find("EnemySpawner");
+
+        if (allyObj == null || enemyObj == null) return;
+
+        Transform allySpawner = allyObj.transform;
+        Transform enemySpawner = enemyObj.transform;
+
+        foreach (Transform spawnPoint in allySpawner)
+        {
+            MonsterCharacter monsterChar = spawnPoint.GetComponentInChildren<MonsterCharacter>();
+            if (monsterChar != null && monsterChar.monster != null)
+            {
+                BattleEntryTeam.Add(monsterChar.monster);
+            }
+        }
+
+        foreach (Transform spawnPoint in enemySpawner)
+        {
+            MonsterCharacter monsterChar = spawnPoint.GetComponentInChildren<MonsterCharacter>();
+            if (monsterChar != null && monsterChar.monster != null)
+            {
+                BattleEnemyTeam.Add(monsterChar.monster);
+            }
+        }
+    }
     
     public void StartBattle()
     {
