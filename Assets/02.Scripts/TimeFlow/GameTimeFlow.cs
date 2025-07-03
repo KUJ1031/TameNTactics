@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ using UnityEngine;
 /// 게임 내 시간 흐름을 시뮬레이션하고,
 /// 이를 UI에 12시간제로 표시하는 클래스
 /// </summary>
-public class GameTimeFlow : MonoBehaviour
+public class GameTimeFlow : Singleton<GameTimeFlow>
 {
     [Header("하루가 흐르는 실제 시간(초 단위)")]
     public float dayLengthInSeconds = 2880f; // 게임 내 하루 = 48분
@@ -14,6 +15,14 @@ public class GameTimeFlow : MonoBehaviour
 
     [Header("시간을 표시할 TextMeshProUGUI")]
     public TextMeshProUGUI timeText;
+    public TextMeshProUGUI playTimeText;
+
+    void Start()
+    {
+        //Player player = PlayerSaveManager.Instance.LoadPlayerData();
+        //PlayerManager.Instance.player = player;
+        timer = PlayerManager.Instance.player.playerLastGameTime;
+    }
 
     void Update()
     {
@@ -42,6 +51,33 @@ public class GameTimeFlow : MonoBehaviour
         if (this.timeText != null)
         {
             this.timeText.text = timeString;
+        }
+        // 플레이 시간 표시
+        if (this.playTimeText != null)
+        {
+            TimeSpan timeSpan = TimeSpan.FromSeconds(timer);
+            this.playTimeText.text = "플레이 시간: " + timeSpan.ToString(@"hh\:mm\:ss");
+        }
+        // 플레이어에 현재 시간 저장
+       // PlayerManager.Instance.player.playerLastGameTime = timer;
+
+        // 플레이어에 현재 플레이 시간 저장
+       // PlayerManager.Instance.player.totalPlaytime += Mathf.FloorToInt(timer);
+    }
+
+    public float GetCurrentTimer() => timer;
+    public void SetTimer(float newTime)
+    {
+        timer = newTime;
+        PlayerManager.Instance.player.playerLastGameTime = newTime;
+        UpdatePlayTimeText(PlayerManager.Instance.player.totalPlaytime);
+    }
+    public void UpdatePlayTimeText(int totalPlaytime)
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(totalPlaytime);
+        if (this.playTimeText != null)
+        {
+            this.playTimeText.text = "플레이 시간: " + timeSpan.ToString(@"hh\:mm\:ss");
         }
     }
 }

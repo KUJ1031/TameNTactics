@@ -26,7 +26,7 @@ public class Player
     [Header("기본 정보")]
     public string playerName;
     public int totalPlaytime;
-    public int playerLastGameTime;
+    public float playerLastGameTime;
     public Vector3 playerLastPosition;
 
     [Header("진행 정보")]
