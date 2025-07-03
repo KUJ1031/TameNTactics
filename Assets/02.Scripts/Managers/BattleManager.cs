@@ -54,17 +54,19 @@ public class BattleManager : Singleton<BattleManager>
     
     public void StartBattle()
     {
-        InitializeUltimateSkill(BattleEntryTeam);
-        InitializeUltimateSkill(BattleEnemyTeam);
+        InitializeUltCost(BattleEntryTeam);
+        InitializeUltCost(BattleEnemyTeam);
         
         foreach (var monster in BattleEntryTeam)
         {
+            monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
             monster.TriggerOnBattleStart(BattleEntryTeam);
         }
 
         foreach (var monster in BattleEnemyTeam)
         {
+            monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
             monster.TriggerOnBattleStart(BattleEnemyTeam);
         }
@@ -157,10 +159,10 @@ public class BattleManager : Singleton<BattleManager>
         
         effect.Execute(caster, targets);
         
-        IncreaseUltimateCost(caster);
+        IncreaseUltCost(caster);
         foreach (var t in targets)
         {
-            IncreaseUltimateCost(t);
+            IncreaseUltCost(t);
         }
     }
 
@@ -222,42 +224,24 @@ public class BattleManager : Singleton<BattleManager>
         // 전투 종료 UI 호출
     }
     
-    public void InitializeUltimateSkill(List<Monster> team)
+    public void InitializeUltCost(List<Monster> team)
     {
         foreach (var monster in team)
         {
-            foreach (var skill in monster.skills)
-            {
-                if (skill.skillType == SkillType.UltimateSkill)
-                {
-                    skill.curUltimateCost = 0;
-                }
-            }
+            monster.InitializeUltimateCost();
         }
     }
 
-    public void IncreaseUltimateCost(Monster monster)
+    public void IncreaseUltCost(Monster monster)
     {
-        foreach (var skill in monster.skills)
-        {
-            if (skill.skillType == SkillType.UltimateSkill)
-            {
-                skill.curUltimateCost = Mathf.Min(skill.maxUltimateCost, skill.curUltimateCost + 1);
-            }
-        }
+        monster.IncreaseUltimateCost();
     }
 
     public void IncreaseUltimateCostAll(List<Monster> team)
     {
         foreach (var monster in team)
         {
-            foreach (var skill in monster.skills)
-            {
-                if (skill.skillType == SkillType.UltimateSkill)
-                {
-                    skill.curUltimateCost = Mathf.Min(skill.maxUltimateCost, skill.curUltimateCost + 1);
-                }
-            }
+            monster.IncreaseUltimateCost();
         }
     }
     
