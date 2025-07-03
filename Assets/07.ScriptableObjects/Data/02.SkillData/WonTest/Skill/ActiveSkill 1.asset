@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: ActiveSkill 1
   m_EditorClassIdentifier: 
   skillType: 1
-  passiveType: 0
+  passiveSkillList: 0
+  normalSkillList: 0
+  ultimateSkillList: 0
   skillName: "\uAE30\uBCF8"
   skillPower: 1.2
   curUltimateCost: 0
