@@ -1,53 +1,79 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class PlayerSaveManager : Singleton<PlayerSaveManager>
 {
     public void SavePlayerData(Player player)
     {
-        PlayerManager.Instance.player = player;
-        // 플레이어 데이터를 저장하는 로직을 구현합니다.
-        // Json
+        var flow = GameTimeFlow.Instance;
+        player.playerLastGameTime = flow.GetCurrentTimer();
+        player.totalPlaytime += Mathf.FloorToInt(flow.GetCurrentTimer());
+
+        if (PlayerManager.Instance.playerController != null)
+        {
+            player.playerLastPosition = PlayerManager.Instance.playerController.transform.position;
+        }
+        else
+        {
+            Debug.LogWarning("playerController가 할당되지 않아 위치를 저장하지 못했습니다.");
+        }
+
         string json = JsonUtility.ToJson(player, true);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/playerData.json", json);
-        Debug.Log("플레이어 데이터 저장: " + PlayerManager.Instance.player);
     }
 
     public Player LoadPlayerData()
     {
-        // 플레이어 데이터를 불러오는 로직을 구현합니다.
         string path = Application.persistentDataPath + "/playerData.json";
         if (System.IO.File.Exists(path))
         {
             string json = System.IO.File.ReadAllText(path);
-            Player player = PlayerManager.Instance.player;
-            player = JsonUtility.FromJson<Player>(json);
-            Debug.Log("플레이어 데이터 불러오기: " + player);
-            Debug.Log("플레이어 데이터 불러오기 경로: " + path);
-            Debug.Log("플레이어 전체 몬스터: " + string.Join(", ", player.ownedMonsters.Select(m => m.monsterName)));
-            Debug.Log("플레이어 엔트리 몬스터: " + string.Join(", ", player.entryMonsters.Select(m => m.monsterName)));
-            Debug.Log("플레이어 전투 출전 몬스터: " + string.Join(", ", player.battleEntry.Select(m => m.monsterName)));
-            Debug.Log("플레이어 벤치 몬스터: " + string.Join(", ", player.benchEntry.Select(m => m.monsterName)));
-            Debug.Log("플레이어 인벤토리 아이템: " + string.Join(", ", player.items.Select(i => i.itemName)));
-            Debug.Log("플레이어 골드: " + player.gold);
-            Debug.Log("플레이어 이름: " + player.playerName);
-            Debug.Log("플레이어 총 플레이 시간: " + player.totalPlaytime);
-            Debug.Log("플레이어 마지막 게임 시간: " + player.playerLastGameTime);
-            Debug.Log("플레이어 마지막 위치: " + player.playerLastPosition);
-            Debug.Log("플레이어 보스 클리어 정보: " + string.Join(", ", player.playerBossClearCheck.ToDictionary().Select(kv => kv.Key + ": " + kv.Value)));
-            Debug.Log("플레이어 퀘스트 클리어 정보: " + string.Join(", ", player.playerQuestClearCheck.ToDictionary().Select(kv => kv.Key + ": " + kv.Value)));
-            Debug.Log("플레이어 퍼즐 클리어 정보: " + string.Join(", ", player.playerPuzzleClearCheck.ToDictionary().Select(kv => kv.Key + ": " + kv.Value)));
-            Debug.Log("플레이어 키 설정 정보: " + string.Join(", ", player.playerKeySetting.ToDictionary().Select(kv => kv.Key + ": " + kv.Value)));
-
-
-            return player;
+            Player loadedPlayer = JsonUtility.FromJson<Player>(json);
+            return loadedPlayer;
         }
         else
         {
             Debug.LogWarning("저장된 플레이어 데이터가 없습니다.");
             return null;
+        }
+    }
+
+    // 저장 버튼에 연결할 메서드: 저장 기능 호출만 담당
+    public void OnSaveButtonPressed()
+    {
+        Debug.Log("플레이어 현재 위치 저장 시점: " + PlayerManager.Instance.playerController.transform.position);
+        SavePlayerData(PlayerManager.Instance.player);
+    }
+
+    // 불러오기 버튼에 연결할 메서드: 불러온 데이터를 적용하는 로직을 분리
+    public void OnLoadButtonPressed()
+    {
+        Player loaded = LoadPlayerData();
+        if (loaded != null)
+        {
+            ApplyLoadedPlayerData(loaded);
+            Debug.Log("플레이어 데이터 로드 완료, 위치 및 시간 적용됨");
+        }
+    }
+
+    // 불러온 플레이어 데이터를 게임 상태에 적용하는 함수
+    private void ApplyLoadedPlayerData(Player loaded)
+    {
+        PlayerManager.Instance.player = loaded;
+
+        // 시간 적용
+        GameTimeFlow.Instance.SetTimer(loaded.playerLastGameTime);
+        GameTimeFlow.Instance.UpdatePlayTimeText(loaded.totalPlaytime);
+
+        // 위치 적용
+        if (PlayerManager.Instance.playerController != null)
+        {
+            PlayerManager.Instance.playerController.transform.position = loaded.playerLastPosition;
+        }
+        else
+        {
+            Debug.LogWarning("playerController가 할당되지 않아 위치를 적용하지 못했습니다.");
         }
     }
 }
