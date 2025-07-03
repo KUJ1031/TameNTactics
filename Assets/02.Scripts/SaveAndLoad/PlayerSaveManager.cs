@@ -11,6 +11,8 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         player.totalPlaytime += Mathf.FloorToInt(flow.GetCurrentTimer());
         player.playerLastPosition = PlayerManager.Instance.playerController.transform.position;
 
+        KeyRebinderManager.Instance.SaveCurrentBindingsToPlayer(player);
+
         string json = JsonUtility.ToJson(player, true);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/playerData.json", json);
     }
