@@ -12,7 +12,7 @@ public static class UltimateSkillFactory
         { UltimateSkillList.PowerSlam, data => new PowerSlam(data)}
     };
 
-    public static ISkillEffect GetUltSkillEffect(SkillData data)
+    public static ISkillEffect GetUltimateSkill(SkillData data)
     {
         if (data == null) return null;
 

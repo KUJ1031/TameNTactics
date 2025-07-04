@@ -13,8 +13,7 @@ public class WaterSlash : ISkillEffect
 
     public void Execute(Monster caster, List<Monster> targets)
     {
-        if (skillData == null) return;
-        if (targets == null || targets.Count == 0) return;
+        if (skillData == null || targets == null || targets.Count == 0) return;
         
         foreach (var target in targets)
         {

@@ -12,7 +12,7 @@ public static class NormalSkillFactory
         { NormalSkillList.GroundSmash, data => new GroundSmash(data) }
     };
 
-    public static ISkillEffect GetSkillEffect(SkillData data)
+    public static ISkillEffect GetNormalSkill(SkillData data)
     {
         if (data == null) return null;
 

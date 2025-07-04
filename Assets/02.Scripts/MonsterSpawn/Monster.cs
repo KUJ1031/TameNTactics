@@ -50,7 +50,7 @@ public class Monster
     private List<StatusEffect> activeStatusEffects = new();
     private List<IPassiveSkill> passiveSkills = new();
 
-    public bool IsStunned { get; private set; } = false;
+    public bool canAct { get; private set; } = true;
 
     public Action<Monster> HpChange;
     public Action<Monster> ultimateCostChange;
@@ -258,7 +258,7 @@ public class Monster
         {
             if (skill.skillType == SkillType.PassiveSkill)
             {
-                var passive = PassiveSkillFactory.Get(skill.passiveSkillList);
+                var passive = PassiveSkillFactory.GetPassiveSkill(skill.passiveSkillList);
                 if (passive != null)
                 {
                     passiveSkills.Add(passive);
@@ -330,6 +330,16 @@ public class Monster
 
     public void ApplyStun(bool isApplied)
     {
-        IsStunned = isApplied;
+        if (isApplied)
+        {
+            canAct = false;
+        }
+        
+        else canAct = true;
+    }
+
+    public void UseUltimateCost()
+    {
+        CurUltimateCost = 0;
     }
 }

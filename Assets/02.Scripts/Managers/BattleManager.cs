@@ -68,6 +68,7 @@ public class BattleManager : Singleton<BattleManager>
 
         foreach (var monster in BattleEnemyTeam)
         {
+            monster.RecalculateStats();
             monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
             monster.TriggerOnBattleStart(BattleEnemyTeam);
@@ -131,6 +132,18 @@ public class BattleManager : Singleton<BattleManager>
 
         var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
+        bool playerTeamStunned = BattleEntryTeam.All(m => !m.canAct);
+        
+        if (playerTeamStunned)
+        {
+            ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
+            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
+            
+            EndTurn();
+            IncreaseUltCostAllMonsters();
+            return;
+        }
+        
         bool playerGoesFirst = selectedPlayerMonster.CurSpeed >= enemyAction.actor.CurSpeed;
 
         if (playerGoesFirst)
@@ -158,7 +171,20 @@ public class BattleManager : Singleton<BattleManager>
     {
         if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
 
-        ISkillEffect effect = NormalSkillFactory.GetSkillEffect(skill);
+        ISkillEffect effect = null;
+        
+        if (!caster.canAct) return;
+
+        if (skill.skillType == SkillType.UltimateSkill)
+        {
+            effect = UltimateSkillFactory.GetUltimateSkill(skill);
+            caster.UseUltimateCost();
+        }
+        else
+        {
+            effect = NormalSkillFactory.GetNormalSkill(skill);
+        }
+
         if (effect == null) return;
 
         effect.Execute(caster, targets);

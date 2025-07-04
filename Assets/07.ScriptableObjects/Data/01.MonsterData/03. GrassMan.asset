@@ -18,7 +18,7 @@ MonoBehaviour:
   encounterCount: 0
   captureCount: 0
   type: 2
-  personality: 0
+  personality: 1
   maxHp: 80
   attack: 10
   defense: 9

@@ -13,7 +13,7 @@ public static class PassiveSkillFactory
         { PassiveSkillList.LowHpAttackBoost, () => new LowHpAttackBoost() }
     };
 
-    public static IPassiveSkill Get(PassiveSkillList list)
+    public static IPassiveSkill GetPassiveSkill(PassiveSkillList list)
     {
         return creators.TryGetValue(list, out var creator) ? creator() : null;
     }
