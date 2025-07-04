@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
 
     private InputAction inputAction;
 
+    public bool isInputBlocked = false;
+    public Vector2 lastMoveInput { get; private set; } = Vector2.zero;
+
 
     private void Awake()
     {
@@ -53,7 +56,28 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isInputBlocked) return;
+        UpdateLastMoveInput();
+
         currentState?.OnHandlelnput(this);
         currentState?.OnUpdate(this);
+    }
+
+    public void UpdateLastMoveInput()
+    {
+        Vector2 input = moveAction.ReadValue<Vector2>();
+        if (input != Vector2.zero)
+            lastMoveInput = input.normalized;
+    }
+
+    public Vector2 GetMoveInput()
+    {
+        Vector2 input = moveAction.ReadValue<Vector2>();
+        if (input != Vector2.zero)
+        {
+            lastMoveInput = input.normalized;
+            return lastMoveInput;
+        }
+        return lastMoveInput; // 최근 입력 방향 반환
     }
 }
