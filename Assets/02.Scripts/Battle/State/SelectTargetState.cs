@@ -18,7 +18,10 @@ public class SelectTargetState : BaseBattleState
 
     public override void Execute()
     {
-        // todo 마우스 혹은 방향키 조정 했을 때 타겟으로 설정 가능한 몬스터 빛나기
+        if (BattleManager.Instance.battleEnded)
+        {
+            battleSystem.ChangeState(new EndBattleState(battleSystem));
+        }
     }
     
     public void OnSelectTargetMonster(Monster monster)
