@@ -28,12 +28,15 @@ public static class EnemyAIController
             {
                 var targets = ChooseTargets(ultimateSkill, targetMonsters, actors, enemy);
 
-                return new EnemyAction
+                if (targets != null && targets.Count > 0)
                 {
-                    actor = enemy,
-                    selectedSkill = ultimateSkill,
-                    targets = targets
-                };
+                    return new EnemyAction
+                    {
+                        actor = enemy,
+                        selectedSkill = ultimateSkill,
+                        targets = targets
+                    };
+                }
             }
         }
 
@@ -53,12 +56,15 @@ public static class EnemyAIController
                 {
                     var targets = ChooseTargets(activeSkill, targetMonsters, actors, enemy);
 
-                    return new EnemyAction
+                    if (targets != null && targets.Count > 0)
                     {
-                        actor = enemy,
-                        selectedSkill = activeSkill,
-                        targets = targets
-                    };
+                        return new EnemyAction
+                        {
+                            actor = enemy,
+                            selectedSkill = activeSkill,
+                            targets = targets
+                        };
+                    }
                 }
             }
         }
@@ -74,12 +80,15 @@ public static class EnemyAIController
         {
             var targets = ChooseTargets(randomSkill, targetMonsters, actors, randomEnemy);
 
-            return new EnemyAction
+            if (targets != null && targets.Count > 0)
             {
-                actor = randomEnemy,
-                selectedSkill = randomSkill,
-                targets = targets
-            };
+                return new EnemyAction
+                {
+                    actor = randomEnemy,
+                    selectedSkill = randomSkill,
+                    targets = targets
+                };
+            }
         }
 
         return null;
@@ -90,16 +99,14 @@ public static class EnemyAIController
     {
         // 1. 체력 50% 이하 중 가장 낮은 몬스터
         var lowHp = targetMonsters
-            .Where(m => m.CurHp > 0 && (float)m.CurHp / m.MaxHp <= 0.5f)
-            .OrderBy(m => m.CurHp)
+            .Where(m => m.CurHp > 0 && m.CurHp / m.MaxHp <= 0.5f)
             .ToList();
 
         if (lowHp.Count > 0) return lowHp[0];
 
-        // 2. 상성 유리하고 HP 낮은 몬스터
+        // 2. 상성 유리한 몬스터
         var effective = targetMonsters
             .Where(m => m.CurHp > 0 && TypeChart.GetEffectiveness(attacker, m) > 1f)
-            .OrderBy(m => m.CurHp)
             .ToList();
 
         if (effective.Count > 0) return effective[0];

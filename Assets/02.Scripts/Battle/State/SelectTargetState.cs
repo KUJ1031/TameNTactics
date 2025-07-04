@@ -15,11 +15,6 @@ public class SelectTargetState : BaseBattleState
 
         // todo 타겟 몬스터 강조 효과(빛나기) UI 활성화
     }
-
-    public override void Execute()
-    {
-        // todo 마우스 혹은 방향키 조정 했을 때 타겟으로 설정 가능한 몬스터 빛나기
-    }
     
     public void OnSelectTargetMonster(Monster monster)
     {
