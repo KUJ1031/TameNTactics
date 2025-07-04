@@ -44,21 +44,29 @@ public class PlayerManager : MonoBehaviour
         if (scene.name == "MainScene")
         {
             // 1. 저장된 데이터가 있는지 시도해서 불러옴
-            Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
-
-            if (loadedPlayer == null)
+            SpawnPlayerCharacter(player);
+            if (RuntimePlayerSaveManager.Instance.playerData != null)
             {
-                Debug.Log("저장된 데이터가 없으므로 테스트 몬스터 생성");
-                for (int i = 0; i < testMonsterList.Count; i++)
+                RuntimePlayerSaveManager.Instance.RestoreGameState();
+            }
+            else
+            {
+                Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
+
+                if (loadedPlayer == null)
                 {
-                    Monster m = new Monster();
-                    m.SetMonsterData(testMonsterList[i]);
-                    player.AddOwnedMonster(m);
-                    player.ToggleEntry(m);
-                    player.ToggleBattleEntry(m);
+                    Debug.Log("저장된 데이터가 없으므로 테스트 몬스터 생성");
+                    for (int i = 0; i < testMonsterList.Count; i++)
+                    {
+                        Monster m = new Monster();
+                        m.SetMonsterData(testMonsterList[i]);
+                        player.AddOwnedMonster(m);
+                        player.ToggleEntry(m);
+                        player.ToggleBattleEntry(m);
+                    }
                 }
             }
-            SpawnPlayerCharacter(player);
+            
         }
     }
 
