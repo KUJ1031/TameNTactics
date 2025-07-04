@@ -29,9 +29,9 @@ MonoBehaviour:
   expReward: 5
   goldReward: 100
   skills:
-  - {fileID: 11400000, guid: 798c79a70a8646b4d853a8a4dc80a85c, type: 2}
-  - {fileID: 11400000, guid: c33cc18884acb7f41be1e0c872b5057c, type: 2}
-  - {fileID: 11400000, guid: 068c64dfc2ac864468d48659e2af284b, type: 2}
+  - {fileID: 11400000, guid: 9e3e3845a0532e5468df36eb74010b56, type: 2}
+  - {fileID: 11400000, guid: 310ab3e8840fe7b4ead64b0001267d63, type: 2}
+  - {fileID: 11400000, guid: e0b50ce991fbe5940af85b78abb2b69f, type: 2}
   spawnArea: 
   spawnTime: 0
   description: 
