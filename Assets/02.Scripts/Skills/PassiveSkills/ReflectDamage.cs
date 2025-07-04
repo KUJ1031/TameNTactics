@@ -7,7 +7,7 @@ public class ReflectDamage : IPassiveSkill
     {
         if (actor != null)
         {
-            int reflectDamage = Mathf.RoundToInt(damage * 0.2f);
+            int reflectDamage = Mathf.RoundToInt(damage * 0.1f);
             actor.TakeDamage(reflectDamage);
         }
     }

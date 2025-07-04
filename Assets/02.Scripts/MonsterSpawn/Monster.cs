@@ -46,8 +46,11 @@ public class Monster
     public int CurSpeed { get; private set; }
     public int CurCriticalChance { get; private set; }
 
+    
     private List<StatusEffect> activeStatusEffects = new();
     private List<IPassiveSkill> passiveSkills = new();
+
+    public bool canAct { get; private set; } = true;
 
     public Action<Monster> HpChange;
     public Action<Monster> ultimateCostChange;
@@ -234,7 +237,6 @@ public class Monster
         foreach (var effect in activeStatusEffects)
         {
             effect.OnTurnStart(this);
-            effect.duration--;
 
             if (effect.duration <= 0)
             {
@@ -256,7 +258,7 @@ public class Monster
         {
             if (skill.skillType == SkillType.PassiveSkill)
             {
-                var passive = PassiveSkillFactory.Get(skill.passiveSkillList);
+                var passive = PassiveSkillFactory.GetPassiveSkill(skill.passiveSkillList);
                 if (passive != null)
                 {
                     passiveSkills.Add(passive);
@@ -319,5 +321,25 @@ public class Monster
         CurUltimateCost--;
         CurUltimateCost = Mathf.Clamp(CurUltimateCost, 0, MaxUltimateCost);
         ultimateCostChange?.Invoke(this);
+    }
+
+    public void RemoveStatusEffects()
+    {
+        activeStatusEffects.Clear();
+    }
+
+    public void ApplyStun(bool isApplied)
+    {
+        if (isApplied)
+        {
+            canAct = false;
+        }
+        
+        else canAct = true;
+    }
+
+    public void UseUltimateCost()
+    {
+        CurUltimateCost = 0;
     }
 }

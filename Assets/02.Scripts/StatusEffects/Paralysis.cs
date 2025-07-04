@@ -16,8 +16,10 @@ public class Paralysis : StatusEffect
             target.SpeedDownEffect(appliedAmount);
             isApplied = true;
         }
+        
+        duration--;
 
-        if (duration == 1)
+        if (duration == 0)
         {
             target.RecoverUpSpeed(appliedAmount);
         }

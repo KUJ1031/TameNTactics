@@ -2,7 +2,8 @@ public enum StatusEffectType
 {
     Burn,
     Paralysis,
-    Poison
+    Poison,
+    Stun
 }
 
 public abstract class StatusEffect

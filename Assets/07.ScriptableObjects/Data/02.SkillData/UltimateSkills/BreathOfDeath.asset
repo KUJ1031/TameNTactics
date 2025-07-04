@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
-  m_Name: Ultimate
+  m_Name: BreathOfDeath
   m_EditorClassIdentifier: 
   skillType: 2
-  passiveType: 0
-  skillName: "\uAD81\uADF9\uAE30"
-  skillPower: 1.5
-  curUltimateCost: 0
-  maxUltimateCost: 5
+  passiveSkillList: 0
+  normalSkillList: 0
+  ultimateSkillList: 3
+  skillName: u
+  skillPower: 1.8
   isTargetSingleAlly: 0
   isAreaAttack: 0
   isTargetSelf: 0
-  description: "150% \uAD81\uADF9\uAE30 \uB370\uBBF8\uC9C0 \uBA39\uC5B4\uB78F!"
-  icon: {fileID: 21300000, guid: 834e17f2e3ac27b4db24084a142f5c90, type: 3}
+  icon: {fileID: 0}
+  upgradeIcon: {fileID: 0}
+  description: uuuuuu
+  upgradeDescription: 
