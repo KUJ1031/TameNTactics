@@ -15,14 +15,6 @@ public class SelectTargetState : BaseBattleState
 
         // todo 타겟 몬스터 강조 효과(빛나기) UI 활성화
     }
-
-    public override void Execute()
-    {
-        if (BattleManager.Instance.battleEnded)
-        {
-            battleSystem.ChangeState(new EndBattleState(battleSystem));
-        }
-    }
     
     public void OnSelectTargetMonster(Monster monster)
     {

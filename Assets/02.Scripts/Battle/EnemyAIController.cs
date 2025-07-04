@@ -28,12 +28,15 @@ public static class EnemyAIController
             {
                 var targets = ChooseTargets(ultimateSkill, targetMonsters, actors, enemy);
 
-                return new EnemyAction
+                if (targets != null && targets.Count > 0)
                 {
-                    actor = enemy,
-                    selectedSkill = ultimateSkill,
-                    targets = targets
-                };
+                    return new EnemyAction
+                    {
+                        actor = enemy,
+                        selectedSkill = ultimateSkill,
+                        targets = targets
+                    };
+                }
             }
         }
 
@@ -53,12 +56,15 @@ public static class EnemyAIController
                 {
                     var targets = ChooseTargets(activeSkill, targetMonsters, actors, enemy);
 
-                    return new EnemyAction
+                    if (targets != null && targets.Count > 0)
                     {
-                        actor = enemy,
-                        selectedSkill = activeSkill,
-                        targets = targets
-                    };
+                        return new EnemyAction
+                        {
+                            actor = enemy,
+                            selectedSkill = activeSkill,
+                            targets = targets
+                        };
+                    }
                 }
             }
         }
@@ -74,12 +80,15 @@ public static class EnemyAIController
         {
             var targets = ChooseTargets(randomSkill, targetMonsters, actors, randomEnemy);
 
-            return new EnemyAction
+            if (targets != null && targets.Count > 0)
             {
-                actor = randomEnemy,
-                selectedSkill = randomSkill,
-                targets = targets
-            };
+                return new EnemyAction
+                {
+                    actor = randomEnemy,
+                    selectedSkill = randomSkill,
+                    targets = targets
+                };
+            }
         }
 
         return null;

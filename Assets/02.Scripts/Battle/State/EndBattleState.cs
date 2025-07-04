@@ -9,6 +9,7 @@ public class EndBattleState : BaseBattleState
     public override void Enter()
     {
         // todo 종료 UI 띄우기
+        BattleManager.Instance.BattleReward();
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
     }
 }
