@@ -13,6 +13,10 @@ public class PlayerMenuState : BaseBattleState
     public override void Execute()
     {
         // todo 몬스터 애니메이션 idle 상태(기본 자세)
+        if (BattleManager.Instance.battleEnded)
+        {
+            battleSystem.ChangeState(new EndBattleState(battleSystem));
+        }
     }
 
     public void OnAttackSelected()
