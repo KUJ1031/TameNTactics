@@ -28,7 +28,11 @@ public enum NormalSkillList
 
 public enum UltimateSkillList
 {
-    None
+    FireStorm,
+    MiracleTouch,
+    BreathOfDeath,
+    FateBarrier,
+    GracePulse
 }
 
 [CreateAssetMenu(fileName = "New Skill Data", menuName = "Skill Data")]

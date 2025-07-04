@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 public static class UltimateSkillFactory
 {
-    private static Dictionary<UltimateSkillList, Func<SkillData, ISkillEffect>> UltSkillCreators = new();
+    private static Dictionary<UltimateSkillList, Func<SkillData, ISkillEffect>> UltSkillCreators = new()
+    {
+        { UltimateSkillList.FireStorm, data => new FireStorm(data)}
+    };
 
     public static ISkillEffect Get(SkillData data)
     {
