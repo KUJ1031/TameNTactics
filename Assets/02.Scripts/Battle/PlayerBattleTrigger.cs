@@ -24,6 +24,8 @@ public class PlayerBattleTrigger : MonoBehaviour
 
         Destroy(other.gameObject); // 충돌한 적 제거
         
+        RuntimePlayerSaveManager.Instance.SaveCurrentGameState(PlayerManager.Instance.player); // 현재 플레이어 상태 저장
+
         //씬이동
         UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
     }

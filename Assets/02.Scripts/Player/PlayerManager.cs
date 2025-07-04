@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     public GameObject playerPrefab;             //실제 플레이어
 
     public List<MonsterData> testMonsterList; //테스트용 플레이어 몬스터들(추후 삭제)
+
+    public CinemachineVirtualCamera virtualCamera; // 줌 아웃 카메라
 
 
     private void Awake()
@@ -41,21 +44,29 @@ public class PlayerManager : MonoBehaviour
         if (scene.name == "MainScene")
         {
             // 1. 저장된 데이터가 있는지 시도해서 불러옴
-            Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
-
-            if (loadedPlayer == null)
+            SpawnPlayerCharacter(player);
+            if (RuntimePlayerSaveManager.Instance.playerData != null)
             {
-                Debug.Log("저장된 데이터가 없으므로 테스트 몬스터 생성");
-                for (int i = 0; i < testMonsterList.Count; i++)
+                RuntimePlayerSaveManager.Instance.RestoreGameState();
+            }
+            else
+            {
+                Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
+
+                if (loadedPlayer == null)
                 {
-                    Monster m = new Monster();
-                    m.SetMonsterData(testMonsterList[i]);
-                    player.AddOwnedMonster(m);
-                    player.ToggleEntry(m);
-                    player.ToggleBattleEntry(m);
+                    Debug.Log("저장된 데이터가 없으므로 테스트 몬스터 생성");
+                    for (int i = 0; i < testMonsterList.Count; i++)
+                    {
+                        Monster m = new Monster();
+                        m.SetMonsterData(testMonsterList[i]);
+                        player.AddOwnedMonster(m);
+                        player.ToggleEntry(m);
+                        player.ToggleBattleEntry(m);
+                    }
                 }
             }
-            SpawnPlayerCharacter(player);
+            
         }
     }
 
@@ -78,6 +89,14 @@ public class PlayerManager : MonoBehaviour
     private void SpawnPlayerCharacter(Player loadedPlayer)
     {
         GameObject playerInstance = Instantiate(playerPrefab);
+
+        if (virtualCamera != null)
+        {
+            virtualCamera.Follow = playerInstance.transform; // 카메라 팔로우 설정
+            virtualCamera.LookAt = playerInstance.transform; // 카메라 룩앳 설정
+            Debug.Log("CinemachineVirtualCamera가 설정되었습니다.");
+        }
+
         playerInstance.name = "Player";
 
         PlayerCharacter controller = playerInstance.GetComponent<PlayerCharacter>();
