@@ -777,7 +777,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &7986210047637181103
 MonoBehaviour:
@@ -839,6 +839,7 @@ MonoBehaviour:
   skillPanel: {fileID: 0}
   gaugePanel: {fileID: 2285872911564272583, guid: 4e8d1e26a1541d549b1f760f80bd4ba9, type: 3}
   selectMonsterImage: {fileID: 5600110731748191813}
+  gaugeCanvas: {fileID: 0}
 --- !u!1 &6738650655302467503
 GameObject:
   m_ObjectHideFlags: 0

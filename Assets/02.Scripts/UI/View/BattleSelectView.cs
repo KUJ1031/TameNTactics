@@ -40,15 +40,6 @@ public class BattleSelectView : MonoBehaviour
         return gauge;
     }
 
-    public void SetGauge(GameObject gauge, float hpRatio, float ultimateRatio)
-    {
-        Image hpBar = gauge.transform.GetChild(0).GetComponent<Image>();
-        Image ultimateBar = gauge.transform.GetChild(1).GetComponent<Image>();
-
-        hpBar.fillAmount = hpRatio;
-        ultimateBar.fillAmount = ultimateRatio;
-    }
-
     public void SetHpGauge(GameObject gauge, float hpRatio)
     {
         Image hpBar = gauge.transform.GetChild(0).GetComponent<Image>();
@@ -65,7 +56,13 @@ public class BattleSelectView : MonoBehaviour
 
     public void MoveSelectMonster(Transform tr)
     {
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(tr.position);
+        // 몬스터의 Sprite Renderer 참조
+        SpriteRenderer sr = tr.GetComponentInChildren<SpriteRenderer>();
+
+        // 몬스터 sprite의 중앙
+        Vector3 monsterCenterPos = sr.bounds.center;
+
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterCenterPos);
 
         Canvas canvas = selectMonsterImage.GetComponentInParent<Canvas>();
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();

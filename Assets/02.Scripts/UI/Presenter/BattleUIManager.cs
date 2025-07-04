@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,10 +7,7 @@ public class BattleUIManager : MonoBehaviour
 {
     [SerializeField] private BattleSelectView battleSelectView;
     [SerializeField] private SkillView skillView;
-    [SerializeField] private EntryView entryView;
     [SerializeField] private MenuView menuView;
-
-    public BattleSystem battleSystem;
 
     private bool isSkillPanelOpen = false;
     private Dictionary<Monster, GameObject> monsterBattleInfo = new();
@@ -98,17 +93,6 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void UpdateGauge(Monster monster)
-    {
-        Debug.Log("UpdateGauge진입");
-        GameObject gauge = monsterBattleInfo[monster];
-
-        float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
-        float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
-
-        battleSelectView.SetGauge(gauge, hpRatio, ultimateRatio);
-    }
-
     public void UpdateHpGauge(Monster monster)
     {
         Debug.Log("UpdateHpGauge 진입");
@@ -128,6 +112,4 @@ public class BattleUIManager : MonoBehaviour
 
         battleSelectView.SetUltimateGauge(gauge, ultimateRatio);
     }
-
-    //public void UpdateUltimateGauge()
 }
