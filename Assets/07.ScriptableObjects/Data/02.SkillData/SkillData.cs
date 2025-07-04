@@ -31,7 +31,7 @@ public enum UltimateSkillList
     FireStorm,
     MiracleTouch,
     BreathOfDeath,
-    FateBarrier,
+    PowerSlam,
     GracePulse
 }
 

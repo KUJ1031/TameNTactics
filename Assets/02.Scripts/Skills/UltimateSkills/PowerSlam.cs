@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GracePulse : ISkillEffect
+public class PowerSlam : ISkillEffect
 {
     private SkillData skillData;
     
-    public GracePulse(SkillData data)
+    public PowerSlam(SkillData data)
     {
         skillData = data;
     }
@@ -15,9 +15,9 @@ public class GracePulse : ISkillEffect
     {
         foreach (var target in targets)
         {
-            int amount = Mathf.RoundToInt(target.MaxHp * 0.2f);
-            target.Heal(amount);
-            target.IncreaseUltimateCost();
+            var result = DamageCalculator.CalculateDamage(caster, target, skillData);
+            BattleManager.Instance.DealDamage(target, result.damage, caster);
+            target.ApplyStatus(new Stun(2));
         }
     }
 }

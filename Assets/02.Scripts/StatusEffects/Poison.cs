@@ -10,5 +10,6 @@ public class Poison : StatusEffect
     {
         int amount = Mathf.RoundToInt(target.MaxHp * 0.1f);
         target.TakeDamage(amount);
+        duration--;
     }
 }

@@ -69,7 +69,6 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var monster in BattleEnemyTeam)
         {
             monster.InitializeBattleStats();
-            monster.RecalculateStats();
             monster.InitializePassiveSkills();
             monster.TriggerOnBattleStart(BattleEnemyTeam);
             Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
