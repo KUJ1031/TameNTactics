@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,7 +51,7 @@ public class MonsterDetailUI : MonoBehaviour
 
     private Monster monster;
 
-
+    //몬스터 디테일 유아이 셋팅
     public void SetMonsterDetailUI(Monster newMonster)
     {
         monster = newMonster;
@@ -65,6 +66,7 @@ public class MonsterDetailUI : MonoBehaviour
         UpdateMonsterSkillUI();
     }
 
+    //몬스터 디테일 몬스터 정보 셋팅
     private void UpdateMonsterDataUI()
     {
         monsterImage.sprite = monster.monsterData.monsterImage;
@@ -90,27 +92,34 @@ public class MonsterDetailUI : MonoBehaviour
         monsterStoryText.text = monster.monsterData.description;
     }
 
+    //몬스터 디테일 몬스터 스킬 셋팅
+
     private void UpdateMonsterSkillUI()
     {
         List<SkillData> skills = monster.skills;
+
         if (skills == null || skills.Count < 3)
         {
-            Debug.LogWarning("MonsterDetailUI: Skill list is invalid.");
+            Debug.LogWarning("MonsterDetailUI: Skill is null");
             return;
         }
 
-        ApplySkillToUI(skills[0], monsterSkill1IconUI, monsterSkill1Name, monsterSkill1Info);
-        ApplySkillToUI(skills[1], monsterSkill2IconUI, monsterSkill2Name, monsterSkill2Info);
-        ApplySkillToUI(skills[2], monsterSkill3IconUI, monsterSkill3Name, monsterSkill3Info);
-
-        monsterSkill2Lock.SetActive(monster.Level < 5);
-        monsterSkill3Lock.SetActive(monster.Level < 20);
+        UpdateSkillSlot(skills[0], monsterSkill1IconUI, monsterSkill1Name, monsterSkill1Info, 0, 10, null);
+        UpdateSkillSlot(skills[1], monsterSkill2IconUI, monsterSkill2Name, monsterSkill2Info, 5, 15, monsterSkill2Lock);
+        UpdateSkillSlot(skills[2], monsterSkill3IconUI, monsterSkill3Name, monsterSkill3Info, 20, 25, monsterSkill3Lock);
     }
 
-    private void ApplySkillToUI(SkillData skill, Image iconUI, TextMeshProUGUI nameText, TextMeshProUGUI infoText)
+    //스킬 칸 셋팅
+    private void UpdateSkillSlot(SkillData skill, Image iconUI, TextMeshProUGUI nameUI, TextMeshProUGUI infoUI, int nuLockLevel, int upgradeLevel, GameObject lockObj)
     {
-        iconUI.sprite = skill.icon;
-        nameText.text = skill.name;
-        infoText.text = skill.description;
+        bool isUnLock = monster.Level >= nuLockLevel;
+        bool isUpgrade = monster.Level >= upgradeLevel;
+
+        iconUI.sprite = isUpgrade ? skill.upgradeIcon : skill.icon;
+        nameUI.text = skill.name;
+        infoUI.text = isUpgrade ? skill.upgradeDescription : skill.description;
+
+        if (lockObj != null)
+            lockObj.SetActive(!isUnLock);
     }
 }
