@@ -121,7 +121,7 @@ public class KeyRebinderManager : MonoBehaviour
                     {
                         string overridePath = PlayerPrefs.GetString(key);
                         action.ApplyBindingOverride(i, overridePath);
-                        Debug.Log($"[로딩됨] {key} → {overridePath}");
+                        //Debug.Log($"[로딩됨] {key} → {overridePath}");
                     }
                 }
             }
@@ -138,6 +138,7 @@ public class KeyRebinderManager : MonoBehaviour
                 check = true;
             }
         }
+        Debug.Log(check);
         if (check)
         {
             CheckUI.SetActive(true);
