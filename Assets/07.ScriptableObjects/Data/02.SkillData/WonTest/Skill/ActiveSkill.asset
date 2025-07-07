@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: ActiveSkill
   m_EditorClassIdentifier: 
   skillType: 1
-  passiveType: 0
+  passiveSkillList: 0
+  normalSkillList: 0
+  ultimateSkillList: 0
   skillName: "\uAE30\uBCF8"
   skillPower: 1.2
-  curUltimateCost: 0
-  maxUltimateCost: 0
   isTargetSingleAlly: 0
   isAreaAttack: 0
   isTargetSelf: 0
