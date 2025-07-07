@@ -220,6 +220,7 @@ public class Monster
         //레벨마다 오르는 능력치 처리
     }
 
+    // 상태이상 적용
     public void ApplyStatus(StatusEffect effect)
     {
         foreach (var existing in activeStatusEffects)
@@ -230,7 +231,8 @@ public class Monster
         activeStatusEffects.Add(effect);
     }
 
-    public void OnTurnStart()
+    // 상태이상 정해진 턴 수가 지나면 제거
+    public void UpdateStatusEffects()
     {
         List<StatusEffect> expired = new();
 
@@ -250,6 +252,7 @@ public class Monster
         }
     }
 
+    // 패시브 초기화(레벨5 해금)
     public void InitializePassiveSkills()
     {
         passiveSkills.Clear();
@@ -258,15 +261,19 @@ public class Monster
         {
             if (skill.skillType == SkillType.PassiveSkill)
             {
-                var passive = PassiveSkillFactory.GetPassiveSkill(skill.passiveSkillList);
-                if (passive != null)
+                if (Level >= 5)
                 {
-                    passiveSkills.Add(passive);
+                    var passive = PassiveSkillFactory.GetPassiveSkill(skill.passiveSkillList);
+                    if (passive != null)
+                    {
+                        passiveSkills.Add(passive);
+                    }
                 }
             }
         }
     }
 
+    // 배틀 시작시 패시브 발동
     public void TriggerOnBattleStart(List<Monster> monsters)
     {
         foreach (var passive in passiveSkills)
@@ -275,6 +282,7 @@ public class Monster
         }
     }
 
+    // 턴 종료시 패시브 발동
     public void TriggerOnTurnEnd()
     {
         foreach (var passive in passiveSkills)
@@ -283,6 +291,7 @@ public class Monster
         }
     }
 
+    // 데미지 받을 시 패시브 발동
     public void TriggerOnDamaged(int damage, Monster actor)
     {
         foreach (var passive in passiveSkills)
@@ -291,6 +300,7 @@ public class Monster
         }
     }
 
+    // 도망마스터 패시브 있을 시 100 도망 가능
     public bool TryRunAwayWithPassive(out bool isGuaranteed)
     {
         isGuaranteed = false;
@@ -304,11 +314,13 @@ public class Monster
         return false;
     }
 
+    // 궁극기 코스트 초기화
     public void InitializeUltimateCost()
     {
         CurUltimateCost = 0;
     }
 
+    // 궁극기 코스트 1개 증가
     public void IncreaseUltimateCost()
     {
         CurUltimateCost++;
@@ -316,6 +328,7 @@ public class Monster
         ultimateCostChange?.Invoke(this);
     }
 
+    // 궁극기 코스트 1개 감소
     public void DecreaseUltimateCost()
     {
         CurUltimateCost--;
@@ -323,11 +336,13 @@ public class Monster
         ultimateCostChange?.Invoke(this);
     }
 
+    // 상태이상 제거
     public void RemoveStatusEffects()
     {
         activeStatusEffects.Clear();
     }
 
+    // 행동불가 상태 적용/해제
     public void ApplyStun(bool isApplied)
     {
         if (isApplied)
@@ -336,10 +351,5 @@ public class Monster
         }
         
         else canAct = true;
-    }
-
-    public void UseUltimateCost()
-    {
-        CurUltimateCost = 0;
     }
 }
