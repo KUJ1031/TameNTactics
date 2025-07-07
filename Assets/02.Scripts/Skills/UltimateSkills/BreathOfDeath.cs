@@ -11,6 +11,7 @@ public class BreathOfDeath : ISkillEffect
         skillData = data;
     }
 
+    // 5%확률로 즉사
     public void Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) return;

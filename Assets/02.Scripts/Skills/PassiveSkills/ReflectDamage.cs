@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ReflectDamage : IPassiveSkill
 {
+    // 데미지를 입었을때 받은 데미지의 10% 반사함
     public void OnDamaged(Monster self, int damage, Monster actor)
     {
         if (actor != null)

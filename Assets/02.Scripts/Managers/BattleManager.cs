@@ -54,6 +54,7 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
+    // 배틀 시작시 실행
     public void StartBattle()
     {
         InitializeUltCost(BattleEntryTeam);
@@ -79,6 +80,7 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
+    // 턴 끝날 때 실행
     public void EndTurn()
     {
         foreach (var monster in BattleEntryTeam)
@@ -88,18 +90,21 @@ public class BattleManager : Singleton<BattleManager>
             monster.TriggerOnTurnEnd();
     }
 
+    // 데미지 넣기 + 데미지 후 패시브 발동
     public void DealDamage(Monster target, int damage, Monster attacker)
     {
         target.TakeDamage(damage);
         target.TriggerOnDamaged(damage, attacker);
     }
 
+    // 공격 실행할 몬스터 고르기
     public void SelectPlayerMonster(Monster selectedMonster)
     {
         if (selectedMonster.CurHp <= 0) return;
         selectedPlayerMonster = selectedMonster;
     }
 
+    // 스킬 고르기
     public void SelectSkill(SkillData skill)
     {
         selectedSkill = skill;
@@ -108,6 +113,7 @@ public class BattleManager : Singleton<BattleManager>
         var alivePlayerTeam = BattleEntryTeam.Where(m => m.CurHp > 0).ToList();
         var aliveEnemyTeam = BattleEnemyTeam.Where(m => m.CurHp > 0).ToList();
 
+        // 고른 스킬의 타겟 유형에 따라 바로 실행
         switch (skill.targetScope)
         {
             case TargetScope.Self:
@@ -146,8 +152,7 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-
-
+    // 타겟이 될 몬스터 고르기
     public void SelectTargetMonster(Monster target)
     {
         if (target.CurHp <= 0 || !possibleTargets.Contains(target)) return;
@@ -169,7 +174,7 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-
+    // 사용 할 스킬 종류에 따라 스킬 발동
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
         if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
@@ -199,6 +204,7 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
+    // 선택한 몬스터 잡기
     public void CaptureSelectedEnemy(Monster target)
     {
         if (target.CurHp <= 0)
@@ -209,16 +215,17 @@ public class BattleManager : Singleton<BattleManager>
 
         if (BenchMonsters.Count < 2)
         {
-            BenchMonsters.Add(target);
+            BenchMonsters.Add(target); // 벤치가 비어있으면 우선으로
         }
         else
         {
-            OwnedMonsters.Add(target);
+            OwnedMonsters.Add(target); // 엔트릴 5마리 꽉 찼으면 전체몬스터안으로
         }
 
         Debug.Log($"{target.monsterName}를 포획했습니다!");
     }
 
+    // 배틀 승리시 보상
     public void BattleReward()
     {
         int totalExp = BattleEnemyTeam.Sum(e => e.ExpReward);
@@ -234,17 +241,20 @@ public class BattleManager : Singleton<BattleManager>
             monster.AddExp(getBenchExp);
     }
 
+    // 모든 몬스터 궁극기 코스트 1개씩 증가
     public void IncreaseUltCostAllMonsters()
     {
         IncreaseUltimateCostTeam(BattleEntryTeam);
         IncreaseUltimateCostTeam(BattleEnemyTeam);
     }
 
+    // 팀이 전체 죽었는지 체크
     public bool IsTeamDead(List<Monster> team)
     {
         return team.All(m => m.CurHp <= 0);
     }
 
+    // 배틀이 끝나고 true 플레이팀 승리, false 적팀 승리
     public void EndBattle(bool playerWin)
     {
         battleEnded = true;
@@ -252,6 +262,7 @@ public class BattleManager : Singleton<BattleManager>
         // 전투 종료 UI 호출
     }
 
+    // 배틀 시작시 궁극기 0으로 초기화
     public void InitializeUltCost(List<Monster> team)
     {
         foreach (var monster in team)
@@ -260,11 +271,13 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
+    // 몬스터 궁극기 코스트 1개 증가
     public void IncreaseUltCost(Monster monster)
     {
         monster.IncreaseUltimateCost();
     }
 
+    // 정해진 팀 전체 궁극기 코스트 1개씩 증가
     public void IncreaseUltimateCostTeam(List<Monster> team)
     {
         foreach (var monster in team)
@@ -273,10 +286,12 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
+    // 도망가기
     public bool TryRunAway()
     {
         foreach (var monster in BattleEntryTeam)
         {
+            // 도망가기 마스터 패시브 있을시 100% 도망 성공
             if (monster.TryRunAwayWithPassive(out bool isGuaranteed) && isGuaranteed)
             {
                 Debug.Log("도망 100% 성공!");
@@ -290,6 +305,7 @@ public class BattleManager : Singleton<BattleManager>
         return success;
     }
     
+    // 플레이어 행동 선택 후 적 죽었는지 판단 후 공격
     private void EnemyAttackAfterPlayerTurn()
     {
         var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);

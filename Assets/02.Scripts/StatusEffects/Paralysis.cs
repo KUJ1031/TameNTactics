@@ -8,6 +8,7 @@ public class Paralysis : StatusEffect
 
     public Paralysis(int duration) : base(StatusEffectType.Paralysis, duration) {}
     
+    // 마비, 턴이 시작될때 정해진 턴 수 만큼 스피드 10%감소
     public override void OnTurnStart(Monster target)
     {
         if (!isApplied)

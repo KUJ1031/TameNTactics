@@ -11,6 +11,7 @@ public class PowerSlam : ISkillEffect
         skillData = data;
     }
     
+    // 100% 스턴 성공
     public void Execute(Monster caster, List<Monster> targets)
     {
         foreach (var target in targets)
