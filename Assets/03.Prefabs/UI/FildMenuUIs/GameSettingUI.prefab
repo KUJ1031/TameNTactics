@@ -13747,7 +13747,7 @@ MonoBehaviour:
   bindingIndex: 3
   inputField: {fileID: 0}
   actionMapName: Player
-  compositePartName: light
+  compositePartName: left
   defaultBindingPath: <Keyboard>/A
 --- !u!114 &4099354202930530889
 MonoBehaviour:
