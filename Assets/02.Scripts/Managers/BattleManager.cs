@@ -14,12 +14,14 @@ public class BattleManager : Singleton<BattleManager>
     public List<Monster> BattleEnemyTeam { get; private set; } = new();
 
     public List<Monster> possibleTargets = new();
+    public List<Monster> selectedTargets = new();
 
     public Monster selectedPlayerMonster;
     public SkillData selectedSkill;
 
     public bool battleEnded = false;
 
+    // 배틀 시작시 배틀에 나오는 몬스터 찾아서 리스트에 넣어줌
     public void FindSpawnMonsters()
     {
         BattleEntryTeam.Clear();
@@ -101,71 +103,72 @@ public class BattleManager : Singleton<BattleManager>
     public void SelectSkill(SkillData skill)
     {
         selectedSkill = skill;
+        selectedTargets.Clear();
 
-        if (skill.isTargetSelf && !skill.isAreaAttack)
+        var alivePlayerTeam = BattleEntryTeam.Where(m => m.CurHp > 0).ToList();
+        var aliveEnemyTeam = BattleEnemyTeam.Where(m => m.CurHp > 0).ToList();
+
+        switch (skill.targetScope)
         {
-            possibleTargets = new List<Monster> { selectedPlayerMonster };
+            case TargetScope.Self:
+                possibleTargets = new List<Monster> { selectedPlayerMonster };
+                selectedTargets = new List<Monster> { selectedPlayerMonster };
+                ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
+                EnemyAttackAfterPlayerTurn();
+                return;
+
+            case TargetScope.All:
+                possibleTargets = alivePlayerTeam.Concat(aliveEnemyTeam).ToList();
+                selectedTargets = new List<Monster>(possibleTargets);
+                ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
+                EnemyAttackAfterPlayerTurn();
+                return;
+
+            case TargetScope.EnemyTeam:
+                possibleTargets = aliveEnemyTeam;
+                break;
+
+            case TargetScope.PlayerTeam:
+                possibleTargets = alivePlayerTeam;
+                break;
+
+            default:
+                possibleTargets = new List<Monster>();
+                break;
         }
-        else if (skill.isTargetSingleAlly)
+
+        // targetCount가 0이면 전체 대상으로 설정
+        if (skill.targetCount == 0)
         {
-            possibleTargets = BattleEntry.Where(m => m.CurHp > 0).ToList();
-        }
-        else if (skill.isAreaAttack)
-        {
-            possibleTargets = skill.isTargetSelf
-                ? BattleEntry.Where(m => m.CurHp > 0).ToList()
-                : enemyTeam.Where(m => m.CurHp > 0).ToList();
-        }
-        else
-        {
-            possibleTargets = enemyTeam.Where(m => m.CurHp > 0).ToList();
+            selectedTargets = new List<Monster>(possibleTargets);
+            ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
+            EnemyAttackAfterPlayerTurn();
         }
     }
+
+
 
     public void SelectTargetMonster(Monster target)
     {
-        if (target.CurHp <= 0) return;
+        if (target.CurHp <= 0 || !possibleTargets.Contains(target)) return;
 
-        List<Monster> selectedTargets = selectedSkill.isAreaAttack
-            ? (selectedSkill.isTargetSelf ? BattleEntryTeam : BattleEnemyTeam).Where(m => m.CurHp > 0).ToList()
-            : new List<Monster> { target };
-
-        var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
-
-        bool playerTeamStunned = BattleEntryTeam.All(m => !m.canAct);
-        
-        if (playerTeamStunned)
+        if (selectedTargets.Contains(target))
         {
-            ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
-            
-            EndTurn();
-            IncreaseUltCostAllMonsters();
+            selectedTargets.Remove(target); // 타겟 카운트 2 이상일때 다시 클릭하면 선택 취소
             return;
         }
-        
-        bool playerGoesFirst = selectedPlayerMonster.CurSpeed >= enemyAction.actor.CurSpeed;
 
-        if (playerGoesFirst)
+        if (selectedTargets.Count >= selectedSkill.targetCount) return;
+
+        selectedTargets.Add(target);
+
+        if (selectedTargets.Count == selectedSkill.targetCount)
         {
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
-
-            ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
+            EnemyAttackAfterPlayerTurn();
         }
-        else
-        {
-            ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
-
-            ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
-        }
-
-        EndTurn();
-        IncreaseUltCostAllMonsters();
     }
+
 
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
@@ -239,12 +242,7 @@ public class BattleManager : Singleton<BattleManager>
 
     public bool IsTeamDead(List<Monster> team)
     {
-        if (team.Count == 0 || team.All(m => m.CurHp <= 0))
-        {
-            return true;
-        }
-
-        return false;
+        return team.All(m => m.CurHp <= 0);
     }
 
     public void EndBattle(bool playerWin)
@@ -290,5 +288,19 @@ public class BattleManager : Singleton<BattleManager>
         bool success = Random.value < chance;
         Debug.Log(success ? "도망 성공!" : "도망 실패!");
         return success;
+    }
+    
+    private void EnemyAttackAfterPlayerTurn()
+    {
+        var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
+
+        if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
+
+        ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
+
+        if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
+
+        EndTurn();
+        IncreaseUltCostAllMonsters();
     }
 }

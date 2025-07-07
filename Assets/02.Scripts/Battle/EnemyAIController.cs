@@ -40,7 +40,7 @@ public static class EnemyAIController
             }
         }
 
-        // 2. 상성 유리한 대상이 있다면 ActiveSkill 사용
+        // 2. 상성 유리한 대상이 있다면 NormalSkill 사용
         foreach (var enemy in actors)
         {
             if (enemy.CurHp <= 0) continue;
@@ -69,7 +69,7 @@ public static class EnemyAIController
             }
         }
 
-        // 3. 조건이 없으면 랜덤 몬스터가 ActiveSkill 사용
+        // 3. 조건이 없으면 랜덤 몬스터가 NormalSkill 사용
         var aliveEnemies = actors.Where(m => m.CurHp > 0).ToList();
         if (aliveEnemies.Count == 0) return null;
 
@@ -100,6 +100,7 @@ public static class EnemyAIController
         // 1. 체력 50% 이하 중 가장 낮은 몬스터
         var lowHp = targetMonsters
             .Where(m => m.CurHp > 0 && m.CurHp / m.MaxHp <= 0.5f)
+            .OrderBy(m => m.CurHp)
             .ToList();
 
         if (lowHp.Count > 0) return lowHp[0];
@@ -107,6 +108,7 @@ public static class EnemyAIController
         // 2. 상성 유리한 몬스터
         var effective = targetMonsters
             .Where(m => m.CurHp > 0 && TypeChart.GetEffectiveness(attacker, m) > 1f)
+            .OrderBy(m => m.CurHp)
             .ToList();
 
         if (effective.Count > 0) return effective[0];
@@ -122,38 +124,60 @@ public static class EnemyAIController
     private static List<Monster> ChooseTargets(
         SkillData skill, List<Monster> targetTeam, List<Monster> actorTeam, Monster actor)
     {
-        List<Monster> result = new List<Monster>();
+        List<Monster> candidates = new();
 
-        // 공격팀 전체 대상
-        if (skill.isAreaAttack && skill.isTargetSelf)
+        // 후보군 선정: targetScope 기준
+        switch (skill.targetScope)
         {
-            result = actorTeam.Where(m => m.CurHp > 0).ToList();
+            case TargetScope.Self:
+                candidates.Add(actor);
+                break;
+
+            case TargetScope.EnemyTeam:
+                candidates = targetTeam.Where(m => m.CurHp > 0).ToList();
+                break;
+
+            case TargetScope.PlayerTeam:
+                candidates = actorTeam.Where(m => m.CurHp > 0).ToList();
+                break;
+
+            case TargetScope.All:
+                candidates = actorTeam.Concat(targetTeam).Where(m => m.CurHp > 0).ToList();
+                break;
+
+            default:
+                break;
         }
-        // 타겟팀 전체 대상
-        else if (skill.isAreaAttack && !skill.isTargetSelf)
+
+        if (candidates.Count == 0) return new List<Monster>();
+
+        // targetCount가 0 또는 후보 수보다 크면 전부 선택
+        if (skill.targetCount == 0 || skill.targetCount >= candidates.Count)
         {
-            result = targetTeam.Where(m => m.CurHp > 0).ToList();
+            return new List<Monster>(candidates);
         }
-        // 공격하는 자기 자신
-        else if (!skill.isAreaAttack && skill.isTargetSelf)
-        {
-            result.Add(actor);
-        }
-        // 공격팀 중 하나 타겟
-        else if (skill.isTargetSingleAlly)
-        {
-            var possibleActorTeam = actorTeam.Where(m => m.CurHp > 0).ToList();
-            var target = ChooseTarget(possibleActorTeam, actor);
-            if (target != null) result.Add(target);
-        }
-        // 타겟팀 중 하나 타겟
         else
         {
-            var possibleTargets = targetTeam.Where(m => m.CurHp > 0).ToList();
-            var target = ChooseTarget(possibleTargets, actor);
-            if (target != null) result.Add(target);
-        }
+            List<Monster> selectedTargets = new();
 
-        return result;
+            // targetCount만큼 우선순위 높은 타겟 선택
+            var tempCandidates = new List<Monster>(candidates);
+
+            for (int i = 0; i < skill.targetCount; i++)
+            {
+                var target = ChooseTarget(tempCandidates, actor);
+                if (target != null)
+                {
+                    selectedTargets.Add(target);
+                    tempCandidates.Remove(target);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return selectedTargets;
+        }
     }
 }
