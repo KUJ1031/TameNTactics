@@ -276,7 +276,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &374866167
 MonoBehaviour:
@@ -332,8 +332,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1999,6 +1999,7 @@ SceneRoots:
   - {fileID: 4690007959336018056}
   - {fileID: 1610891510686269786}
   - {fileID: 5999114167115151334}
+  - {fileID: 985042923}
   - {fileID: 1824030547}
   - {fileID: 713410204}
   - {fileID: 1105279947}
@@ -2006,4 +2007,3 @@ SceneRoots:
   - {fileID: 559817652}
   - {fileID: 616018086}
   - {fileID: 67539916}
-  - {fileID: 985042923}

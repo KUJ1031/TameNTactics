@@ -9,17 +9,15 @@ public class EmbraceView : MonoBehaviour
     [SerializeField] private GameObject failMessage;
     [SerializeField] private TextMeshProUGUI guideText;
 
-    private void Awake()
-    {
-        HideMessage();
-    }
-
     public void ShowGuide(string message)
     {
         if (guideText != null)
         {
             guideText.text = message;
+            guideText.gameObject.SetActive(true);
         }
+
+        StartCoroutine(HideAfterDelay(2f));
     }
 
     public void ShowSuccessMessage()
@@ -33,6 +31,8 @@ public class EmbraceView : MonoBehaviour
         {
             failMessage.SetActive(false);
         }
+
+        StartCoroutine(HideAfterDelay(2f));
     }
 
     public void ShowFailMessage()
@@ -46,10 +46,33 @@ public class EmbraceView : MonoBehaviour
         {
             successMessage.SetActive(false);
         }
+
+        StartCoroutine(HideAfterDelay(2f));
     }
 
     public void HideMessage()
     {
+        if (successMessage != null)
+        {
+            successMessage.SetActive(false);
+        }
+
+        if (failMessage != null)
+        {
+            failMessage.SetActive(false);
+        }
+    }
+
+    private IEnumerator HideAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        //HideMessage();
+
+        if (guideText != null)
+        {
+            guideText.gameObject.SetActive(false);
+        }
+
         if (successMessage != null)
         {
             successMessage.SetActive(false);

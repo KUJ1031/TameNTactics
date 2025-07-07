@@ -61,13 +61,20 @@ public class BattleUIManager : MonoBehaviour
 
                 if (hit.collider != null)
                 {
-                    MonsterCharacter monsterCharacter = hit.collider.GetComponent<MonsterCharacter>();
-
-                    if (monsterCharacter != null)
+                    if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
                     {
-                        selectedMonster = monsterCharacter.monster;
-                        selected = true;
-                        Debug.Log($"선택된 몬스터 : {selectedMonster.monsterName}");
+                        Monster clickedMonster = monsterCharacter.monster;
+
+                        if (!PlayerManager.Instance.player.ownedMonsters.Contains(clickedMonster))
+                        {
+                            selectedMonster = monsterCharacter.monster;
+                            selected = true;
+                            Debug.Log($"선택된 몬스터 : {selectedMonster.monsterName}");
+                        }
+                        else
+                        {
+                            Debug.Log("자신이 소유한 몬스터는 포섭할 수 없습니다.");
+                        }
                     }
                 }
             }
@@ -82,10 +89,6 @@ public class BattleUIManager : MonoBehaviour
     private void StartEmbraceMiniGame(Monster targetMonster, float successPercent)
     {
         GameObject miniGameObj = Instantiate(miniGamePrefab);
-
-        // EmbraceView 연결
-        EmbraceView newView = miniGameObj.AddComponent<EmbraceView>();
-        embraceView = newView;
 
         // UI 초기화
         embraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
@@ -117,7 +120,8 @@ public class BattleUIManager : MonoBehaviour
                 if (rotatePoint.isInSuccessZone)
                 {
                     Debug.Log("포섭 성공!");
-                    PlayerManager.Instance.player.AddOwnedMonster(targetMonster);
+                    //PlayerManager.Instance.player.AddOwnedMonster(targetMonster);
+                    BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
                     embraceView.ShowSuccessMessage();
                 }
                 else
@@ -142,20 +146,12 @@ public class BattleUIManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            //if (EventSystem.current.IsPointerOverGameObject())
-            //{
-            //    Debug.Log("다른 요소를 클릭함");
-            //    return;
-            //}
-
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 
             if (hit.collider != null)
             {
-                MonsterCharacter monsterCharacter = hit.collider.GetComponent<MonsterCharacter>();
-
-                if (monsterCharacter != null)
+                if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
                 {
                     battleSelectView.MoveSelectMonster(monsterCharacter.transform);
                 }
