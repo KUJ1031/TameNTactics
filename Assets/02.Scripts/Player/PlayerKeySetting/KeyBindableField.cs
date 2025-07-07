@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -9,7 +10,7 @@ public class KeyBindableField : MonoBehaviour, IPointerClickHandler, IPointerExi
 {
     public string actionName;       // 예: "Move"
     public int bindingIndex;        // 예: Left는 3, Right는 4
-    public InputField inputField;   // 연결된 InputField
+    public TMP_InputField inputField;   // 연결된 InputField
     public string actionMapName;  // 예: "Player"
     public string compositePartName;  // 예: "left", "up", or "" (버튼용)
     private Outline outline;
@@ -20,7 +21,7 @@ public class KeyBindableField : MonoBehaviour, IPointerClickHandler, IPointerExi
     private void Awake()
     {
         if (inputField == null)
-            inputField = GetComponent<InputField>();
+            inputField = GetComponent<TMP_InputField>();
             outline = this.GetComponent<Outline>();
         if (!allFields.Contains(this))
             allFields.Add(this);
