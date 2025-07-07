@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SelfHealOnTurnEnd
   m_EditorClassIdentifier: 
   skillType: 0
-  passiveSkillList: 0
+  passiveSkillList: 2
   normalSkillList: 0
   ultimateSkillList: 0
   skillName: t

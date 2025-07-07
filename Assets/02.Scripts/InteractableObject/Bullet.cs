@@ -41,5 +41,24 @@ public class Bullet : MonoBehaviour
             Debug.Log("으악 아파!");
         }
         // 다른 충돌 처리 로직이 필요하면 여기에 추가
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Debug.Log("총알과 충돌: 움직임 억제");
+
+            // 박스 Rigidbody가 있으면 움직임 강제로 정지
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+            }
+
+            // 총알 비활성화 처리
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            if (bullet != null)
+            {
+                bullet.Deactivate();
+            }
+        }
     }
 }

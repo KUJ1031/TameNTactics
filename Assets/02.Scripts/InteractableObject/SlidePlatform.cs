@@ -2,52 +2,60 @@ using UnityEngine;
 
 public class SlidePlatform : MonoBehaviour
 {
-    [Header("플레이어를 미끄러뜨리는 힘")]
+    [Header("슬라이드 속도")]
     public float slideForce = 5f;
 
-    // 플레이어가 슬라이드 플랫폼 위에 있는 동안 계속 실행
+    [Header("박스 등은 이 방향으로 밀림 (상하좌우만!)")]
+    public Vector2 slideDirection = Vector2.down;
+
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
+        if (rb == null) return;
+
+        Vector2 dir = Vector2.zero;
+
+        // 플레이어인 경우: 입력 방향
+        var controller = other.GetComponent<PlayerController>();
+        if (controller != null)
         {
-            var controller = other.GetComponent<PlayerController>();
-            var rb = other.GetComponent<Rigidbody2D>();
+            controller.isInputBlocked = true;
+            dir = GetCardinalDirection(controller.lastMoveInput);
 
-            if (controller != null && rb != null)
-            {
-                // 플레이어의 입력을 잠금
-                controller.isInputBlocked = true;
-
-                // 마지막 이동 입력 방향을 기준으로 미끄러짐
-                Vector2 slideDir = controller.lastMoveInput;
-
-                if (slideDir == Vector2.zero)
-                    slideDir = Vector2.down; // 아무 입력도 없을 경우 아래로 기본 밀기
-
-                // Rigidbody에 슬라이드 힘 적용
-                rb.velocity = slideDir * slideForce;
-            }
+            if (dir == Vector2.zero)
+                dir = Vector2.down; // 기본값
         }
+        // 박스 등 Pushable 객체인 경우
+        else if (other.GetComponent<PushableBox>() != null)
+        {
+            dir = GetCardinalDirection(slideDirection);
+        }
+
+        // 슬라이드 힘 적용
+        rb.velocity = dir.normalized * slideForce;
     }
 
-    // 플레이어가 슬라이드 플랫폼을 벗어났을 때 실행
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            var controller = other.GetComponent<PlayerController>();
-            if (controller != null)
-            {
-                // 입력 잠금 해제
-                controller.isInputBlocked = false;
-            }
+        Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.velocity = Vector2.zero;
 
-            var rb = other.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                // 남아 있는 슬라이드 속도 제거
-                rb.velocity = Vector2.zero;
-            }
-        }
+        var controller = other.GetComponent<PlayerController>();
+        if (controller != null)
+            controller.isInputBlocked = false;
+    }
+
+    /// <summary>
+    /// 대각선 입력 방지 - 상하좌우로만 변환
+    /// </summary>
+    private Vector2 GetCardinalDirection(Vector2 input)
+    {
+        if (input == Vector2.zero) return Vector2.zero;
+
+        if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
+            return input.x > 0 ? Vector2.right : Vector2.left;
+        else
+            return input.y > 0 ? Vector2.up : Vector2.down;
     }
 }
