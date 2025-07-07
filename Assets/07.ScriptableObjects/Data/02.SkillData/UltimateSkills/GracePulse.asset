@@ -18,9 +18,8 @@ MonoBehaviour:
   ultimateSkillList: 5
   skillName: u
   skillPower: 0
-  isTargetSingleAlly: 0
-  isAreaAttack: 1
-  isTargetSelf: 1
+  targetScope: 4
+  targetCount: 0
   icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
   description: uuuuuuuuuu

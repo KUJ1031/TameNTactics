@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EscapeMaster : IPassiveSkill
 {
+    // 도망시 100% 도망 가능
     public bool TryEscape(Monster self, ref bool isGuaranteedEscape)
     {
         isGuaranteedEscape = true;

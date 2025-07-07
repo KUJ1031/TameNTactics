@@ -6,6 +6,7 @@ public class LowHpAttackBoost : IPassiveSkill
     private bool isApplied = false;
     private int powerDelta;
 
+    // 턴이 끝날때, 본인 현재 체력이 50% 이하일때 공격력 20% 상승
     public void OnTurnEnd(Monster self)
     {
         bool isBelowHalf = self.CurHp <= self.MaxHp / 2;
