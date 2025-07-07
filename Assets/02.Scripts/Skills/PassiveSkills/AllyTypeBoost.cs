@@ -6,6 +6,8 @@ public class AllyTypeBoost : IPassiveSkill
 {
     private bool applied = false;
 
+    // 턴이 시작될때,
+    // 우리팀중 본인과 같은 타입이 2명 이상일 시 발동, 우리팀중 본인과 같은 타입은 모두 공격력 10% 증가
     public void OnBattleStart(Monster self, List<Monster> allies)
     {
         if (applied) return;
