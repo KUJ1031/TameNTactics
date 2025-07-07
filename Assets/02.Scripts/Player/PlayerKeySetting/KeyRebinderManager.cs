@@ -64,12 +64,10 @@ public class KeyRebinderManager : MonoBehaviour
                 var action = actionMap.FindAction(currentField.actionName, true);
                 if (actionMap == null)
                 {
-                    Debug.LogError($"Action Map '{currentField.actionMapName}' not found!");
                     return;
                 }
                 if (action == null)
                 {
-                    Debug.LogError($"Action '{currentField.actionName}' not found in Action Map '{currentField.actionMapName}'!");
                     return;
                 }
                 try
@@ -81,7 +79,7 @@ public class KeyRebinderManager : MonoBehaviour
                 }
                 catch (System.Exception ex)
                 {
-                    Debug.LogError($"바인딩 중 오류: {ex.Message}");
+
                 }
                 currentField = null;
                 break;
@@ -97,12 +95,10 @@ public class KeyRebinderManager : MonoBehaviour
         if (PlayerManager.Instance != null && PlayerManager.Instance.player != null)
         {
             PlayerManager.Instance.player.playerKeySetting[key] = overridePath;
-            Debug.Log("PlayerManager 키셋팅 : " + PlayerManager.Instance.player.playerKeySetting[key] + overridePath);
             PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player);
         }
         else
         {
-            Debug.LogWarning("PlayerManager 또는 Player 인스턴스가 초기화되지 않았습니다.");
         }
 
         PlayerPrefs.Save();
@@ -121,7 +117,6 @@ public class KeyRebinderManager : MonoBehaviour
                     {
                         string overridePath = PlayerPrefs.GetString(key);
                         action.ApplyBindingOverride(i, overridePath);
-                        //Debug.Log($"[로딩됨] {key} → {overridePath}");
                     }
                 }
             }
@@ -161,7 +156,6 @@ public class KeyRebinderManager : MonoBehaviour
         PlayerPrefs.DeleteAll(); // 또는 바인딩 관련 키만 삭제하고 싶다면 조건 추가
         PlayerPrefs.Save();
         RefreshAllKeyFields();
-        Debug.Log("모든 키 바인딩 초기화 완료");
     }
     public void RefreshAllKeyFields()
     {

@@ -120,7 +120,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5478036157622446033}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: KeyRebinderManager, Assembly-CSharp
+        m_MethodName: ResetAllBindings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &27131830571835010
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +253,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 849437524710934568}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4576403994253360515}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &210616483232231489
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,7 +760,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2677855393179986548}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8501850889987350318}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &259277147346806902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,7 +1084,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6565350747459964377}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 593324381097548928}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &454132303930951887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,6 +1109,8 @@ GameObject:
   - component: {fileID: 3985213821824349965}
   - component: {fileID: 7617983933054525118}
   - component: {fileID: 4594871893846094350}
+  - component: {fileID: 2225286475428934484}
+  - component: {fileID: 1074154226315162981}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -1224,6 +1274,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &2225286475428934484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454132303930951887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Move
+  bindingIndex: 1
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: up
+  defaultBindingPath: <Keyboard>/W
+--- !u!114 &1074154226315162981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454132303930951887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &459695060256759548
 GameObject:
   m_ObjectHideFlags: 0
@@ -2213,6 +2296,8 @@ GameObject:
   - component: {fileID: 3061521443256831772}
   - component: {fileID: 2773546219604387443}
   - component: {fileID: 5528893648938671518}
+  - component: {fileID: 1358679290263437599}
+  - component: {fileID: 7813903828341276992}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -2376,6 +2461,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &1358679290263437599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957657570891747347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Currentlist
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/E
+--- !u!114 &7813903828341276992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957657570891747347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &976214186351187214
 GameObject:
   m_ObjectHideFlags: 0
@@ -2388,6 +2506,8 @@ GameObject:
   - component: {fileID: 5042587807276000240}
   - component: {fileID: 386528156951446413}
   - component: {fileID: 133387044537690215}
+  - component: {fileID: 4042719558554953118}
+  - component: {fileID: 8954530936484010977}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -2551,6 +2671,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &4042719558554953118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976214186351187214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Select
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/Enter
+--- !u!114 &8954530936484010977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976214186351187214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &983486958998106642
 GameObject:
   m_ObjectHideFlags: 0
@@ -3703,7 +3856,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1220296618076115728}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 87180490458610016}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1479295576162451286
 GameObject:
   m_ObjectHideFlags: 0
@@ -3930,6 +4095,8 @@ GameObject:
   - component: {fileID: 5688889407809237243}
   - component: {fileID: 2045691381357710866}
   - component: {fileID: 5781009102061519794}
+  - component: {fileID: 87180490458610016}
+  - component: {fileID: 4582698451446846160}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -4093,6 +4260,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &87180490458610016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672383621887286933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Playerinformation
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/P
+--- !u!114 &4582698451446846160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672383621887286933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1804522239426084502
 GameObject:
   m_ObjectHideFlags: 0
@@ -4912,6 +5112,8 @@ GameObject:
   - component: {fileID: 6973147464076938620}
   - component: {fileID: 7021800964440326350}
   - component: {fileID: 7222363697840463698}
+  - component: {fileID: 593324381097548928}
+  - component: {fileID: 7204814121901308859}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -5075,6 +5277,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &593324381097548928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189847028248723014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Holdinglist
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/Tab
+--- !u!114 &7204814121901308859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189847028248723014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2244443323827647215
 GameObject:
   m_ObjectHideFlags: 0
@@ -5433,7 +5668,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3374731897031227122}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7068277060504732800}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2488947719332317729
 GameObject:
   m_ObjectHideFlags: 0
@@ -5601,6 +5848,8 @@ GameObject:
   - component: {fileID: 576285981868927524}
   - component: {fileID: 3634597050614768065}
   - component: {fileID: 5411217057463604979}
+  - component: {fileID: 3706470413499810307}
+  - component: {fileID: 8707699582900897082}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -5764,6 +6013,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &3706470413499810307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638377670676207671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Inventory
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/I
+--- !u!114 &8707699582900897082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638377670676207671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2671890285263819325
 GameObject:
   m_ObjectHideFlags: 0
@@ -6253,7 +6535,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9175819289999620729}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8200630026370338708}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2881980707306495186
 GameObject:
   m_ObjectHideFlags: 0
@@ -6438,6 +6732,8 @@ GameObject:
   - component: {fileID: 2848948921143132187}
   - component: {fileID: 1289163650575477591}
   - component: {fileID: 7313612147258033939}
+  - component: {fileID: 7068277060504732800}
+  - component: {fileID: 6836861393494461976}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -6601,6 +6897,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &7068277060504732800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3031330789798760111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Menu
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/Escpam
+--- !u!114 &6836861393494461976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3031330789798760111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &3052678021078705558
 GameObject:
   m_ObjectHideFlags: 0
@@ -7142,7 +7471,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2319912466099771554}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4835007558224183029}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3210742959365809964
 GameObject:
   m_ObjectHideFlags: 0
@@ -8632,6 +8973,8 @@ GameObject:
   - component: {fileID: 7560218164020544253}
   - component: {fileID: 3259115645128517387}
   - component: {fileID: 6288907775129493810}
+  - component: {fileID: 3666796846910758035}
+  - component: {fileID: 2684607956258016725}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -8795,6 +9138,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &3666796846910758035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3793798801232056919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Move
+  bindingIndex: 4
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: right
+  defaultBindingPath: <Keyboard>/D
+--- !u!114 &2684607956258016725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3793798801232056919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &3821055744920519669
 GameObject:
   m_ObjectHideFlags: 0
@@ -8829,9 +9205,9 @@ RectTransform:
   - {fileID: 4565636501257266585}
   m_Father: {fileID: 7857838780087147403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75, y: -25}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2421012858026618419
@@ -8915,7 +9291,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1777101797468309916}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8200630026370338708}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3833578860581052868
 GameObject:
   m_ObjectHideFlags: 0
@@ -9295,7 +9683,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1413794664530603867}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1358679290263437599}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4282203449962115633
 GameObject:
   m_ObjectHideFlags: 0
@@ -9416,7 +9816,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4998469662042063675}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4042719558554953118}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4335998376907596149
 GameObject:
   m_ObjectHideFlags: 0
@@ -10319,6 +10731,8 @@ GameObject:
   - component: {fileID: 3925235076800736363}
   - component: {fileID: 725270709050487997}
   - component: {fileID: 9048186120984152507}
+  - component: {fileID: 131635659772682102}
+  - component: {fileID: 5371419504823433641}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -10482,6 +10896,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &131635659772682102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4749625163101866444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Interaction
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/F
+--- !u!114 &5371419504823433641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4749625163101866444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &4750002078965471919
 GameObject:
   m_ObjectHideFlags: 0
@@ -10642,10 +11089,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 478838651823088782}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -60}
-  m_SizeDelta: {x: 300, y: 120}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5533911078916189330
 CanvasRenderer:
@@ -11548,6 +11995,8 @@ GameObject:
   - component: {fileID: 1657537787102011737}
   - component: {fileID: 5363520950854969499}
   - component: {fileID: 3209950003667238436}
+  - component: {fileID: 1088920527809708884}
+  - component: {fileID: 3839317223834998546}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -11711,6 +12160,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &1088920527809708884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5206415529827870547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Minigam
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/Space
+--- !u!114 &3839317223834998546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5206415529827870547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &5222734098937621189
 GameObject:
   m_ObjectHideFlags: 0
@@ -13084,6 +13566,8 @@ GameObject:
   - component: {fileID: 6882845000322801828}
   - component: {fileID: 5565081948909674912}
   - component: {fileID: 6878728113844926668}
+  - component: {fileID: 8501850889987350318}
+  - component: {fileID: 4099354202930530889}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -13247,6 +13731,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &8501850889987350318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5744248053656494052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Move
+  bindingIndex: 3
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: left
+  defaultBindingPath: <Keyboard>/A
+--- !u!114 &4099354202930530889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5744248053656494052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &5782970231888514028
 GameObject:
   m_ObjectHideFlags: 0
@@ -13391,6 +13908,8 @@ GameObject:
   - component: {fileID: 2470144855963259184}
   - component: {fileID: 3757170963852313129}
   - component: {fileID: 5454235097541113595}
+  - component: {fileID: 4835007558224183029}
+  - component: {fileID: 8253854704777093758}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -13554,6 +14073,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &4835007558224183029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5816509758304693902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Move
+  bindingIndex: 2
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: down
+  defaultBindingPath: <Keyboard>/S
+--- !u!114 &8253854704777093758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5816509758304693902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &5819781463961354433
 GameObject:
   m_ObjectHideFlags: 0
@@ -13983,7 +14535,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 42540070945263112}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1088920527809708884}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5992211600846607992
 GameObject:
   m_ObjectHideFlags: 0
@@ -14950,7 +15514,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8004061239902188198}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3706470413499810307}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6398751797785545481
 GameObject:
   m_ObjectHideFlags: 0
@@ -15196,7 +15772,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7900627040028066098}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8635313094177155741}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6565355709459990328
 GameObject:
   m_ObjectHideFlags: 0
@@ -16297,7 +16885,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3770876133125054199}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3666796846910758035}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7106416844681633990
 GameObject:
   m_ObjectHideFlags: 0
@@ -16465,6 +17065,8 @@ GameObject:
   - component: {fileID: 5532872427779389881}
   - component: {fileID: 6020578468012617474}
   - component: {fileID: 7616005696094067306}
+  - component: {fileID: 4576403994253360515}
+  - component: {fileID: 2053144512519709913}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -16628,6 +17230,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &4576403994253360515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7163450999532296336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Encyclopedia
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/Q
+--- !u!114 &2053144512519709913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7163450999532296336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &7172363486921544364
 GameObject:
   m_ObjectHideFlags: 0
@@ -16903,7 +17538,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4519329830163908765}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2225286475428934484}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7412974554703444373
 GameObject:
   m_ObjectHideFlags: 0
@@ -17307,9 +17954,9 @@ RectTransform:
   - {fileID: 5939881812032494689}
   m_Father: {fileID: 7857838780087147403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 225, y: -25}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3092022774236806485
@@ -17888,7 +18535,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7230688728832324905}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 131635659772682102}
+        m_TargetAssemblyTypeName: KeyBindableField, Assembly-CSharp
+        m_MethodName: ResetToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7879215003438412105
 GameObject:
   m_ObjectHideFlags: 0
@@ -17923,10 +18582,10 @@ RectTransform:
   - {fileID: 4284209896734740235}
   m_Father: {fileID: 478838651823088782}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -170}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &5535317101461868793
 MonoBehaviour:
@@ -18391,6 +19050,8 @@ GameObject:
   - component: {fileID: 1651824393390521729}
   - component: {fileID: 2361473680706623124}
   - component: {fileID: 8738851036534405611}
+  - component: {fileID: 8635313094177155741}
+  - component: {fileID: 3730848601778661572}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -18554,6 +19215,39 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &8635313094177155741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8226445797806766814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9c683680f5fc546b256963cf7b2382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Map
+  bindingIndex: 0
+  inputField: {fileID: 0}
+  actionMapName: Player
+  compositePartName: 
+  defaultBindingPath: <Keyboard>/M
+--- !u!114 &3730848601778661572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8226445797806766814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &8318675267713439258
 GameObject:
   m_ObjectHideFlags: 0
@@ -19227,7 +19921,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6092766502929201190}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: KeyRebinderManager, Assembly-CSharp
+        m_MethodName: CheckButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8507117124016445206
 GameObject:
   m_ObjectHideFlags: 0

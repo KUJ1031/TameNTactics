@@ -40,7 +40,6 @@ public class KeyBindableField : MonoBehaviour, IPointerClickHandler, IPointerExi
     {
         string currentKey = inputField.text;
         bool isConflict = false;
-        Debug.Log(currentKey);
         foreach (var other in allFields)
         {
             if (other == this) continue;
@@ -51,7 +50,6 @@ public class KeyBindableField : MonoBehaviour, IPointerClickHandler, IPointerExi
                 break;
             }
         }
-        Debug.Log(isConflict);
         // 중복된 키가 있는지 확인 후 색상 변경
         inputField.textComponent.color = isConflict ? Color.red : Color.black;
         inputField.ForceLabelUpdate();
