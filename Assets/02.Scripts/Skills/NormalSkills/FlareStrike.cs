@@ -10,6 +10,7 @@ public class FlareStrike : ISkillEffect
         skillData = data;
     }
     
+    // 20% 확률로 2턴동안 화상
     public void Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) return;

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SelfHealOnTurnEnd : IPassiveSkill
 {
+    // 턴이 끝날때, 본인 최대 체력의 5% 수치만큼 회복됨
     public void OnTurnEnd(Monster self)
     {
         int amount = Mathf.RoundToInt(self.MaxHp * 0.05f);

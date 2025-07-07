@@ -37,6 +37,15 @@ public enum UltimateSkillList
     GracePulse
 }
 
+public enum TargetScope
+{
+    None,
+    Self,
+    All,
+    EnemyTeam,
+    PlayerTeam
+}
+
 [CreateAssetMenu(fileName = "New Skill Data", menuName = "Skill Data")]
 public class SkillData : ScriptableObject
 {
@@ -46,15 +55,13 @@ public class SkillData : ScriptableObject
     public UltimateSkillList ultimateSkillList;
     public string skillName;
     public float skillPower;
-
-    public bool isTargetSingleAlly;
-    public bool isAreaAttack;
-    public bool isTargetSelf;
+    
+    public TargetScope targetScope;
+    public int targetCount;
     
     public Sprite icon;
     public Sprite upgradeIcon;
     [TextArea]
     public string description;
     public string upgradeDescription;
-    
 }

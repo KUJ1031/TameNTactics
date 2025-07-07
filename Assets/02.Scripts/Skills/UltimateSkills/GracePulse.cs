@@ -11,6 +11,7 @@ public class GracePulse : ISkillEffect
         skillData = data;
     }
     
+    // 우리팀 전체 각자 체력의 20% 획복, 궁극기 코스트 1개씩 증가
     public void Execute(Monster caster, List<Monster> targets)
     {
         foreach (var target in targets)

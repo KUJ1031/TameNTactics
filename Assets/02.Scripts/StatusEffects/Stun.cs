@@ -8,6 +8,7 @@ public class Stun : StatusEffect
 
     private bool isApplied = false;
     
+    // 스턴, 턴이 시작될때 정해진 턴 만큼 행동 불가(어떤것도 할수없음)
     public override void OnTurnStart(Monster target)
     {
         if (!isApplied)

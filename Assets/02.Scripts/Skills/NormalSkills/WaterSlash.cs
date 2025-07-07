@@ -11,6 +11,7 @@ public class WaterSlash : ISkillEffect
         skillData = data;
     }
 
+    // 최종데미지의 20% 만큼 본인 회복
     public void Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) return;

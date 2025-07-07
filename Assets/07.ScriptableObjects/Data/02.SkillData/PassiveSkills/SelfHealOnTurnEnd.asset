@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: SelfHealOnTurnEnd
   m_EditorClassIdentifier: 
   skillType: 0
-  passiveSkillList: 0
+  passiveSkillList: 2
   normalSkillList: 0
   ultimateSkillList: 0
   skillName: t
   skillPower: 0
-  isTargetSingleAlly: 0
-  isAreaAttack: 0
-  isTargetSelf: 0
+  targetScope: 0
+  targetCount: 0
   icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
   description: tttttttttt
