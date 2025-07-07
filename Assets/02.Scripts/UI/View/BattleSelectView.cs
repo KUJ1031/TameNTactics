@@ -62,6 +62,7 @@ public class BattleSelectView : MonoBehaviour
         // 몬스터 sprite의 중앙
         Vector3 monsterCenterPos = sr.bounds.center;
 
+        // UI 좌표를 몬스터의 좌표로 옮기기 위한 변수
         Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterCenterPos);
 
         Canvas canvas = selectMonsterImage.GetComponentInParent<Canvas>();
@@ -72,5 +73,10 @@ public class BattleSelectView : MonoBehaviour
 
         selectMonsterImage.localPosition = localPoint;
         selectMonsterImage.gameObject.SetActive(true);
+    }
+
+    public void OffSelectMonster()
+    {
+        selectMonsterImage.gameObject.SetActive(false);
     }
 }

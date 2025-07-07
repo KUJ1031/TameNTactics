@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,15 +7,23 @@ using UnityEngine.UI;
 public class BattleUIManager : MonoBehaviour
 {
     [SerializeField] private BattleSelectView battleSelectView;
+    [SerializeField] private BattleInfoView battleInfoView;
     [SerializeField] private SkillView skillView;
     [SerializeField] private MenuView menuView;
+    [SerializeField] private EmbraceView embraceView;
+
+    [Header("포섭하기 미니게임")]
+    [SerializeField] private GameObject miniGamePrefab;
 
     private bool isSkillPanelOpen = false;
     private Dictionary<Monster, GameObject> monsterBattleInfo = new();
 
+    private Monster selectedMonster;
+
     void Start()
     {
         battleSelectView.attackButton.onClick.AddListener(OnAttackButtonClick);
+        battleSelectView.embraceButton.onClick.AddListener(OnEmbraceButtonClick);
     }
 
     public void OnAttackButtonClick()
@@ -31,16 +40,113 @@ public class BattleUIManager : MonoBehaviour
         EventBus.OnAttackModeDisabled?.Invoke();
     }
 
+    // 포섭하기 버튼
+    public void OnEmbraceButtonClick()
+    {
+        Debug.Log("포섭할 몬스터를 선택하세요.");
+        StartCoroutine(WaitForMonsterSelection());
+    }
+
+    private IEnumerator WaitForMonsterSelection()
+    {
+        bool selected = false;
+        selectedMonster = null;
+
+        while (!selected)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+                if (hit.collider != null)
+                {
+                    MonsterCharacter monsterCharacter = hit.collider.GetComponent<MonsterCharacter>();
+
+                    if (monsterCharacter != null)
+                    {
+                        selectedMonster = monsterCharacter.monster;
+                        selected = true;
+                        Debug.Log($"선택된 몬스터 : {selectedMonster.monsterName}");
+                    }
+                }
+            }
+            yield return null;
+        }
+
+        embraceView.ShowGuide("스페이스바를 눌러 포섭을 시도하세요!");
+
+        StartEmbraceMiniGame(selectedMonster, 60f);
+    }
+
+    private void StartEmbraceMiniGame(Monster targetMonster, float successPercent)
+    {
+        GameObject miniGameObj = Instantiate(miniGamePrefab);
+
+        // EmbraceView 연결
+        EmbraceView newView = miniGameObj.AddComponent<EmbraceView>();
+        embraceView = newView;
+
+        // UI 초기화
+        embraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
+        embraceView.HideMessage();
+
+        // MiniGameManager 가져오기
+        MiniGameManager miniGameManager = miniGameObj.GetComponent<MiniGameManager>();
+
+        // MiniGame 시작
+        miniGameManager.StartMiniGame(successPercent);
+
+        // 결과 판정 코루틴 실행
+        StartCoroutine(CheckEmbraceResult(miniGameManager, targetMonster));
+    }
+
+    private IEnumerator CheckEmbraceResult(MiniGameManager miniGameManager, Monster targetMonster)
+    {
+        RotatePoint rotatePoint = miniGameManager.GetComponentInChildren<RotatePoint>();
+
+        bool finished = false;
+
+        // 이 부분은 MiniGameManager의 Update로 이관 예정
+        while (!finished)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rotatePoint.SetRotateSpeed(0);
+
+                if (rotatePoint.isInSuccessZone)
+                {
+                    Debug.Log("포섭 성공!");
+                    PlayerManager.Instance.player.AddOwnedMonster(targetMonster);
+                    embraceView.ShowSuccessMessage();
+                }
+                else
+                {
+                    Debug.Log("포섭 실패...!");
+                    embraceView.ShowFailMessage();
+                }
+
+                finished = true;
+            }
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        Destroy(miniGameManager.gameObject);
+    }
+
     // 내 몬스터 혹은 상대 몬스터 선택 시 강조 표시 이동
     public void SelectMonster()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                Debug.Log("다른 요소를 클릭함");
-                return;
-            }
+            //if (EventSystem.current.IsPointerOverGameObject())
+            //{
+            //    Debug.Log("다른 요소를 클릭함");
+            //    return;
+            //}
 
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
@@ -54,6 +160,7 @@ public class BattleUIManager : MonoBehaviour
                     battleSelectView.MoveSelectMonster(monsterCharacter.transform);
                 }
             }
+            else return;
         }
     }
 
@@ -111,5 +218,17 @@ public class BattleUIManager : MonoBehaviour
         float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
 
         battleSelectView.SetUltimateGauge(gauge, ultimateRatio);
+    }
+
+    // 배틀 중 전투 메세지를 받아올 메서드
+    public void GetBattleDialogue(string message)
+    {
+        battleInfoView.BattleDialogue(message);
+    }
+
+    // 배틀 메세지 초기화
+    public void ClearBattleDialogue()
+    {
+        battleInfoView.ClearBattleDialogue();
     }
 }
