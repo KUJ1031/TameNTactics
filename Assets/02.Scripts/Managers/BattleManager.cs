@@ -83,11 +83,11 @@ public class BattleManager : Singleton<BattleManager>
     // 턴 끝날 때 실행
     public void EndTurn()
     {
-        foreach (var monster in BattleEntryTeam)
+        foreach (var monster in BattleEntryTeam.Concat(BattleEnemyTeam))
+        {
             monster.TriggerOnTurnEnd();
-
-        foreach (var monster in BattleEnemyTeam)
-            monster.TriggerOnTurnEnd();
+            monster.UpdateStatusEffects();
+        }
     }
 
     // 데미지 넣기 + 데미지 후 패시브 발동
@@ -186,7 +186,7 @@ public class BattleManager : Singleton<BattleManager>
         if (skill.skillType == SkillType.UltimateSkill)
         {
             effect = UltimateSkillFactory.GetUltimateSkill(skill);
-            caster.UseUltimateCost();
+            caster.RemoveStatusEffects();
         }
         else
         {
