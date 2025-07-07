@@ -13,7 +13,7 @@ public class Player
     [Header("전투 출전 몬스터 (최대 3)")]
     public List<Monster> battleEntry = new();
 
-    [Header("벤치 몬스터")]
+    [Header("벤치 몬스터")]//(entryMonsters-battleEntry)
     public List<Monster> benchEntry = new();
 
     public int maxEntryCount = 5;
@@ -47,7 +47,7 @@ public class Player
         ownedMonsters.Add(monster);
         return true;
 
-        
+
     }
 
     //Owned에서 제거
@@ -62,17 +62,20 @@ public class Player
         return true;
     }
 
-    // 엔트리 토글
+    //Owned <-> Entry 토글
     public bool ToggleEntry(Monster monster)
     {
+        //보유 몬스터에 없다면 리턴
         if (!ownedMonsters.Contains(monster)) return false;
 
+        //이미 엔트리에 있다면
         if (entryMonsters.Contains(monster))
         {
-            entryMonsters.Remove(monster);
-            battleEntry.Remove(monster);
+            entryMonsters.Remove(monster);//엔트리에서 제거
+            if (battleEntry.Contains(monster))
+                battleEntry.Remove(monster);
             UpdateBenchEntry();
-            return false;
+            return true;
         }
         else
         {
@@ -84,7 +87,7 @@ public class Player
         }
     }
 
-    // 출전 토글
+    //Entry <-> Battle 토글
     public bool ToggleBattleEntry(Monster monster)
     {
         if (!entryMonsters.Contains(monster)) return false;
@@ -104,17 +107,37 @@ public class Player
             return true;
         }
     }
+    //엔트리에 추가
+    public bool ReplaceEntryMonster(Monster oldMonster, Monster newMonster)
+    {
+        if (!ownedMonsters.Contains(newMonster)) return false;
+        if (!entryMonsters.Contains(oldMonster)) return false;
 
+        // battleEntry에서 oldMonster가 있다면 제거
+        if (battleEntry.Contains(oldMonster))
+            battleEntry.Remove(oldMonster);
+
+        entryMonsters.Remove(oldMonster);
+        entryMonsters.Add(newMonster);
+
+        UpdateBenchEntry();
+        return true;
+    }
     // 벤치 갱신
     private void UpdateBenchEntry()
     {
         benchEntry.Clear();
+        if (battleEntry.Count != 3 && entryMonsters.Count >= 3)
+        {
+            
+        }
         foreach (var m in entryMonsters)
         {
             if (!battleEntry.Contains(m))
                 benchEntry.Add(m);
         }
     }
+
 
     // 출전 상태 확인
     public bool IsInEntry(Monster monster) => entryMonsters.Contains(monster);
