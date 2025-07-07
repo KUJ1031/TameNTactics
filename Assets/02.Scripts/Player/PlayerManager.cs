@@ -61,8 +61,8 @@ public class PlayerManager : MonoBehaviour
                         Monster m = new Monster();
                         m.SetMonsterData(testMonsterList[i]);
                         player.AddOwnedMonster(m);
-                        player.ToggleEntry(m);
-                        player.ToggleBattleEntry(m);
+                        player.AddEntryMonster(m);
+                        player.AddBattleEntry(m);
                     }
                 }
             }
