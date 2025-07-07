@@ -31,9 +31,8 @@ public class SkillDataEditor : Editor
         skillData.skillName = EditorGUILayout.TextField("Skill Name", skillData.skillName);
         skillData.skillPower = EditorGUILayout.FloatField("Skill Power", skillData.skillPower);
 
-        skillData.isTargetSingleAlly = EditorGUILayout.Toggle("Target Single Ally", skillData.isTargetSingleAlly);
-        skillData.isAreaAttack = EditorGUILayout.Toggle("Area Attack", skillData.isAreaAttack);
-        skillData.isTargetSelf = EditorGUILayout.Toggle("Target Self", skillData.isTargetSelf);
+        skillData.targetScope = (TargetScope)EditorGUILayout.EnumPopup("Target Scope", skillData.targetScope);
+        skillData.targetCount = EditorGUILayout.IntField("Target Count", skillData.targetCount);
 
         skillData.icon = (Sprite)EditorGUILayout.ObjectField("Icon", skillData.icon, typeof(Sprite), false);
         skillData.upgradeIcon = (Sprite)EditorGUILayout.ObjectField("Upgrade Icon", skillData.upgradeIcon, typeof(Sprite), false);

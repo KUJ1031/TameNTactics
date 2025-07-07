@@ -10,7 +10,8 @@ public class GroundSmash : ISkillEffect
     {
         skillData = data;
     }
-
+    
+    // 20% 확률로 마비
     public void Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) return;
@@ -20,7 +21,7 @@ public class GroundSmash : ISkillEffect
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster);
 
-            if (Random.value < 0.3f)
+            if (Random.value < 0.2f)
             {
                 target.ApplyStatus(new Paralysis(2));
             }

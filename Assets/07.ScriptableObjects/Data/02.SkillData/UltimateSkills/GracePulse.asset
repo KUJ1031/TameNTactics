@@ -12,15 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
   m_Name: GracePulse
   m_EditorClassIdentifier: 
-  skillType: 0
+  skillType: 2
   passiveSkillList: 0
   normalSkillList: 0
   ultimateSkillList: 5
   skillName: u
   skillPower: 0
-  isTargetSingleAlly: 0
-  isAreaAttack: 1
-  isTargetSelf: 1
+  targetScope: 4
+  targetCount: 0
   icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
   description: uuuuuuuuuu

@@ -10,6 +10,7 @@ public class ToxicBite : ISkillEffect
         skillData = data;
     }
 
+    // 20% 확률로 2턴동안 독
     public void Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) return;
@@ -19,7 +20,7 @@ public class ToxicBite : ISkillEffect
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster);
 
-            if (Random.value < 0.7f)
+            if (Random.value < 0.2f)
             {
                 target.ApplyStatus(new Poison(2));
             }

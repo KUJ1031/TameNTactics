@@ -18,9 +18,8 @@ MonoBehaviour:
   ultimateSkillList: 4
   skillName: o
   skillPower: 1.6
-  isTargetSingleAlly: 0
-  isAreaAttack: 0
-  isTargetSelf: 0
+  targetScope: 3
+  targetCount: 1
   icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
   description: oooooooo
