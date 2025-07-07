@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,6 +48,11 @@ public class MonsterDetailUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI monsterSkill3Info;
     [SerializeField] private GameObject monsterSkill3Lock;
 
+    [Header("버튼")]
+    [SerializeField] private Button backButton;
+    [SerializeField] private Button addEntryButton;
+    [SerializeField] private Button removeEntryButton;
+
     private Monster monster;
 
     //몬스터 디테일 유아이 셋팅
@@ -64,6 +68,7 @@ public class MonsterDetailUI : MonoBehaviour
 
         UpdateMonsterDataUI();
         UpdateMonsterSkillUI();
+        SettingButton();
     }
 
     //몬스터 디테일 몬스터 정보 셋팅
@@ -122,4 +127,24 @@ public class MonsterDetailUI : MonoBehaviour
         if (lockObj != null)
             lockObj.SetActive(!isUnLock);
     }
+
+    //버튼관리
+    private void SettingButton()
+    {
+        //backButton.onClick.AddListener(UIManager.Instance.OnOwnedMonsterUI());
+        if (PlayerManager.Instance.player.entryMonsters.Contains(monster))
+        {
+            removeEntryButton.gameObject.SetActive(true);
+            addEntryButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            removeEntryButton.gameObject.SetActive(false);
+            addEntryButton.gameObject.SetActive(true);
+        }
+        addEntryButton.onClick.AddListener(() => PlayerManager.Instance.player.AddEntryMonster(monster));
+        removeEntryButton.onClick.AddListener(() => PlayerManager.Instance.player.RemoveEntryMonster(monster));
+    }
+
+
 }
