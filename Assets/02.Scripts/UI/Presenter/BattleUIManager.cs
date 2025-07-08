@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BattleUIManager : MonoBehaviour
@@ -24,6 +25,7 @@ public class BattleUIManager : MonoBehaviour
     {
         battleSelectView.attackButton.onClick.AddListener(OnAttackButtonClick);
         battleSelectView.embraceButton.onClick.AddListener(OnEmbraceButtonClick);
+        battleSelectView.runButton.onClick.AddListener(OnRunButtonClick);
     }
 
     public void OnAttackButtonClick()
@@ -226,5 +228,34 @@ public class BattleUIManager : MonoBehaviour
     public void ClearBattleDialogue()
     {
         battleInfoView.ClearBattleDialogue();
+    }
+
+    private void OnRunButtonClick()
+    {
+        bool success = BattleManager.Instance.TryRunAway();
+
+        if (success)
+        {
+            Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
+            SceneManager.LoadScene("MainScene");
+            RuntimePlayerSaveManager.Instance.RestoreGameState();
+            StartCoroutine(DisableTriggerAfterLoadScene(3f));
+        }
+        else
+        {
+            Debug.Log("도망가기 실패!");
+        }
+    }
+
+    private IEnumerator DisableTriggerAfterLoadScene(float disableTime)
+    {
+        yield return null;
+
+        PlayerBattleTrigger trigger = FindObjectOfType<PlayerBattleTrigger>();
+        if (trigger != null)
+        {
+            Debug.Log("트리거 있음");
+            trigger.DisableTriggerTemporarily(disableTime);
+        }
     }
 }

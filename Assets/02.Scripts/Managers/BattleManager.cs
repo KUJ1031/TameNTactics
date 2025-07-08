@@ -21,6 +21,8 @@ public class BattleManager : Singleton<BattleManager>
 
     public bool battleEnded = false;
 
+    public string previousSceneName;
+
     // 배틀 시작시 배틀에 나오는 몬스터 찾아서 리스트에 넣어줌
     public void FindSpawnMonsters()
     {
@@ -180,7 +182,7 @@ public class BattleManager : Singleton<BattleManager>
         if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
 
         ISkillEffect effect = null;
-        
+
         if (!caster.canAct) return;
 
         if (skill.skillType == SkillType.UltimateSkill)
@@ -304,7 +306,7 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log(success ? "도망 성공!" : "도망 실패!");
         return success;
     }
-    
+
     // 플레이어 행동 선택 후 적 죽었는지 판단 후 공격
     private void EnemyAttackAfterPlayerTurn()
     {
