@@ -20,7 +20,7 @@ public class MiniGameManager : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))//추후 인풋 변경
         {
             rotatePoint.SetRotateSpeed(0);
-            Debug.Log(rotatePoint.isInSuccessZone);
+            //Debug.Log(rotatePoint.isInSuccessZone);
             //rotatePoint.isInSuccessZone 값을 전달(성공/실패)
         }
     }
@@ -34,7 +34,7 @@ public class MiniGameManager : MonoBehaviour
         float max = min + value;
         ranges.Add(new RotationRange(min, max));
     }
-    
+
     //범위 0~100
     public void StartMiniGame(float percent)
     {

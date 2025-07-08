@@ -20,7 +20,10 @@ public class AllyTypeBoost : IPassiveSkill
             
             foreach (var monster in allies)
             {
-                monster.PowerUp(amount);
+                if (monster.type == self.type)
+                {
+                    monster.PowerUp(amount);
+                }
             }
             
             applied = true;

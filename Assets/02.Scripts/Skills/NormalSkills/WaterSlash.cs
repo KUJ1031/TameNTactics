@@ -19,10 +19,13 @@ public class WaterSlash : ISkillEffect
         foreach (var target in targets)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            int healAmount = Mathf.RoundToInt(result.damage * 0.2f);
-            
             BattleManager.Instance.DealDamage(target, result.damage, caster);
-            caster.Heal(healAmount);
+
+            if (caster.Level >= 10)
+            {
+                int healAmount = Mathf.RoundToInt(result.damage * 0.2f);
+                caster.Heal(healAmount);
+            }
         }
     }
 }
