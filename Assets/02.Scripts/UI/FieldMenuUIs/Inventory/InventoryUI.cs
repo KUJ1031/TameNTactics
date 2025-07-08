@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : FieldMenuBaseUI
 {
     [SerializeField] private Transform slotParent;         // 슬롯들을 넣을 부모 오브젝트
     [SerializeField] private GameObject slotPrefab;        // 슬롯 프리팹
