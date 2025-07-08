@@ -5,6 +5,7 @@ using UnityEngine;
 public class OwnedMonsterUIManager : MonoBehaviour
 {
     public static OwnedMonsterUIManager Instance { get; private set; }
+    [SerializeField] private OwnedMonsterUI ownedMonsterUI;
 
     [SerializeField] private Transform owmedParent;             //owmed슬롯이 만들어질 위치
     [SerializeField] private GameObject owmedMonsterSlotPrefab; //owmed슬롯 프리팹
@@ -64,6 +65,6 @@ public class OwnedMonsterUIManager : MonoBehaviour
 
         //OwnedMonsterUI에 SimpleMonsterInfo 세팅
         Monster monster = selectedSlot.GetMonster();
-
+        ownedMonsterUI.SetSimpleMonsterUI(monster);
     }
 }
