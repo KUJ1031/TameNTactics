@@ -7839,7 +7839,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3640739912244151245, guid: 060f4ab2f08d251489a2a4325f5fecdb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 17.5
+      value: 16.5
       objectReference: {fileID: 0}
     - target: {fileID: 3640739912244151245, guid: 060f4ab2f08d251489a2a4325f5fecdb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7872,6 +7872,22 @@ PrefabInstance:
     - target: {fileID: 3640739912244151245, guid: 060f4ab2f08d251489a2a4325f5fecdb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4394789149741970573, guid: 060f4ab2f08d251489a2a4325f5fecdb, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4394789149741970573, guid: 060f4ab2f08d251489a2a4325f5fecdb, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766394461710093608, guid: 060f4ab2f08d251489a2a4325f5fecdb, type: 3}
+      propertyPath: moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766394461710093608, guid: 060f4ab2f08d251489a2a4325f5fecdb, type: 3}
+      propertyPath: moveDistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5766394461710093608, guid: 060f4ab2f08d251489a2a4325f5fecdb, type: 3}
       propertyPath: isPlayerMovingWithBox
