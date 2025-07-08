@@ -25,7 +25,7 @@ public class SlidePlatform : MonoBehaviour
         if (!other.CompareTag("Player")) return;
 
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if (input == Vector2.zero) input = Vector2.down;
+        if (input == Vector2.zero) return;
 
         slideInfos[other.gameObject] = new SlideInfo
         {
@@ -208,4 +208,20 @@ public class SlidePlatform : MonoBehaviour
 
         Debug.Log("슬라이드 강제 중단됨: OneWaySlope 요청");
     }
+
+    public static void CancelPlayerSlide(GameObject player)
+    {
+        var rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.velocity = Vector2.zero;
+
+        var controller = player.GetComponent<PlayerController>();
+        if (controller != null)
+        {
+            controller.isInputBlocked = false;
+            controller.isSliding = false;
+            controller.slideDirection = Vector2.zero;
+        }
+    }
+
 }

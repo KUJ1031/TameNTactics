@@ -85,6 +85,9 @@ public class PlayerController : MonoBehaviour
             lastMoveInput = input.normalized;
             return lastMoveInput;
         }
-        return lastMoveInput; // 최근 입력 방향 반환
+        else
+        {
+            return Vector2.zero; // 입력 없으면 0 반환
+        }
     }
 }
