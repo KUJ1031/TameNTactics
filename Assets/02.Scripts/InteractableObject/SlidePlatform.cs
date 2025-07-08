@@ -1,61 +1,125 @@
+// SlidePlatform.cs
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SlidePlatform : MonoBehaviour
 {
-    [Header("슬라이드 속도")]
     public float slideForce = 5f;
 
-    [Header("박스 등은 이 방향으로 밀림 (상하좌우만!)")]
-    public Vector2 slideDirection = Vector2.down;
+    private class SlideInfo
+    {
+        public Vector2 direction;
+        public Vector2 previousPosition;
+        public float stuckTimer;
+        public bool isSliding;
+        public bool isWaitingForInput;
+    }
+
+    private Dictionary<GameObject, SlideInfo> slideInfos = new();
+    private float stuckCheckTime = 0.1f;
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (input == Vector2.zero) input = Vector2.down;
+
+        slideInfos[other.gameObject] = new SlideInfo
+        {
+            direction = input.normalized,
+            previousPosition = other.attachedRigidbody.position,
+            stuckTimer = 0f,
+            isSliding = true,
+            isWaitingForInput = false
+        };
+
+        var controller = other.GetComponent<PlayerController>();
+        if (controller != null)
+            controller.isInputBlocked = true;
+    }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
-        if (rb == null) return;
+        if (!other.CompareTag("Player")) return;
 
-        Vector2 dir = Vector2.zero;
-
-        // 플레이어인 경우: 입력 방향
+        var rb = other.attachedRigidbody;
         var controller = other.GetComponent<PlayerController>();
-        if (controller != null)
-        {
-            controller.isInputBlocked = true;
-            dir = GetCardinalDirection(controller.lastMoveInput);
+        if (rb == null || controller == null) return;
 
-            if (dir == Vector2.zero)
-                dir = Vector2.down; // 기본값
-        }
-        // 박스 등 Pushable 객체인 경우
-        else if (other.GetComponent<PushableBox>() != null)
-        {
-            dir = GetCardinalDirection(slideDirection);
-        }
+        if (!slideInfos.TryGetValue(other.gameObject, out var info)) return;
 
-        // 슬라이드 힘 적용
-        rb.velocity = dir.normalized * slideForce;
+        if (info.isSliding)
+        {
+            rb.velocity = info.direction * slideForce;
+
+            info.stuckTimer += Time.deltaTime;
+            if (info.stuckTimer >= stuckCheckTime)
+            {
+                info.stuckTimer = 0f;
+
+                Vector2 currentPosition = rb.position;
+                float movedDistance = Vector2.Distance(currentPosition, info.previousPosition);
+
+                if (movedDistance < 0.05f)
+                {
+                    // 막힘 → 입력 대기 상태
+                    info.isSliding = false;
+                    info.isWaitingForInput = true;
+                    rb.velocity = Vector2.zero;
+                    controller.isInputBlocked = false;
+                }
+
+                info.previousPosition = currentPosition;
+            }
+        }
+        else if (info.isWaitingForInput)
+        {
+            controller.isInputBlocked = false;
+
+            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            if (input != Vector2.zero)
+            {
+                info.direction = input.normalized;
+                info.isSliding = true;
+                info.isWaitingForInput = false;
+                controller.isInputBlocked = true;
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
-        if (rb != null)
-            rb.velocity = Vector2.zero;
+        if (!other.CompareTag("Player")) return;
+
+        slideInfos.Remove(other.gameObject);
 
         var controller = other.GetComponent<PlayerController>();
         if (controller != null)
             controller.isInputBlocked = false;
+
+        var rb = other.GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.velocity = Vector2.zero;
     }
 
-    /// <summary>
-    /// 대각선 입력 방지 - 상하좌우로만 변환
-    /// </summary>
-    private Vector2 GetCardinalDirection(Vector2 input)
+    // OneWaySlope에서 슬라이드 강제 중단 시 호출
+    public void CancelSlideDueToSlope(GameObject player)
     {
-        if (input == Vector2.zero) return Vector2.zero;
+        if (!slideInfos.ContainsKey(player)) return;
 
-        if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
-            return input.x > 0 ? Vector2.right : Vector2.left;
-        else
-            return input.y > 0 ? Vector2.up : Vector2.down;
+        var info = slideInfos[player];
+        info.isSliding = false;
+        info.isWaitingForInput = true;
+
+        var rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.velocity = Vector2.zero;
+
+        var controller = player.GetComponent<PlayerController>();
+        if (controller != null)
+            controller.isInputBlocked = false;
+
+        Debug.Log("슬라이드 강제 중단됨: OneWaySlope 요청");
     }
 }

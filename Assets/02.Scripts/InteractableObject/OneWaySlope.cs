@@ -1,31 +1,23 @@
+// OneWaySlope.cs
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class OneWaySlope : MonoBehaviour
 {
-    public enum Direction
-    {
-        Up,
-        Down,
-        Left,
-        Light
-    }
-
-    [Header("통과 가능한 방향")]
+    public enum Direction { Up, Down, Left, Right }
     public Direction allowedDirection = Direction.Down;
 
-    [Header("슬라이드 속도")]
-    public float slideForce = 5f;
+    private Collider2D slopeCollider;
 
-    private Vector2 GetAllowedVector()
+    private void Awake()
     {
-        return allowedDirection switch
+        slopeCollider = GetComponent<Collider2D>();
+        // 반드시 Trigger 체크 필요
+        if (!slopeCollider.isTrigger)
         {
-            Direction.Up => Vector2.up,
-            Direction.Down => Vector2.down,
-            Direction.Left => Vector2.left,
-            Direction.Light => Vector2.right,
-            _ => Vector2.zero
-        };
+            Debug.LogWarning("OneWaySlope Collider must be set as Trigger!");
+            slopeCollider.isTrigger = true;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -35,55 +27,51 @@ public class OneWaySlope : MonoBehaviour
         var rb = other.attachedRigidbody;
         var controller = other.GetComponent<PlayerController>();
         var playerCollider = other.GetComponent<Collider2D>();
-        var slopeCollider = GetComponent<Collider2D>();
+        var slidePlatform = other.GetComponentInParent<SlidePlatform>();
 
-        if (rb == null || controller == null || playerCollider == null || slopeCollider == null) return;
+        if (rb == null || controller == null || playerCollider == null) return;
 
-        Vector2 allowedVec = GetAllowedVector();
-
-        Vector2 moveDir = rb.velocity.normalized;
+        Vector2 allowedVec = DirectionToVector(allowedDirection);
+        Vector2 moveDir = controller.lastMoveInput.normalized;
         if (moveDir == Vector2.zero)
-        {
-            Vector2 input = controller.lastMoveInput.normalized;
-            moveDir = input != Vector2.zero ? input : allowedVec;
-        }
+            moveDir = rb.velocity.normalized;
 
         float dot = Vector2.Dot(moveDir, allowedVec);
 
+        ColliderDistance2D dist = playerCollider.Distance(slopeCollider);
+
         if (dot < 0.7f)
         {
-            controller.isInputBlocked = false;
-            rb.velocity = Vector2.zero;
-
-            // 발판과 플레이어 간 거리와 방향 구하기
-            ColliderDistance2D dist = playerCollider.Distance(slopeCollider);
-
+            // 허용 방향 아닐 때
             if (dist.isOverlapped)
             {
-                // 겹친 상태면 바깥 방향(발판->플레이어 방향)으로 밀어내기
+                // 위치 겹침 시 밀어내기
                 rb.position += dist.normal * dist.distance;
+
+                // 슬라이드 플랫폼 있다면 슬라이드 강제 중단 요청
+                if (slidePlatform != null)
+                    slidePlatform.CancelSlideDueToSlope(other.gameObject);
+
+                controller.isInputBlocked = false;
+                rb.velocity = Vector2.zero;
             }
         }
         else
         {
-            controller.isInputBlocked = true;
-            rb.velocity = allowedVec * slideForce;
+            // 허용 방향일 때, 슬라이드는 OneWaySlope가 관여하지 않음
+            // 필요시 별도 처리 가능
         }
     }
 
-
-
-
-    private void OnTriggerExit2D(Collider2D other)
+    private Vector2 DirectionToVector(Direction dir)
     {
-        if (!other.CompareTag("Player")) return;
-
-        var controller = other.GetComponent<PlayerController>();
-        if (controller != null)
-            controller.isInputBlocked = false;
-
-        var rb = other.GetComponent<Rigidbody2D>();
-        if (rb != null)
-            rb.velocity = Vector2.zero;
+        return dir switch
+        {
+            Direction.Up => Vector2.up,
+            Direction.Down => Vector2.down,
+            Direction.Left => Vector2.left,
+            Direction.Right => Vector2.right,
+            _ => Vector2.zero,
+        };
     }
 }

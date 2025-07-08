@@ -52,12 +52,14 @@ public class PlayerController : MonoBehaviour
         currentState?.OnEnter(this);
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {
-        if (isInputBlocked) return;
+        // 항상 입력 갱신
         UpdateLastMoveInput();
+
+        if (isInputBlocked) return;
 
         currentState?.OnHandlelnput(this);
         currentState?.OnUpdate(this);
@@ -68,6 +70,8 @@ public class PlayerController : MonoBehaviour
         Vector2 input = moveAction.ReadValue<Vector2>();
         if (input != Vector2.zero)
             lastMoveInput = input.normalized;
+        else
+            lastMoveInput = Vector2.zero;  // 입력 없으면 0으로 초기화
     }
 
     public Vector2 GetMoveInput()
