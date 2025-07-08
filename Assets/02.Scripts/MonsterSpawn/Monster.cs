@@ -14,6 +14,8 @@ public class Monster
     public MonsterType type;
     public Personality personality;
 
+    [field: SerializeField] public bool IsFavorite { get; private set; } = false;
+
     [field: Header("능력치")]
     [field: SerializeField] public int Level { get; private set; } = 1;
 
@@ -351,5 +353,11 @@ public class Monster
         }
         
         else canAct = true;
+    }
+
+    //즐겨찾기 변경
+    public void ToggleFavorite()
+    {
+        IsFavorite = !IsFavorite;
     }
 }
