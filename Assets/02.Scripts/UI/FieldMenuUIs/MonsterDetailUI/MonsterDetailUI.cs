@@ -110,8 +110,8 @@ public class MonsterDetailUI : FieldMenuBaseUI
         }
 
         UpdateSkillSlot(skills[0], monsterSkill1IconUI, monsterSkill1Name, monsterSkill1Info, 0, 10, null);
-        UpdateSkillSlot(skills[1], monsterSkill2IconUI, monsterSkill2Name, monsterSkill2Info, 5, 15, monsterSkill2Lock);
-        UpdateSkillSlot(skills[2], monsterSkill3IconUI, monsterSkill3Name, monsterSkill3Info, 20, 25, monsterSkill3Lock);
+        UpdateSkillSlot(skills[1], monsterSkill2IconUI, monsterSkill2Name, monsterSkill2Info, 5, 20, monsterSkill2Lock);
+        UpdateSkillSlot(skills[2], monsterSkill3IconUI, monsterSkill3Name, monsterSkill3Info, 15, 25, monsterSkill3Lock);
     }
 
     //스킬 칸 셋팅
@@ -131,7 +131,7 @@ public class MonsterDetailUI : FieldMenuBaseUI
     //버튼관리
     private void SettingButton()
     {
-        //backButton.onClick.AddListener(UIManager.Instance.OnOwnedMonsterUI());
+        backButton.onClick.AddListener(OnClickBackButton);
         if (PlayerManager.Instance.player.entryMonsters.Contains(monster))
         {
             removeEntryButton.gameObject.SetActive(true);
@@ -146,5 +146,8 @@ public class MonsterDetailUI : FieldMenuBaseUI
         removeEntryButton.onClick.AddListener(() => PlayerManager.Instance.player.RemoveEntryMonster(monster));
     }
 
-
+    private void OnClickBackButton()
+    {
+        FieldUIManager.Instance.OpenUI<OwnedMonsterUI>();
+    }
 }
