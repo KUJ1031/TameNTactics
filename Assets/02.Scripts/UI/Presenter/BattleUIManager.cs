@@ -239,7 +239,6 @@ public class BattleUIManager : MonoBehaviour
             Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
             SceneManager.LoadScene("MainScene");
             RuntimePlayerSaveManager.Instance.RestoreGameState();
-            StartCoroutine(DisableTriggerAfterLoadScene(3f));
         }
         else
         {
@@ -247,15 +246,8 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    private IEnumerator DisableTriggerAfterLoadScene(float disableTime)
+    public void OffSelectMonsterUI()
     {
-        yield return null;
-
-        PlayerBattleTrigger trigger = FindObjectOfType<PlayerBattleTrigger>();
-        if (trigger != null)
-        {
-            Debug.Log("트리거 있음");
-            trigger.DisableTriggerTemporarily(disableTime);
-        }
+        battleSelectView.OffSelectMonster();
     }
 }

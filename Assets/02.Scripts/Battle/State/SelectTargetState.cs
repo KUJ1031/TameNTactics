@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SelectTargetState : BaseBattleState
 {
-    public SelectTargetState(BattleSystem system) : base(system) {}
-    
+    public SelectTargetState(BattleSystem system) : base(system) { }
+
     public override void Enter()
     {
         Debug.Log("타겟 선택 상태로 진입했습니다. 공격할 몬스터를 선택하세요.");
@@ -15,7 +15,7 @@ public class SelectTargetState : BaseBattleState
 
         // todo 타겟 몬스터 강조 효과(빛나기) UI 활성화
     }
-    
+
     public void OnSelectTargetMonster(Monster monster)
     {
         BattleManager.Instance.SelectTargetMonster(monster);
@@ -26,10 +26,11 @@ public class SelectTargetState : BaseBattleState
     {
         battleSystem.ChangeState(new SelectSkillState(battleSystem));
     }
-    
+
     public override void Exit()
     {
         // todo 몬스터 강조 효과(빛나기)UI 숨기기
+        UIManager.Instance.battleUIManager.OffSelectMonsterUI();
         // todo 스킬 목록 UI 숨기기
     }
 }
