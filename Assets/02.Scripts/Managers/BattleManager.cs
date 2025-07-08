@@ -185,10 +185,10 @@ public class BattleManager : Singleton<BattleManager>
 
         if (!caster.canAct) return;
 
-        if (skill.skillType == SkillType.UltimateSkill)
+        if (skill.skillType == SkillType.UltimateSkill && caster.Level >= 15)
         {
             effect = UltimateSkillFactory.GetUltimateSkill(skill);
-            caster.RemoveStatusEffects();
+            caster.InitializeUltimateCost();
         }
         else
         {
