@@ -21,7 +21,7 @@ public class GroundSmash : ISkillEffect
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster);
 
-            if (Random.value < 0.2f)
+            if (Random.value < 0.2f & caster.Level >= 10)
             {
                 target.ApplyStatus(new Paralysis(2));
             }

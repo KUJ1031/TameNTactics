@@ -12,22 +12,26 @@ public class SkillView : MonoBehaviour
     public void ShowSkillList(List<SkillData> skills)
     {
         Debug.Log("몬스터가 가지고 있는 스킬을 보여줍니다.");
-        // 1번 슬롯
-        if (skills.Count >= 1 && skills[0] != null)
+        for (int i = 0; i < skills.Count; i++)
         {
-            skillSlot1.sprite = skills[0].icon;
+            Debug.Log($"{i + 1}번째 스킬 타입 : {skills[i].skillType}");
         }
-        else if (skills[0] == null)
+        // 1번 슬롯
+        if (skills.Count >= 1 && skills[1] != null)
+        {
+            skillSlot1.sprite = skills[1].icon;
+        }
+        else if (skills[1] == null)
         {
             skillSlot1.sprite = null;
         }
 
         // 2번 슬롯
-        if (skills.Count >= 2 && skills[1] != null)
+        if (skills.Count >= 2 && skills[2] != null)
         {
-            skillSlot2.sprite = skills[1].icon;
+            skillSlot2.sprite = skills[2].icon;
         }
-        else if (skills[1] == null)
+        else if (skills[2] == null)
         {
             skillSlot2.sprite = null;
         }

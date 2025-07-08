@@ -13,14 +13,14 @@ public class Player
     [Header("전투 출전 몬스터 (최대 3)")]
     public List<Monster> battleEntry = new();
 
-    [Header("벤치 몬스터")]
+    [Header("벤치 몬스터")]//(entryMonsters-battleEntry)
     public List<Monster> benchEntry = new();
 
     public int maxEntryCount = 5;
     public int maxBattleCount = 3;
 
     [Header("인벤토리/골드")]
-    public List<ItemData> items = new List<ItemData>();
+    public List<ItemInstance> items = new List<ItemInstance>();
     public int gold;
 
     [Header("기본 정보")]
@@ -37,83 +37,165 @@ public class Player
     [Header("설정 정보")]
     public SerializableDictionary<string, string> playerKeySetting = new();
 
+
+    //monster Null 체크
+    private bool CheckMonster(Monster monster)
+    {
+        return monster != null && monster.monsterData != null;
+    }
+
     // Owned에 추가
     public bool AddOwnedMonster(Monster monster)
     {
-        if (monster == null || monster.monsterData == null)
-        {
-            return false;
-        }
+        if (!CheckMonster(monster)) return false;
+
         ownedMonsters.Add(monster);
         return true;
-
-        
     }
 
     //Owned에서 제거
-    public bool ReleaseMonster(Monster monster)
+    public bool RemoveOwnedMonster(Monster monster)
     {
-        if (!ownedMonsters.Contains(monster)) return false;
+        if (!CheckMonster(monster)) return false;
 
-        if (entryMonsters.Contains(monster))
-            ToggleEntry(monster);
+        if (!ownedMonsters.Remove(monster))
+            return false;
 
-        ownedMonsters.Remove(monster);
+        // Entry에 있으면 제거하고 Battle/Bench에서도 제거
+        if (entryMonsters.Remove(monster))
+        {
+            battleEntry.Remove(monster);
+            benchEntry.Remove(monster);
+        }
+
         return true;
     }
 
-    // 엔트리 토글
-    public bool ToggleEntry(Monster monster)
+    //Entry에 추가
+    public bool AddEntryMonster(Monster monster)
     {
-        if (!ownedMonsters.Contains(monster)) return false;
+        if (!CheckMonster(monster)) return false;
 
-        if (entryMonsters.Contains(monster))
+        if (entryMonsters.Contains(monster)) return false;
+
+        if (entryMonsters.Count < maxEntryCount)
         {
-            entryMonsters.Remove(monster);
-            battleEntry.Remove(monster);
-            UpdateBenchEntry();
-            return false;
+            entryMonsters.Add(monster);
+            if (battleEntry.Count < maxBattleCount)
+            {
+                battleEntry.Add(monster);
+            }
+            else
+            {
+                benchEntry.Add(monster);
+            }
         }
         else
         {
-            if (entryMonsters.Count >= maxEntryCount) return false;
+            //Monster swapMonster = UIManager.Instance.swapEntryMonster(monster);
 
-            entryMonsters.Add(monster);
-            UpdateBenchEntry();
-            return true;
+            //if (swapMonster == null || !entryMonsters.Contains(swapMonster))
+            //    return false;
+
+            //entryMonsters.Remove(swapMonster);
+            //entryMonsters.Add(monster);
+
+            //if (battleEntry.Contains(swapMonster))
+            //{
+            //    battleEntry.Remove(swapMonster);
+            //    battleEntry.Add(monster);
+            //}
+            //else
+            //{
+            //    benchEntry.Remove(swapMonster);
+            //    benchEntry.Add(monster);
+            //}
         }
+        return true;
     }
 
-    // 출전 토글
-    public bool ToggleBattleEntry(Monster monster)
+    //Entry에 제거
+    public bool RemoveEntryMonster(Monster monster)
     {
+        if (!CheckMonster(monster)) return false;
         if (!entryMonsters.Contains(monster)) return false;
 
-        if (battleEntry.Contains(monster))
+        if (battleEntry.Remove(monster))
         {
-            battleEntry.Remove(monster);
-            UpdateBenchEntry();
-            return true;
+            if (benchEntry.Count > 0)
+            {
+                Monster promoted = benchEntry[0];
+                benchEntry.RemoveAt(0);
+                battleEntry.Add(promoted);
+            }
         }
         else
         {
-            if (battleEntry.Count >= maxBattleCount) return false;
-
-            battleEntry.Add(monster);
-            UpdateBenchEntry();
-            return true;
+            benchEntry.Remove(monster);
         }
+
+        return true;
     }
 
-    // 벤치 갱신
-    private void UpdateBenchEntry()
+    // benchEntry -> battleEntry 이동
+    public bool AddBattleEntry(Monster monster)
     {
-        benchEntry.Clear();
-        foreach (var m in entryMonsters)
+        if (!CheckMonster(monster)) return false;
+        if (battleEntry.Contains(monster)) return false;
+        if (!entryMonsters.Contains(monster)) return false;
+        if (battleEntry.Count >= maxBattleCount) return false;
+
+        // 벤치에 있었다면 제거
+        benchEntry.Remove(monster);
+
+        battleEntry.Add(monster);
+        return true;
+    }
+
+    // battleEntry -> benchEntry 이동
+    public bool RemoveBattleEntry(Monster monster)
+    {
+        if (!CheckMonster(monster)) return false;
+        if (!battleEntry.Remove(monster)) return false;
+
+        // 벤치로 내림
+        benchEntry.Add(monster);
+        return true;
+    }
+
+    //몬스터 위치 변경 (battleEntry <-> benchEntry)
+    public bool InsertWithSwapIfFull(List<Monster> fromList, List<Monster> toList, Monster monster, int toIndex)
+    {
+        if (!CheckMonster(monster)) return false;
+        if (!fromList.Contains(monster)) return false;
+        if (toList.Contains(monster)) return false;
+
+        // 몬스터를 출발 리스트에서 제거
+        fromList.Remove(monster);
+
+        // toList가 가득 찼다면 밀려날 몬스터를 빼서 fromList로 이동
+        if (toList.Count >= maxBattleCount)
         {
-            if (!battleEntry.Contains(m))
-                benchEntry.Add(m);
+            // 밀릴 몬스터 선정: 맨 마지막 or toIndex 위치
+            int removeIndex = Mathf.Clamp(toIndex, 0, toList.Count - 1);
+            Monster displaced = toList[removeIndex];
+            toList.RemoveAt(removeIndex);
+            fromList.Add(displaced);
         }
+
+        // toIndex에 삽입 (정확한 위치로)
+        toIndex = Mathf.Clamp(toIndex, 0, toList.Count);
+        toList.Insert(toIndex, monster);
+
+        return true;
+    }
+
+    //전체 엔트리 초기화
+    public void ClearEntry()
+    {
+        entryMonsters.Clear();
+        battleEntry.Clear();
+        benchEntry.Clear();
     }
 
     // 출전 상태 확인
@@ -127,13 +209,13 @@ public class Player
     }
 
     // 아이템 추가
-    public void AddItem(ItemData item)
+    public void AddItem(ItemInstance item)
     {
         items.Add(item);
     }
 
     // 아이템 제거
-    public void RemoveItem(ItemData item)
+    public void RemoveItem(ItemInstance item)
     {
         items.Remove(item);
     }
