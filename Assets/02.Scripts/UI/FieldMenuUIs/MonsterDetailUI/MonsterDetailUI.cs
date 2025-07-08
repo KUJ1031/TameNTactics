@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MonsterDetailUI : MonoBehaviour
+public class MonsterDetailUI : FieldMenuBaseUI
 {
     [Header("기본 정보")]
     [SerializeField] private Image monsterImage;

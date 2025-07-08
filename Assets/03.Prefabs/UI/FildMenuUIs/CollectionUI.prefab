@@ -3229,6 +3229,7 @@ GameObject:
   - component: {fileID: 5764573060553860726}
   - component: {fileID: 3323209852666126965}
   - component: {fileID: 5653257483259581140}
+  - component: {fileID: -6681495265961883551}
   m_Layer: 5
   m_Name: CollectionUI
   m_TagString: Untagged
@@ -3319,6 +3320,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &-6681495265961883551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6893581540755614227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 049bf798617a7a54a9d45a3af5572869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7485091321738902632
 GameObject:
   m_ObjectHideFlags: 0
