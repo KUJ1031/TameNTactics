@@ -4,6 +4,11 @@ using System.Collections;
 
 public class PlayerBattleTrigger : MonoBehaviour
 {
+    private void Start()
+    {
+        StartCoroutine(DisableTriggerCoroutine(3f));
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         //충돌 객체 정보 가지고오기
@@ -28,7 +33,7 @@ public class PlayerBattleTrigger : MonoBehaviour
         RuntimePlayerSaveManager.Instance.SaveCurrentGameState(PlayerManager.Instance.player); // 현재 플레이어 상태 저장
 
         //씬이동
-        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleUITest");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene");
     }
 
     public void DisableTriggerTemporarily(float disableTime)
@@ -39,7 +44,7 @@ public class PlayerBattleTrigger : MonoBehaviour
 
     private IEnumerator DisableTriggerCoroutine(float time)
     {
-        Collider2D collider = GetComponent<Collider2D>();
+        BoxCollider2D collider = GetComponentInChildren<BoxCollider2D>();
         collider.enabled = false;
 
         yield return new WaitForSeconds(time);

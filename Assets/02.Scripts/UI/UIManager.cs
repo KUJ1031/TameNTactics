@@ -18,7 +18,7 @@ public class UIManager : Singleton<UIManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "BattleUITest")
+        if (scene.name == "BattleScene")
         {
             battleUIManager = FindObjectOfType<BattleUIManager>();
         }
