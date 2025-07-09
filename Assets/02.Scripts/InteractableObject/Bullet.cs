@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour
         CancelInvoke();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -41,5 +41,20 @@ public class Bullet : MonoBehaviour
             Debug.Log("으악 아파!");
         }
         // 다른 충돌 처리 로직이 필요하면 여기에 추가
+        else if (collision.gameObject.CompareTag("BulletDisappear"))
+        {
+
+            // 박스 Rigidbody2D 가져오기
+            Rigidbody2D boxRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            if (boxRb != null)
+            {
+                // 박스가 밀리지 않도록 속도 강제로 0으로
+                boxRb.velocity = Vector2.zero;
+                boxRb.angularVelocity = 0f;
+            }
+
+            // 적과 충돌 시 추가 로직 (예: 데미지 처리 등)
+            Deactivate();
+        }
     }
 }

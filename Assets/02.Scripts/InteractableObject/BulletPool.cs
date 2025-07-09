@@ -20,8 +20,12 @@ public class BulletPool : MonoBehaviour
 
     public GameObject GetBullet()
     {
-        foreach (var bullet in pool)
+        int loopCount = pool.Count;
+        for (int i = 0; i < loopCount; i++)
         {
+            GameObject bullet = pool.Dequeue();
+            pool.Enqueue(bullet); // 다시 넣음
+
             if (!bullet.activeInHierarchy)
             {
                 bullet.SetActive(true);
@@ -29,10 +33,9 @@ public class BulletPool : MonoBehaviour
             }
         }
 
-        // 모두 사용 중이면, 필요 시 새로 생성 (풀 제한 있음)
         if (pool.Count >= poolSize)
         {
-            Debug.LogWarning("모든 총알이 사용 중이고, 풀 사이즈를 초과할 수 없습니다!");
+            Debug.LogWarning("모든 총알이 사용 중이고, 풀 사이즈 초과");
             return null;
         }
 
@@ -41,6 +44,7 @@ public class BulletPool : MonoBehaviour
         pool.Enqueue(newBullet);
         return newBullet;
     }
+
 
     public void ReturnBullet(GameObject bullet)
     {

@@ -16,7 +16,6 @@ public class BattleUIManager : MonoBehaviour
     [Header("포섭하기 미니게임")]
     [SerializeField] private GameObject miniGamePrefab;
 
-    private bool isSkillPanelOpen = false;
     private Dictionary<Monster, GameObject> monsterBattleInfo = new();
 
     private Monster selectedMonster;
@@ -30,14 +29,12 @@ public class BattleUIManager : MonoBehaviour
 
     public void OnAttackButtonClick()
     {
-        isSkillPanelOpen = true;
         battleSelectView.ShowSkillPanel();
         EventBus.OnAttackModeEnabled?.Invoke();
     }
 
     public void IntoBattleMenuSelect()
     {
-        isSkillPanelOpen = false;
         battleSelectView.HideSkillPanel();
         EventBus.OnAttackModeDisabled?.Invoke();
     }

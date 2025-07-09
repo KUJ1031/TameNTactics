@@ -112,6 +112,8 @@ public class BattleManager : Singleton<BattleManager>
         selectedSkill = skill;
         selectedTargets.Clear();
 
+        Debug.Log($"스킬의 타입 : {skill.skillType}");
+
         var alivePlayerTeam = BattleEntryTeam.Where(m => m.CurHp > 0).ToList();
         var aliveEnemyTeam = BattleEnemyTeam.Where(m => m.CurHp > 0).ToList();
 
