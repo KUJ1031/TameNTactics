@@ -25,13 +25,6 @@ public class PushableBoxWithSlidePlatform : MonoBehaviour
         var controller = collision.gameObject.GetComponent<PlayerController>();
         if (collision.gameObject.CompareTag("Collider"))
         {
-            Debug.Log("이동 종료 및 충돌 복구");
-
-            if (controller != null)
-            {
-                controller.isInputBlocked = false;
-                controller.rb.velocity = Vector2.zero;
-            }
 
             GlobalCamera.Instance.SetFollow(player.transform);
 
@@ -40,7 +33,6 @@ public class PushableBoxWithSlidePlatform : MonoBehaviour
 
             isMoving = false;
             isStopped = true;
-            Debug.Log("박스 이동 중단됨: Collider와 충돌 발생" + isStopped);
 
             StopAllCoroutines(); // MoveBox 중단
             return;
@@ -51,7 +43,7 @@ public class PushableBoxWithSlidePlatform : MonoBehaviour
 
             if (controller == null) return;
 
-            controller.isInputBlocked = true; // 플레이어 입력 차단
+            // controller.isInputBlocked = true; // 플레이어 입력 차단
 
             Vector2 input = controller.GetMoveInput();
             Vector2 dir = Vector2.zero;
@@ -108,7 +100,7 @@ public class PushableBoxWithSlidePlatform : MonoBehaviour
             //if (playerCol && boxCol)
             //    Physics2D.IgnoreCollision(playerCol, boxCol, true);
 
-            SlidePlatform.CancelPlayerSlide(player.gameObject);
+           // SlidePlatform.CancelPlayerSlide(player.gameObject);
         }
 
         Vector3 targetPos = originalPos + direction.normalized * moveDistance;
@@ -132,8 +124,6 @@ public class PushableBoxWithSlidePlatform : MonoBehaviour
         }
         finally
         {
-            player.isInputBlocked = false;
-            player.rb.velocity = Vector2.zero; // 마지막에 한번 더 멈추게
 
         }
     }

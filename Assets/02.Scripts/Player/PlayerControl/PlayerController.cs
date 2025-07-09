@@ -16,8 +16,7 @@ public class PlayerController : MonoBehaviour
 
     private InputAction inputAction;
 
-    public bool isInputBlocked = false;
-
+    internal bool isInputBlocked = false;
     public bool isSliding { get; set; } = false;
     public Vector2 slideDirection { get; set; } = Vector2.zero;
     public Vector2 lastMoveInput { get; private set; } = Vector2.zero;

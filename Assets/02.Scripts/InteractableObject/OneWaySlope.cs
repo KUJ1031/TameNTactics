@@ -48,7 +48,6 @@ public class OneWaySlope : MonoBehaviour
                 // 위치 겹침 시 밀어내기
                 rb.position += dist.normal * dist.distance;
 
-                // 슬라이드 플랫폼 있다면 슬라이드 강제 중단 요청
                 if (slidePlatform != null)
                     slidePlatform.CancelSlideDueToSlope(other.gameObject);
 
