@@ -13,27 +13,7 @@ public class RunAwayState : BaseBattleState
 
         else
         {
-            EnemyAttack();
-        }
-    }
-
-    private void EnemyAttack()
-    {
-        List<Monster> enemyTeam = BattleManager.Instance.enemyTeam;
-        List<Monster> entryTeam = BattleManager.Instance.BattleEntry;
-        var enemyAction = EnemyAIController.DecideAction(enemyTeam, entryTeam);
-        
-        BattleManager.Instance.ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
-        
-        // 우리팀 다 죽었을 때 패배
-        if (BattleManager.Instance.IsTeamDead(entryTeam))
-        {
-            BattleManager.Instance.EndBattle(false);
-        }
-
-        else
-        {
-            battleSystem.ChangeState(new PlayerMenuState(battleSystem));
+            BattleManager.Instance.EnemyAttackAfterPlayerTurn();
         }
     }
 }

@@ -326,7 +326,7 @@ public class BattleManager : Singleton<BattleManager>
     }
 
     // 플레이어 행동 선택 후 적 죽었는지 판단 후 공격
-    private void EnemyAttackAfterPlayerTurn()
+    public void EnemyAttackAfterPlayerTurn()
     {
         var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
