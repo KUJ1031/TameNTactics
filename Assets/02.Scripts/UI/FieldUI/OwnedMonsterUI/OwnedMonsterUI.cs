@@ -53,6 +53,7 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     {
         PlayerManager.Instance.player.TryAddEntryMonster(monster, _ => { });
         ToggleAddEntryButton(monster);
+        OwnedMonsterUIManager.Instance.RefreshSlotFor(monster);
     }
     //엔트리에 제외 버튼
     private void OnClickRemoveEntryButtonButton(Monster monster)
