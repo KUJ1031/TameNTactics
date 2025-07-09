@@ -92,24 +92,24 @@ public class Player
         }
         else
         {
-            //Monster swapMonster = UIManager.Instance.swapEntryMonster(monster);
+            Monster swapMonster = UIManager.Instance.swapEntryMonster(monster);
 
-            //if (swapMonster == null || !entryMonsters.Contains(swapMonster))
-            //    return false;
+            if (swapMonster == null || !entryMonsters.Contains(swapMonster))
+                return false;
 
-            //entryMonsters.Remove(swapMonster);
-            //entryMonsters.Add(monster);
+            entryMonsters.Remove(swapMonster);
+            entryMonsters.Add(monster);
 
-            //if (battleEntry.Contains(swapMonster))
-            //{
-            //    battleEntry.Remove(swapMonster);
-            //    battleEntry.Add(monster);
-            //}
-            //else
-            //{
-            //    benchEntry.Remove(swapMonster);
-            //    benchEntry.Add(monster);
-            //}
+            if (battleEntry.Contains(swapMonster))
+            {
+                battleEntry.Remove(swapMonster);
+                battleEntry.Add(monster);
+            }
+            else
+            {
+                benchEntry.Remove(swapMonster);
+                benchEntry.Add(monster);
+            }
         }
         return true;
     }

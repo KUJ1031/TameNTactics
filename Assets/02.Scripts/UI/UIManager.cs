@@ -23,4 +23,11 @@ public class UIManager : Singleton<UIManager>
             battleUIManager = FindObjectOfType<BattleUIManager>();
         }
     }
+
+    public Monster swapEntryMonster(Monster monster)
+    {
+        //스왑 창 띄우기
+        return monster;
+    }
+    
 }
