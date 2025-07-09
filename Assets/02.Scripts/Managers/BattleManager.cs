@@ -225,11 +225,11 @@ public class BattleManager : Singleton<BattleManager>
         {
             OwnedMonsters.Add(target); // 엔트릴 5마리 꽉 찼으면 전체몬스터안으로
         }
-        
+
         GameObject enemyObj = GameObject.Find("EnemySpawner");
 
         if (enemyObj == null) return;
-        
+
         Transform enemySpawner = enemyObj.transform;
 
         foreach (Transform spawnPoint in enemySpawner)
@@ -241,6 +241,8 @@ public class BattleManager : Singleton<BattleManager>
                 break;
             }
         }
+
+        RuntimePlayerSaveManager.Instance.SaveBattleGameState(PlayerManager.Instance.player);
 
         Debug.Log($"{target.monsterName}를 포획했습니다!");
     }
