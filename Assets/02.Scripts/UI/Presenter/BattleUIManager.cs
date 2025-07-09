@@ -22,13 +22,6 @@ public class BattleUIManager : MonoBehaviour
 
     private Monster selectedMonster;
 
-    void Start()
-    {
-        battleSelectView.attackButton.onClick.AddListener(OnAttackButtonClick);
-        battleSelectView.embraceButton.onClick.AddListener(OnEmbraceButtonClick);
-        battleSelectView.runButton.onClick.AddListener(OnRunButtonClick);
-    }
-
     public void OnAttackButtonClick()
     {
         battleSelectView.ShowSkillPanel();
@@ -227,11 +220,6 @@ public class BattleUIManager : MonoBehaviour
     public void ClearBattleDialogue()
     {
         battleInfoView.ClearBattleDialogue();
-    }
-
-    private void OnRunButtonClick()
-    {
-        battleUIButtonHandler.OnRunButtonClick();
     }
 
     public void OffSelectMonsterUI()

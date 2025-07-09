@@ -181,6 +181,7 @@ public class BattleManager : Singleton<BattleManager>
     // 사용 할 스킬 종류에 따라 스킬 발동
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
+        Debug.Log("ExecuteSkill");
         if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
 
         ISkillEffect effect = null;
@@ -330,6 +331,7 @@ public class BattleManager : Singleton<BattleManager>
     // 플레이어 행동 선택 후 적 죽었는지 판단 후 공격
     public void EnemyAttackAfterPlayerTurn()
     {
+        Debug.Log("EnemyAttackAfterPlayerTurn");
         var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
         if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }

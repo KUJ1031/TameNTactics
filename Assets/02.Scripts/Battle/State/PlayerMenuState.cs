@@ -16,7 +16,6 @@ public class PlayerMenuState : BaseBattleState
         if (BattleManager.Instance.battleEnded)
         {
             battleSystem.ChangeState(new EndBattleState(battleSystem));
-            BattleManager.Instance.battleEnded = false;
         }
     }
 
