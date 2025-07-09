@@ -15,29 +15,31 @@ public class PortalTeleporter : MonoBehaviour
     /// 플레이어가 포탈에 들어왔을 때 호출
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // 플레이어이고, 쿨타임이 아닐 경우에만 텔레포트 실행
-        if (!isTeleporting && other.CompareTag("Player"))
+        if (!isTeleporting && (other.CompareTag("Player") || other.CompareTag("Box")))
         {
             StartCoroutine(Teleport(other));
         }
     }
 
     // 플레이어를 목표 포탈 위치로 순간이동시키는 코루틴
-    private IEnumerator Teleport(Collider2D player)
+    private IEnumerator Teleport(Collider2D obj)
     {
         isTeleporting = true;
 
-        // 플레이어 위치를 타겟 포탈 위치로 즉시 이동
-        player.transform.position = targetPortal.position;
+        obj.transform.position = targetPortal.position;
 
-        // 목표 포탈 쪽에도 쿨타임 적용 (되돌아오는 루프 방지)
+        // 대상 포탈도 쿨타임 적용
         var targetScript = targetPortal.GetComponent<PortalTeleporter>();
         if (targetScript != null)
-        {
             targetScript.SetTeleportCooldown();
+
+        // 💡 박스일 경우 자체 쿨다운도 시작
+        var box = obj.GetComponent<PushableBoxWithSlidePlatform>();
+        if (box != null)
+        {
+            box.StartTeleportCooldown(teleportCooldown);
         }
 
-        // 현재 포탈도 일정 시간 동안 비활성화
         yield return new WaitForSeconds(teleportCooldown);
         isTeleporting = false;
     }

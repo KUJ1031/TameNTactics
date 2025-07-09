@@ -16,7 +16,6 @@ public class BattleUIManager : MonoBehaviour
     [Header("포섭하기 미니게임")]
     [SerializeField] private GameObject miniGamePrefab;
 
-    private bool isSkillPanelOpen = false;
     private Dictionary<Monster, GameObject> monsterBattleInfo = new();
 
     private Monster selectedMonster;
@@ -30,14 +29,12 @@ public class BattleUIManager : MonoBehaviour
 
     public void OnAttackButtonClick()
     {
-        isSkillPanelOpen = true;
         battleSelectView.ShowSkillPanel();
         EventBus.OnAttackModeEnabled?.Invoke();
     }
 
     public void IntoBattleMenuSelect()
     {
-        isSkillPanelOpen = false;
         battleSelectView.HideSkillPanel();
         EventBus.OnAttackModeDisabled?.Invoke();
     }
@@ -239,7 +236,6 @@ public class BattleUIManager : MonoBehaviour
             Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
             SceneManager.LoadScene("MainScene");
             RuntimePlayerSaveManager.Instance.RestoreGameState();
-            StartCoroutine(DisableTriggerAfterLoadScene(3f));
         }
         else
         {
@@ -247,15 +243,8 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    private IEnumerator DisableTriggerAfterLoadScene(float disableTime)
+    public void OffSelectMonsterUI()
     {
-        yield return null;
-
-        PlayerBattleTrigger trigger = FindObjectOfType<PlayerBattleTrigger>();
-        if (trigger != null)
-        {
-            Debug.Log("트리거 있음");
-            trigger.DisableTriggerTemporarily(disableTime);
-        }
+        battleSelectView.OffSelectMonster();
     }
 }
