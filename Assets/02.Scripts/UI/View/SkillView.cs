@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,15 +12,12 @@ public class SkillView : MonoBehaviour
 
     public void ShowSkillList(List<SkillData> skills)
     {
-        Debug.Log("몬스터가 가지고 있는 스킬을 보여줍니다.");
-        for (int i = 0; i < skills.Count; i++)
-        {
-            Debug.Log($"{i + 1}번째 스킬 타입 : {skills[i].skillType}");
-        }
         // 1번 슬롯
-        if (skills.Count >= 1 && skills[1] != null)
+        if (skills.Count >= 2 && skills[1] != null)
         {
+            var selectSlot = skillSlot1.GetComponent<SkillSelecter>();
             skillSlot1.sprite = skills[1].icon;
+            selectSlot.skillIndex = 1;
         }
         else if (skills[1] == null)
         {
@@ -27,9 +25,11 @@ public class SkillView : MonoBehaviour
         }
 
         // 2번 슬롯
-        if (skills.Count >= 2 && skills[2] != null)
+        if (skills.Count >= 3 && skills[2] != null)
         {
+            var selectSlot = skillSlot2.GetComponent<SkillSelecter>();
             skillSlot2.sprite = skills[2].icon;
+            selectSlot.skillIndex = 2;
         }
         else if (skills[2] == null)
         {

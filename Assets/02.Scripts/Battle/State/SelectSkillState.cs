@@ -19,6 +19,21 @@ public class SelectSkillState : BaseBattleState
         // todo 방향키 움직이거나 마우스를 스킬위에 올려놓았을때 활성화(강조) 되는 느낌 UI
         // todo 몬스터 공격자세 애니메이션 활성화
         UIManager.Instance.battleUIManager.SelectMonster();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter) &&
+                    PlayerManager.Instance.player.ownedMonsters.Contains(monsterCharacter.monster))
+                {
+                    UIManager.Instance.battleUIManager.ShowMonsterSkills(monsterCharacter.monster.monsterData);
+                }
+            }
+        }
     }
 
     public void OnSelectedSkill(SkillData skill)
