@@ -79,15 +79,21 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 GetMoveInput()
     {
+        // 1. 직접 키 입력이 있는 경우
         Vector2 input = moveAction.ReadValue<Vector2>();
         if (input != Vector2.zero)
         {
             lastMoveInput = input.normalized;
             return lastMoveInput;
         }
-        else
+
+        // 2. 키 입력이 없지만 물리적으로 움직이는 경우
+        if (rb.velocity.sqrMagnitude > 0.01f)
         {
-            return Vector2.zero; // 입력 없으면 0 반환
+            return rb.velocity.normalized;
         }
+
+        // 3. 완전히 멈춰있는 경우
+        return Vector2.zero;
     }
 }

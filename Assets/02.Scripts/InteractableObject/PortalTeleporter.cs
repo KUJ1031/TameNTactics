@@ -34,7 +34,7 @@ public class PortalTeleporter : MonoBehaviour
             targetScript.SetTeleportCooldown();
 
         // 💡 박스일 경우 자체 쿨다운도 시작
-        var box = obj.GetComponent<PushableBox>();
+        var box = obj.GetComponent<PushableBoxWithSlidePlatform>();
         if (box != null)
         {
             box.StartTeleportCooldown(teleportCooldown);

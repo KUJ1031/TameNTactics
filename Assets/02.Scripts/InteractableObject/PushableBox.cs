@@ -1,159 +1,61 @@
-using Cinemachine;
 using System.Collections;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class PushableBox : MonoBehaviour
 {
     public float moveDistance = 1f;
     public float moveSpeed;
-    public bool isPlayerMovingWithBox = false;
 
     private bool isMoving = false;
-    private bool isStopped = false;
 
-    private Vector3 currentDirection;
-    private bool isInTeleportCooldown = false;
-
-    private PlayerController player;
-    private Collider2D playerCol;
-    private Collider2D boxCol;
-
-    public CinemachineVirtualCamera virtualCamera = PlayerManager.Instance.virtualCamera;
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-        if (collision.gameObject.CompareTag("Collider"))
-        {
-            Debug.Log("이동 종료 및 충돌 복구");
-
-            if (player != null)
-            {
-                player.isInputBlocked = false;
-                player.rb.velocity = Vector2.zero;
-            }
-
-            GlobalCamera.Instance.SetFollow(player.transform);
-
-            if (playerCol != null && boxCol != null)
-                Physics2D.IgnoreCollision(playerCol, boxCol, false);
-
-            isMoving = false;
-            isStopped = true;
-
-            StopAllCoroutines(); // MoveBox 중단
-            return;
-        }
-
-        if (!isStopped && collision.gameObject.CompareTag("Player"))
-        {
-            var controller = collision.gameObject.GetComponent<PlayerController>();
-            if (controller == null) return;
-
-            Vector2 input = controller.GetMoveInput();
-            Vector2 dir = Vector2.zero;
-
-            if (input == Vector2.zero)
-            {
-                dir = Vector2.zero; // 입력 없을 때는 정지
-            }
-            else
-            {
-                // x, y 절댓값 비교해서 더 큰 쪽을 기준으로 방향 결정
-                if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
-                {
-                    dir = input.x > 0 ? Vector2.right : Vector2.left;
-                }
-                else
-                {
-                    dir = input.y > 0 ? Vector2.up : Vector2.down;
-                }
-            }
-           // Vector3 forcedDir = new Vector3(dir.x, dir.y, 0f);
-            Vector3 forcedDir = Vector3.right;
-
-            Debug.Log("최종 방향 : " + forcedDir);
-
-            player.isInputBlocked = true;
-            GlobalCamera.Instance.SetFollow(transform);
-
-            StartCoroutine(MoveBox(forcedDir, controller));
-        }
-    }
-    public void TryPush(Vector3 direction, PlayerController player = null)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (isMoving) return;
-        StartCoroutine(MoveBox(direction.normalized, player));
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            var playerController = collision.gameObject.GetComponent<PlayerController>();
+            if (playerController == null) return;
+
+            Vector2 input = playerController.GetMoveInput();
+            Debug.Log("입력: " + input);
+
+            if (input != Vector2.zero)
+            {
+                Vector3 dir = Vector3.zero;
+                if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
+                    dir = input.x > 0 ? Vector3.right : Vector3.left;
+                else
+                    dir = input.y > 0 ? Vector3.up : Vector3.down;
+
+                StartCoroutine(MoveBox(dir, playerController));
+            }
+        }
     }
 
     private IEnumerator MoveBox(Vector3 direction, PlayerController player)
     {
-        this.player = player;
-
         isMoving = true;
-        currentDirection = direction;
-
-        Collider2D playerCol = null, boxCol = GetComponent<Collider2D>();
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        Vector3 originalPos = transform.position;
 
         if (player != null)
         {
             player.isInputBlocked = true;
-            player.rb.velocity = Vector2.zero;
-
-            playerCol = player.GetComponent<Collider2D>();
-            if (playerCol && boxCol)
-                Physics2D.IgnoreCollision(playerCol, boxCol, true);
-
-            SlidePlatform.CancelPlayerSlide(player.gameObject);
+            player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         }
 
-        Vector3 targetPos = originalPos + direction.normalized * moveDistance;
+        Vector3 target = transform.position + direction * moveDistance;
 
-        try
+        while ((transform.position - target).sqrMagnitude > 0.01f)
         {
-            Debug.Log("박스 이동 시작: " + originalPos + " -> " + targetPos);
-            while ((rb.position - (Vector2)targetPos).sqrMagnitude > 0.01f)
-            {
-
-                Vector2 newPos = Vector2.MoveTowards(rb.position, (Vector2)targetPos, moveSpeed * Time.deltaTime);
-                rb.MovePosition(newPos);
-
-                if (player != null)
-                    player.rb.velocity = Vector2.zero;
-
-                yield return null;
-            }
-
-            rb.MovePosition(targetPos);
+            transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+            yield return null;
         }
-        finally
-        {
 
-        }
-    }
-    public bool IsMoving()
-    {
-        return isMoving;
-    }
+        transform.position = target;
 
-    public void StartTeleportCooldown(float duration)
-    {
-        StartCoroutine(TeleportCooldownRoutine(duration));
-    }
+        if (player != null)
+            player.isInputBlocked = false;
 
-    private IEnumerator TeleportCooldownRoutine(float duration)
-    {
-        isInTeleportCooldown = true;
-        yield return new WaitForSeconds(duration);
-        isInTeleportCooldown = false;
+        isMoving = false;
     }
-
-    public bool IsInTeleportCooldown()
-    {
-        return isInTeleportCooldown;
-    }
-
 }
