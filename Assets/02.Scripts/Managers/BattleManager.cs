@@ -187,10 +187,10 @@ public class BattleManager : Singleton<BattleManager>
 
         if (!caster.canAct) return;
 
-        if (skill.skillType == SkillType.UltimateSkill)
+        if (skill.skillType == SkillType.UltimateSkill && caster.Level >= 15)
         {
             effect = UltimateSkillFactory.GetUltimateSkill(skill);
-            caster.RemoveStatusEffects();
+            caster.InitializeUltimateCost();
         }
         else
         {
@@ -224,6 +224,22 @@ public class BattleManager : Singleton<BattleManager>
         else
         {
             OwnedMonsters.Add(target); // 엔트릴 5마리 꽉 찼으면 전체몬스터안으로
+        }
+        
+        GameObject enemyObj = GameObject.Find("EnemySpawner");
+
+        if (enemyObj == null) return;
+        
+        Transform enemySpawner = enemyObj.transform;
+
+        foreach (Transform spawnPoint in enemySpawner)
+        {
+            MonsterCharacter monsterChar = spawnPoint.GetComponentInChildren<MonsterCharacter>();
+            if (monsterChar.monster == target && monsterChar.monster.CurHp > 0)
+            {
+                Destroy(monsterChar.gameObject);
+                break;
+            }
         }
 
         Debug.Log($"{target.monsterName}를 포획했습니다!");
