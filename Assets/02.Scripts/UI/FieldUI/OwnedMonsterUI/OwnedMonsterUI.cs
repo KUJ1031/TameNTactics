@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class OwnedMonsterUI : FieldMenuBaseUI
 {
-    [SerializeField] private Button detailButton, addEntryButton, releaseButton;
+    [SerializeField] private Button detailButton, addEntryButton, removeEntryButton, releaseButton;
     [SerializeField] private MonsterDetailUI monsterDetailUI;
 
     [Header("window")]
@@ -31,30 +32,36 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     {
         detailButton.onClick.RemoveAllListeners();
         addEntryButton.onClick.RemoveAllListeners();
+        removeEntryButton.onClick.RemoveAllListeners();
         releaseButton.onClick.RemoveAllListeners();
         monsterFavoriteMark.GetComponent<Button>().onClick.RemoveAllListeners();
 
         detailButton.onClick.AddListener(() => OnClickDetailButton(monster));
         addEntryButton.onClick.AddListener(() => OnClickAddEntryButton(monster));
+        removeEntryButton.onClick.AddListener(() => OnClickRemoveEntryButtonButton(monster));
         releaseButton.onClick.AddListener(() => OnClickReleaseButton(monster));
         monsterFavoriteMark.GetComponent<Button>().onClick.AddListener(() => OnClickFavoriteButton(monster));
     }
     //디테일 버튼
     private void OnClickDetailButton(Monster monster)
     {
-        Debug.Log("OnClickDetailButton");
         monsterDetailUI.SetMonsterDetailUI(monster);
         FieldUIManager.Instance.OpenUI<MonsterDetailUI>();
     }
     //엔트리에 추가 버튼
     private void OnClickAddEntryButton(Monster monster)
     {
-        Debug.Log("OnClickAddEntryButton");
+
+    }
+    //엔트리에 제외 버튼
+    private void OnClickRemoveEntryButtonButton(Monster monster)
+    {
+
     }
     //방출하기 버튼
     private void OnClickReleaseButton(Monster monster)
     {
-        Debug.Log("OnClickReleaseButton");
+
     }
     //즐겨찾기 버튼
     private void OnClickFavoriteButton(Monster monster)
@@ -77,6 +84,7 @@ public class OwnedMonsterUI : FieldMenuBaseUI
         SetLogoVisibility(false);
 
         ToggleFavoriteMark(monster.IsFavorite);
+
         monsterImage.sprite = monster.monsterData.monsterImage;
         monsterNameText.text = monster.monsterName;
         monsterTypeText.text = monster.type.ToString();
@@ -84,6 +92,8 @@ public class OwnedMonsterUI : FieldMenuBaseUI
         monsterSkill1Text.text = monster.skills[0].skillName;
         monsterSkill2Text.text = monster.skills[1].skillName;
         monsterSkill3Text.text = monster.skills[2].skillName;
+
+        ToggleAddEntryButton(monster);
     }
 
     //Logo랑 몬스터 정보 토글
@@ -92,4 +102,14 @@ public class OwnedMonsterUI : FieldMenuBaseUI
         logo.SetActive(isVisible);
         simpleMonsterInfo.SetActive(!isVisible);
     }
+
+    //엔트리에 추가/제외 버튼토글
+    private void ToggleAddEntryButton(Monster monster)
+    {
+        List<Monster> entry = PlayerManager.Instance.player.entryMonsters;
+        bool isEntry = entry.Contains(monster);
+        removeEntryButton.gameObject.SetActive(isEntry);
+        addEntryButton.gameObject.SetActive(!isEntry);
+    }
+
 }

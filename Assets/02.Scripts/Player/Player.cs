@@ -90,8 +90,9 @@ public class Player
                 benchEntry.Add(monster);
             }
         }
-        else
+        else//엔트리 최대 수보다 많다면
         {
+            //유아이창 띄워서 그중 하나 선택 후 교체
             Monster swapMonster = UIManager.Instance.swapEntryMonster(monster);
 
             if (swapMonster == null || !entryMonsters.Contains(swapMonster))

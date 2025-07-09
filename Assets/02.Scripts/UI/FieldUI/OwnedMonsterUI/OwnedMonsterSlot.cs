@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class OwnedMonsterSlot : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private Outline outline;        //외각선(선택표시)
+    [SerializeField] private Image MonsterImage;        //몬스터 이미지
+    [SerializeField] private Outline outline;           //외각선(선택표시)
     [SerializeField] private GameObject favoriteMark;   //즐겨찾기 표시
     [SerializeField] private GameObject entryMark;      //엔트리 표시
 
@@ -17,7 +18,7 @@ public class OwnedMonsterSlot : MonoBehaviour, IPointerClickHandler
         OwnedSlotMonster = monster;
         outline.enabled = false; // 초기엔 선택 안됨
         RefreshSlot(monster);
-        gameObject.GetComponent<Image>().sprite = monster.monsterData.monsterImage;
+        MonsterImage.sprite = monster.monsterData.monsterImage;
     }
 
     //몬스터 마크 갱신
