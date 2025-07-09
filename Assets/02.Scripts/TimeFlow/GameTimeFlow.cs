@@ -54,7 +54,7 @@ public class GameTimeFlow : Singleton<GameTimeFlow>
         if (playTimeText != null)
         {
             TimeSpan timeSpan = TimeSpan.FromSeconds(timer);
-            playTimeText.text = "플레이 시간: " + timeSpan.ToString(@"hh\:mm\:ss");
+            playTimeText.text = timeSpan.ToString(@"hh\:mm\:ss");
         }
     }
 

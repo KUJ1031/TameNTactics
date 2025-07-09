@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FieldUIManager : MonoBehaviour
@@ -10,6 +11,8 @@ public class FieldUIManager : MonoBehaviour
 
     [SerializeField] private GameObject swapPopupPrefab;
     [SerializeField] private Transform uiCanvas;
+
+    [SerializeField] private List<EntrySlot> entrySlots;  // 인스펙터에서 5개 슬롯 프리팹 연결
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -43,5 +46,18 @@ public class FieldUIManager : MonoBehaviour
         GameObject go = Instantiate(swapPopupPrefab, uiCanvas);
         var popup = go.GetComponent<PlayerEntrySwapPopup>();
         popup.Open(onSwapped);
+    }
+
+    public void RefreshEntrySlots()
+    {
+        var entryMonsters = PlayerManager.Instance.player.entryMonsters;
+
+        for (int i = 0; i < entrySlots.Count; i++)
+        {
+            if (i < entryMonsters.Count)
+                entrySlots[i].SetMonster(entryMonsters[i]);
+            else
+                entrySlots[i].ClearSlot();
+        }
     }
 }

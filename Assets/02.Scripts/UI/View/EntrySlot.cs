@@ -12,6 +12,17 @@ public class EntrySlot : MonoBehaviour
     {
         monsterImage.sprite = monster.monsterData.monsterImage;
         monsterImage.enabled = true;
+        //만약 몬스터가 battleEntry에 있다면 이미지를 크게
+        RectTransform rt = monsterImage.rectTransform;
+
+        if (PlayerManager.Instance.player.battleEntry.Contains(monster))
+        {
+            rt.sizeDelta = new Vector2(100f, 100f); // 정상 크기
+        }
+        else
+        {
+            rt.sizeDelta = new Vector2(50f, 50f);   // 작게 표시
+        }
     }
 
     public void ClearSlot()
@@ -19,4 +30,7 @@ public class EntrySlot : MonoBehaviour
         monsterImage.sprite = null;
         monsterImage.enabled = false;
     }
+
+    
+
 }
