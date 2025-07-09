@@ -235,7 +235,6 @@ public class BattleUIManager : MonoBehaviour
         {
             Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
             SceneManager.LoadScene("MainScene");
-            RuntimePlayerSaveManager.Instance.RestoreGameState();
         }
         else
         {
