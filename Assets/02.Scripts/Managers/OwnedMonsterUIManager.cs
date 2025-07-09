@@ -28,7 +28,7 @@ public class OwnedMonsterUIManager : MonoBehaviour
         List<Monster> sortedMonsters = GetSortedOwnedMonsters();
         EnsureSlotCount(sortedMonsters.Count);
         UpdateSlotData(sortedMonsters);
-        
+
         //선택된 슬롯 유지
         if (selectedSlot != null && selectedSlot.gameObject.activeInHierarchy)
         {
@@ -101,5 +101,18 @@ public class OwnedMonsterUIManager : MonoBehaviour
         Monster monster = selectedSlot.GetMonster();
         ownedMonsterUI.SetSimpleMonsterUI(monster);
         ownedMonsterUI.SetMonsterDetailUIButtons(monster);
+    }
+
+    //슬롯 마크 갱신
+    public void RefreshSlotFor(Monster monster)
+    {
+        foreach (var slot in ownedSlotUIList)
+        {
+            if (slot.GetMonster() == monster)
+            {
+                slot.RefreshSlot(monster);
+                break;
+            }
+        }
     }
 }

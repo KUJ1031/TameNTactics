@@ -61,6 +61,7 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     {
         monster.ToggleFavorite();
         ToggleFavoriteMark(monster.IsFavorite);
+        OwnedMonsterUIManager.Instance.RefreshSlotFor(monster);
     }
 
     //즐겨찾기 색 변경
