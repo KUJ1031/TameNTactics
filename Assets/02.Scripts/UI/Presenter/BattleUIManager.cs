@@ -13,6 +13,8 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private MenuView menuView;
     [SerializeField] private EmbraceView embraceView;
 
+    [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
+
     [Header("포섭하기 미니게임")]
     [SerializeField] private GameObject miniGamePrefab;
 
@@ -229,17 +231,7 @@ public class BattleUIManager : MonoBehaviour
 
     private void OnRunButtonClick()
     {
-        bool success = BattleManager.Instance.TryRunAway();
-
-        if (success)
-        {
-            Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
-            SceneManager.LoadScene("MainScene");
-        }
-        else
-        {
-            Debug.Log("도망가기 실패!");
-        }
+        battleUIButtonHandler.OnRunButtonClick();
     }
 
     public void OffSelectMonsterUI()

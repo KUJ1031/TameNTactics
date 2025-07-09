@@ -225,6 +225,7 @@ MonoBehaviour:
   skillView: {fileID: 1563213026374987012}
   menuView: {fileID: 0}
   embraceView: {fileID: 985042919}
+  battleUIButtonHandler: {fileID: 1105279946}
   miniGamePrefab: {fileID: 3609670787628734108, guid: 505f5ebe8cc94734c9897eeae5d3e8b4, type: 3}
 --- !u!4 &117401386
 Transform:

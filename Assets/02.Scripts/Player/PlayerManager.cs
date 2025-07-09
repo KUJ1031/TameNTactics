@@ -62,14 +62,16 @@ public class PlayerManager : MonoBehaviour
                         Monster m = new Monster();
                         m.SetMonsterData(testMonsterList[i]);
                         player.AddOwnedMonster(m);
-                        //player.TryAddEntryMonster(m, (success) => 
-                        //    {
-                        //    if (success)
-                        //    {
-                        //        player.AddBattleEntry(m);
-                        //    }
-                        //    else { Debug.Log("엔트리에 몬스터 등록 실패"); }
-                        //    });
+
+                        // 테스트 코드
+                        player.TryAddEntryMonster(m, (success) =>
+                            {
+                                if (success)
+                                {
+                                    player.AddBattleEntry(m);
+                                }
+                                else { Debug.Log("엔트리에 몬스터 등록 실패"); }
+                            });
                     }
                 }
             }
