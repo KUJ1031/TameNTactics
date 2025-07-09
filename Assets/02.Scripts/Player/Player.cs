@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -72,46 +73,59 @@ public class Player
     }
 
     //Entry에 추가
-    public bool AddEntryMonster(Monster monster)
+    public void TryAddEntryMonster(Monster monster, Action<bool> onCompleted)
     {
-        if (!CheckMonster(monster)) return false;
+        if (!CheckMonster(monster))
+        {
+            onCompleted?.Invoke(false);
+            return;
+        }
 
-        if (entryMonsters.Contains(monster)) return false;
+        if (entryMonsters.Contains(monster))
+        {
+            onCompleted?.Invoke(false);
+            return;
+        }
 
         if (entryMonsters.Count < maxEntryCount)
         {
             entryMonsters.Add(monster);
+
             if (battleEntry.Count < maxBattleCount)
-            {
                 battleEntry.Add(monster);
-            }
             else
-            {
                 benchEntry.Add(monster);
-            }
+
+            onCompleted?.Invoke(true);
         }
         else
         {
-            //Monster swapMonster = UIManager.Instance.swapEntryMonster(monster);
+            //UI호출 및 대기
+            FieldUIManager.Instance.SwapEntryMonster((swapMonster) =>
+            {
+                if (swapMonster == null || !entryMonsters.Contains(swapMonster))
+                {
+                    onCompleted?.Invoke(false);
+                    return;
+                }
 
-            //if (swapMonster == null || !entryMonsters.Contains(swapMonster))
-            //    return false;
+                entryMonsters.Remove(swapMonster);
+                entryMonsters.Add(monster);
 
-            //entryMonsters.Remove(swapMonster);
-            //entryMonsters.Add(monster);
+                if (battleEntry.Contains(swapMonster))
+                {
+                    battleEntry.Remove(swapMonster);
+                    battleEntry.Add(monster);
+                }
+                else
+                {
+                    benchEntry.Remove(swapMonster);
+                    benchEntry.Add(monster);
+                }
 
-            //if (battleEntry.Contains(swapMonster))
-            //{
-            //    battleEntry.Remove(swapMonster);
-            //    battleEntry.Add(monster);
-            //}
-            //else
-            //{
-            //    benchEntry.Remove(swapMonster);
-            //    benchEntry.Add(monster);
-            //}
+                onCompleted?.Invoke(true);
+            });
         }
-        return true;
     }
 
     //Entry에 제거
@@ -163,7 +177,7 @@ public class Player
         return true;
     }
 
-    //몬스터 위치 변경 (battleEntry <-> benchEntry)
+    //몬스터 위치 변경 (battleEntry <-> benchEntry)(엔트리UI에서 쓸거)
     public bool InsertWithSwapIfFull(List<Monster> fromList, List<Monster> toList, Monster monster, int toIndex)
     {
         if (!CheckMonster(monster)) return false;

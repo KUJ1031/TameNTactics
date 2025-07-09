@@ -1,5 +1,6 @@
 using Cinemachine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -61,12 +62,18 @@ public class PlayerManager : MonoBehaviour
                         Monster m = new Monster();
                         m.SetMonsterData(testMonsterList[i]);
                         player.AddOwnedMonster(m);
-                        player.AddEntryMonster(m);
-                        player.AddBattleEntry(m);
+                        //player.TryAddEntryMonster(m, (success) => 
+                        //    {
+                        //    if (success)
+                        //    {
+                        //        player.AddBattleEntry(m);
+                        //    }
+                        //    else { Debug.Log("엔트리에 몬스터 등록 실패"); }
+                        //    });
                     }
                 }
             }
-            
+
         }
     }
 
