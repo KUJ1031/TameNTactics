@@ -27,7 +27,7 @@ public class MonsterFactory : MonoBehaviour
         {
             width = collider.size.x * transform.localScale.x;
             height = collider.size.y * transform.localScale.y;
-            Debug.Log($"BoxCollider2D 크기 자동 설정됨: width={width}, height={height}");
+            //Debug.Log($"BoxCollider2D 크기 자동 설정됨: width={width}, height={height}");
         }
         else
         {
@@ -76,7 +76,7 @@ public class MonsterFactory : MonoBehaviour
                         mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
                     }
 
-                    Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {newMonster.monster.Level}");
+                    //Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {newMonster.monster.Level}");
                 }
                 else { Debug.Log("몬스터 생성 실패 : Vector3.zero"); }
             }

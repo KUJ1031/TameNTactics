@@ -54,3 +54,5 @@ MonoBehaviour:
   - {fileID: 0}
   LeftMenuUI: {fileID: 0}
   BaseUI: {fileID: 0}
+  swapPopupPrefab: {fileID: 4196479566049034853, guid: 7604b77baf0749c4aa385f32b0c7e286, type: 3}
+  uiCanvas: {fileID: 0}

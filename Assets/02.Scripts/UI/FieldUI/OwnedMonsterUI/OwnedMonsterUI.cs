@@ -51,7 +51,8 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     //엔트리에 추가 버튼
     private void OnClickAddEntryButton(Monster monster)
     {
-
+        PlayerManager.Instance.player.TryAddEntryMonster(monster, _ => { });
+        ToggleAddEntryButton(monster);
     }
     //엔트리에 제외 버튼
     private void OnClickRemoveEntryButtonButton(Monster monster)

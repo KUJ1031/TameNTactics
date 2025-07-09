@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ownedMonsterUI: {fileID: 0}
-  owmedParent: {fileID: 0}
-  owmedMonsterSlotPrefab: {fileID: 0}
+  ownedParent: {fileID: 0}
+  ownedMonsterSlotPrefab: {fileID: 6857077090263320227, guid: 9342d41ec947e074aad0a91beb6bb832, type: 3}

@@ -54,6 +54,7 @@ public class MonsterDetailUI : FieldMenuBaseUI
     [SerializeField] private Button removeEntryButton;
 
     private Monster monster;
+    private Player player = PlayerManager.Instance.player;
 
     //몬스터 디테일 유아이 셋팅
     public void SetMonsterDetailUI(Monster newMonster)
@@ -132,7 +133,7 @@ public class MonsterDetailUI : FieldMenuBaseUI
     private void SettingButton()
     {
         backButton.onClick.AddListener(OnClickBackButton);
-        if (PlayerManager.Instance.player.entryMonsters.Contains(monster))
+        if (player.entryMonsters.Contains(monster))
         {
             removeEntryButton.gameObject.SetActive(true);
             addEntryButton.gameObject.SetActive(false);
@@ -142,8 +143,8 @@ public class MonsterDetailUI : FieldMenuBaseUI
             removeEntryButton.gameObject.SetActive(false);
             addEntryButton.gameObject.SetActive(true);
         }
-        addEntryButton.onClick.AddListener(() => PlayerManager.Instance.player.AddEntryMonster(monster));
-        removeEntryButton.onClick.AddListener(() => PlayerManager.Instance.player.RemoveEntryMonster(monster));
+        addEntryButton.onClick.AddListener(() => player.TryAddEntryMonster(monster, _ => { }));
+        removeEntryButton.onClick.AddListener(() => player.RemoveEntryMonster(monster));
     }
 
     private void OnClickBackButton()
