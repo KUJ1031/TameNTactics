@@ -48,7 +48,7 @@ public class Monster
     public int CurSpeed { get; private set; }
     public int CurCriticalChance { get; private set; }
 
-    
+
     private List<StatusEffect> activeStatusEffects = new();
     private List<IPassiveSkill> passiveSkills = new();
 
@@ -351,7 +351,7 @@ public class Monster
         {
             canAct = false;
         }
-        
+
         else canAct = true;
     }
 
