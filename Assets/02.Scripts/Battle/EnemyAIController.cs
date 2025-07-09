@@ -24,7 +24,7 @@ public static class EnemyAIController
             var ultimateSkill = enemy.skills.FirstOrDefault(s => s.skillType == SkillType.UltimateSkill);
             bool maxUltCost = enemy.CurUltimateCost >= enemy.MaxUltimateCost;
 
-            if (ultimateSkill != null && maxUltCost)
+            if (ultimateSkill != null && maxUltCost && enemy.Level >= 15)
             {
                 var targets = ChooseTargets(ultimateSkill, targetMonsters, actors, enemy);
 
