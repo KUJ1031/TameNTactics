@@ -213,6 +213,8 @@ public class BattleManager : Singleton<BattleManager>
         EndTurn();
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
         ClearSelections();
+        
+        BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
     
     // 사용 할 스킬 종류에 따라 스킬 발동
