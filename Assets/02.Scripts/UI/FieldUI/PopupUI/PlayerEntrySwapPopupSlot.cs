@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PlayerEntrySwapPopupSlot : MonoBehaviour
+public class PlayerEntrySwapPopupSlot : MonoBehaviour , IPointerClickHandler
 {
     [SerializeField] private Image monsterImage;
     [SerializeField] private Outline outline;
@@ -25,6 +23,7 @@ public class PlayerEntrySwapPopupSlot : MonoBehaviour
         OnClick?.Invoke();
     }
 
+    //아웃라인 변경
     public void SetSelected(bool isSelected)
     {
         outline.enabled = isSelected;
