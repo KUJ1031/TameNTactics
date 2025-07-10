@@ -14,6 +14,7 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private EmbraceView embraceView;
 
     public EmbraceView EmbraceView { get { return embraceView; } }
+    public BattleSelectView BattleSelectView { get { return battleSelectView; } }
 
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
