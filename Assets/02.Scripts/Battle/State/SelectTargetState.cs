@@ -19,7 +19,6 @@ public class SelectTargetState : BaseBattleState
     public void OnSelectTargetMonster(Monster monster)
     {
         BattleManager.Instance.SelectTargetMonster(monster);
-        battleSystem.ChangeState(new PlayerMenuState(battleSystem));
     }
 
     public void OnCancelSelectTarget()
