@@ -401,4 +401,22 @@ public class BattleManager : Singleton<BattleManager>
         selectedTargets.Clear();
         enemyChosenAction = null;
     }
+
+    public List<MonsterCharacter> CheckPossibleTargets()
+    {
+        List<MonsterCharacter> characters = new();
+
+        // 씬에 있는 모든 MonsterCharacter 찾아오기
+        var allCharacters = GameObject.FindObjectsOfType<MonsterCharacter>();
+
+        foreach (var character in allCharacters)
+        {
+            if (BattleManager.Instance.possibleTargets.Contains(character.monster))
+            {
+                characters.Add(character);
+            }
+        }
+
+        return characters;
+    }
 }
