@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,19 +12,24 @@ public class FireStorm : ISkillEffect
     }
     
     // 전체 공격, 50% 확률로 2턴동안 화상
-    public void Execute(Monster caster, List<Monster> targets)
+    public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
-        if (skillData == null || targets == null || targets.Count == 0) return;
+        if (skillData == null || targets == null || targets.Count == 0) yield break;
+        
+        var targetCopy = new List<Monster>(targets);
 
-        foreach (var target in targets)
+        foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster);
             
             if (Random.value < 0.5f)
             {
+                yield return new WaitForSeconds(1f);
                 target.ApplyStatus(new Burn(2));
             }
         }
+        
+        yield break;
     }
 }

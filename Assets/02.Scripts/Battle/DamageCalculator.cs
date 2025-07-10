@@ -23,7 +23,9 @@ public static class DamageCalculator
 
         float finalDamage = baseDamage * defenseFactor * critMultiplier * effectiveness;
 
-        return new DamageResult
+        Debug.Log($"데미지: {finalDamage} 치명타: {isCrit} 상성: {effectiveness}");
+
+    return new DamageResult
         {
             damage = Mathf.RoundToInt(finalDamage),
             isCritical = isCrit,

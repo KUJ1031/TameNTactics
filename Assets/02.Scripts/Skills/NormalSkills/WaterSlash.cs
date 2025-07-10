@@ -11,21 +11,26 @@ public class WaterSlash : ISkillEffect
         skillData = data;
     }
 
-    // 최종데미지의 20% 만큼 본인 회복
-    public void Execute(Monster caster, List<Monster> targets)
+    // 최종데미지의 10% 만큼 본인 회복
+    public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
-        if (skillData == null || targets == null || targets.Count == 0) return;
+        if (skillData == null || targets == null || targets.Count == 0) yield break;
         
-        foreach (var target in targets)
+        var targetCopy = new List<Monster>(targets);
+        
+        foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster);
-
+            
             if (caster.Level >= 10)
             {
-                int healAmount = Mathf.RoundToInt(result.damage * 0.2f);
+                yield return new WaitForSeconds(1f);
+                int healAmount = Mathf.RoundToInt(result.damage * 0.1f);
                 caster.Heal(healAmount);
             }
         }
+        
+        yield break;
     }
 }
