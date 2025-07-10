@@ -50,7 +50,7 @@ public class SelectTargetState : BaseBattleState
 
         foreach (var target in possibleTargets)
         {
-            
+            //todo 여러마리 빛나게 표시 가능하도록 하는 UI
         }
     }
 }
