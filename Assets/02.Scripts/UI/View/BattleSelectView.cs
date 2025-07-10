@@ -16,6 +16,11 @@ public class BattleSelectView : MonoBehaviour
     [SerializeField] private RectTransform selectMonsterImage;
     [SerializeField] private Canvas gaugeCanvas;
 
+    public void HideSelectPanel()
+    {
+        selectPanel.SetActive(false);
+    }
+
     // 배틀 중의 선택지 Panel 나타냄
     public void ShowSkillPanel()
     {

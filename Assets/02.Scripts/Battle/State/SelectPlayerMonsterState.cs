@@ -53,6 +53,7 @@ public class SelectPlayerMonsterState : BaseBattleState
                         else
                         {
                             selected = true;
+                            UIManager.Instance.battleUIManager.BattleSelectView.ShowSkillPanel();
                             UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
                         }
                     }
