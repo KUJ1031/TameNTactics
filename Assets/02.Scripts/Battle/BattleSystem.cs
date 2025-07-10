@@ -1,9 +1,22 @@
 using UnityEngine;
 
-public class BattleSystem : Singleton<BattleSystem>
+public class BattleSystem : MonoBehaviour
 {
+    public static BattleSystem Instance { get; private set; }
+
     private BaseBattleState currentState;
     public BaseBattleState CurrentState => currentState;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
 
     private void Start()
     {
