@@ -900,7 +900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c379bde3fc37a45b7d411826dd4dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapNameText: {fileID: 0}
+  mapNameText: {fileID: 1039017373}
   bigMapNameText: {fileID: 345349578}
   displayDuration: 1.5
 --- !u!1 &280497440
@@ -933,7 +933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayLengthInSeconds: 2880
-  timeText: {fileID: 0}
+  timeText: {fileID: 1039017374}
   playTimeText: {fileID: 1768618741}
   overlayImage: {fileID: 1747933718}
   dayColor: {r: 0, g: 0, b: 0, a: 0}
@@ -5895,6 +5895,28 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6152157922934307690, guid: a00f9c6538faf8a49867895b01126a49, type: 3}
   m_PrefabInstance: {fileID: 1039017369}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1039017373 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7068728051211337107, guid: a00f9c6538faf8a49867895b01126a49, type: 3}
+  m_PrefabInstance: {fileID: 1039017369}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1039017374 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1578464886280640464, guid: a00f9c6538faf8a49867895b01126a49, type: 3}
+  m_PrefabInstance: {fileID: 1039017369}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1043657661
 GameObject:
   m_ObjectHideFlags: 0
