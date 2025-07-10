@@ -20,8 +20,14 @@ public class SelectPlayerMonsterState : BaseBattleState
     public void OnMonsterSelected(Monster monster)
     {
         BattleManager.Instance.SelectPlayerMonster(monster);
-        //UIManager.Instance.battleUIManager.SelectMonster();
-        battleSystem.ChangeState(new SelectSkillState(battleSystem));
+        if (PlayerManager.Instance.player.battleEntry.Contains(monster))
+        {
+            battleSystem.ChangeState(new SelectSkillState(battleSystem));
+        }
+        else
+        {
+            Debug.Log("아군 몬스터만 선택할 수 있습니다.");
+        }
     }
 
     public void OnCancelSelected()
