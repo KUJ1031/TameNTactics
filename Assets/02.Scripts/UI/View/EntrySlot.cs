@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,7 +33,7 @@ public class EntrySlot : MonoBehaviour
         RectTransform rt = entrySlotImage.rectTransform;
 
         // 해당 몬스터가 전투 출전 명단에 포함된 경우
-        if (PlayerManager.Instance.player.battleEntry.Contains(monster))
+        if (PlayerManager.Instance.player.battleEntry.Any(b => b.monsterID == monster.monsterID))
         {
             // 체력바 표시
             hpBarObject.SetActive(true);

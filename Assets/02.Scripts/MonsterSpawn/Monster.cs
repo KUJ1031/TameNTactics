@@ -112,7 +112,7 @@ public class Monster
         monsterData = data;
 
         monsterName = data.monsterName;
-        monsterID = data.monsterID;
+        monsterID = PlayerManager.Instance.player.playerGetMonsterCount + 1; //고유 ID는 플레이어가 몬스터를 얻은 횟수로 설정(처음 잡은 몬스터의 ID는 1부터 시작)
         type = data.type;
         personality = data.personality;
 

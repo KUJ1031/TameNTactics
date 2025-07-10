@@ -22,6 +22,11 @@ public class FieldUIManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
+
+    private void Start()
+    {
+        RefreshEntrySlots();
+    }
     //메뉴열기
     public void OpenUI<T>() where T : FieldMenuBaseUI
     {

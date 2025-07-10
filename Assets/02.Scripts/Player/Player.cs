@@ -29,6 +29,7 @@ public class Player
     public int totalPlaytime;
     public float playerLastGameTime;
     public Vector3 playerLastPosition;
+    public int playerGetMonsterCount;
 
     [Header("진행 정보")]
     public SerializableDictionary<int, bool> playerBossClearCheck = new();
@@ -51,6 +52,7 @@ public class Player
         if (!CheckMonster(monster)) return false;
 
         ownedMonsters.Add(monster);
+        playerGetMonsterCount++;
         return true;
     }
 
