@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,23 +14,30 @@ public class PlayerEntrySwapPopup : MonoBehaviour
     private Action<Monster> onSwapped;
     private Monster selectedMonster;
 
+    private void Awake()
+    {
+        okButton.onClick.AddListener(OnClickOK);
+        closeButton.onClick.AddListener(OnClickCancel);
+        SetOKButtonUsing(false);
+    }
     public void Open(Action<Monster> onSwappedCallback)
     {
-        this.onSwapped = onSwappedCallback;
+        onSwapped = onSwappedCallback;
         RefreshSlotList();
         gameObject.SetActive(true);
     }
 
     private void RefreshSlotList()
     {
-        // 예시: 플레이어 몬스터 목록 가져오기
-        List<Monster> monsters = PlayerManager.Instance.player.ownedMonsters;
+        //플레이어 몬스터 목록 가져오기
+        List<Monster> monsters = PlayerManager.Instance.player.entryMonsters;
 
-        foreach (var mon in monsters)
+        foreach (Monster mon in monsters)
         {
             GameObject go = Instantiate(monsterSlotPrefab, slotContainer);
             var slot = go.GetComponent<PlayerEntrySwapPopupSlot>();
             slot.Setup(mon);
+            //슬롯에 클릭 이벤트 추가
             slot.OnClick = () =>
             {
                 SelectSlot(slot);
@@ -40,25 +46,34 @@ public class PlayerEntrySwapPopup : MonoBehaviour
         }
     }
 
+    //슬롯 선택
     private void SelectSlot(PlayerEntrySwapPopupSlot slot)
     {
         // 아웃라인 관리
-        foreach (var s in slotList)
-            s.SetSelected(false);
+        foreach (var entrySlot in slotList)
+            entrySlot.SetSelected(false);
 
         slot.SetSelected(true);
         selectedMonster = slot.GetMonster();
+        SetOKButtonUsing(true);
     }
 
-    public void OnClickOK()
+    //확인버튼
+    private void OnClickOK()
     {
         onSwapped?.Invoke(selectedMonster);
         Destroy(gameObject);
     }
-
-    public void OnClickCancel()
+    //닫기버튼
+    private void OnClickCancel()
     {
         onSwapped?.Invoke(null);
         Destroy(gameObject);
+    }
+
+    //확인버튼 활성화
+    private void SetOKButtonUsing(bool canClick)
+    {
+        okButton.interactable = canClick;
     }
 }
