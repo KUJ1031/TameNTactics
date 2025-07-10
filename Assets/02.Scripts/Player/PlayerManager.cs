@@ -75,7 +75,8 @@ public class PlayerManager : MonoBehaviour
                             else { Debug.Log("엔트리에 몬스터 등록 실패"); }
                         });
                     }
-                    //--
+                    // 플레이어 키 셋팅
+                    KeyRebinderManager.Instance.SaveCurrentBindingsToPlayer(player);
                 }
             }
 
