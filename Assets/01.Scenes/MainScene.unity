@@ -6417,6 +6417,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3058698047339958391, guid: a00f9c6538faf8a49867895b01126a49, type: 3}
+      propertyPath: entrySlotParent
+      value: 
+      objectReference: {fileID: 1039017371}
+    - target: {fileID: 3058698047339958391, guid: a00f9c6538faf8a49867895b01126a49, type: 3}
+      propertyPath: entrySlotPrefab
+      value: 
+      objectReference: {fileID: 1767147267890326854, guid: c6df431a3dc99fd4e820acbf52d0059e, type: 3}
     - target: {fileID: 4482344612352593975, guid: a00f9c6538faf8a49867895b01126a49, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

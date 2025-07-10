@@ -46,6 +46,7 @@ public class LeftMenuUI : MonoBehaviour
     {
         FieldUIManager.Instance.CloseAllUI();
         // EntryUI 리셋
-        FieldUIManager.Instance.RefreshEntrySlots();
+        var ui = FindObjectOfType<FieldBaseUI>();
+        if (ui != null) ui.RefreshEntrySlots();
     }
 }
