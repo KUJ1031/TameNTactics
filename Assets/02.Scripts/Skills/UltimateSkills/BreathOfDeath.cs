@@ -12,14 +12,17 @@ public class BreathOfDeath : ISkillEffect
     }
 
     // 5%확률로 즉사
-    public void Execute(Monster caster, List<Monster> targets)
+    public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
-        if (skillData == null || targets == null || targets.Count == 0) return;
+        if (skillData == null || targets == null || targets.Count == 0) yield break;
+        
+        var targetCopy = new List<Monster>(targets);
 
-        foreach (var target in targets)
+        foreach (var target in targetCopy)
         {
             if (Random.value < 0.05f && target.CurHp > 0)
             {
+                yield return new WaitForSeconds(1f);
                 target.TakeDamage(target.CurHp);
             }
 
@@ -29,5 +32,7 @@ public class BreathOfDeath : ISkillEffect
                 BattleManager.Instance.DealDamage(target, result.damage, caster);
             }
         }
+        
+        yield break;
     }
 }

@@ -12,13 +12,19 @@ public class GracePulse : ISkillEffect
     }
     
     // 우리팀 전체 각자 체력의 20% 획복, 궁극기 코스트 1개씩 증가
-    public void Execute(Monster caster, List<Monster> targets)
+    public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
-        foreach (var target in targets)
+        if (skillData == null || targets == null || targets.Count == 0) yield break;
+        
+        var targetCopy = new List<Monster>(targets);
+        
+        foreach (var target in targetCopy)
         {
             int amount = Mathf.RoundToInt(target.MaxHp * 0.2f);
             target.Heal(amount);
             target.IncreaseUltimateCost();
         }
+        
+        yield return new WaitForSeconds(1f);
     }
 }
