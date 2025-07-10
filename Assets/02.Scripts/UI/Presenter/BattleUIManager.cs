@@ -129,4 +129,9 @@ public class BattleUIManager : MonoBehaviour
     {
         battleSelectView.OffSelectMonster();
     }
+
+    public void BattleEndMessage(bool isWin)
+    {
+        battleInfoView.ShowEndBattleMessage(isWin);
+    }
 }

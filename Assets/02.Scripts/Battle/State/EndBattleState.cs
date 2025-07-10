@@ -11,6 +11,7 @@ public class EndBattleState : BaseBattleState
         // todo 종료 UI 띄우기
         BattleManager.Instance.battleEnded = false;
         BattleManager.Instance.BattleReward();
+        UIManager.Instance.battleUIManager.BattleEndMessage(true);
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 public class BattleInfoView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI battleDialogue;
+    [SerializeField] private TextMeshProUGUI endBattleMessage;
 
     private StringBuilder logBuilder = new StringBuilder();
 
@@ -22,5 +23,19 @@ public class BattleInfoView : MonoBehaviour
     {
         logBuilder.Clear();
         battleDialogue.text = string.Empty;
+    }
+
+    public void ShowEndBattleMessage(bool isWin)
+    {
+        endBattleMessage.gameObject.SetActive(true);
+
+        if (isWin)
+        {
+            endBattleMessage.text = "승리했습니다!";
+        }
+        else
+        {
+            endBattleMessage.text = "패배했습니다...";
+        }
     }
 }

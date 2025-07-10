@@ -49,7 +49,7 @@ public class SelectCaptureTargetState : BaseBattleState
 
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 포섭을 시도하세요!");
 
-        StartEmbraceMiniGame(selectedMonster, 60f);
+        StartEmbraceMiniGame(selectedMonster, 50f);
     }
 
     private void StartEmbraceMiniGame(Monster targetMonster, float successPercent)
@@ -85,11 +85,18 @@ public class SelectCaptureTargetState : BaseBattleState
                 if (rotatePoint.isInSuccessZone)
                 {
                     Debug.Log("포섭 성공!");
-                    //PlayerManager.Instance.player.AddOwnedMonster(targetMonster);
                     BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
                     UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
                     BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-                    BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
+
+                    if (BattleManager.Instance.IsTeamDead(BattleManager.Instance.BattleEnemyTeam))
+                    {
+                        BattleSystem.Instance.ChangeState(new EndBattleState(battleSystem));
+                    }
+                    else
+                    {
+                        BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
+                    }
                 }
                 else
                 {
@@ -114,6 +121,14 @@ public class SelectCaptureTargetState : BaseBattleState
     {
         // todo 선택된(방향키나 마우스 올려놓기) 몬스터가 체력이 0이 아니라면
         // 적 몬스터(잡을수있는)를 강조효과 UI 띄우기
+    }
+
+    public override void Exit()
+    {
+        if (BattleManager.Instance.IsTeamDead(BattleManager.Instance.BattleEnemyTeam))
+        {
+            BattleManager.Instance.EndBattle(true);
+        }
     }
 
     public void OnCancelSelectCaptureTarget()
