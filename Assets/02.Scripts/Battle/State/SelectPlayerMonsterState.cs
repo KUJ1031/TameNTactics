@@ -19,6 +19,7 @@ public class SelectPlayerMonsterState : BaseBattleState
 
     public void OnMonsterSelected(Monster monster)
     {
+        if (monster.CurHp <= 0) return;
         BattleManager.Instance.SelectPlayerMonster(monster);
         if (PlayerManager.Instance.player.battleEntry.Contains(monster))
         {
@@ -55,6 +56,10 @@ public class SelectPlayerMonsterState : BaseBattleState
                         if (!PlayerManager.Instance.player.battleEntry.Contains(clickedMonster))
                         {
                             Debug.Log("적 몬스터는 대상으로 선택할 수 없습니다. 아군 몬스터를 선택하세요.");
+                        }
+                        else if (clickedMonster.CurHp <= 0)
+                        {
+                            Debug.Log("체력이 0인 아군은 선택할 수 없습니다.");
                         }
                         else
                         {
