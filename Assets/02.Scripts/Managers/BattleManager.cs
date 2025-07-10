@@ -1,3 +1,4 @@
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,6 +19,8 @@ public class BattleManager : Singleton<BattleManager>
 
     public Monster selectedPlayerMonster;
     public SkillData selectedSkill;
+    
+    private EnemyAIController.EnemyAction enemyChosenAction;
 
     public bool battleEnded = false;
 
@@ -111,48 +114,42 @@ public class BattleManager : Singleton<BattleManager>
     {
         selectedSkill = skill;
         selectedTargets.Clear();
+        enemyChosenAction = null;
 
-        Debug.Log($"스킬의 타입 : {skill.skillType}");
+        var alivePlayer = BattleEntryTeam.Where(m => m.CurHp > 0).ToList();
+        var aliveEnemy = BattleEnemyTeam.Where(m => m.CurHp > 0).ToList();
 
-        var alivePlayerTeam = BattleEntryTeam.Where(m => m.CurHp > 0).ToList();
-        var aliveEnemyTeam = BattleEnemyTeam.Where(m => m.CurHp > 0).ToList();
-
-        // 고른 스킬의 타겟 유형에 따라 바로 실행
         switch (skill.targetScope)
         {
             case TargetScope.Self:
-                possibleTargets = new List<Monster> { selectedPlayerMonster };
-                selectedTargets = new List<Monster> { selectedPlayerMonster };
-                ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-                EnemyAttackAfterPlayerTurn();
+                possibleTargets = new() { selectedPlayerMonster };
+                selectedTargets = new(possibleTargets);
+                CompareSpeedAndFight();
                 return;
 
             case TargetScope.All:
-                possibleTargets = alivePlayerTeam.Concat(aliveEnemyTeam).ToList();
-                selectedTargets = new List<Monster>(possibleTargets);
-                ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-                EnemyAttackAfterPlayerTurn();
+                possibleTargets = alivePlayer.Concat(aliveEnemy).ToList();
+                selectedTargets = new(possibleTargets);
+                CompareSpeedAndFight();
                 return;
 
             case TargetScope.EnemyTeam:
-                possibleTargets = aliveEnemyTeam;
+                possibleTargets = aliveEnemy;
                 break;
 
             case TargetScope.PlayerTeam:
-                possibleTargets = alivePlayerTeam;
+                possibleTargets = alivePlayer;
                 break;
 
             default:
-                possibleTargets = new List<Monster>();
+                possibleTargets = new();
                 break;
         }
 
-        // targetCount가 0이면 전체 대상으로 설정
         if (skill.targetCount == 0)
         {
-            selectedTargets = new List<Monster>(possibleTargets);
-            ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            EnemyAttackAfterPlayerTurn();
+            selectedTargets = new(possibleTargets);
+            CompareSpeedAndFight();
         }
     }
 
@@ -163,30 +160,65 @@ public class BattleManager : Singleton<BattleManager>
 
         if (selectedTargets.Contains(target))
         {
-            selectedTargets.Remove(target); // 타겟 카운트 2 이상일때 다시 클릭하면 선택 취소
+            selectedTargets.Remove(target);
+            return;
+        }
+        
+        if (selectedTargets.Count < selectedSkill.targetCount)
+        {
+            selectedTargets.Add(target);
+        }
+
+        if (selectedTargets.Count == selectedSkill.targetCount &&
+            selectedTargets.All(t => t.CurHp > 0))
+        {
+            CompareSpeedAndFight();
+        }
+    }
+    
+    // 속도 비교해서 누가 먼저 공격하는지 정함
+    public void CompareSpeedAndFight()
+    {
+        if (enemyChosenAction == null)
+            enemyChosenAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
+
+        bool playerStunned = BattleEntryTeam.All(m => !m.canAct);
+        if (playerStunned)
+        {
+            EnemyAttackAfterPlayerTurn();
             return;
         }
 
-        if (selectedTargets.Count >= selectedSkill.targetCount) return;
+        bool playerFirst = selectedPlayerMonster.CurSpeed >= enemyChosenAction.actor.CurSpeed;
 
-        selectedTargets.Add(target);
-
-        if (selectedTargets.Count == selectedSkill.targetCount)
+        if (playerFirst)
         {
             ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            EnemyAttackAfterPlayerTurn();
+            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
+
+            ExecuteSkill(enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets);
+            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
         }
+        else
+        {
+            ExecuteSkill(enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets);
+            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
+
+            ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
+            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
+        }
+
+        EndTurn();
+        IncreaseUltCostAllMonsters();
+        ClearSelections();
     }
 
     // 사용 할 스킬 종류에 따라 스킬 발동
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
-        Debug.Log("ExecuteSkill");
-        if (caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
+        if (!caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
 
         ISkillEffect effect = null;
-
-        if (!caster.canAct) return;
 
         if (skill.skillType == SkillType.UltimateSkill && caster.Level >= 15)
         {
@@ -218,13 +250,15 @@ public class BattleManager : Singleton<BattleManager>
             return;
         }
 
-        if (BenchMonsters.Count < 2)
+        if (BattleEntry.Count < 5)
         {
-            BenchMonsters.Add(target); // 벤치가 비어있으면 우선으로
+            BattleEntry.Add(target); // 엔트리가 5마리 이하면 엔트리로
+            BattleEnemyTeam.Remove(target);
         }
         else
         {
             OwnedMonsters.Add(target); // 엔트릴 5마리 꽉 찼으면 전체몬스터안으로
+            BattleEnemyTeam.Remove(target);
         }
 
         GameObject enemyObj = GameObject.Find("EnemySpawner");
@@ -334,13 +368,21 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log("EnemyAttackAfterPlayerTurn");
         var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
-        if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
-
         ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
 
         if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
 
         EndTurn();
         IncreaseUltCostAllMonsters();
+        ClearSelections();
+    }
+
+    // 한턴이 지났을때 선택했던 스킬, 타겟 등등 리셋
+    private void ClearSelections()
+    {
+        selectedPlayerMonster = null;
+        selectedSkill = null;
+        selectedTargets.Clear();
+        enemyChosenAction = null;
     }
 }
