@@ -10,7 +10,7 @@ public class CameraZoomTrigger : MonoBehaviour
     private float originalSize;
     private Coroutine zoomCoroutine;
 
-    private void Start()
+    private void OnEnable()
     {
         // ✅ 자동으로 가상 카메라 할당 (없을 경우에만)
         if (virtualCamera == null)

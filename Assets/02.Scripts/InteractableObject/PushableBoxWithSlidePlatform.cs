@@ -43,7 +43,7 @@ public class PushableBoxWithSlidePlatform : MonoBehaviour
 
             if (controller == null) return;
 
-            // controller.isInputBlocked = true; // 플레이어 입력 차단
+            controller.isInputBlocked = true; // 플레이어 입력 차단
 
             Vector2 input = controller.GetMoveInput();
             Vector2 dir = Vector2.zero;
