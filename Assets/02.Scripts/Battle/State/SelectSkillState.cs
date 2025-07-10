@@ -18,7 +18,7 @@ public class SelectSkillState : BaseBattleState
     {
         // todo 방향키 움직이거나 마우스를 스킬위에 올려놓았을때 활성화(강조) 되는 느낌 UI
         // todo 몬스터 공격자세 애니메이션 활성화
-        UIManager.Instance.battleUIManager.SelectMonster();
+        //UIManager.Instance.battleUIManager.SelectMonster();
 
         if (Input.GetMouseButtonDown(0))
         {

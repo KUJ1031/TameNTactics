@@ -12,19 +12,24 @@ public class GroundSmash : ISkillEffect
     }
     
     // 20% 확률로 마비
-    public void Execute(Monster caster, List<Monster> targets)
+    public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
-        if (skillData == null || targets == null || targets.Count == 0) return;
+        if (skillData == null || targets == null || targets.Count == 0) yield break;
         
-        foreach (var target in targets)
+        var targetCopy = new List<Monster>(targets);
+        
+        foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster);
 
             if (Random.value < 0.2f & caster.Level >= 10)
             {
+                yield return new WaitForSeconds(1f);
                 target.ApplyStatus(new Paralysis(2));
             }
         }
+        
+        yield break;
     }
 }

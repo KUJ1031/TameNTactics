@@ -14,6 +14,7 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private EmbraceView embraceView;
 
     public EmbraceView EmbraceView { get { return embraceView; } }
+    public BattleSelectView BattleSelectView { get { return battleSelectView; } }
 
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
@@ -24,11 +25,9 @@ public class BattleUIManager : MonoBehaviour
 
     private Dictionary<Monster, GameObject> monsterBattleInfo = new();
 
-    private Monster selectedMonster;
-
     public void OnAttackButtonClick()
     {
-        battleSelectView.ShowSkillPanel();
+        battleSelectView.HideSelectPanel();
         EventBus.OnAttackModeEnabled?.Invoke();
     }
 
