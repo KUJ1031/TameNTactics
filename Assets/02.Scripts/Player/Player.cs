@@ -149,12 +149,12 @@ public class Player
     }
 
     //Entry에 제거
-    public bool RemoveEntryMonster(Monster monster)
+    public void RemoveEntryMonster(Monster monster)
     {
-        if (!CheckMonster(monster)) return false;
-        if (!entryMonsters.Contains(monster)) return false;
+        if (!CheckMonster(monster)) return;
+        if (!entryMonsters.Contains(monster)) return;
 
-        if (battleEntry.Remove(monster))
+        if (entryMonsters.Remove(monster))
         {
             if (benchEntry.Count > 0)
             {
@@ -167,8 +167,7 @@ public class Player
         {
             benchEntry.Remove(monster);
         }
-
-        return true;
+        return;
     }
 
     // benchEntry -> battleEntry 이동
