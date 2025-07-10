@@ -6,7 +6,7 @@ using Scene = UnityEngine.SceneManagement.Scene;
 public class UIManager : Singleton<UIManager>
 {
     public BattleUIManager battleUIManager;
-     
+    public BattleDialogueManager battleDialogueManager;
 
     private void OnEnable()
     {
@@ -23,6 +23,7 @@ public class UIManager : Singleton<UIManager>
         if (scene.name == "BattleScene")
         {
             battleUIManager = FindObjectOfType<BattleUIManager>();
+            battleDialogueManager = FindObjectOfType<BattleDialogueManager>();
         }
     }
 

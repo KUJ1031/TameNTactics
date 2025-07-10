@@ -9,6 +9,7 @@ public class SelectCaptureTargetState : BaseBattleState
     public override void Enter()
     {
         Debug.Log("포섭하기 상태로 변경");
+        UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
         battleSystem.StartCoroutine(WaitForMonsterSelection());
     }
 
