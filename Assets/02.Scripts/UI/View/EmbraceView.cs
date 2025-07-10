@@ -9,19 +9,25 @@ public class EmbraceView : MonoBehaviour
     [SerializeField] private GameObject failMessage;
     [SerializeField] private TextMeshProUGUI guideText;
 
+    private Coroutine currentCoroutine;
+
     public void ShowGuide(string message)
     {
+        StopCurrentCoroutine();
+
         if (guideText != null)
         {
             guideText.text = message;
             guideText.gameObject.SetActive(true);
         }
 
-        StartCoroutine(HideAfterDelay(2f));
+        currentCoroutine = StartCoroutine(HideAfterDelay(2f));
     }
 
     public void ShowSuccessMessage()
     {
+        StopCurrentCoroutine();
+
         if (successMessage != null)
         {
             successMessage.SetActive(true);
@@ -32,11 +38,13 @@ public class EmbraceView : MonoBehaviour
             failMessage.SetActive(false);
         }
 
-        StartCoroutine(HideAfterDelay(2f));
+        currentCoroutine = StartCoroutine(HideAfterDelay(2f));
     }
 
     public void ShowFailMessage()
     {
+        StopCurrentCoroutine();
+
         if (failMessage != null)
         {
             failMessage.SetActive(true);
@@ -47,11 +55,13 @@ public class EmbraceView : MonoBehaviour
             successMessage.SetActive(false);
         }
 
-        StartCoroutine(HideAfterDelay(2f));
+        currentCoroutine = StartCoroutine(HideAfterDelay(2f));
     }
 
     public void HideMessage()
     {
+        StopCurrentCoroutine();
+
         if (successMessage != null)
         {
             successMessage.SetActive(false);
@@ -61,12 +71,16 @@ public class EmbraceView : MonoBehaviour
         {
             failMessage.SetActive(false);
         }
+
+        if (guideText != null)
+        {
+            guideText.gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator HideAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        //HideMessage();
 
         if (guideText != null)
         {
@@ -82,5 +96,25 @@ public class EmbraceView : MonoBehaviour
         {
             failMessage.SetActive(false);
         }
+
+        currentCoroutine = null;
+    }
+
+    private void StopCurrentCoroutine()
+    {
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
+        }
+
+        if (successMessage != null)
+            successMessage.SetActive(false);
+
+        if (failMessage != null)
+            failMessage.SetActive(false);
+
+        if (guideText != null)
+            guideText.gameObject.SetActive(false);
     }
 }
