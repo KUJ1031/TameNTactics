@@ -33,9 +33,16 @@ public class SelectCaptureTargetState : BaseBattleState
 
                         if (!PlayerManager.Instance.player.ownedMonsters.Contains(clickedMonster))
                         {
-                            selectedMonster = monsterCharacter.monster;
-                            selected = true;
-                            Debug.Log($"선택된 몬스터 : {selectedMonster.monsterName}");
+                            if (clickedMonster.CurHp <= 0)
+                            {
+                                Debug.Log("쓰러진 몬스터는 포획할 수 없습니다.");
+                            }
+                            else
+                            {
+                                selectedMonster = monsterCharacter.monster;
+                                selected = true;
+                                Debug.Log($"선택된 몬스터 : {selectedMonster.monsterName}");
+                            }
                         }
                         else
                         {

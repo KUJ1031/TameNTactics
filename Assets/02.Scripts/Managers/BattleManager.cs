@@ -249,16 +249,9 @@ public class BattleManager : Singleton<BattleManager>
             Debug.Log($"{target.monsterName}는 이미 쓰러져 포획할 수 없습니다.");
             return;
         }
-
-        if (BattleEntry.Count < 5)
-        {
-            BattleEntry.Add(target); // 엔트리가 5마리 이하면 엔트리로
-            //BattleEnemyTeam.Remove(target);
-        }
         else
         {
-            OwnedMonsters.Add(target); // 엔트릴 5마리 꽉 찼으면 전체몬스터안으로
-            //BattleEnemyTeam.Remove(target);
+            OwnedMonsters.Add(target);
         }
 
         GameObject enemyObj = GameObject.Find("EnemySpawner");
@@ -270,6 +263,9 @@ public class BattleManager : Singleton<BattleManager>
         foreach (Transform spawnPoint in enemySpawner)
         {
             MonsterCharacter monsterChar = spawnPoint.GetComponentInChildren<MonsterCharacter>();
+
+            if (monsterChar == null) continue;
+
             if (monsterChar.monster == target && monsterChar.monster.CurHp > 0)
             {
                 BattleEnemyTeam.Remove(target);
