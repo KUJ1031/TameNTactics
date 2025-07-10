@@ -216,6 +216,8 @@ public class BattleManager : Singleton<BattleManager>
     // 사용 할 스킬 종류에 따라 스킬 발동
     public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
+        Debug.Log("스킬사용!");
+        
         if (!caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
 
         ISkillEffect effect = null;

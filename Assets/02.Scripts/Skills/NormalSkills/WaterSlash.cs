@@ -11,7 +11,7 @@ public class WaterSlash : ISkillEffect
         skillData = data;
     }
 
-    // 최종데미지의 20% 만큼 본인 회복
+    // 최종데미지의 10% 만큼 본인 회복
     public void Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) return;
@@ -23,7 +23,7 @@ public class WaterSlash : ISkillEffect
 
             if (caster.Level >= 10)
             {
-                int healAmount = Mathf.RoundToInt(result.damage * 0.2f);
+                int healAmount = Mathf.RoundToInt(result.damage * 0.1f);
                 caster.Heal(healAmount);
             }
         }
