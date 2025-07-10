@@ -16,9 +16,9 @@ public class FieldUIManager : MonoBehaviour
     [SerializeField] private GameObject LeftMenuUI;
     [SerializeField] private GameObject BaseUI;
 
-    [SerializeField] private GameObject swapPopupPrefab;
-    [SerializeField] private GameObject confirmPopupPrefab;
-    [SerializeField] private Transform uiCanvas;
+    //[SerializeField] private GameObject swapPopupPrefab;
+    //[SerializeField] private GameObject confirmPopupPrefab;
+    //[SerializeField] private Transform uiCanvas;
 
     [SerializeField] private GameObject entrySlotPrefab; // 추가될 EntrySlot 프리팹
     [SerializeField] private Transform entrySlotParent; // EntrySlot을 배치할 부모 오브젝트
