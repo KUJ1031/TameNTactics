@@ -55,76 +55,94 @@ public class Player
     }
 
     //Owned에서 제거
-    public bool RemoveOwnedMonster(Monster monster)
+    public void TryRemoveOwnedMonster(Monster monster, Action<bool> onCompleted)
     {
-        if (!CheckMonster(monster)) return false;
-
-        if (!ownedMonsters.Remove(monster))
-            return false;
-
-        // Entry에 있으면 제거하고 Battle/Bench에서도 제거
-        if (entryMonsters.Remove(monster))
-        {
-            battleEntry.Remove(monster);
-            benchEntry.Remove(monster);
+        if (!CheckMonster(monster)) {
+            onCompleted?.Invoke(false);
+            return ;
         }
 
-        return true;
+        //정말 내보낼까요? 팝업띄우고 ok했을때 내보내기
+        string message = "정말 내보내겠습니까?";
+        FieldUIManager.Instance.OpenPopupUI(PopupType.Confirm, message, (Action<bool>)((isOK) =>
+        {
+            if (isOK)
+            {
+                if (ownedMonsters.Remove(monster))
+                {
+                    if (entryMonsters.Remove(monster))
+                    {
+                        battleEntry.Remove(monster);
+                        benchEntry.Remove(monster);
+                    }
+                    onCompleted?.Invoke(true);
+                }
+                else
+                {
+                    Debug.LogWarning("몬스터 제거 실패(소유 목록에 없거나 이미 제거됨)");
+                    onCompleted?.Invoke(false);
+                }
+            }
+            else
+            {
+                onCompleted?.Invoke(false);
+            }
+        }));
+
     }
 
     //Entry에 추가
-    public void TryAddEntryMonster(Monster monster, Action<bool> onCompleted)
+    public void TryAddEntryMonster(Monster newMonster, Action<Monster, Monster> onCompleted)
     {
-        if (!CheckMonster(monster))
+        if (!CheckMonster(newMonster))
         {
-            onCompleted?.Invoke(false);
+            onCompleted?.Invoke(null, null);
             return;
         }
 
-        if (entryMonsters.Contains(monster))
+        if (entryMonsters.Contains(newMonster))
         {
-            onCompleted?.Invoke(false);
+            onCompleted?.Invoke(null, null);
             return;
         }
 
         if (entryMonsters.Count < maxEntryCount)
         {
-            entryMonsters.Add(monster);
+            entryMonsters.Add(newMonster);
 
             if (battleEntry.Count < maxBattleCount)
-                battleEntry.Add(monster);
+                battleEntry.Add(newMonster);
             else
-                benchEntry.Add(monster);
+                benchEntry.Add(newMonster);
 
-            onCompleted?.Invoke(true);
+            onCompleted?.Invoke(null, newMonster); //교체된 몬스터 없음
         }
-        else
+        else //최대 수 보다 많을 땐 교체진행
         {
-            //UI호출 및 대기
-            FieldUIManager.Instance.SwapEntryMonster((swapMonster) =>
+            FieldUIManager.Instance.OpenPopupUI(PopupType.EntrySwap,(Action<Monster>)((oldMonster) =>
             {
-                if (swapMonster == null || !entryMonsters.Contains(swapMonster))
+                if (oldMonster == null || !entryMonsters.Contains(oldMonster))
                 {
-                    onCompleted?.Invoke(false);
+                    onCompleted?.Invoke(null, null);
                     return;
                 }
 
-                entryMonsters.Remove(swapMonster);
-                entryMonsters.Add(monster);
+                entryMonsters.Remove(oldMonster);
+                entryMonsters.Add(newMonster);
 
-                if (battleEntry.Contains(swapMonster))
+                if (battleEntry.Contains(oldMonster))
                 {
-                    battleEntry.Remove(swapMonster);
-                    battleEntry.Add(monster);
+                    battleEntry.Remove(oldMonster);
+                    battleEntry.Add(newMonster);
                 }
                 else
                 {
-                    benchEntry.Remove(swapMonster);
-                    benchEntry.Add(monster);
+                    benchEntry.Remove(oldMonster);
+                    benchEntry.Add(newMonster);
                 }
 
-                onCompleted?.Invoke(true);
-            });
+                onCompleted?.Invoke(oldMonster, newMonster); //교체된 몬스터와 새 몬스터 전달
+            }));
         }
     }
 

@@ -115,4 +115,10 @@ public class OwnedMonsterUIManager : MonoBehaviour
             }
         }
     }
+
+    //선택 슬롯 비우기
+    public void SelectedSlotReset()
+    {
+        selectedSlot = null;
+    }
 }

@@ -22,9 +22,11 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     [SerializeField] private TextMeshProUGUI monsterSkill2Text;
     [SerializeField] private TextMeshProUGUI monsterSkill3Text;
 
+    private OwnedMonsterUIManager ownedUIManager;
     private void Start()
     {
         SetLogoVisibility(true);
+        ownedUIManager = OwnedMonsterUIManager.Instance;
     }
 
     //버튼 세팅
@@ -51,26 +53,38 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     //엔트리에 추가 버튼
     private void OnClickAddEntryButton(Monster monster)
     {
-        PlayerManager.Instance.player.TryAddEntryMonster(monster, _ => { });
-        ToggleAddEntryButton(monster);
-        OwnedMonsterUIManager.Instance.RefreshSlotFor(monster);
+        PlayerManager.Instance.player.TryAddEntryMonster(monster, (swapMonster, newMonster) =>
+        {
+            ownedUIManager.RefreshSlotFor(swapMonster);
+            ownedUIManager.RefreshSlotFor(newMonster);
+            ToggleAddEntryButton(newMonster);
+        });
     }
     //엔트리에 제외 버튼
     private void OnClickRemoveEntryButtonButton(Monster monster)
     {
-
+        PlayerManager.Instance.player.RemoveEntryMonster(monster);
+        ToggleAddEntryButton(monster);
     }
     //방출하기 버튼
     private void OnClickReleaseButton(Monster monster)
     {
-
+        PlayerManager.Instance.player.TryRemoveOwnedMonster(monster, (isOK) =>
+        {
+            if (isOK)
+            {
+                SetLogoVisibility(true);
+                ownedUIManager.SelectedSlotReset();
+                ownedUIManager.RefreshOwnedMonsterUI();
+            }
+        });
     }
     //즐겨찾기 버튼
     private void OnClickFavoriteButton(Monster monster)
     {
         monster.ToggleFavorite();
         ToggleFavoriteMark(monster.IsFavorite);
-        OwnedMonsterUIManager.Instance.RefreshSlotFor(monster);
+        ownedUIManager.RefreshSlotFor(monster);
     }
 
     //즐겨찾기 색 변경

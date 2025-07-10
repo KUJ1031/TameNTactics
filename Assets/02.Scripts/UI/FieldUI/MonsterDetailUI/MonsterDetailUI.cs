@@ -143,7 +143,7 @@ public class MonsterDetailUI : FieldMenuBaseUI
             removeEntryButton.gameObject.SetActive(false);
             addEntryButton.gameObject.SetActive(true);
         }
-        addEntryButton.onClick.AddListener(() => player.TryAddEntryMonster(monster, _ => { }));
+        addEntryButton.onClick.AddListener(() => player.TryAddEntryMonster(monster, (_, _) => { }));
         removeEntryButton.onClick.AddListener(() => player.RemoveEntryMonster(monster));
     }
 
