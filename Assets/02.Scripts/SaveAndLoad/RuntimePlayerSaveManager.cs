@@ -16,8 +16,6 @@ public class RuntimePlayerSaveManager : Singleton<RuntimePlayerSaveManager>
         player.playerLastGameTime = GameTimeFlow.Instance.GetCurrentTimer();
         player.totalPlaytime += Mathf.FloorToInt(GameTimeFlow.Instance.GetCurrentTimer());
         player.playerLastPosition = PlayerManager.Instance.playerController.transform.position;
-        KeyRebinderManager.Instance.SaveCurrentBindingsToPlayer(player);
-        playerData = JsonUtility.FromJson<Player>(JsonUtility.ToJson(player)); // 깊은 복사
     }
 
     public void SaveBattleGameState(Player player)
@@ -30,7 +28,6 @@ public class RuntimePlayerSaveManager : Singleton<RuntimePlayerSaveManager>
     {
         if (playerData != null)
         {
-            PlayerManager.Instance.player = playerData;
             PlayerManager.Instance.playerController.transform.position = playerData.playerLastPosition;
             GameTimeFlow.Instance.SetTimer(playerData.playerLastGameTime);
             GameTimeFlow.Instance.UpdatePlayTimeText(playerData.totalPlaytime);
