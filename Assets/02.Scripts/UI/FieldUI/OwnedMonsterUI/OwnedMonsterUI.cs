@@ -30,7 +30,7 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     }
 
     //버튼 세팅
-    public void SetMonsterDetailUIButtons(Monster monster)
+    public void SetSimpleMonsterInfoUIButtons(Monster monster)
     {
         detailButton.onClick.RemoveAllListeners();
         addEntryButton.onClick.RemoveAllListeners();
@@ -64,6 +64,7 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     private void OnClickRemoveEntryButtonButton(Monster monster)
     {
         PlayerManager.Instance.player.RemoveEntryMonster(monster);
+        ownedUIManager.RefreshSlotFor(monster);
         ToggleAddEntryButton(monster);
     }
     //방출하기 버튼
@@ -95,7 +96,7 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     }
 
     //심플 몬스터 정보 띄우기
-    public void SetSimpleMonsterUI(Monster monster)
+    public void SetSimpleMonsterInfoUI(Monster monster)
     {
         SetLogoVisibility(false);
 

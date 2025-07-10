@@ -99,8 +99,8 @@ public class OwnedMonsterUIManager : MonoBehaviour
 
         //OwnedMonsterUI 세팅
         Monster monster = selectedSlot.GetMonster();
-        ownedMonsterUI.SetSimpleMonsterUI(monster);
-        ownedMonsterUI.SetMonsterDetailUIButtons(monster);
+        ownedMonsterUI.SetSimpleMonsterInfoUI(monster);
+        ownedMonsterUI.SetSimpleMonsterInfoUIButtons(monster);
     }
 
     //슬롯 마크 갱신
