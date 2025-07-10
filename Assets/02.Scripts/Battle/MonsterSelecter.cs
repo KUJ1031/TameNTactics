@@ -20,6 +20,7 @@ public class MonsterSelecter : MonoBehaviour
 
         if (BattleSystem.Instance.CurrentState is SelectTargetState enemyState)
         {
+            UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
             enemyState.OnSelectTargetMonster(monster);
         }
     }
