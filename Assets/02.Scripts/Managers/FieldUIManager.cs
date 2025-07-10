@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public enum PopupType
 {
@@ -80,15 +81,19 @@ public class FieldUIManager : MonoBehaviour
     /// </summary>
     public void RefreshEntrySlots()
     {
-        var entryMonsters = PlayerManager.Instance.player.entryMonsters;
+        var player = PlayerManager.Instance.player;
 
-        // 슬롯 수 조절
-        EnsureSlotCount(entryMonsters.Count);
+        var sorted = player.entryMonsters
+            .OrderByDescending(mon => player.battleEntry.Any(b => b.monsterID == mon.monsterID))  // 배틀 출전 우선
+            .ThenByDescending(mon => mon.IsFavorite)                                               // 즐겨찾기 우선
+            .ThenBy(mon => mon.monsterName)                                                        // 이름 오름차순
+            .ToList();
 
-        // 슬롯에 몬스터 설정
-        for (int i = 0; i < entryMonsters.Count; i++)
+        EnsureSlotCount(sorted.Count);
+
+        for (int i = 0; i < sorted.Count; i++)
         {
-            entrySlots[i].SetMonster(entryMonsters[i]);
+            entrySlots[i].SetMonster(sorted[i]);
         }
     }
 
