@@ -54,12 +54,14 @@ public class MonsterDetailUI : FieldMenuBaseUI
     [SerializeField] private Button removeEntryButton;
 
     private Monster monster;
-    private Player player = PlayerManager.Instance.player;
+    private Player player;
+
 
     //몬스터 디테일 유아이 셋팅
     public void SetMonsterDetailUI(Monster newMonster)
     {
         monster = newMonster;
+        player = PlayerManager.Instance.player;
 
         if (monster == null)
         {
