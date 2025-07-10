@@ -370,15 +370,20 @@ public class BattleManager : Singleton<BattleManager>
     // 플레이어 행동 선택 후 적 죽었는지 판단 후 공격
     public void EnemyAttackAfterPlayerTurn()
     {
+        StartCoroutine(EnemyAttackAfterPlayerTurnCoroutine());
+    }
+
+    private IEnumerator EnemyAttackAfterPlayerTurnCoroutine()
+    {
         Debug.Log("EnemyAttackAfterPlayerTurn");
         var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
-        StartCoroutine(ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets));
+        yield return StartCoroutine(ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets));
 
-        if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
+        if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); yield break; }
 
         EndTurn();
-        IncreaseUltCostAllMonsters();
+        yield return StartCoroutine(IncreaseUltCostAllMonsters());
         ClearSelections();
     }
 
