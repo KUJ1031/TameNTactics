@@ -1,12 +1,5 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
-
-public enum PopupType
-{
-    EntrySwap,  //엔트리 교체
-    Confirm,    //예/아니오
-    Warning     //예
-}
 
 public class FieldUIManager : MonoBehaviour
 {
@@ -17,8 +10,13 @@ public class FieldUIManager : MonoBehaviour
     [SerializeField] private GameObject BaseUI;
 
     [SerializeField] private GameObject swapPopupPrefab;
-    [SerializeField] private GameObject confirmPopupPrefab;
     [SerializeField] private Transform uiCanvas;
+
+    [SerializeField] private GameObject entrySlotPrefab; // 추가될 EntrySlot 프리팹
+    [SerializeField] private Transform entrySlotParent; // EntrySlot을 배치할 부모 오브젝트
+
+    private List<EntrySlot> entrySlots = new(); // EntrySlot 리스트
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -46,44 +44,50 @@ public class FieldUIManager : MonoBehaviour
         }
     }
 
-    public void OpenPopupUI(PopupType type, params object[] args)
-    {
-        switch (type)
-        {
-            case PopupType.EntrySwap:
-                if (args.Length >= 1 && args[0] is Action<Monster> onSwapped)
-                {
-                    SwapEntryMonster(onSwapped);
-                }
-                else { Debug.LogWarning("EntrySwap Popup에 필요한 매개변수가 부족합니다."); }
-                break;
-            case PopupType.Confirm:
-                if (args.Length >= 2 && args[0] is string message && args[1] is Action<bool> onConfirm)
-                {
-                    Confirm(message, onConfirm);
-                }
-                else { Debug.LogWarning("Confirm Popup에 필요한 매개변수가 부족합니다."); }
-                break;
-
-            default:
-                Debug.LogWarning($"지원하지 않는 PopupType: {type}");
-                break;
-        }
-    }
-
-    //엔트리스왑 팝업
-    private void SwapEntryMonster(Action<Monster> onSwapped)
+    //팝업만들어 띄우기
+    public void SwapEntryMonster(System.Action<Monster> onSwapped)
     {
         GameObject go = Instantiate(swapPopupPrefab, uiCanvas);
         var popup = go.GetComponent<PlayerEntrySwapPopup>();
         popup.Open(onSwapped);
     }
 
-    //컨펌 팝업
-    private void Confirm(string massage, Action<bool> isOK)
+    /// <summary>
+    /// Entry 슬롯을 갱신합니다.
+    /// </summary>
+    public void RefreshEntrySlots()
     {
-        GameObject go = Instantiate(confirmPopupPrefab, uiCanvas);
-        var popup = go.GetComponent<ConfirmPopup>();
-        popup.Open(massage, isOK);
+        var entryMonsters = PlayerManager.Instance.player.entryMonsters;
+
+        // 슬롯 수 조절
+        EnsureSlotCount(entryMonsters.Count);
+
+        // 슬롯에 몬스터 설정
+        for (int i = 0; i < entryMonsters.Count; i++)
+        {
+            entrySlots[i].SetMonster(entryMonsters[i]);
+        }
+    }
+
+    /// <summary>
+    /// entryMonsters의 개수에 맞춰 EntrySlot을 생성하거나 제거합니다.
+    /// </summary>
+    private void EnsureSlotCount(int count)
+    {
+        // 슬롯 부족하면 생성
+        while (entrySlots.Count < count)
+        {
+            GameObject go = Instantiate(entrySlotPrefab, entrySlotParent);
+            var slot = go.GetComponent<EntrySlot>();
+            entrySlots.Add(slot);
+        }
+
+        // 슬롯 많으면 제거
+        while (entrySlots.Count > count)
+        {
+            var last = entrySlots[entrySlots.Count - 1];
+            entrySlots.RemoveAt(entrySlots.Count - 1);
+            Destroy(last.gameObject);
+        }
     }
 }
