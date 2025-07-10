@@ -13,11 +13,13 @@ public class SteelSlash : ISkillEffect
     }
     
     // 본인 스피드의 10% 만큼 스피드값 증가
-    public void Execute(Monster caster, List<Monster> targets)
+    public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
-        if (skillData == null || targets == null || targets.Count == 0) return;
+        if (skillData == null || targets == null || targets.Count == 0) yield break;
         
-        foreach (var target in targets)
+        var targetCopy = new List<Monster>(targets);
+        
+        foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster);
@@ -25,8 +27,11 @@ public class SteelSlash : ISkillEffect
         
         if (caster.Level >= 10)
         {
+            yield return new WaitForSeconds(1f);
             int speedDelta = Mathf.RoundToInt(caster.Speed * 0.1f);
             caster.SpeedUpEffect(speedDelta);
         }
+        
+        yield break;
     }
 }

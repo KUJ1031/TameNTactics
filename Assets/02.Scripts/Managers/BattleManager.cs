@@ -124,13 +124,13 @@ public class BattleManager : Singleton<BattleManager>
             case TargetScope.Self:
                 possibleTargets = new() { selectedPlayerMonster };
                 selectedTargets = new(possibleTargets);
-                CompareSpeedAndFight();
+                StartCoroutine(CompareSpeedAndFight());
                 return;
 
             case TargetScope.All:
                 possibleTargets = alivePlayer.Concat(aliveEnemy).ToList();
                 selectedTargets = new(possibleTargets);
-                CompareSpeedAndFight();
+                StartCoroutine(CompareSpeedAndFight());
                 return;
 
             case TargetScope.EnemyTeam:
@@ -149,7 +149,7 @@ public class BattleManager : Singleton<BattleManager>
         if (skill.targetCount == 0)
         {
             selectedTargets = new(possibleTargets);
-            CompareSpeedAndFight();
+            StartCoroutine(CompareSpeedAndFight());
         }
     }
 
@@ -172,12 +172,12 @@ public class BattleManager : Singleton<BattleManager>
         if (selectedTargets.Count == selectedSkill.targetCount &&
             selectedTargets.All(t => t.CurHp > 0))
         {
-            CompareSpeedAndFight();
+            StartCoroutine(CompareSpeedAndFight());
         }
     }
 
     // 속도 비교해서 누가 먼저 공격하는지 정함
-    public void CompareSpeedAndFight()
+    private IEnumerator CompareSpeedAndFight()
     {
         if (enemyChosenAction == null)
             enemyChosenAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
@@ -186,39 +186,41 @@ public class BattleManager : Singleton<BattleManager>
         if (playerStunned)
         {
             EnemyAttackAfterPlayerTurn();
-            return;
+            yield break;
         }
 
         bool playerFirst = selectedPlayerMonster.CurSpeed >= enemyChosenAction.actor.CurSpeed;
 
         if (playerFirst)
         {
-            ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
+            yield return StartCoroutine(ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets));
+            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); yield break; }
 
-            ExecuteSkill(enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets);
-            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
+            yield return StartCoroutine(ExecuteSkill(
+                enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets));
+            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); yield break; }
         }
         else
         {
-            ExecuteSkill(enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets);
-            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
+            yield return StartCoroutine(ExecuteSkill(
+                enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets));
+            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); yield break; }
 
-            ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets);
-            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); return; }
+            yield return StartCoroutine(ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets));
+            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); yield break; }
         }
 
         EndTurn();
-        IncreaseUltCostAllMonsters();
+        yield return StartCoroutine(IncreaseUltCostAllMonsters());
         ClearSelections();
     }
-
+    
     // 사용 할 스킬 종류에 따라 스킬 발동
-    public void ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
+    private IEnumerator ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
         Debug.Log("스킬사용!");
         
-        if (!caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) return;
+        if (!caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
 
         ISkillEffect effect = null;
 
@@ -232,15 +234,17 @@ public class BattleManager : Singleton<BattleManager>
             effect = NormalSkillFactory.GetNormalSkill(skill);
         }
 
-        if (effect == null) return;
+        if (effect == null) yield break;
 
-        effect.Execute(caster, targets);
+        yield return StartCoroutine(effect.Execute(caster, targets));
 
         IncreaseUltCost(caster);
         foreach (var t in targets)
         {
             IncreaseUltCost(t);
         }
+        
+        yield return new WaitForSeconds(1f);
     }
 
     // 선택한 몬스터 잡기
@@ -298,10 +302,12 @@ public class BattleManager : Singleton<BattleManager>
     }
 
     // 모든 몬스터 궁극기 코스트 1개씩 증가
-    public void IncreaseUltCostAllMonsters()
+    private IEnumerator IncreaseUltCostAllMonsters()
     {
         IncreaseUltimateCostTeam(BattleEntryTeam);
         IncreaseUltimateCostTeam(BattleEnemyTeam);
+        
+        yield return new WaitForSeconds(0.5f);
     }
 
     // 팀이 전체 죽었는지 체크
@@ -367,7 +373,7 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log("EnemyAttackAfterPlayerTurn");
         var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
-        ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets);
+        StartCoroutine(ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets));
 
         if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); return; }
 

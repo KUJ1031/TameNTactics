@@ -1,6 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 
 public interface ISkillEffect
 {
-    void Execute(Monster caster, List<Monster> targets);
+    IEnumerator Execute(Monster caster, List<Monster> targets);
 }
