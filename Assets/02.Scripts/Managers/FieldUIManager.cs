@@ -16,9 +16,9 @@ public class FieldUIManager : MonoBehaviour
     [SerializeField] private GameObject LeftMenuUI;
     [SerializeField] private GameObject BaseUI;
 
-    [SerializeField] private GameObject swapPopupPrefab;
-    [SerializeField] private GameObject confirmPopupPrefab;
-    [SerializeField] private Transform uiCanvas;
+    //[SerializeField] private GameObject swapPopupPrefab;
+    //[SerializeField] private GameObject confirmPopupPrefab;
+    //[SerializeField] private Transform uiCanvas;
 
     [SerializeField] private GameObject entrySlotPrefab; // 추가될 EntrySlot 프리팹
     [SerializeField] private Transform entrySlotParent; // EntrySlot을 배치할 부모 오브젝트
@@ -57,46 +57,22 @@ public class FieldUIManager : MonoBehaviour
         }
     }
 
-    //팝업열기
-    public void OpenPopupUI(PopupType type, params object[] args)
+    //Confirm 팝업
+    public void OpenConfirmPopup(PopupType type, string message, Action<bool> onConfirmed)
     {
-        switch (type)
+        PopupUIManager.Instance.ShowPanel<ConfirmPopup>("ConfirmPopup", popup =>
         {
-            case PopupType.EntrySwap:
-                if (args.Length >= 1 && args[0] is Action<Monster> onSwapped)
-                {
-                    SwapEntryMonster(onSwapped);
-                }
-                else { Debug.LogWarning("EntrySwap Popup에 필요한 매개변수가 부족합니다."); }
-                break;
-            case PopupType.Confirm:
-                if (args.Length >= 2 && args[0] is string message && args[1] is Action<bool> onConfirm)
-                {
-                    Confirm(message, onConfirm);
-                }
-                else { Debug.LogWarning("Confirm Popup에 필요한 매개변수가 부족합니다."); }
-                break;
-
-            default:
-                Debug.LogWarning($"지원하지 않는 PopupType: {type}");
-                break;
-        }
+            popup.Open(type,message, onConfirmed);
+        });
     }
 
-    //엔트리스왑 팝업
-    private void SwapEntryMonster(Action<Monster> onSwapped)
+    //EntrySwap 팝업
+    public void OpenEntrySwapPopup(Action<Monster> onSwapped)
     {
-        GameObject go = Instantiate(swapPopupPrefab, uiCanvas);
-        var popup = go.GetComponent<PlayerEntrySwapPopup>();
-        popup.Open(onSwapped);
-    }
-
-    //컨펌 팝업
-    private void Confirm(string massage, Action<bool> isOK)
-    {
-        GameObject go = Instantiate(confirmPopupPrefab, uiCanvas);
-        var popup = go.GetComponent<ConfirmPopup>();
-        popup.Open(massage, isOK);
+        PopupUIManager.Instance.ShowPanel<PlayerEntrySwapPopup>("PlayerEntrySwapPopup", popup =>
+        {
+            popup.Open(onSwapped);
+        });
     }
 
     /// <summary>

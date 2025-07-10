@@ -59,14 +59,15 @@ public class Player
     //Owned에서 제거
     public void TryRemoveOwnedMonster(Monster monster, Action<bool> onCompleted)
     {
-        if (!CheckMonster(monster)) {
+        if (!CheckMonster(monster))
+        {
             onCompleted?.Invoke(false);
-            return ;
+            return;
         }
 
         //정말 내보낼까요? 팝업띄우고 ok했을때 내보내기
         string message = "정말 내보내겠습니까?";
-        FieldUIManager.Instance.OpenPopupUI(PopupType.Confirm, message, (Action<bool>)((isOK) =>
+        FieldUIManager.Instance.OpenConfirmPopup(PopupType.Confirm, message, (isOK) =>
         {
             if (isOK)
             {
@@ -89,7 +90,7 @@ public class Player
             {
                 onCompleted?.Invoke(false);
             }
-        }));
+        });
 
     }
 
@@ -121,7 +122,7 @@ public class Player
         }
         else //최대 수 보다 많을 땐 교체진행
         {
-            FieldUIManager.Instance.OpenPopupUI(PopupType.EntrySwap,(Action<Monster>)((oldMonster) =>
+            FieldUIManager.Instance.OpenEntrySwapPopup((oldMonster) =>
             {
                 if (oldMonster == null || !entryMonsters.Contains(oldMonster))
                 {
@@ -144,17 +145,23 @@ public class Player
                 }
 
                 onCompleted?.Invoke(oldMonster, newMonster); //교체된 몬스터와 새 몬스터 전달
-            }));
+            });
         }
     }
 
     //Entry에 제거
-    public bool RemoveEntryMonster(Monster monster)
+    public void RemoveEntryMonster(Monster monster)
     {
-        if (!CheckMonster(monster)) return false;
-        if (!entryMonsters.Contains(monster)) return false;
+        if (!CheckMonster(monster)) return;
+        if (!entryMonsters.Contains(monster)) return;
+        if (entryMonsters.Count == 1)
+        {
+            string message = "엔트리에는 최소 한마리의 몬스터가 존재해야 합니다.";
+            FieldUIManager.Instance.OpenConfirmPopup(PopupType.Warning, message, (_) => { return; });
+            return;
+        }
 
-        if (battleEntry.Remove(monster))
+        if (entryMonsters.Remove(monster))
         {
             if (benchEntry.Count > 0)
             {
@@ -167,8 +174,7 @@ public class Player
         {
             benchEntry.Remove(monster);
         }
-
-        return true;
+        return;
     }
 
     // benchEntry -> battleEntry 이동

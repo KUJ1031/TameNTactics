@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 3286394610162538155}
   - component: {fileID: 3993556727556599665}
   m_Layer: 0
-  m_Name: PlayerEntryPopup
+  m_Name: PlayerEntrySwapPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
