@@ -87,7 +87,6 @@ public class SelectCaptureTargetState : BaseBattleState
                     Debug.Log("포섭 성공!");
                     BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
                     UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
-                    BattleManager.Instance.EnemyAttackAfterPlayerTurn();
 
                     if (BattleManager.Instance.IsTeamDead(BattleManager.Instance.BattleEnemyTeam))
                     {
@@ -95,6 +94,7 @@ public class SelectCaptureTargetState : BaseBattleState
                     }
                     else
                     {
+                        BattleManager.Instance.EnemyAttackAfterPlayerTurn();
                         BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
                     }
                 }
@@ -121,14 +121,6 @@ public class SelectCaptureTargetState : BaseBattleState
     {
         // todo 선택된(방향키나 마우스 올려놓기) 몬스터가 체력이 0이 아니라면
         // 적 몬스터(잡을수있는)를 강조효과 UI 띄우기
-    }
-
-    public override void Exit()
-    {
-        if (BattleManager.Instance.IsTeamDead(BattleManager.Instance.BattleEnemyTeam))
-        {
-            BattleManager.Instance.EndBattle(true);
-        }
     }
 
     public void OnCancelSelectCaptureTarget()

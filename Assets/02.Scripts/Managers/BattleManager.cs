@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,7 +19,7 @@ public class BattleManager : Singleton<BattleManager>
 
     public Monster selectedPlayerMonster;
     public SkillData selectedSkill;
-    
+
     private EnemyAIController.EnemyAction enemyChosenAction;
 
     public bool battleEnded = false;
@@ -163,7 +163,7 @@ public class BattleManager : Singleton<BattleManager>
             selectedTargets.Remove(target);
             return;
         }
-        
+
         if (selectedTargets.Count < selectedSkill.targetCount)
         {
             selectedTargets.Add(target);
@@ -175,7 +175,7 @@ public class BattleManager : Singleton<BattleManager>
             CompareSpeedAndFight();
         }
     }
-    
+
     // 속도 비교해서 누가 먼저 공격하는지 정함
     public void CompareSpeedAndFight()
     {
@@ -253,12 +253,12 @@ public class BattleManager : Singleton<BattleManager>
         if (BattleEntry.Count < 5)
         {
             BattleEntry.Add(target); // 엔트리가 5마리 이하면 엔트리로
-            BattleEnemyTeam.Remove(target);
+            //BattleEnemyTeam.Remove(target);
         }
         else
         {
             OwnedMonsters.Add(target); // 엔트릴 5마리 꽉 찼으면 전체몬스터안으로
-            BattleEnemyTeam.Remove(target);
+            //BattleEnemyTeam.Remove(target);
         }
 
         GameObject enemyObj = GameObject.Find("EnemySpawner");
@@ -272,6 +272,7 @@ public class BattleManager : Singleton<BattleManager>
             MonsterCharacter monsterChar = spawnPoint.GetComponentInChildren<MonsterCharacter>();
             if (monsterChar.monster == target && monsterChar.monster.CurHp > 0)
             {
+                BattleEnemyTeam.Remove(target);
                 Destroy(monsterChar.gameObject);
                 break;
             }
@@ -308,7 +309,7 @@ public class BattleManager : Singleton<BattleManager>
     // 팀이 전체 죽었는지 체크
     public bool IsTeamDead(List<Monster> team)
     {
-        return team.All(m => m.CurHp <= 0);
+        return team.All(m => m.CurHp <= 0) || team.Count <= 0;
     }
 
     // 배틀이 끝나고 true 플레이팀 승리, false 적팀 승리
