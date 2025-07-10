@@ -45,5 +45,7 @@ public class LeftMenuUI : MonoBehaviour
     private void OnClickCloseMenuButton()
     {
         FieldUIManager.Instance.CloseAllUI();
+        // EntryUI 리셋
+        FieldUIManager.Instance.RefreshEntrySlots();
     }
 }

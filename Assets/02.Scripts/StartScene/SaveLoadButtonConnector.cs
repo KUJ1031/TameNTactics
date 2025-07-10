@@ -6,12 +6,10 @@ using UnityEngine.UI;
 public class SaveLoadButtonConnector : MonoBehaviour
 {
     public Button saveButton;
-    public Button loadButton;
 
     private void Start()
     {
         // 버튼이 존재하는 시점에서 연결
         saveButton.onClick.AddListener(PlayerSaveManager.Instance.OnSaveButtonPressed);
-        loadButton.onClick.AddListener(PlayerSaveManager.Instance.OnLoadButtonPressed);
     }
 }
