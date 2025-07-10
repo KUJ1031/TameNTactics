@@ -15,24 +15,23 @@ public class ConfirmPopup : MonoBehaviour
         noButton.onClick.AddListener(OnClickCancel);
     }
 
-    public void Open(string message, System.Action<bool> callback)
+    public void Open(PopupType type, string message, System.Action<bool> callback)
     {
+        noButton.gameObject.SetActive(type == PopupType.Confirm); // 확인/경고에 따라 표시
         popupText.text = message;
         onResult = callback;
         gameObject.SetActive(true);
     }
 
-    //ok버튼
     private void OnClickOK()
     {
         onResult?.Invoke(true);
-        Destroy(gameObject);
+        PopupUIManager.Instance.ClosePanel(gameObject);
     }
-    //no버튼
+
     private void OnClickCancel()
     {
         onResult?.Invoke(false);
-        Destroy(gameObject);
+        PopupUIManager.Instance.ClosePanel(gameObject);
     }
 }
-

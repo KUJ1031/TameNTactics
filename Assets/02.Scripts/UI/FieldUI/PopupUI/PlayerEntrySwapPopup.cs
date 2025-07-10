@@ -62,13 +62,13 @@ public class PlayerEntrySwapPopup : MonoBehaviour
     private void OnClickOK()
     {
         onSwapped?.Invoke(selectedMonster);
-        Destroy(gameObject);
+        PopupUIManager.Instance.ClosePanel(gameObject);
     }
     //닫기버튼
     private void OnClickCancel()
     {
         onSwapped?.Invoke(null);
-        Destroy(gameObject);
+        PopupUIManager.Instance.ClosePanel(gameObject);
     }
 
     //확인버튼 활성화
