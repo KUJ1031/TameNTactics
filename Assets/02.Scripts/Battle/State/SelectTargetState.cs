@@ -28,6 +28,7 @@ public class SelectTargetState : BaseBattleState
             Debug.Log("올바른 타겟이 아닙니다.");
             return;
         }
+        UIManager.Instance.battleUIManager.OffSelectMonsterUI();
         BattleManager.Instance.SelectTargetMonster(monster);
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
     }
@@ -40,7 +41,6 @@ public class SelectTargetState : BaseBattleState
     public override void Exit()
     {
         // todo 몬스터 강조 효과(빛나기)UI 숨기기
-        UIManager.Instance.battleUIManager.OffSelectMonsterUI();
         // todo 스킬 목록 UI 숨기기
     }
     

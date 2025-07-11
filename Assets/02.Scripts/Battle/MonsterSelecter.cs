@@ -7,7 +7,6 @@ public class MonsterSelecter : MonoBehaviour
     private Monster monster;
     public static bool isClicked = false;
     public static float lockTime = 3f;
-    public static float playerSelectTime = 0.5f;
 
     public void Initialize(Monster monster)
     {
@@ -23,14 +22,14 @@ public class MonsterSelecter : MonoBehaviour
         if (BattleSystem.Instance.CurrentState is SelectPlayerMonsterState state)
         {
             state.OnMonsterSelected(monster);
+            isClicked = false;
         }
 
         if (BattleSystem.Instance.CurrentState is SelectTargetState enemyState)
         {
             enemyState.OnSelectTargetMonster(monster);
+            StartCoroutine(UnLockMouseClick());
         }
-        
-        StartCoroutine(UnLockMouseClick());
     }
 
     private IEnumerator UnLockMouseClick()
