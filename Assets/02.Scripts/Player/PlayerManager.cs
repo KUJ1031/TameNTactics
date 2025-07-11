@@ -46,7 +46,7 @@ public class PlayerManager : MonoBehaviour
         {
             // 1. 저장된 데이터가 있는지 시도해서 불러옴
             SpawnPlayerCharacter(player);
-            if (RuntimePlayerSaveManager.Instance.playerData != null)
+            if (RuntimePlayerSaveManager.Instance.HasSavedData())
             {
                 RuntimePlayerSaveManager.Instance.RestoreGameState();
             }
