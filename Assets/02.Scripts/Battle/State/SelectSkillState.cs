@@ -11,6 +11,7 @@ public class SelectSkillState : BaseBattleState
         Debug.Log("스킬 선택 상태로 진입했습니다. 스킬을 선택하세요.");
 
         MonsterData monsterCharacter = BattleManager.Instance.selectedPlayerMonster.monsterData;
+        UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
         UIManager.Instance.battleUIManager.ShowMonsterSkills(monsterCharacter);
     }
 
@@ -27,10 +28,19 @@ public class SelectSkillState : BaseBattleState
 
             if (hit.collider != null)
             {
-                if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter) &&
-                    PlayerManager.Instance.player.ownedMonsters.Contains(monsterCharacter.monster))
+                if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
                 {
-                    UIManager.Instance.battleUIManager.ShowMonsterSkills(monsterCharacter.monster.monsterData);
+                    Monster clickedMonster = monsterCharacter.monster;
+
+                    if (PlayerManager.Instance.player.battleEntry.Contains(clickedMonster))
+                    {
+                        BattleManager.Instance.selectedPlayerMonster = clickedMonster;
+
+                        UIManager.Instance.battleUIManager.ShowMonsterSkills(clickedMonster.monsterData);
+                        UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
+
+                        Debug.Log($"몬스터 변경됨: {clickedMonster.monsterData.monsterName}");
+                    }
                 }
             }
         }

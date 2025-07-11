@@ -213,13 +213,15 @@ public class BattleManager : Singleton<BattleManager>
         EndTurn();
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
         ClearSelections();
+
+        BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
-    
+
     // 사용 할 스킬 종류에 따라 스킬 발동
     private IEnumerator ExecuteSkill(Monster caster, SkillData skill, List<Monster> targets)
     {
         Debug.Log("스킬사용!");
-        
+
         if (!caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
 
         ISkillEffect effect = null;
@@ -243,13 +245,17 @@ public class BattleManager : Singleton<BattleManager>
         {
             IncreaseUltCost(t);
         }
-        
+
         yield return new WaitForSeconds(1f);
     }
 
     // 선택한 몬스터 잡기
     public void CaptureSelectedEnemy(Monster target)
     {
+        foreach (var monster in BattleEntryTeam)
+        {
+            if (monster == target) return;
+        }
         if (target.CurHp <= 0)
         {
             Debug.Log($"{target.monsterName}는 이미 쓰러져 포획할 수 없습니다.");
@@ -274,6 +280,7 @@ public class BattleManager : Singleton<BattleManager>
 
             if (monsterChar.monster == target && monsterChar.monster.CurHp > 0)
             {
+                UIManager.Instance.battleUIManager.RemoveGauge(monsterChar.monster);
                 BattleEnemyTeam.Remove(target);
                 Destroy(monsterChar.gameObject);
                 break;
@@ -306,7 +313,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         IncreaseUltimateCostTeam(BattleEntryTeam);
         IncreaseUltimateCostTeam(BattleEnemyTeam);
-        
+
         yield return new WaitForSeconds(0.5f);
     }
 
@@ -361,7 +368,7 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
 
-        float chance = 0.3f;
+        float chance = 0.8f;
         bool success = Random.value < chance;
         Debug.Log(success ? "도망 성공!" : "도망 실패!");
         return success;
