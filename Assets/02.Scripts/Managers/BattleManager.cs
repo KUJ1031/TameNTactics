@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager>
@@ -231,9 +232,9 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         EndTurn();
-        yield return StartCoroutine(IncreaseUltCostAllMonsters());
         ClearSelections();
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+        yield return StartCoroutine(IncreaseUltCostAllMonsters());
     }
 
     // 사용 할 스킬 종류에 따라 스킬 발동
@@ -259,6 +260,7 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return StartCoroutine(effect.Execute(caster, targets));
 
+        CheckDeadMonster();
         IncreaseUltCost(caster);
         foreach (var t in targets)
         {
@@ -442,5 +444,11 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         return characters;
+    }
+
+    public void CheckDeadMonster()
+    {
+        BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
+        BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
     }
 }
