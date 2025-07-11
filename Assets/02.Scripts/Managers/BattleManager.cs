@@ -197,7 +197,7 @@ public class BattleManager : Singleton<BattleManager>
             if (IsTeamDead(BattleEnemyTeam))
             {
                 EndBattle(true);
-                BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
                 yield break;
             }
 
@@ -206,7 +206,7 @@ public class BattleManager : Singleton<BattleManager>
             if (IsTeamDead(BattleEntryTeam))
             {
                 EndBattle(false);
-                BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
                 yield break;
             }
         }
@@ -217,7 +217,7 @@ public class BattleManager : Singleton<BattleManager>
             if (IsTeamDead(BattleEntryTeam))
             {
                 EndBattle(false);
-                BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
                 yield break;
             }
 
@@ -225,7 +225,7 @@ public class BattleManager : Singleton<BattleManager>
             if (IsTeamDead(BattleEnemyTeam))
             {
                 EndBattle(true);
-                BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
                 yield break;
             }
         }
@@ -409,7 +409,7 @@ public class BattleManager : Singleton<BattleManager>
         if (IsTeamDead(BattleEntryTeam))
         {
             EndBattle(false);
-            BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+            BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
             yield break;
         }
 

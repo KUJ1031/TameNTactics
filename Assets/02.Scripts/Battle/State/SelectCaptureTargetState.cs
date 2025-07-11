@@ -96,7 +96,7 @@ public class SelectCaptureTargetState : BaseBattleState
                     BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
                     UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
 
-                    if (BattleManager.Instance.IsTeamDead(BattleManager.Instance.BattleEnemyTeam))
+                    if (BattleManager.Instance.BattleEnemyTeam.Count <= 0)
                     {
                         BattleSystem.Instance.ChangeState(new EndBattleState(battleSystem));
                     }
