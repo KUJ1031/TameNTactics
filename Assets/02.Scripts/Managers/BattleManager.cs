@@ -82,6 +82,8 @@ public class BattleManager : Singleton<BattleManager>
             Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
+
+        ClearSelections();
     }
 
     // 턴 끝날 때 실행
@@ -112,6 +114,12 @@ public class BattleManager : Singleton<BattleManager>
     // 스킬 고르기
     public void SelectSkill(SkillData skill)
     {
+        if (skill.skillType == SkillType.UltimateSkill && selectedPlayerMonster.Level < 15)
+        {
+            Debug.Log($"레벨이 낮아 궁극기를 사용할 수 없습니다.");
+            return;
+        }
+        
         selectedSkill = skill;
         selectedTargets.Clear();
         enemyChosenAction = null;
@@ -240,7 +248,7 @@ public class BattleManager : Singleton<BattleManager>
 
         ISkillEffect effect = null;
 
-        if (skill.skillType == SkillType.UltimateSkill && caster.Level >= 15)
+        if (skill.skillType == SkillType.UltimateSkill)
         {
             effect = UltimateSkillFactory.GetUltimateSkill(skill);
             caster.InitializeUltimateCost();
