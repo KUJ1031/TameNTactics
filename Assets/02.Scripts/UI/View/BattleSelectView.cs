@@ -61,11 +61,6 @@ public class BattleSelectView : MonoBehaviour
         return gauge;
     }
 
-    public void RemoveGauge(MonsterCharacter monsterCharacter)
-    {
-
-    }
-
     public void SetHpGauge(GameObject gauge, float hpRatio)
     {
         Image hpBar = gauge.transform.GetChild(0).GetComponent<Image>();
