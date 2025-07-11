@@ -151,6 +151,7 @@ public class MonsterDetailUI : FieldMenuBaseUI
 
     private void OnClickBackButton()
     {
+        OwnedMonsterUIManager.Instance.RefreshOwnedMonsterUI();
         FieldUIManager.Instance.OpenUI<OwnedMonsterUI>();
     }
 }
