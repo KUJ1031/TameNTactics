@@ -10,6 +10,7 @@ public class SelectCaptureTargetState : BaseBattleState
     {
         Debug.Log("포섭하기 상태로 변경");
         UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+        UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("포섭하고 싶은 몬스터를 선택하세요.");
         battleSystem.StartCoroutine(WaitForMonsterSelection());
     }
 
@@ -54,7 +55,7 @@ public class SelectCaptureTargetState : BaseBattleState
             }
             yield return null;
         }
-
+        UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 포섭을 시도하세요!");
 
         StartEmbraceMiniGame(selectedMonster, 50f);

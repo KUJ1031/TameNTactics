@@ -19,10 +19,10 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
     [SerializeField] private DamagePopup damagePopupPrefab;
-    
+
     [Header("포섭하기 미니게임")]
     [SerializeField] private GameObject miniGamePrefab;
-    
+
     public GameObject MiniGamePrefab { get { return miniGamePrefab; } }
 
     private List<MonsterCharacter> allMonsterCharacters = new();
@@ -93,7 +93,7 @@ public class BattleUIManager : MonoBehaviour
         foreach (var mon in allMonsterCharacters)
         {
             mon.monster.DamagePopup += OnMonsterDamaged;
-            
+
             Vector3 screenPos = Camera.main.WorldToScreenPoint(mon.transform.position);
             GameObject gauge = battleSelectView.InitiateGauge(screenPos);
 
@@ -160,18 +160,6 @@ public class BattleUIManager : MonoBehaviour
         return null;
     }
 
-    // 배틀 중 전투 메세지를 받아올 메서드
-    public void GetBattleDialogue(string message)
-    {
-        battleInfoView.BattleDialogue(message);
-    }
-
-    // 배틀 메세지 초기화
-    public void ClearBattleDialogue()
-    {
-        battleInfoView.ClearBattleDialogue();
-    }
-
     public void OffSelectMonsterUI()
     {
         battleSelectView.OffSelectMonster();
@@ -186,9 +174,9 @@ public class BattleUIManager : MonoBehaviour
     {
         MonsterCharacter mc = FindMonsterCharacter(monster);
         if (mc == null) return;
-        
+
         Vector3 spawnPos = mc.transform.position + Vector3.up * 1.5f;
-        
+
         DamagePopup popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
         popup.SetUp(damage);
     }
