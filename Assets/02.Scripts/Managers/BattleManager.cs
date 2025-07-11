@@ -172,7 +172,6 @@ public class BattleManager : Singleton<BattleManager>
         if (selectedTargets.Count == selectedSkill.targetCount &&
             selectedTargets.All(t => t.CurHp > 0))
         {
-            MonsterSelecter.isClicked = true;
             StartCoroutine(CompareSpeedAndFight());
         }
     }
@@ -230,7 +229,6 @@ public class BattleManager : Singleton<BattleManager>
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
         EndTurn();
         ClearSelections();
-        MonsterSelecter.isClicked = true;
     }
 
     // 사용 할 스킬 종류에 따라 스킬 발동
@@ -430,7 +428,7 @@ public class BattleManager : Singleton<BattleManager>
 
         foreach (var character in allCharacters)
         {
-            if (BattleManager.Instance.possibleTargets.Contains(character.monster))
+            if (possibleTargets.Contains(character.monster))
             {
                 characters.Add(character);
             }

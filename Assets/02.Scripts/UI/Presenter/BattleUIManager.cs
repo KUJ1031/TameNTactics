@@ -89,6 +89,10 @@ public class BattleUIManager : MonoBehaviour
             Vector3 screenPos = Camera.main.WorldToScreenPoint(mon.transform.position);
             GameObject gauge = battleSelectView.InitiateGauge(screenPos);
 
+            float hpRatio = (float)mon.monster.CurHp / mon.monster.CurMaxHp;
+
+            battleSelectView.SetHpGauge(gauge, hpRatio);
+
             mon.gameObject.AddComponent<MonsterGaugeHolder>().InitGauge(gauge);
         }
     }
