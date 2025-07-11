@@ -22,6 +22,7 @@ public class PlayerEntrySwapPopup : MonoBehaviour
     }
     public void Open(Action<Monster> onSwappedCallback)
     {
+        ClearAllSlots();
         onSwapped = onSwappedCallback;
         RefreshSlotList();
         gameObject.SetActive(true);
@@ -75,5 +76,18 @@ public class PlayerEntrySwapPopup : MonoBehaviour
     private void SetOKButtonUsing(bool canClick)
     {
         okButton.interactable = canClick;
+    }
+
+    //슬롯 초기화
+    private void ClearAllSlots()
+    {
+        for (int i = slotContainer.transform.childCount - 1; i >= 0; i--)
+        {
+            GameObject slotToDestroy = slotContainer.transform.GetChild(i).gameObject;
+            Destroy(slotToDestroy);
+        }
+        slotList.Clear();
+        selectedMonster = null;
+        SetOKButtonUsing(false);
     }
 }
