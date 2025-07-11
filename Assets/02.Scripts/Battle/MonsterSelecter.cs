@@ -28,13 +28,6 @@ public class MonsterSelecter : MonoBehaviour
         if (BattleSystem.Instance.CurrentState is SelectTargetState enemyState)
         {
             enemyState.OnSelectTargetMonster(monster);
-            StartCoroutine(UnLockMouseClick());
         }
-    }
-
-    private IEnumerator UnLockMouseClick()
-    {
-        yield return new WaitForSeconds(lockTime);
-        isClicked = false;
     }
 }
