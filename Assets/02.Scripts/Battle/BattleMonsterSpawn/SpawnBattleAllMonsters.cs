@@ -36,24 +36,24 @@ public class SpawnBattleAllMonsters : MonoBehaviour
 
             if (monsterList[i].CurHp > 0)
             {
-
                 //스폰 위치에 객체 생성
                 GameObject enemyMonster = Instantiate(monsterPrefab, spawnPointTransform);
+
                 //객체 값 수정
-                enemyMonster.GetComponent<MonsterCharacter>().Init(monsterList[i]);
-
                 var monsterChar = enemyMonster.GetComponent<MonsterCharacter>();
-
+                monsterChar.Init(monsterList[i]);
+                
                 var clickable = enemyMonster.GetComponent<MonsterSelecter>();
                 clickable?.Initialize(monsterChar.monster); // Monster 데이터 넘기기
 
                 //스킬 보여주기
-                Debug.Log($"[SpawnBattleAllMonsters] {monsterChar.monster.monsterName} 스킬 개수: {monsterChar.monster.skills.Count}");
+                //Debug.Log($"[SpawnBattleAllMonsters] {monsterChar.monster.monsterName} 스킬 개수: {monsterChar.monster.skills.Count}");
                 //Debug.Log($"[SpawnBattleAllMonsters] 몬스터 현재체력 : {monsterChar.monster.CurHp} 최대 체력: {monsterChar.monster.CurMaxHp}");
-                foreach (var skill in monsterChar.monster.skills)
-                {
-                    Debug.Log($"[SpawnBattleAllMonsters] {monsterChar.monster.monsterName} 스킬: {skill.skillName}");
-                }
+
+                //foreach (var skill in monsterChar.monster.skills)
+                //{
+                //    Debug.Log($"[SpawnBattleAllMonsters] {monsterChar.monster.monsterName} 스킬: {skill.skillName}");
+                //}
 
                 monsterChar.monster.HpChange += UIManager.Instance.battleUIManager.UpdateHpGauge;
                 monsterChar.monster.ultimateCostChange += UIManager.Instance.battleUIManager.UpdateUltimateGauge;
