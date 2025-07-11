@@ -23,13 +23,14 @@ public class SelectTargetState : BaseBattleState
 
     public void OnSelectTargetMonster(Monster monster)
     {
-        if (BattleManager.Instance.BattleEntryTeam.Contains(monster))
+        if (!BattleManager.Instance.possibleTargets.Contains(monster))
         {
             Debug.Log("올바른 타겟이 아닙니다.");
             return;
         }
         BattleManager.Instance.SelectTargetMonster(monster);
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
+        battleSystem.ChangeState(new PlayerMenuState(battleSystem));
     }
 
     public void OnCancelSelectTarget()
