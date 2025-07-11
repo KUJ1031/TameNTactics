@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EndBattleState : BaseBattleState
 {
@@ -10,8 +12,24 @@ public class EndBattleState : BaseBattleState
     {
         // todo 종료 UI 띄우기
         BattleManager.Instance.battleEnded = false;
-        BattleManager.Instance.BattleReward();
-        UIManager.Instance.battleUIManager.BattleEndMessage(true);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+        var alivePlayer = BattleManager.Instance.BattleEntryTeam.Where(m => m.CurHp > 0).ToList();
+        if (alivePlayer.Count > 0)
+        {
+            BattleManager.Instance.BattleReward();
+            UIManager.Instance.battleUIManager.BattleEndMessage(true);
+        }
+        else
+        {
+            UIManager.Instance.battleUIManager.BattleEndMessage(false);
+        }
+
+        battleSystem.StartCoroutine(EndBattleCoroutine());
+    }
+
+    private IEnumerator EndBattleCoroutine()
+    {
+        yield return new WaitForSeconds(2f);
+
+        SceneManager.LoadScene("MainScene");
     }
 }
