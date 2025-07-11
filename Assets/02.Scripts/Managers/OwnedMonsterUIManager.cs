@@ -22,17 +22,33 @@ public class OwnedMonsterUIManager : MonoBehaviour
         RefreshOwnedMonsterUI();
     }
 
-    //Owned창 새로고침
+    //Owned몬스터 목록 새로고침
     public void RefreshOwnedMonsterUI()
     {
         List<Monster> sortedMonsters = GetSortedOwnedMonsters();
+        Monster prevSelectedMonster = selectedSlot?.GetMonster();
+
         EnsureSlotCount(sortedMonsters.Count);
         UpdateSlotData(sortedMonsters);
 
         //선택된 슬롯 유지
-        if (selectedSlot != null && selectedSlot.gameObject.activeInHierarchy)
+        selectedSlot = null;
+        if (prevSelectedMonster != null && sortedMonsters.Contains(prevSelectedMonster))
         {
-            selectedSlot.SetSelected(true);
+            foreach (var slot in ownedSlotUIList)
+            {
+                if (slot.GetMonster() == prevSelectedMonster)
+                {
+                    selectedSlot = slot;
+                    selectedSlot.SetSelected(true);
+                    //OwnedMonsterUI.SetSimpleMonsterInfoUI(prevSelectedMonster);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            ownedMonsterUI.SetLogoVisibility(true);
         }
     }
 
@@ -117,7 +133,7 @@ public class OwnedMonsterUIManager : MonoBehaviour
     }
 
     //선택 슬롯 비우기
-    public void SelectedSlotReset()
+    public void ClearSelectedSlot()
     {
         selectedSlot = null;
     }

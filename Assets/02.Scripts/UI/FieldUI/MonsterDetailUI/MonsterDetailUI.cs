@@ -134,24 +134,37 @@ public class MonsterDetailUI : FieldMenuBaseUI
     //버튼관리
     private void SettingButton()
     {
+        ToggleEntryButton(player.entryMonsters.Contains(monster));
         backButton.onClick.AddListener(OnClickBackButton);
-        if (player.entryMonsters.Contains(monster))
-        {
-            removeEntryButton.gameObject.SetActive(true);
-            addEntryButton.gameObject.SetActive(false);
-        }
-        else
-        {
-            removeEntryButton.gameObject.SetActive(false);
-            addEntryButton.gameObject.SetActive(true);
-        }
-        addEntryButton.onClick.AddListener(() => player.TryAddEntryMonster(monster, (_, _) => { }));
-        removeEntryButton.onClick.AddListener(() => player.RemoveEntryMonster(monster));
+        addEntryButton.onClick.AddListener(OnClickAddEntryButton);
+        removeEntryButton.onClick.AddListener(OnClickRemoveEntryButton);
     }
 
+    //엔트리 추가버튼
+    private void OnClickAddEntryButton()
+    {
+        player.TryAddEntryMonster(monster, (_, _) => { ToggleEntryButton(player.entryMonsters.Contains(monster)); });
+
+    }
+
+    //엔트리 제외버튼
+    private void OnClickRemoveEntryButton()
+    {
+        player.RemoveEntryMonster(monster);
+        ToggleEntryButton(player.entryMonsters.Contains(monster));
+    }
+
+    //뒤로가기버튼
     private void OnClickBackButton()
     {
         OwnedMonsterUIManager.Instance.RefreshOwnedMonsterUI();
         FieldUIManager.Instance.OpenUI<OwnedMonsterUI>();
+    }
+
+    //엔트리 추가/제외 버튼토글
+    private void ToggleEntryButton(bool isEntry)
+    {
+        removeEntryButton.gameObject.SetActive(isEntry);
+        addEntryButton.gameObject.SetActive(!isEntry);
     }
 }
