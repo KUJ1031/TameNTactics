@@ -35,7 +35,7 @@ public class EntryUI : FieldMenuBaseUI
     [SerializeField] private GameObject monsterSkill3Lock;
 
     [Header("버튼")]
-    [SerializeField] private Button backButton;
+    [SerializeField] private Button useItemButton;
     [SerializeField] private Button addEntryButton;
     [SerializeField] private Button removeEntryButton;
 

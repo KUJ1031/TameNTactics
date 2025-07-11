@@ -30,6 +30,7 @@ public class LeftMenuUI : MonoBehaviour
     }
     private void OnClickEntryMonsterButton()
     {
+        EntryUIManager.Instance.SetEntryUISlots();
         FieldUIManager.Instance.OpenUI<EntryUI>();
     }
     private void OnClickOwnedMonsterButton()
