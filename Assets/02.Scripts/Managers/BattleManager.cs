@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager>
@@ -194,27 +195,46 @@ public class BattleManager : Singleton<BattleManager>
         if (playerFirst)
         {
             yield return StartCoroutine(ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets));
-            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); yield break; }
+            if (IsTeamDead(BattleEnemyTeam))
+            {
+                EndBattle(true);
+                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
+                yield break;
+            }
 
             yield return StartCoroutine(ExecuteSkill(
                 enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets));
-            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); yield break; }
+            if (IsTeamDead(BattleEntryTeam))
+            {
+                EndBattle(false);
+                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
+                yield break;
+            }
         }
         else
         {
             yield return StartCoroutine(ExecuteSkill(
                 enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets));
-            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); yield break; }
+            if (IsTeamDead(BattleEntryTeam))
+            {
+                EndBattle(false);
+                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
+                yield break;
+            }
 
             yield return StartCoroutine(ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets));
-            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); yield break; }
+            if (IsTeamDead(BattleEnemyTeam))
+            {
+                EndBattle(true);
+                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
+                yield break;
+            }
         }
 
         EndTurn();
-        yield return StartCoroutine(IncreaseUltCostAllMonsters());
         ClearSelections();
-
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+        yield return StartCoroutine(IncreaseUltCostAllMonsters());
     }
 
     // 사용 할 스킬 종류에 따라 스킬 발동
@@ -240,6 +260,7 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return StartCoroutine(effect.Execute(caster, targets));
 
+        CheckDeadMonster();
         IncreaseUltCost(caster);
         foreach (var t in targets)
         {
@@ -280,7 +301,6 @@ public class BattleManager : Singleton<BattleManager>
 
             if (monsterChar.monster == target && monsterChar.monster.CurHp > 0)
             {
-                UIManager.Instance.battleUIManager.RemoveGauge(monsterChar.monster);
                 BattleEnemyTeam.Remove(target);
                 Destroy(monsterChar.gameObject);
                 break;
@@ -387,7 +407,12 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return StartCoroutine(ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets));
 
-        if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); yield break; }
+        if (IsTeamDead(BattleEntryTeam))
+        {
+            EndBattle(false);
+            BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
+            yield break;
+        }
 
         EndTurn();
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
@@ -401,5 +426,29 @@ public class BattleManager : Singleton<BattleManager>
         selectedSkill = null;
         selectedTargets.Clear();
         enemyChosenAction = null;
+    }
+
+    public List<MonsterCharacter> CheckPossibleTargets()
+    {
+        List<MonsterCharacter> characters = new();
+
+        // 씬에 있는 모든 MonsterCharacter 찾아오기
+        var allCharacters = GameObject.FindObjectsOfType<MonsterCharacter>();
+
+        foreach (var character in allCharacters)
+        {
+            if (BattleManager.Instance.possibleTargets.Contains(character.monster))
+            {
+                characters.Add(character);
+            }
+        }
+
+        return characters;
+    }
+
+    public void CheckDeadMonster()
+    {
+        BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
+        BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
     }
 }
