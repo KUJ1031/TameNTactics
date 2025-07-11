@@ -94,6 +94,7 @@ public class SelectCaptureTargetState : BaseBattleState
                 {
                     Debug.Log("포섭 성공!");
                     BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
+                    UIManager.Instance.battleUIManager.RemoveGauge(targetMonster);
                     UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
 
                     if (BattleManager.Instance.BattleEnemyTeam.Count <= 0)
@@ -123,6 +124,8 @@ public class SelectCaptureTargetState : BaseBattleState
         yield return new WaitForSeconds(2f);
 
         Object.Destroy(miniGameManager.gameObject);
+
+        targetMonster = null;
     }
 
     public override void Execute()

@@ -23,10 +23,11 @@ public class BattleUIManager : MonoBehaviour
 
     public GameObject MiniGamePrefab { get { return miniGamePrefab; } }
 
-    private Dictionary<Monster, GameObject> monsterBattleInfo = new();
+    private List<MonsterCharacter> allMonsterCharacters = new();
 
     private void OnEnable()
     {
+        EventBus.OnMonsterDead -= RemoveGauge;
         EventBus.OnMonsterDead += RemoveGauge;
     }
 
@@ -75,67 +76,76 @@ public class BattleUIManager : MonoBehaviour
     // 배틀씬 진입 시 몬스터 체력, 궁극기 게이지 세팅
     public void SettingMonsterGauge(Transform ally, Transform enemy)
     {
-        List<MonsterCharacter> monsterList = new();
+        allMonsterCharacters.Clear();
 
         MonsterCharacter[] allyChildren = ally.GetComponentsInChildren<MonsterCharacter>();
         MonsterCharacter[] enemyChildren = enemy.GetComponentsInChildren<MonsterCharacter>();
 
-        for (int i = 0; i < allyChildren.Length; i++)
-        {
-            monsterList.Add(allyChildren[i]);
-        }
+        allMonsterCharacters.AddRange(allyChildren);
+        allMonsterCharacters.AddRange(enemyChildren);
 
-        for (int i = 0; i < enemyChildren.Length; i++)
+        foreach (var mon in allMonsterCharacters)
         {
-            monsterList.Add(enemyChildren[i]);
-        }
-
-        for (int i = 0; i < monsterList.Count; i++)
-        {
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterList[i].transform.position);
-
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(mon.transform.position);
             GameObject gauge = battleSelectView.InitiateGauge(screenPos);
-            monsterBattleInfo.Add(monsterList[i].monster, gauge);
+
+            mon.gameObject.AddComponent<MonsterGaugeHolder>().InitGauge(gauge);
         }
     }
 
     public void UpdateHpGauge(Monster monster)
     {
-        if (monsterBattleInfo.ContainsKey(monster))
-        {
-            GameObject gauge = monsterBattleInfo[monster];
+        MonsterCharacter mc = FindMonsterCharacter(monster);
 
-            float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
+        if (mc == null) return;
 
-            battleSelectView.SetHpGauge(gauge, hpRatio);
-        }
-        else return;
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+
+        if (gaugeHolder == null || gaugeHolder.gauge == null) return;
+
+        float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
+        battleSelectView.SetHpGauge(gaugeHolder.gauge, hpRatio);
     }
 
     public void UpdateUltimateGauge(Monster monster)
     {
-        if (monsterBattleInfo.ContainsKey(monster))
-        {
-            GameObject gauge = monsterBattleInfo[monster];
+        MonsterCharacter mc = FindMonsterCharacter(monster);
 
-            float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
+        if (mc == null) return;
 
-            battleSelectView.SetUltimateGauge(gauge, ultimateRatio);
-        }
-        else return;
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+
+        if (gaugeHolder == null || gaugeHolder.gauge == null) return;
+
+        float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
+        battleSelectView.SetUltimateGauge(gaugeHolder.gauge, ultimateRatio);
     }
 
     public void RemoveGauge(Monster monster)
     {
-        if (monsterBattleInfo.TryGetValue(monster, out GameObject gauge))
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+
+        if (mc == null) return;
+
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+
+        if (gaugeHolder != null && gaugeHolder.gauge != null)
         {
-            Destroy(gauge);
-            monsterBattleInfo.Remove(monster);
+            Destroy(gaugeHolder.gauge);
+            gaugeHolder.gauge = null;
         }
-        else
+    }
+
+    private MonsterCharacter FindMonsterCharacter(Monster monster)
+    {
+        foreach (var mc in allMonsterCharacters)
         {
-            Debug.LogWarning($"Gauge not found for Monster ID: {monster.monsterID}, ref: {monster.GetHashCode()}");
+            if (mc.monster == monster)
+            {
+                return mc;
+            }
         }
+        return null;
     }
 
     // 배틀 중 전투 메세지를 받아올 메서드

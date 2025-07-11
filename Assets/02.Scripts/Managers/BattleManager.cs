@@ -299,7 +299,6 @@ public class BattleManager : Singleton<BattleManager>
 
             if (monsterChar.monster == target && monsterChar.monster.CurHp > 0)
             {
-                UIManager.Instance.battleUIManager.RemoveGauge(monsterChar.monster);
                 BattleEnemyTeam.Remove(target);
                 Destroy(monsterChar.gameObject);
                 break;
