@@ -5,8 +5,9 @@ using UnityEngine;
 public class MonsterSelecter : MonoBehaviour
 {
     private Monster monster;
-    private bool isClicked = false;
-    private float lockTime = 3f;
+    public static bool isClicked = false;
+    public static float lockTime = 3f;
+    public static float playerSelectTime = 0.5f;
 
     public void Initialize(Monster monster)
     {
