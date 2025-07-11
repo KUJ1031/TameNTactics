@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -32,6 +33,27 @@ public class GameTimeFlow : Singleton<GameTimeFlow>
         timer += Time.deltaTime;
         UpdateTimeDisplay();
         UpdateDayNightOverlay();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        var canvas = GameObject.Find("UI")?.transform;
+        if (canvas != null)
+        {
+            timeText = TransformUtil.FindDeepChild(canvas, "InGameTimeText")?.GetComponent<TextMeshProUGUI>();
+            playTimeText = TransformUtil.FindDeepChild(canvas, "PlayTimeText")?.GetComponent<TextMeshProUGUI>();
+            overlayImage = TransformUtil.FindDeepChild(canvas, "DayNightOverlay")?.GetComponent<Image>();
+        }
     }
 
     private void UpdateTimeDisplay()
