@@ -9,18 +9,33 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler
     public int skillIndex; // 스킬 인덱스
 
     private SkillData skillData;
+    private Monster caster;
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (!(BattleSystem.Instance.CurrentState is SelectSkillState)) return;
+        
+        SetMonsterSkills(BattleManager.Instance.selectedPlayerMonster);
+        if (skillData == null) return;
+        
+        if (!IsSkillUsable(caster, skillData))
+        {
+            Debug.Log("레벨이 낮아서 궁극기 사용 불가!");
+            return;
+        }
+        
         if (BattleSystem.Instance.CurrentState is SelectSkillState state)
         {
-            SetMonsterSkills(BattleManager.Instance.selectedPlayerMonster);
             BattleManager.Instance.selectedSkill = skillData;
             state.OnSelectedSkill(skillData);
         }
     }
 
-    public void SetMonsterSkills(Monster monster)
+    private void SetMonsterSkills(Monster monster)
     {
+        caster = monster;
+        
+        if (caster == null || caster.skills.Count == 0) return;
+        
         if (monster != null && monster.skills.Count > 0)
         {
             //스킬 인덱스에 따른 스킬 설정
@@ -34,5 +49,16 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler
                 skillData = null; // 유효하지 않은 인덱스일 경우 null로 설정
             }
         }
+    }
+    
+    private bool IsSkillUsable(Monster monster, SkillData skill)
+    {
+        if (monster == null || skill == null)
+            return false;
+        
+        if (skill.skillType == SkillType.UltimateSkill && monster.Level < 15)
+            return false;
+        
+        return true;
     }
 }
