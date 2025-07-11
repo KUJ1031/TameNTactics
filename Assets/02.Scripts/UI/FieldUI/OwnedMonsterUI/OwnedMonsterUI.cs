@@ -47,6 +47,8 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     //디테일 버튼
     private void OnClickDetailButton(Monster monster)
     {
+        SetLogoVisibility(true );
+        ownedUIManager.ClearSelectedSlot();
         monsterDetailUI.SetMonsterDetailUI(monster);
         FieldUIManager.Instance.OpenUI<MonsterDetailUI>();
     }
@@ -75,7 +77,7 @@ public class OwnedMonsterUI : FieldMenuBaseUI
             if (isOK)
             {
                 SetLogoVisibility(true);
-                ownedUIManager.SelectedSlotReset();
+                ownedUIManager.ClearSelectedSlot();
                 ownedUIManager.RefreshOwnedMonsterUI();
             }
         });

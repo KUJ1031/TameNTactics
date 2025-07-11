@@ -161,18 +161,26 @@ public class Player
             return;
         }
 
+        //엔트리에서 제거
         if (entryMonsters.Remove(monster))
-        {
-            if (benchEntry.Count > 0)
+        {   
+            //베틀 엔트리에 있다면 제거
+            if (battleEntry.Contains(monster))
+            {
+                battleEntry.Remove(monster);
+            }
+            else
+            {
+                benchEntry.Remove(monster);
+            }
+
+            //베틀 엔트리 비어있으면 보충
+            if (benchEntry.Count > 0 && battleEntry.Count < maxBattleCount)
             {
                 Monster promoted = benchEntry[0];
                 benchEntry.RemoveAt(0);
                 battleEntry.Add(promoted);
             }
-        }
-        else
-        {
-            benchEntry.Remove(monster);
         }
         return;
     }

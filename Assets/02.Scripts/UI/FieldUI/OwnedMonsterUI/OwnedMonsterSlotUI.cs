@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class OwnedMonsterSlot : MonoBehaviour, IPointerClickHandler
+public class OwnedMonsterSlotUI : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Image MonsterImage;        //몬스터 이미지
     [SerializeField] private Outline outline;           //외각선(선택표시)

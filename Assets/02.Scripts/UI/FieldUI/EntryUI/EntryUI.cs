@@ -1,34 +1,20 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MonsterDetailUI : FieldMenuBaseUI
+public class EntryUI : FieldMenuBaseUI
 {
-    [Header("기본 정보")]
     [SerializeField] private Image monsterImage;
-
-    [SerializeField] private Image favoriteMark;
-    [SerializeField] private TextMeshProUGUI monsterHPText;
-    [SerializeField] private Image monsterHPBar;
-
-    [SerializeField] private TextMeshProUGUI monsterLevelText;
-    [SerializeField] private TextMeshProUGUI monsterExpText;
-    [SerializeField] private Image monsterExpBar;
-
     [SerializeField] private TextMeshProUGUI monsterNameText;
     [SerializeField] private TextMeshProUGUI monsterTypeText;
     [SerializeField] private TextMeshProUGUI monsterPersonalityText;
-
     [SerializeField] private TextMeshProUGUI monsterAttackText;
     [SerializeField] private TextMeshProUGUI monsterDefenseText;
     [SerializeField] private TextMeshProUGUI monsterSpeedText;
     [SerializeField] private TextMeshProUGUI monsterCriticalText;
-
-    [SerializeField] private TextMeshProUGUI monsterCaughtDateText;
-    [SerializeField] private TextMeshProUGUI monsterCaughtLocationText;
-    [SerializeField] private TextMeshProUGUI monsterTimeTogetherText;
-    [SerializeField] private TextMeshProUGUI monsterStoryText;
 
     [Header("스킬 1")]
     [SerializeField] private Image monsterSkill1IconUI;
@@ -71,19 +57,13 @@ public class MonsterDetailUI : FieldMenuBaseUI
 
         UpdateMonsterDataUI();
         UpdateMonsterSkillUI();
-        SettingButton();
     }
 
     //몬스터 디테일 몬스터 정보 셋팅
     private void UpdateMonsterDataUI()
     {
         monsterImage.sprite = monster.monsterData.monsterImage;
-        monsterHPText.text = $"{monster.CurHp}/{monster.MaxHp}";
-        monsterHPBar.fillAmount = (float)monster.CurHp / monster.MaxHp;
 
-        monsterLevelText.text = $"Lv.{monster.Level}";
-        monsterExpText.text = $"{monster.CurExp}/{monster.MaxExp}";
-        monsterExpBar.fillAmount = (float)monster.CurExp / monster.MaxExp;
 
         monsterNameText.text = monster.monsterName;
         monsterTypeText.text = monster.monsterData.type.ToString();
@@ -93,11 +73,6 @@ public class MonsterDetailUI : FieldMenuBaseUI
         monsterDefenseText.text = monster.Defense.ToString();
         monsterSpeedText.text = monster.Speed.ToString();
         monsterCriticalText.text = $"{monster.CriticalChance}%";
-
-        monsterCaughtDateText.text = monster.CaughtDate.ToString();
-        monsterCaughtLocationText.text = monster.CaughtLocation;
-        monsterTimeTogetherText.text = monster.TimeTogether.ToString();
-        monsterStoryText.text = monster.monsterData.description;
     }
 
     //몬스터 디테일 몬스터 스킬 셋팅
@@ -129,42 +104,5 @@ public class MonsterDetailUI : FieldMenuBaseUI
 
         if (lockObj != null)
             lockObj.SetActive(!isUnLock);
-    }
-
-    //버튼관리
-    private void SettingButton()
-    {
-        ToggleEntryButton(player.entryMonsters.Contains(monster));
-        backButton.onClick.AddListener(OnClickBackButton);
-        addEntryButton.onClick.AddListener(OnClickAddEntryButton);
-        removeEntryButton.onClick.AddListener(OnClickRemoveEntryButton);
-    }
-
-    //엔트리 추가버튼
-    private void OnClickAddEntryButton()
-    {
-        player.TryAddEntryMonster(monster, (_, _) => { ToggleEntryButton(player.entryMonsters.Contains(monster)); });
-
-    }
-
-    //엔트리 제외버튼
-    private void OnClickRemoveEntryButton()
-    {
-        player.RemoveEntryMonster(monster);
-        ToggleEntryButton(player.entryMonsters.Contains(monster));
-    }
-
-    //뒤로가기버튼
-    private void OnClickBackButton()
-    {
-        OwnedMonsterUIManager.Instance.RefreshOwnedMonsterUI();
-        FieldUIManager.Instance.OpenUI<OwnedMonsterUI>();
-    }
-
-    //엔트리 추가/제외 버튼토글
-    private void ToggleEntryButton(bool isEntry)
-    {
-        removeEntryButton.gameObject.SetActive(isEntry);
-        addEntryButton.gameObject.SetActive(!isEntry);
     }
 }
