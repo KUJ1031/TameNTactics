@@ -66,7 +66,7 @@ public class SelectCaptureTargetState : BaseBattleState
 
         // UI 초기화
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
-        UIManager.Instance.battleUIManager.EmbraceView.HideMessage();
+        //UIManager.Instance.battleUIManager.EmbraceView.HideMessage();
 
         // MiniGameManager 가져오기
         MiniGameManager miniGameManager = miniGameObj.GetComponent<MiniGameManager>();

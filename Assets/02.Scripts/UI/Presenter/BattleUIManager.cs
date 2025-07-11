@@ -25,16 +25,24 @@ public class BattleUIManager : MonoBehaviour
 
     private Dictionary<Monster, GameObject> monsterBattleInfo = new();
 
+    private void OnEnable()
+    {
+        EventBus.OnMonsterDead += RemoveGauge;
+    }
+
+    private void OnDisable()
+    {
+        EventBus.OnMonsterDead -= RemoveGauge;
+    }
+
     public void OnAttackButtonClick()
     {
         battleSelectView.HideSelectPanel();
-        EventBus.OnAttackModeEnabled?.Invoke();
     }
 
     public void IntoBattleMenuSelect()
     {
         battleSelectView.HideSkillPanel();
-        EventBus.OnAttackModeDisabled?.Invoke();
     }
 
     // 내 몬스터 혹은 상대 몬스터 선택 시 강조 표시 이동
@@ -84,7 +92,6 @@ public class BattleUIManager : MonoBehaviour
 
         for (int i = 0; i < monsterList.Count; i++)
         {
-            Debug.Log("게이지를 생성합니다.");
             Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterList[i].transform.position);
 
             GameObject gauge = battleSelectView.InitiateGauge(screenPos);
@@ -94,22 +101,41 @@ public class BattleUIManager : MonoBehaviour
 
     public void UpdateHpGauge(Monster monster)
     {
-        Debug.Log("UpdateHpGauge 진입");
-        GameObject gauge = monsterBattleInfo[monster];
+        if (monsterBattleInfo.ContainsKey(monster))
+        {
+            GameObject gauge = monsterBattleInfo[monster];
 
-        float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
+            float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
 
-        battleSelectView.SetHpGauge(gauge, hpRatio);
+            battleSelectView.SetHpGauge(gauge, hpRatio);
+        }
+        else return;
     }
 
     public void UpdateUltimateGauge(Monster monster)
     {
-        Debug.Log("UpdateUltimateGauge 진입");
-        GameObject gauge = monsterBattleInfo[monster];
+        if (monsterBattleInfo.ContainsKey(monster))
+        {
+            GameObject gauge = monsterBattleInfo[monster];
 
-        float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
+            float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
 
-        battleSelectView.SetUltimateGauge(gauge, ultimateRatio);
+            battleSelectView.SetUltimateGauge(gauge, ultimateRatio);
+        }
+        else return;
+    }
+
+    public void RemoveGauge(Monster monster)
+    {
+        if (monsterBattleInfo.TryGetValue(monster, out GameObject gauge))
+        {
+            Destroy(gauge);
+            monsterBattleInfo.Remove(monster);
+        }
+        else
+        {
+            Debug.LogWarning($"Gauge not found for Monster ID: {monster.monsterID}, ref: {monster.GetHashCode()}");
+        }
     }
 
     // 배틀 중 전투 메세지를 받아올 메서드

@@ -212,7 +212,15 @@ public class Monster
     {
         CurHp -= damage;
         if (CurHp < 0) CurHp = 0;
-        HpChange?.Invoke(this);
+
+        if (CurHp <= 0)
+        {
+            EventBus.OnMonsterDead?.Invoke(this);
+        }
+        else
+        {
+            HpChange?.Invoke(this);
+        }
     }
 
     //레벨설정
