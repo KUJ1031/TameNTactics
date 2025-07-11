@@ -23,8 +23,6 @@ public class BattleManager : Singleton<BattleManager>
 
     private EnemyAIController.EnemyAction enemyChosenAction;
 
-    public bool battleEnded = false;
-
     public string previousSceneName;
 
     // 배틀 시작시 배틀에 나오는 몬스터 찾아서 리스트에 넣어줌
@@ -94,6 +92,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.TriggerOnTurnEnd();
             monster.UpdateStatusEffects();
         }
+        BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
 
     // 데미지 넣기 + 데미지 후 패시브 발동
@@ -173,6 +172,7 @@ public class BattleManager : Singleton<BattleManager>
         if (selectedTargets.Count == selectedSkill.targetCount &&
             selectedTargets.All(t => t.CurHp > 0))
         {
+            MonsterSelecter.isClicked = true;
             StartCoroutine(CompareSpeedAndFight());
         }
     }
@@ -198,7 +198,6 @@ public class BattleManager : Singleton<BattleManager>
             if (IsTeamDead(BattleEnemyTeam))
             {
                 EndBattle(true);
-                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
                 yield break;
             }
 
@@ -207,7 +206,6 @@ public class BattleManager : Singleton<BattleManager>
             if (IsTeamDead(BattleEntryTeam))
             {
                 EndBattle(false);
-                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
                 yield break;
             }
         }
@@ -218,7 +216,6 @@ public class BattleManager : Singleton<BattleManager>
             if (IsTeamDead(BattleEntryTeam))
             {
                 EndBattle(false);
-                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
                 yield break;
             }
 
@@ -226,15 +223,14 @@ public class BattleManager : Singleton<BattleManager>
             if (IsTeamDead(BattleEnemyTeam))
             {
                 EndBattle(true);
-                BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
                 yield break;
             }
         }
 
+        yield return StartCoroutine(IncreaseUltCostAllMonsters());
         EndTurn();
         ClearSelections();
-        BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
-        yield return StartCoroutine(IncreaseUltCostAllMonsters());
+        MonsterSelecter.isClicked = true;
     }
 
     // 사용 할 스킬 종류에 따라 스킬 발동
@@ -346,9 +342,7 @@ public class BattleManager : Singleton<BattleManager>
     // 배틀이 끝나고 true 플레이팀 승리, false 적팀 승리
     public void EndBattle(bool playerWin)
     {
-        battleEnded = true;
-        Debug.Log(playerWin ? "승리!" : "패배!");
-        // 전투 종료 UI 호출
+        BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
     }
 
     // 배틀 시작시 궁극기 0으로 초기화
@@ -410,12 +404,11 @@ public class BattleManager : Singleton<BattleManager>
         if (IsTeamDead(BattleEntryTeam))
         {
             EndBattle(false);
-            BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
             yield break;
         }
 
-        EndTurn();
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
+        EndTurn();
         ClearSelections();
     }
 

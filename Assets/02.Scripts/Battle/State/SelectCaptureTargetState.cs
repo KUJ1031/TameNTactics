@@ -104,7 +104,6 @@ public class SelectCaptureTargetState : BaseBattleState
                     else
                     {
                         BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-                        BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
                     }
                 }
                 else
@@ -112,7 +111,6 @@ public class SelectCaptureTargetState : BaseBattleState
                     Debug.Log("포섭 실패...!");
                     UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
                     BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-                    BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
                 }
 
                 finished = true;
