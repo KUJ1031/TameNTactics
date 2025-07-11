@@ -6,7 +6,6 @@ public class MonsterSelecter : MonoBehaviour
 {
     private Monster monster;
     public static bool isClicked = false;
-    public static float lockTime = 3f;
 
     public void Initialize(Monster monster)
     {
@@ -17,16 +16,14 @@ public class MonsterSelecter : MonoBehaviour
     {
         if (isClicked) return;
         
-        isClicked = true;
-        
-        if (BattleSystem.Instance.CurrentState is SelectPlayerMonsterState state)
+        if (BattleSystem.Instance.CurrentState is SelectPlayerMonsterState state && !isClicked)
         {
             state.OnMonsterSelected(monster);
-            isClicked = false;
         }
 
-        if (BattleSystem.Instance.CurrentState is SelectTargetState enemyState)
+        if (BattleSystem.Instance.CurrentState is SelectTargetState enemyState && !isClicked)
         {
+            isClicked = true;
             enemyState.OnSelectTargetMonster(monster);
         }
     }
