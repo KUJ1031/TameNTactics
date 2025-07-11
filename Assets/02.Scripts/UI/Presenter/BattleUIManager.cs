@@ -101,11 +101,15 @@ public class BattleUIManager : MonoBehaviour
 
     public void UpdateHpGauge(Monster monster)
     {
-        GameObject gauge = monsterBattleInfo[monster];
+        if (monsterBattleInfo.ContainsKey(monster))
+        {
+            GameObject gauge = monsterBattleInfo[monster];
 
-        float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
+            float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
 
-        battleSelectView.SetHpGauge(gauge, hpRatio);
+            battleSelectView.SetHpGauge(gauge, hpRatio);
+        }
+        else return;
     }
 
     public void UpdateUltimateGauge(Monster monster)
