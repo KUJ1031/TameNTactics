@@ -94,16 +94,16 @@ public class SelectCaptureTargetState : BaseBattleState
                 {
                     Debug.Log("포섭 성공!");
                     BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
+                    UIManager.Instance.battleUIManager.RemoveGauge(targetMonster);
                     UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
 
-                    if (BattleManager.Instance.IsTeamDead(BattleManager.Instance.BattleEnemyTeam))
+                    if (BattleManager.Instance.BattleEnemyTeam.Count <= 0)
                     {
                         BattleSystem.Instance.ChangeState(new EndBattleState(battleSystem));
                     }
                     else
                     {
                         BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-                        BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
                     }
                 }
                 else
@@ -111,7 +111,6 @@ public class SelectCaptureTargetState : BaseBattleState
                     Debug.Log("포섭 실패...!");
                     UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
                     BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-                    BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
                 }
 
                 finished = true;
@@ -123,6 +122,8 @@ public class SelectCaptureTargetState : BaseBattleState
         yield return new WaitForSeconds(2f);
 
         Object.Destroy(miniGameManager.gameObject);
+
+        targetMonster = null;
     }
 
     public override void Execute()

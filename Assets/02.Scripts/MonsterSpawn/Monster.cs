@@ -56,6 +56,7 @@ public class Monster
 
     public Action<Monster> HpChange;
     public Action<Monster> ultimateCostChange;
+    public Action<Monster, int> DamagePopup;
 
     //몬스터 데이터로 초기화
     public void SetMonster(Monster newMonster)
@@ -212,11 +213,16 @@ public class Monster
     {
         CurHp -= damage;
         if (CurHp < 0) CurHp = 0;
-        HpChange?.Invoke(this);
 
+        DamagePopup?.Invoke(this, damage);
+        
         if (CurHp <= 0)
         {
             EventBus.OnMonsterDead?.Invoke(this);
+        }
+        else
+        {
+            HpChange?.Invoke(this);
         }
     }
 
