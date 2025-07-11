@@ -9,6 +9,9 @@ public class SelectTargetState : BaseBattleState
     public override void Enter()
     {
         Debug.Log("타겟 선택 상태로 진입했습니다. 공격할 몬스터를 선택하세요.");
+        UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+        UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+        UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("공격할 상대 몬스터를 선택하세요.");
 
         // todo 타겟 몬스터 강조 효과(빛나기) UI 보여주기
         // todo 스킬 목록 UI 보여주기
@@ -19,7 +22,6 @@ public class SelectTargetState : BaseBattleState
     public void OnSelectTargetMonster(Monster monster)
     {
         BattleManager.Instance.SelectTargetMonster(monster);
-        battleSystem.ChangeState(new PlayerMenuState(battleSystem));
     }
 
     public void OnCancelSelectTarget()

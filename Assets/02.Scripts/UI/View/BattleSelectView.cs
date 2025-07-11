@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,12 +14,27 @@ public class BattleSelectView : MonoBehaviour
     [SerializeField] private GameObject selectPanel;
     [SerializeField] private GameObject skillPanel;
     [SerializeField] private GameObject gaugePanel;
+    [SerializeField] private GameObject behaviorPanel;
     [SerializeField] private RectTransform selectMonsterImage;
     [SerializeField] private Canvas gaugeCanvas;
 
     public void HideSelectPanel()
     {
         selectPanel.SetActive(false);
+    }
+
+    public void ShowBehaviorPanel(string message)
+    {
+        behaviorPanel.GetComponentInChildren<TextMeshProUGUI>().text = message;
+        if (behaviorPanel.activeSelf == false)
+        {
+            behaviorPanel.SetActive(true);
+        }
+    }
+
+    public void HideBeHaviorPanel()
+    {
+        behaviorPanel.SetActive(false);
     }
 
     // 배틀 중의 선택지 Panel 나타냄
@@ -43,6 +59,11 @@ public class BattleSelectView : MonoBehaviour
         gauge.SetActive(true);
 
         return gauge;
+    }
+
+    public void RemoveGauge(MonsterCharacter monsterCharacter)
+    {
+
     }
 
     public void SetHpGauge(GameObject gauge, float hpRatio)

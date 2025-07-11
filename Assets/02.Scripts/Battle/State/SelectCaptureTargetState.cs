@@ -32,7 +32,7 @@ public class SelectCaptureTargetState : BaseBattleState
                     {
                         Monster clickedMonster = monsterCharacter.monster;
 
-                        if (!PlayerManager.Instance.player.ownedMonsters.Contains(clickedMonster))
+                        if (!BattleManager.Instance.BattleEntryTeam.Contains(clickedMonster))
                         {
                             if (clickedMonster.CurHp <= 0)
                             {
@@ -66,7 +66,7 @@ public class SelectCaptureTargetState : BaseBattleState
 
         // UI 초기화
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
-        UIManager.Instance.battleUIManager.EmbraceView.HideMessage();
+        //UIManager.Instance.battleUIManager.EmbraceView.HideMessage();
 
         // MiniGameManager 가져오기
         MiniGameManager miniGameManager = miniGameObj.GetComponent<MiniGameManager>();
