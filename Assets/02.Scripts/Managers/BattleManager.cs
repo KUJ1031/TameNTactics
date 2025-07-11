@@ -194,26 +194,45 @@ public class BattleManager : Singleton<BattleManager>
         if (playerFirst)
         {
             yield return StartCoroutine(ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets));
-            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); yield break; }
+            if (IsTeamDead(BattleEnemyTeam))
+            {
+                EndBattle(true);
+                BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+                yield break;
+            }
 
             yield return StartCoroutine(ExecuteSkill(
                 enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets));
-            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); yield break; }
+            if (IsTeamDead(BattleEntryTeam))
+            {
+                EndBattle(false);
+                BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+                yield break;
+            }
         }
         else
         {
             yield return StartCoroutine(ExecuteSkill(
                 enemyChosenAction.actor, enemyChosenAction.selectedSkill, enemyChosenAction.targets));
-            if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); yield break; }
+            if (IsTeamDead(BattleEntryTeam))
+            {
+                EndBattle(false);
+                BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+                yield break;
+            }
 
             yield return StartCoroutine(ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets));
-            if (IsTeamDead(BattleEnemyTeam)) { EndBattle(true); yield break; }
+            if (IsTeamDead(BattleEnemyTeam))
+            {
+                EndBattle(true);
+                BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+                yield break;
+            }
         }
 
         EndTurn();
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
         ClearSelections();
-
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
 
@@ -387,7 +406,12 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return StartCoroutine(ExecuteSkill(enemyAction.actor, enemyAction.selectedSkill, enemyAction.targets));
 
-        if (IsTeamDead(BattleEntryTeam)) { EndBattle(false); yield break; }
+        if (IsTeamDead(BattleEntryTeam))
+        {
+            EndBattle(false);
+            BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+            yield break;
+        }
 
         EndTurn();
         yield return StartCoroutine(IncreaseUltCostAllMonsters());

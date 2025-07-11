@@ -30,7 +30,6 @@ public class SelectTargetState : BaseBattleState
         }
         BattleManager.Instance.SelectTargetMonster(monster);
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
-        battleSystem.ChangeState(new PlayerMenuState(battleSystem));
     }
 
     public void OnCancelSelectTarget()
