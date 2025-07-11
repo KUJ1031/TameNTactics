@@ -794,6 +794,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuButton: {fileID: 753198062527357074}
+  entrySlotPrefab: {fileID: 1767147267890326854, guid: c6df431a3dc99fd4e820acbf52d0059e, type: 3}
+  entrySlotParent: {fileID: 1556114717336354770}
 --- !u!1 &6378566345501598713
 GameObject:
   m_ObjectHideFlags: 0
