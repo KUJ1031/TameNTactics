@@ -21,6 +21,23 @@ public class SelectTargetState : BaseBattleState
         // todo 타겟 몬스터 강조 효과(빛나기) UI 활성화
     }
 
+    public override void Execute()
+    {
+        //Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+        //if (hit.collider != null)
+        //{
+        //    if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
+        //    {
+        //        if (BattleManager.Instance.BattleEnemyTeam.Contains(monsterCharacter.monster))
+        //        {
+        //            UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
+        //        }
+        //    }
+        //}
+    }
+
     public void OnSelectTargetMonster(Monster monster)
     {
         if (!BattleManager.Instance.possibleTargets.Contains(monster))
@@ -44,7 +61,7 @@ public class SelectTargetState : BaseBattleState
         // todo 몬스터 강조 효과(빛나기)UI 숨기기
         // todo 스킬 목록 UI 숨기기
     }
-    
+
     private void ShowPossibleTargets()
     {
         List<MonsterCharacter> possibleTargets = BattleManager.Instance.CheckPossibleTargets();

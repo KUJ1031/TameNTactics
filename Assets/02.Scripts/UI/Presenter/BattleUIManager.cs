@@ -52,25 +52,6 @@ public class BattleUIManager : MonoBehaviour
         battleSelectView.HideSkillPanel();
     }
 
-    // 내 몬스터 혹은 상대 몬스터 선택 시 강조 표시 이동
-    public void SelectMonster()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
-            if (hit.collider != null)
-            {
-                if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
-                {
-                    battleSelectView.MoveSelectMonster(monsterCharacter.transform);
-                }
-            }
-            else return;
-        }
-    }
-
     public void ShowMonsterSkills(MonsterData monsterData)
     {
         if (monsterData == null || monsterData.skills == null) return;
@@ -102,6 +83,21 @@ public class BattleUIManager : MonoBehaviour
             battleSelectView.SetHpGauge(gauge, hpRatio);
 
             mon.gameObject.AddComponent<MonsterGaugeHolder>().InitGauge(gauge);
+        }
+    }
+
+    public void SettingMonsterSelecter(Transform ally, Transform enemy)
+    {
+        foreach (var mon in allMonsterCharacters)
+        {
+            var selectImage = battleSelectView.InitiateSelectImage(mon.transform);
+
+            var hoverHandler = mon.GetComponent<MonsterHoverHandler>();
+
+            if (hoverHandler != null)
+            {
+                hoverHandler.SetUp(selectImage);
+            }
         }
     }
 
