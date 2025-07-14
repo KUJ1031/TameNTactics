@@ -83,6 +83,8 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         //반투명 및 클릭 막기
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
+
+        EntryUIManager.Instance.CreatePlaceholder(previousParent, transform.GetSiblingIndex());
     }
 
     //드래그 중
@@ -90,7 +92,9 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     {
         //슬롯의 위치를 마우스로
         rect.position = eventData.position;
-        
+
+        EntryUIManager.Instance.UpdatePlaceholderPosition(eventData.position);
+
     }
 
     //드래그 끝
@@ -116,5 +120,7 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
             transform.SetParent(previousParent);
             rect.position = previousParent.GetComponent<RectTransform>().position;
         }
+
+        EntryUIManager.Instance.ClearPlaceholder();
     }
 }

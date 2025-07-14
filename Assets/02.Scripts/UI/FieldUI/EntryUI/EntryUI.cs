@@ -38,11 +38,19 @@ public class EntryUI : FieldMenuBaseUI
     [SerializeField] private Button useItemButton;
     [SerializeField] private Button addEntryButton;
     [SerializeField] private Button removeEntryButton;
+    [SerializeField] private Button closeMenuButton;
 
     private Monster monster;
     private Player player;
 
-
+    private void Awake()
+    {
+        closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
+    }
+    public void OnClickCloseMenuButton()
+    {
+        FieldUIManager.Instance.CloseAllUI();
+    }
     //몬스터 디테일 유아이 셋팅
     public void SetMonsterDetailUI(Monster newMonster)
     {

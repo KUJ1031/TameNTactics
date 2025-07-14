@@ -16,6 +16,7 @@ public class FieldUIManager : MonoBehaviour
     [SerializeField] private FieldMenuBaseUI[] uiList;
     [SerializeField] private GameObject LeftMenuUI;
     [SerializeField] private GameObject BaseUI;
+    [SerializeField] private GameObject fieldBaseUI;
 
     //[SerializeField] private GameObject swapPopupPrefab;
     //[SerializeField] private GameObject confirmPopupPrefab;
@@ -40,6 +41,7 @@ public class FieldUIManager : MonoBehaviour
             else ui.Close();
         }
     }
+
     //메뉴닫기
     public void CloseAllUI()
     {
@@ -49,6 +51,7 @@ public class FieldUIManager : MonoBehaviour
         {
             ui.Close();
         }
+        if (fieldBaseUI != null) fieldBaseUI.GetComponent<FieldBaseUI>().RefreshEntrySlots();
     }
 
     //Confirm 팝업

@@ -10,6 +10,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
     private List<EntrySlotUI> battleEntrySlots = new();
     private List<EntrySlotUI> benchEntrySlots = new();
     private EntrySlotUI selectedSlot;
+    private GameObject placeholder; // 드래그 중 예상 위치에 보여줄 객체
 
     protected override void Awake()
     {
@@ -83,6 +84,16 @@ public class EntryUIManager : Singleton<EntryUIManager>
         selectedSlot.SetSelected(true);
     }
 
+    //슬롯지우기
+    private void RemoveFromAllSlotLists(EntrySlotUI slot)
+    {
+        battleEntrySlots.Remove(slot);
+        benchEntrySlots.Remove(slot);
+    }
+
+
+    #region 드래그 앤 드랍
+
     //드랍되었을 때 처리
     public void OnDrop(EntrySlotUI draggedSlot, Transform dropTarget, Vector2 pointerPosition, Transform originalParent)
     {
@@ -107,6 +118,42 @@ public class EntryUIManager : Singleton<EntryUIManager>
         //데이터 처리
     }
 
+    //예상 위치에 보여줄 객체 만들기
+    public void CreatePlaceholder(Transform parent, int siblingIndex)
+    {
+        if (placeholder != null)
+            Destroy(placeholder);
+
+        placeholder = Instantiate(EntrySlotPrefab, parent);
+        placeholder.transform.SetSiblingIndex(siblingIndex);
+        placeholder.GetComponent<EntrySlotUI>().VoidSlotInit();
+        var cg = placeholder.GetComponent<CanvasGroup>();
+        cg.alpha = 0.6f;
+        cg.blocksRaycasts = false;
+    }
+
+    //예상 위치 객체 위치 변경
+    public void UpdatePlaceholderPosition(Vector2 pointerPos)
+    {
+        if (placeholder == null) return;
+
+        Transform dropTarget = GetDropTarget(pointerPos);
+        if (dropTarget == null) return;
+
+        int index = GetInsertIndex(dropTarget, pointerPos);
+        placeholder.transform.SetParent(dropTarget);
+        placeholder.transform.SetSiblingIndex(index);
+    }
+    //예상 위치 객체 삭제
+    public void ClearPlaceholder()
+    {
+        if (placeholder != null)
+        {
+            Destroy(placeholder);
+            placeholder = null;
+        }
+    }
+
     //해당 인덱스에 만들기
     private void HandleDrop(Transform dropTargetParent, List<EntrySlotUI> entrySlots, EntrySlotUI draggedSlot, int insertIndex)
     {
@@ -122,13 +169,6 @@ public class EntryUIManager : Singleton<EntryUIManager>
             entrySlots.Add(draggedSlot);
             draggedSlot.transform.SetAsLastSibling();
         }
-    }
-
-    //슬롯지우기
-    private void RemoveFromAllSlotLists(EntrySlotUI slot)
-    {
-        battleEntrySlots.Remove(slot);
-        benchEntrySlots.Remove(slot);
     }
 
     //부모 리스트 원상복구
@@ -147,49 +187,52 @@ public class EntryUIManager : Singleton<EntryUIManager>
     // 드래그 중 포인터가 어느 부모 위에 있는지 판단
     public Transform GetDropTarget(Vector2 pointerPosition)
     {
-        RectTransform battleRect = BattleParent.GetComponent<RectTransform>();
-        RectTransform benchRect = BenchParent.GetComponent<RectTransform>();
-
-        //포인터가 요소의 RectTransform 안에 들어왔으면 해당 요소 리턴
-        if (RectTransformUtility.RectangleContainsScreenPoint(battleRect, pointerPosition))
+        if (IsPointerInYRange(BattleParent, pointerPosition))
             return BattleParent;
-        if (RectTransformUtility.RectangleContainsScreenPoint(benchRect, pointerPosition))
+
+        if (IsPointerInYRange(BenchParent, pointerPosition))
             return BenchParent;
 
         return null;
     }
-    //드래그 중 위치로 인덱스 계산
-    public int GetInsertIndex(Transform parent, Vector2 pointerPos)
+    //부모 위치 스크린좌표로 확인
+    private bool IsPointerInYRange(Transform parent, Vector2 pointerPos)
     {
-        RectTransform parentRect = parent.GetComponent<RectTransform>();
+        RectTransform rect = parent.GetComponent<RectTransform>();
 
-        //현재 마우스 위치를 부모의 로컬로 변환(부모 안에 있는지 확인)
-        Vector2 localPointInParent;
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, pointerPos, null, out localPointInParent))
-        {
-            return -1;
-        }
+        Vector3[] corners = new Vector3[4];
+        rect.GetWorldCorners(corners);
 
-        //부모의 자식 맨 위에서부터 비교한 뒤 특정 자식 의 Y보다 높아지면 해당 인덱스반환
-        //없으면 자식의 개수(맨아래)인덱스 반환
+        float topY = corners[1].y;
+        float bottomY = corners[0].y;
+
+        return pointerPos.y >= bottomY && pointerPos.y <= topY;
+    }
+
+
+    //드래그 중 위치로 인덱스 계산
+    public int GetInsertIndex(Transform parent, Vector2 pointerScreenPos)
+    {
         for (int i = 0; i < parent.childCount; i++)
         {
-            RectTransform childRect = parent.GetChild(i).GetComponent<RectTransform>();
-            if (childRect == null) continue;
+            RectTransform child = parent.GetChild(i) as RectTransform;
+            if (child == null) continue;
 
-            Vector2 localPointInChild;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                childRect,
-                pointerPos,
-                null,
-                out localPointInChild
-            );
+            // 슬롯의 월드 기준 상하좌표 가져오기
+            Vector3[] corners = new Vector3[4];
+            child.GetWorldCorners(corners);
+            float top = corners[1].y;
+            float bottom = corners[0].y;
+            float centerY = (top + bottom) * 0.5f;
 
-            if (localPointInChild.y > 0)
+            // 마우스가 현재 슬롯의 중앙보다 위에 있으면 그 위치에 반환
+            if (pointerScreenPos.y > centerY)
             {
                 return i;
             }
         }
+
         return parent.childCount;
     }
+    #endregion
 }
