@@ -7,12 +7,18 @@ public class GameStart : MonoBehaviour
 {
     public Button startButton; // 시작 버튼
     public Button LoadButton;
+    public Button LisenceButton;
+    public Button CloseLisenceButton; // 라이센스 닫기 버튼
+
+    public Image LisenceBackGroundImage;
 
     private void Start()
     {
         // 시작 버튼 클릭 이벤트 등록
         startButton.onClick.AddListener(OnStartButtonClicked);
         LoadButton.onClick.AddListener(OnLoadButtonClicked);
+        LisenceButton.onClick.AddListener(OnLisenceButtonClicked);
+        CloseLisenceButton.onClick.AddListener(CloseLisenceeButtonClicked);
     }
 
     private void OnStartButtonClicked()
@@ -36,7 +42,7 @@ public class GameStart : MonoBehaviour
         Debug.Log("게임을 불러옵니다.");
         // 예: 저장된 플레이어 데이터 불러오기, 씬 전환 등
         Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
-        
+
         if (loadedPlayer != null)
         {
             PlayerManager.Instance.player = loadedPlayer;
@@ -47,6 +53,18 @@ public class GameStart : MonoBehaviour
         {
             Debug.Log("저장된 데이터가 없습니다.");
         }
+    }
+
+    private void OnLisenceButtonClicked()
+    {
+        // 라이센스 정보 표시 로직
+        LisenceBackGroundImage.gameObject.SetActive(true);
+    }
+
+    public void CloseLisenceeButtonClicked()
+    {
+        // 라이센스 정보 닫기
+        LisenceBackGroundImage.gameObject.SetActive(false);
     }
 }
 
