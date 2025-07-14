@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +16,11 @@ public class BattleSelectView : MonoBehaviour
     [SerializeField] private GameObject skillPanel;
     [SerializeField] private GameObject gaugePanel;
     [SerializeField] private GameObject behaviorPanel;
-    [SerializeField] private RectTransform selectMonsterImage;
+    [SerializeField] private GameObject selectMonsterImage;
+    [SerializeField] private RectTransform selectMonsterRect;
+
     [SerializeField] private Canvas gaugeCanvas;
+    [SerializeField] private Canvas battleSelectCanvas;
 
     public void HideSelectPanel()
     {
@@ -61,6 +65,31 @@ public class BattleSelectView : MonoBehaviour
         return gauge;
     }
 
+    // 추후에 되살릴 겁니다! 지우지 마세요!
+    public GameObject InitiateSelectImage(Transform tr)
+    {
+        GameObject selectImage = Instantiate(selectMonsterImage, battleSelectCanvas.transform);
+
+        // 몬스터의 Sprite Renderer 참조
+        SpriteRenderer sr = tr.GetComponentInChildren<SpriteRenderer>();
+
+        // 몬스터 sprite의 중앙
+        Vector3 monsterCenterPos = sr.bounds.center;
+
+        // UI 좌표를 몬스터의 좌표로 옮기기 위한 변수
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterCenterPos);
+
+        Canvas canvas = selectImage.GetComponentInParent<Canvas>();
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint);
+
+        selectImage.GetComponent<RectTransform>().localPosition = localPoint;
+        selectImage.SetActive(false);
+
+        return selectImage;
+    }
+
     public void SetHpGauge(GameObject gauge, float hpRatio)
     {
         Image hpBar = gauge.transform.GetChild(0).GetComponent<Image>();
@@ -86,18 +115,18 @@ public class BattleSelectView : MonoBehaviour
         // UI 좌표를 몬스터의 좌표로 옮기기 위한 변수
         Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterCenterPos);
 
-        Canvas canvas = selectMonsterImage.GetComponentInParent<Canvas>();
+        Canvas canvas = selectMonsterRect.GetComponentInParent<Canvas>();
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();
 
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out localPoint);
 
-        selectMonsterImage.localPosition = localPoint;
-        selectMonsterImage.gameObject.SetActive(true);
+        selectMonsterRect.GetComponent<RectTransform>().localPosition = localPoint;
+        selectMonsterRect.gameObject.SetActive(true);
     }
 
     public void OffSelectMonster()
     {
-        selectMonsterImage.gameObject.SetActive(false);
+        selectMonsterImage.SetActive(false);
     }
 }
