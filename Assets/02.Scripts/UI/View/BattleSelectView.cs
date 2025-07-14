@@ -17,6 +17,7 @@ public class BattleSelectView : MonoBehaviour
     [SerializeField] private GameObject gaugePanel;
     [SerializeField] private GameObject behaviorPanel;
     [SerializeField] private GameObject selectMonsterImage;
+    [SerializeField] private RectTransform selectMonsterRect;
 
     [SerializeField] private Canvas gaugeCanvas;
     [SerializeField] private Canvas battleSelectCanvas;
@@ -64,6 +65,7 @@ public class BattleSelectView : MonoBehaviour
         return gauge;
     }
 
+    // 추후에 되살릴 겁니다! 지우지 마세요!
     public GameObject InitiateSelectImage(Transform tr)
     {
         GameObject selectImage = Instantiate(selectMonsterImage, battleSelectCanvas.transform);
@@ -86,18 +88,6 @@ public class BattleSelectView : MonoBehaviour
         selectImage.SetActive(false);
 
         return selectImage;
-    }
-
-    public void SetupMonsterUI(MonsterCharacter character)
-    {
-        var selectImage = InitiateSelectImage(character.transform);
-
-        var hoverHandler = character.GetComponent<MonsterHoverHandler>();
-
-        if (hoverHandler != null)
-        {
-            hoverHandler.SetUp(selectImage);
-        }
     }
 
     public void SetHpGauge(GameObject gauge, float hpRatio)
@@ -125,18 +115,18 @@ public class BattleSelectView : MonoBehaviour
         // UI 좌표를 몬스터의 좌표로 옮기기 위한 변수
         Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterCenterPos);
 
-        Canvas canvas = selectMonsterImage.GetComponentInParent<Canvas>();
+        Canvas canvas = selectMonsterRect.GetComponentInParent<Canvas>();
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();
 
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out localPoint);
 
-        selectMonsterImage.transform.position = localPoint;
-        selectMonsterImage.gameObject.SetActive(true);
+        selectMonsterRect.GetComponent<RectTransform>().localPosition = localPoint;
+        selectMonsterRect.gameObject.SetActive(true);
     }
 
     public void OffSelectMonster()
     {
-        selectMonsterImage.gameObject.SetActive(false);
+        selectMonsterImage.SetActive(false);
     }
 }

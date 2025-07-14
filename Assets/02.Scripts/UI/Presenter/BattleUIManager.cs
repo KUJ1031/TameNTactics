@@ -15,6 +15,8 @@ public class BattleUIManager : MonoBehaviour
 
     public EmbraceView EmbraceView { get { return embraceView; } }
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
+    public bool CanHoverSelect { get; private set; } = false;
+    public HoverTargetType CurrentHoverTarget { get; private set; } = HoverTargetType.None;
 
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
@@ -26,6 +28,18 @@ public class BattleUIManager : MonoBehaviour
     public GameObject MiniGamePrefab { get { return miniGamePrefab; } }
 
     private List<MonsterCharacter> allMonsterCharacters = new();
+
+    public void EnableHoverSelect(HoverTargetType targetType)
+    {
+        CanHoverSelect = true;
+        CurrentHoverTarget = targetType;
+    }
+
+    public void DisableHoverSelect()
+    {
+        CanHoverSelect = false;
+        CurrentHoverTarget = HoverTargetType.None;
+    }
 
     private void OnEnable()
     {
@@ -44,12 +58,23 @@ public class BattleUIManager : MonoBehaviour
 
     public void OnAttackButtonClick()
     {
+        EnableHoverSelect(HoverTargetType.PlayerTeam);
         battleSelectView.HideSelectPanel();
     }
 
     public void IntoBattleMenuSelect()
     {
         battleSelectView.HideSkillPanel();
+    }
+
+    public void OnEmbraceButtonClick()
+    {
+        EnableHoverSelect(HoverTargetType.EnemyTeam);
+    }
+
+    public void OnActionComplete()
+    {
+        DisableHoverSelect();
     }
 
     public void ShowMonsterSkills(MonsterData monsterData)
@@ -164,6 +189,34 @@ public class BattleUIManager : MonoBehaviour
     public void BattleEndMessage(bool isWin)
     {
         battleInfoView.ShowEndBattleMessage(isWin);
+    }
+
+    public void DeselectAllMonsters()
+    {
+        foreach (var mc in allMonsterCharacters)
+        {
+            if (mc == null) continue;
+
+            var hoverHandler = mc.GetComponent<MonsterHoverHandler>();
+
+            if (hoverHandler != null)
+            {
+                hoverHandler.Deselect();
+            }
+        }
+    }
+
+    public void DeselectMonster(Monster target)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(target);
+
+        if (mc == null) return;
+
+        var hoverHandler = mc.GetComponent<MonsterHoverHandler>();
+        if (hoverHandler != null)
+        {
+            hoverHandler.Deselect();
+        }
     }
 
     private void OnMonsterDamaged(Monster monster, int damage)

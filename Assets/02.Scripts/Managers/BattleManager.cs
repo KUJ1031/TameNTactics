@@ -119,7 +119,7 @@ public class BattleManager : Singleton<BattleManager>
             Debug.Log($"레벨이 낮아 궁극기를 사용할 수 없습니다.");
             return;
         }
-        
+
         selectedSkill = skill;
         selectedTargets.Clear();
         enemyChosenAction = null;
@@ -236,6 +236,7 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
         EndTurn();
+        UIManager.Instance.battleUIManager.DeselectAllMonsters();
         ClearSelections();
     }
 
