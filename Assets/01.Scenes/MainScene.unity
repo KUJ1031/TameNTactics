@@ -2465,8 +2465,8 @@ MonoBehaviour:
   timeText: {fileID: 1039017374}
   playTimeText: {fileID: 1768618741}
   overlayImage: {fileID: 1747933718}
-  dayColor: {r: 0, g: 0, b: 0, a: 0}
-  nightColor: {r: 0, g: 0, b: 0.1, a: 0.9019608}
+  dayColor: {r: 0.99915737, g: 1, b: 0.8820755, a: 0}
+  nightColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!4 &280497442
 Transform:
   m_ObjectHideFlags: 0
