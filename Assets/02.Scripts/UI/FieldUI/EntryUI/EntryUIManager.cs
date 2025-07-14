@@ -57,10 +57,10 @@ public class EntryUIManager : Singleton<EntryUIManager>
     //슬롯비우기
     private void ClearAllSlots()
     {
-        foreach (var slot in battleEntrySlots)
-            Destroy(slot.gameObject);
-        foreach (var slot in benchEntrySlots)
-            Destroy(slot.gameObject);
+        foreach (Transform child in BattleParent)
+            Destroy(child.gameObject);
+        foreach (Transform child in BenchParent)
+            Destroy(child.gameObject);
 
         battleEntrySlots.Clear();
         benchEntrySlots.Clear();
@@ -83,24 +83,65 @@ public class EntryUIManager : Singleton<EntryUIManager>
         selectedSlot.SetSelected(true);
     }
 
-    public void OnDrop(EntrySlotUI draggedSlot, Transform dropTarget)
+    //드랍되었을 때 처리
+    public void OnDrop(EntrySlotUI draggedSlot, Transform dropTarget, Vector2 pointerPosition, Transform originalParent)
     {
-        // 부모 바꾸기
-        draggedSlot.transform.SetParent(dropTarget);
+        if (dropTarget == null)
+        {
+            RestoreToOriginalParentList(draggedSlot, originalParent);
+            return;
+        }
 
-        // 슬롯 리스트 재배치
-        if (battleEntrySlots.Contains(draggedSlot))
-            battleEntrySlots.Remove(draggedSlot);
-        if (benchEntrySlots.Contains(draggedSlot))
-            benchEntrySlots.Remove(draggedSlot);
+        RemoveFromAllSlotLists(draggedSlot);
+
+        int insertIndex = GetInsertIndex(dropTarget, pointerPosition);
 
         if (dropTarget == BattleParent)
-            battleEntrySlots.Add(draggedSlot);
+        {
+            HandleDrop(BattleParent, battleEntrySlots, draggedSlot, insertIndex);
+        }
         else if (dropTarget == BenchParent)
-            benchEntrySlots.Add(draggedSlot);
+        {
+            HandleDrop(BenchParent, benchEntrySlots, draggedSlot, insertIndex);
+        }
+        //데이터 처리
+    }
 
-        // 위치 보정
-        draggedSlot.transform.SetAsLastSibling();
+    //해당 인덱스에 만들기
+    private void HandleDrop(Transform dropTargetParent, List<EntrySlotUI> entrySlots, EntrySlotUI draggedSlot, int insertIndex)
+    {
+        draggedSlot.transform.SetParent(dropTargetParent);
+
+        if (insertIndex >= 0 && insertIndex <= entrySlots.Count)
+        {
+            entrySlots.Insert(insertIndex, draggedSlot);
+            draggedSlot.transform.SetSiblingIndex(insertIndex);
+        }
+        else
+        {
+            entrySlots.Add(draggedSlot);
+            draggedSlot.transform.SetAsLastSibling();
+        }
+    }
+
+    //슬롯지우기
+    private void RemoveFromAllSlotLists(EntrySlotUI slot)
+    {
+        battleEntrySlots.Remove(slot);
+        benchEntrySlots.Remove(slot);
+    }
+
+    //부모 리스트 원상복구
+    private void RestoreToOriginalParentList(EntrySlotUI slot, Transform originalParent)
+    {
+        if (originalParent == BattleParent)
+        {
+            battleEntrySlots.Add(slot);
+        }
+        else if (originalParent == BenchParent)
+        {
+            benchEntrySlots.Add(slot);
+        }
     }
 
     // 드래그 중 포인터가 어느 부모 위에 있는지 판단
@@ -109,6 +150,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
         RectTransform battleRect = BattleParent.GetComponent<RectTransform>();
         RectTransform benchRect = BenchParent.GetComponent<RectTransform>();
 
+        //포인터가 요소의 RectTransform 안에 들어왔으면 해당 요소 리턴
         if (RectTransformUtility.RectangleContainsScreenPoint(battleRect, pointerPosition))
             return BattleParent;
         if (RectTransformUtility.RectangleContainsScreenPoint(benchRect, pointerPosition))
@@ -119,25 +161,35 @@ public class EntryUIManager : Singleton<EntryUIManager>
     //드래그 중 위치로 인덱스 계산
     public int GetInsertIndex(Transform parent, Vector2 pointerPos)
     {
+        RectTransform parentRect = parent.GetComponent<RectTransform>();
+
+        //현재 마우스 위치를 부모의 로컬로 변환(부모 안에 있는지 확인)
+        Vector2 localPointInParent;
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, pointerPos, null, out localPointInParent))
+        {
+            return -1;
+        }
+
+        //부모의 자식 맨 위에서부터 비교한 뒤 특정 자식 의 Y보다 높아지면 해당 인덱스반환
+        //없으면 자식의 개수(맨아래)인덱스 반환
         for (int i = 0; i < parent.childCount; i++)
         {
-            RectTransform child = parent.GetChild(i).GetComponent<RectTransform>();
-            if (child == null) continue;
+            RectTransform childRect = parent.GetChild(i).GetComponent<RectTransform>();
+            if (childRect == null) continue;
 
-            Vector2 localPoint;
+            Vector2 localPointInChild;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                parent.GetComponent<RectTransform>(),
+                childRect,
                 pointerPos,
                 null,
-                out localPoint
+                out localPointInChild
             );
 
-            if (localPoint.y > child.anchoredPosition.y) // 위에 있을 경우
+            if (localPointInChild.y > 0)
             {
                 return i;
             }
         }
-
         return parent.childCount;
     }
 }

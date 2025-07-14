@@ -57,6 +57,7 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
 
     public Monster GetMonster() => monster;
 
+    //클릭
     public void OnPointerClick(PointerEventData eventData)
     {
         EntryUIManager.Instance.SelectSlot(this);
@@ -65,24 +66,41 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     //드래그 시작
     public void OnBeginDrag(PointerEventData eventData)
     {
+        //드래그 가능한지 확인
+        if (monster == null)
+        {
+            eventData.pointerDrag = null;
+            return;
+        }
+
+        //시작 부모 저장(드롭할 곳이 없을경우 돌아가기 위함)
         previousParent = transform.parent;
+        
+        //부모를 맨 위 캔버스로 지정후 맨 아래 요소로(다른 요소보다 앞으로 오기위해)
         transform.SetParent(canvas);
         transform.SetAsLastSibling();
 
+        //반투명 및 클릭 막기
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
     }
+
     //드래그 중
     public void OnDrag(PointerEventData eventData)
     {
+        //슬롯의 위치를 마우스로
         rect.position = eventData.position;
+        
     }
+
     //드래그 끝
     public void OnEndDrag(PointerEventData eventData)
     {
+        //반투명 및 클릭 막기 초기화
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
+        //드랍 될 부모 판단
         Transform dropTarget = EntryUIManager.Instance.GetDropTarget(eventData.position);
         if (dropTarget != null)
         {
@@ -90,7 +108,8 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
             transform.SetParent(dropTarget);
             transform.SetSiblingIndex(insertIndex);
 
-            EntryUIManager.Instance.OnDrop(this, dropTarget);
+            //드랍 되었을 때 처리
+            EntryUIManager.Instance.OnDrop(this, dropTarget, eventData.position, previousParent);
         }
         else
         {
