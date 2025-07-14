@@ -5,6 +5,7 @@ public class AnimationController : MonoBehaviour
 {
     public void SetUp()
     {
+        Debug.Log("SetUp 호출됨");
         StartCoroutine(ShowDamageAnimation());
     }
 
