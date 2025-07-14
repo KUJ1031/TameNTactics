@@ -10,10 +10,24 @@ public class SelectPlayerMonsterState : BaseBattleState
     {
         Debug.Log("플레이어 몬스터 선택 상태로 진입했습니다. 몬스터를 선택하세요.");
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("공격할 몬스터를 선택하세요.");
+        UIManager.Instance.battleUIManager.EnableHoverSelect(HoverTargetType.PlayerTeam);
     }
     public override void Execute()
     {
         // todo 방향키 혹은 마우스 위에 올려놓을 시 빛나면서 고르는거 대기 상태
+        //Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+        //if (hit.collider != null)
+        //{
+        //    if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
+        //    {
+        //        if (BattleManager.Instance.BattleEntryTeam.Contains(monsterCharacter.monster))
+        //        {
+        //            UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
+        //        }
+        //    }
+        //}
     }
 
     public void OnMonsterSelected(Monster monster)

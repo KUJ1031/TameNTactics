@@ -57,6 +57,7 @@ public class Monster
     public Action<Monster> HpChange;
     public Action<Monster> ultimateCostChange;
     public Action<Monster, int> DamagePopup;
+    public Action<Monster> DamagedAnimation;
 
     //몬스터 데이터로 초기화
     public void SetMonster(Monster newMonster)
@@ -215,6 +216,7 @@ public class Monster
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(this, damage);
+        DamagedAnimation?.Invoke(this);
         
         if (CurHp <= 0)
         {

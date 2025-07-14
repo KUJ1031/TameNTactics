@@ -11,6 +11,7 @@ public class SelectCaptureTargetState : BaseBattleState
         Debug.Log("포섭하기 상태로 변경");
         UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("포섭하고 싶은 몬스터를 선택하세요.");
+        UIManager.Instance.battleUIManager.EnableHoverSelect(HoverTargetType.EnemyTeam);
         battleSystem.StartCoroutine(WaitForMonsterSelection());
     }
 
@@ -55,6 +56,7 @@ public class SelectCaptureTargetState : BaseBattleState
             }
             yield return null;
         }
+        UIManager.Instance.battleUIManager.OnActionComplete();
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 포섭을 시도하세요!");
 
@@ -94,6 +96,7 @@ public class SelectCaptureTargetState : BaseBattleState
                 if (rotatePoint.isInSuccessZone)
                 {
                     Debug.Log("포섭 성공!");
+                    UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
                     BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
                     UIManager.Instance.battleUIManager.RemoveGauge(targetMonster);
                     UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
@@ -131,6 +134,19 @@ public class SelectCaptureTargetState : BaseBattleState
     {
         // todo 선택된(방향키나 마우스 올려놓기) 몬스터가 체력이 0이 아니라면
         // 적 몬스터(잡을수있는)를 강조효과 UI 띄우기
+        //Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+        //if (hit.collider != null)
+        //{
+        //    if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
+        //    {
+        //        if (BattleManager.Instance.BattleEntryTeam.Contains(monsterCharacter.monster))
+        //        {
+        //            UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
+        //        }
+        //    }
+        //}
     }
 
     public void OnCancelSelectCaptureTarget()
