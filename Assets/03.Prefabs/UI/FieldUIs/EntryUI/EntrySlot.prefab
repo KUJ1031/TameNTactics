@@ -883,6 +883,7 @@ GameObject:
   - component: {fileID: 9138213705253508474}
   - component: {fileID: 4782000166791547503}
   - component: {fileID: 4358219273023522214}
+  - component: {fileID: 3869472094248190877}
   m_Layer: 5
   m_Name: EntrySlot
   m_TagString: Untagged
@@ -984,6 +985,21 @@ MonoBehaviour:
   monsterExp: {fileID: 7617048162929096957}
   ExpBar: {fileID: 6779262247844013176}
   outline: {fileID: 4782000166791547503}
+  canvas: {fileID: 0}
+  rect: {fileID: 2314376502706975529}
+  canvasGroup: {fileID: 3869472094248190877}
+--- !u!225 &3869472094248190877
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6678341448844921113}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7082312099150513933
 GameObject:
   m_ObjectHideFlags: 0

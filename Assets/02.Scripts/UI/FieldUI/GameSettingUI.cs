@@ -1,18 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameSettingUI : FieldMenuBaseUI
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Button audioSettingButton, keySettingButton, closeMenuButton;
+    [SerializeField] private GameObject audioSettingUI;
+    [SerializeField] private GameObject keySettingUI;
+
+
+    private void Awake()
     {
-        
+        audioSettingButton.onClick.AddListener(OnClickAudioSettingButton);
+        keySettingButton.onClick.AddListener(OnClickKeySettingButton);
+        closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnClickAudioSettingButton()
     {
-        
+        ToggleSettingView(true);
+    }
+    private void OnClickKeySettingButton()
+    {
+        ToggleSettingView(false);
+    }
+    private void OnClickCloseMenuButton()
+    {
+        FieldUIManager.Instance.CloseAllUI();
+    }
+
+    private void ToggleSettingView(bool isAudio)
+    {
+        audioSettingUI.SetActive(isAudio);
+        keySettingUI.SetActive(!isAudio);
     }
 }

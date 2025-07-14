@@ -52,6 +52,7 @@ public class MonsterDetailUI : FieldMenuBaseUI
     [SerializeField] private Button backButton;
     [SerializeField] private Button addEntryButton;
     [SerializeField] private Button removeEntryButton;
+    [SerializeField] private Button closeMenuButton;
 
     private Monster monster;
     private Player player;
@@ -138,6 +139,11 @@ public class MonsterDetailUI : FieldMenuBaseUI
         backButton.onClick.AddListener(OnClickBackButton);
         addEntryButton.onClick.AddListener(OnClickAddEntryButton);
         removeEntryButton.onClick.AddListener(OnClickRemoveEntryButton);
+        closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
+    }
+    public void OnClickCloseMenuButton()
+    {
+        FieldUIManager.Instance.CloseAllUI();
     }
 
     //엔트리 추가버튼
