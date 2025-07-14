@@ -13,7 +13,9 @@ public class BattleManager : Singleton<BattleManager>
     public List<Monster> enemyTeam;
 
     public List<Monster> BattleEntryTeam { get; private set; } = new();
+    public List<MonsterCharacter> BattleEntryCharacters { get; private set; } = new();
     public List<Monster> BattleEnemyTeam { get; private set; } = new();
+    public List<MonsterCharacter> BattleEnemyCharacters { get; private set; } = new();
 
     public List<Monster> possibleTargets = new();
     public List<Monster> selectedTargets = new();
@@ -45,6 +47,7 @@ public class BattleManager : Singleton<BattleManager>
             if (monsterChar != null && monsterChar.monster != null)
             {
                 BattleEntryTeam.Add(monsterChar.monster);
+                BattleEntryCharacters.Add(monsterChar);
             }
         }
 
@@ -54,6 +57,7 @@ public class BattleManager : Singleton<BattleManager>
             if (monsterChar != null && monsterChar.monster != null)
             {
                 BattleEnemyTeam.Add(monsterChar.monster);
+                BattleEnemyCharacters.Add(monsterChar);
             }
         }
     }
