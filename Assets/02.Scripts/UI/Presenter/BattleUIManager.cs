@@ -15,6 +15,8 @@ public class BattleUIManager : MonoBehaviour
 
     public EmbraceView EmbraceView { get { return embraceView; } }
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
+    public bool CanHoverSelect { get; private set; } = false;
+    public HoverTargetType CurrentHoverTarget { get; private set; } = HoverTargetType.None;
 
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
@@ -26,6 +28,18 @@ public class BattleUIManager : MonoBehaviour
     public GameObject MiniGamePrefab { get { return miniGamePrefab; } }
 
     private List<MonsterCharacter> allMonsterCharacters = new();
+
+    public void EnableHoverSelect(HoverTargetType targetType)
+    {
+        CanHoverSelect = true;
+        CurrentHoverTarget = targetType;
+    }
+
+    public void DisableHoverSelect()
+    {
+        CanHoverSelect = false;
+        CurrentHoverTarget = HoverTargetType.None;
+    }
 
     private void OnEnable()
     {
@@ -44,6 +58,7 @@ public class BattleUIManager : MonoBehaviour
 
     public void OnAttackButtonClick()
     {
+        EnableHoverSelect(HoverTargetType.PlayerTeam);
         battleSelectView.HideSelectPanel();
     }
 
@@ -52,23 +67,14 @@ public class BattleUIManager : MonoBehaviour
         battleSelectView.HideSkillPanel();
     }
 
-    // 내 몬스터 혹은 상대 몬스터 선택 시 강조 표시 이동
-    public void SelectMonster()
+    public void OnEmbraceButtonClick()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+        EnableHoverSelect(HoverTargetType.EnemyTeam);
+    }
 
-            if (hit.collider != null)
-            {
-                if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
-                {
-                    battleSelectView.MoveSelectMonster(monsterCharacter.transform);
-                }
-            }
-            else return;
-        }
+    public void OnActionComplete()
+    {
+        DisableHoverSelect();
     }
 
     public void ShowMonsterSkills(MonsterData monsterData)
@@ -102,6 +108,21 @@ public class BattleUIManager : MonoBehaviour
             battleSelectView.SetHpGauge(gauge, hpRatio);
 
             mon.gameObject.AddComponent<MonsterGaugeHolder>().InitGauge(gauge);
+        }
+    }
+
+    public void SettingMonsterSelecter(Transform ally, Transform enemy)
+    {
+        foreach (var mon in allMonsterCharacters)
+        {
+            var selectImage = battleSelectView.InitiateSelectImage(mon.transform);
+
+            var hoverHandler = mon.GetComponent<MonsterHoverHandler>();
+
+            if (hoverHandler != null)
+            {
+                hoverHandler.SetUp(selectImage);
+            }
         }
     }
 
@@ -168,6 +189,34 @@ public class BattleUIManager : MonoBehaviour
     public void BattleEndMessage(bool isWin)
     {
         battleInfoView.ShowEndBattleMessage(isWin);
+    }
+
+    public void DeselectAllMonsters()
+    {
+        foreach (var mc in allMonsterCharacters)
+        {
+            if (mc == null) continue;
+
+            var hoverHandler = mc.GetComponent<MonsterHoverHandler>();
+
+            if (hoverHandler != null)
+            {
+                hoverHandler.Deselect();
+            }
+        }
+    }
+
+    public void DeselectMonster(Monster target)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(target);
+
+        if (mc == null) return;
+
+        var hoverHandler = mc.GetComponent<MonsterHoverHandler>();
+        if (hoverHandler != null)
+        {
+            hoverHandler.Deselect();
+        }
     }
 
     private void OnMonsterDamaged(Monster monster, int damage)

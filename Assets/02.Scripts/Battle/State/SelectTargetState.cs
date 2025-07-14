@@ -11,6 +11,7 @@ public class SelectTargetState : BaseBattleState
     {
         Debug.Log("타겟 선택 상태로 진입했습니다. 공격할 몬스터를 선택하세요.");
         ShowPossibleTargets();
+        UIManager.Instance.battleUIManager.EnableHoverSelect(HoverTargetType.EnemyTeam);
         UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
         UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("공격할 상대 몬스터를 선택하세요.");
@@ -21,6 +22,23 @@ public class SelectTargetState : BaseBattleState
         // todo 타겟 몬스터 강조 효과(빛나기) UI 활성화
     }
 
+    public override void Execute()
+    {
+        //Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+        //if (hit.collider != null)
+        //{
+        //    if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
+        //    {
+        //        if (BattleManager.Instance.BattleEnemyTeam.Contains(monsterCharacter.monster))
+        //        {
+        //            UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
+        //        }
+        //    }
+        //}
+    }
+
     public void OnSelectTargetMonster(Monster monster)
     {
         if (!BattleManager.Instance.possibleTargets.Contains(monster))
@@ -29,7 +47,7 @@ public class SelectTargetState : BaseBattleState
             MonsterSelecter.isClicked = false;
             return;
         }
-        UIManager.Instance.battleUIManager.OffSelectMonsterUI();
+        //UIManager.Instance.battleUIManager.OffSelectMonsterUI();
         BattleManager.Instance.SelectTargetMonster(monster);
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
     }
@@ -43,8 +61,9 @@ public class SelectTargetState : BaseBattleState
     {
         // todo 몬스터 강조 효과(빛나기)UI 숨기기
         // todo 스킬 목록 UI 숨기기
+        //UIManager.Instance.battleUIManager.DeselectAllMonsters();
     }
-    
+
     private void ShowPossibleTargets()
     {
         List<MonsterCharacter> possibleTargets = BattleManager.Instance.CheckPossibleTargets();

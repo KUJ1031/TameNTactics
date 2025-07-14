@@ -20,7 +20,9 @@ public class SpawnBattleAllMonsters : MonoBehaviour
         CreateMonster(enemyTeam, enemySpawner);
 
         BattleManager.Instance.FindSpawnMonsters();
+        AnimationManager.Instance.SubscribeEvents();
         UIManager.Instance.battleUIManager.SettingMonsterGauge(allySpawner, enemySpawner);
+        UIManager.Instance.battleUIManager.SettingMonsterSelecter(allySpawner, enemySpawner);
         BattleManager.Instance.StartBattle();
     }
 
@@ -40,7 +42,7 @@ public class SpawnBattleAllMonsters : MonoBehaviour
                 //객체 값 수정
                 var monsterChar = enemyMonster.GetComponent<MonsterCharacter>();
                 monsterChar.Init(monsterList[i]);
-                
+
                 var clickable = enemyMonster.GetComponent<MonsterSelecter>();
                 clickable?.Initialize(monsterChar.monster); // Monster 데이터 넘기기
 
