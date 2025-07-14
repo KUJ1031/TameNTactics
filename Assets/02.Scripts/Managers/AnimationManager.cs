@@ -6,33 +6,33 @@ using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
+    public static AnimationManager Instance { get; private set; }
+    
     [SerializeField] private AnimationController damagedPrefab;
 
-    private List<MonsterCharacter> AllMonsters =>
-        BattleManager.Instance.BattleEntryCharacters
-            .Concat(BattleManager.Instance.BattleEnemyCharacters)
-            .ToList();
-    
-    private List<MonsterCharacter> cachedMonsters;
+    private List<MonsterCharacter> allMonsters = new();
 
-    public void RegisterMonsters()
+    private void Awake()
     {
-        cachedMonsters = AllMonsters;
-        foreach (var m in cachedMonsters)
-            m.monster.DamagedAnimation += OnMonsterDamagedAnimation;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 
-    private void FindAllMonsters()
+    public void SubscribeEvents()
     {
-        cachedMonsters = AllMonsters;
-        foreach (var m in cachedMonsters)
+        foreach (var m in allMonsters)
             m.monster.DamagedAnimation += OnMonsterDamagedAnimation;
     }
 
     private void OnDisable()
     {
-        if (cachedMonsters == null) return;
-        foreach (var m in cachedMonsters)
+        if (allMonsters == null) return;
+        foreach (var m in allMonsters)
             m.monster.DamagedAnimation -= OnMonsterDamagedAnimation;
     }
 
@@ -40,19 +40,30 @@ public class AnimationManager : MonoBehaviour
     {
         MonsterCharacter mc = null;
         
-        foreach (var mon in AllMonsters)
+        foreach (var mon in allMonsters)
         {
             if (mon.monster == monster)
             {
                 mc = mon;
+                break;
             }
         }
         
         if (mc == null) return;
 
         Vector3 spawnPos = mc.transform.position;
+        spawnPos += Vector3.up * 1f;
 
         AnimationController damagedAnimation = Instantiate(damagedPrefab, spawnPos, Quaternion.identity);
+
         damagedAnimation.SetUp();
+    }
+
+    public void AddAllMonsters(MonsterCharacter monster)
+    {
+        if (!allMonsters.Contains(monster))
+        {
+            allMonsters.Add(monster);
+        }
     }
 }
