@@ -124,7 +124,8 @@ MonoBehaviour:
   skillPanel: {fileID: 0}
   gaugePanel: {fileID: 2285872911564272583, guid: 4e8d1e26a1541d549b1f760f80bd4ba9, type: 3}
   behaviorPanel: {fileID: 0}
-  selectMonsterImage: {fileID: 6760078945315935333}
+  selectMonsterImage: {fileID: 6506855154397374951, guid: 13b0a84fba5c56c4cb39ce1f595c075d, type: 3}
+  selectMonsterRect: {fileID: 0}
   gaugeCanvas: {fileID: 0}
   battleSelectCanvas: {fileID: 3019345627977933484}
 --- !u!1 &1884185142462629258
@@ -1309,6 +1310,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2684984429478296836}
     m_Modifications:
+    - target: {fileID: 4923641045799510768, guid: 13b0a84fba5c56c4cb39ce1f595c075d, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6506855154397374951, guid: 13b0a84fba5c56c4cb39ce1f595c075d, type: 3}
       propertyPath: m_Name
       value: SelectMonster

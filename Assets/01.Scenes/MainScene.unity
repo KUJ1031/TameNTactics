@@ -2465,8 +2465,8 @@ MonoBehaviour:
   timeText: {fileID: 1039017374}
   playTimeText: {fileID: 1768618741}
   overlayImage: {fileID: 1747933718}
-  dayColor: {r: 0, g: 0, b: 0, a: 0}
-  nightColor: {r: 0, g: 0, b: 0.1, a: 0.9019608}
+  dayColor: {r: 0.99915737, g: 1, b: 0.8820755, a: 0}
+  nightColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!4 &280497442
 Transform:
   m_ObjectHideFlags: 0
@@ -20424,7 +20424,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!1 &1909255094
 GameObject:
@@ -36530,7 +36530,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7554133584666033057, guid: 1414867202016c04fa3e30c247de509c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8335166487916938582, guid: 1414867202016c04fa3e30c247de509c, type: 3}
       propertyPath: moveSpeed
