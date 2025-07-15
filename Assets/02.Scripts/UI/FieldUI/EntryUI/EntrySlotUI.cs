@@ -39,8 +39,8 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         monsterLevel.text = $"Lv.{monster.Level}";
         monsterHP.text = $"{monster.CurHp}/{monster.MaxHp}";
         monsterExp.text = $"{monster.CurExp}/{monster.MaxExp}";
-        HPBar.fillAmount = monster.CurHp / monster.MaxHp;
-        ExpBar.fillAmount = monster.CurExp / monster.MaxExp;
+        HPBar.fillAmount = (float)monster.CurHp / monster.MaxHp;
+        ExpBar.fillAmount = (float)monster.CurExp / monster.MaxExp;
     }
     //빈칸 생성
     public void VoidSlotInit()
@@ -94,7 +94,6 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         rect.position = eventData.position;
 
         EntryUIManager.Instance.UpdatePlaceholderPosition(eventData.position);
-
     }
 
     //드래그 끝
