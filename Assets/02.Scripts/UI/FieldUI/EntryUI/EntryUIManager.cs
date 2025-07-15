@@ -193,14 +193,23 @@ public class EntryUIManager : Singleton<EntryUIManager>
     // 드래그 중 포인터가 어느 부모 위에 있는지 판단
     public Transform GetDropTarget(Vector2 pointerPosition)
     {
-        if (IsPointerInYRange(BattleParent, pointerPosition))
+        var p = PlayerManager.Instance.player;
+        if (p.battleEntry.Count == 3 && p.benchEntry.Count > 0)
+        {
+
+            if (IsPointerInYRange(BattleParent, pointerPosition))
+                return BattleParent;
+
+            if (IsPointerInYRange(BenchParent, pointerPosition))
+                return BenchParent;
+        }
+        else
+        {
             return BattleParent;
-
-        if (IsPointerInYRange(BenchParent, pointerPosition))
-            return BenchParent;
-
+        }
         return null;
     }
+
     //부모 위치 스크린좌표로 확인
     private bool IsPointerInYRange(Transform parent, Vector2 pointerPos)
     {
