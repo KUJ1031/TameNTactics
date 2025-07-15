@@ -6,9 +6,11 @@ public class EntryUIManager : Singleton<EntryUIManager>
     [SerializeField] private Transform BattleParent;
     [SerializeField] private Transform BenchParent;
     [SerializeField] private GameObject EntrySlotPrefab;
+    [SerializeField] private EntryUI entryUI;
 
     private List<EntrySlotUI> battleEntrySlots = new();
     private List<EntrySlotUI> benchEntrySlots = new();
+
     private EntrySlotUI selectedSlot;
     private GameObject placeholder; // 드래그 중 예상 위치에 보여줄 객체
 
@@ -24,7 +26,9 @@ public class EntryUIManager : Singleton<EntryUIManager>
     {
         ClearAllSlots();
         SetSlots();
+        SelectSlot(battleEntrySlots[0]);
     }
+
     //슬롯 세팅
     private void SetSlots()
     {
@@ -42,6 +46,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
             MakeSlot(BenchParent, mon, benchEntrySlots);
         }
     }
+
     //슬롯 만들기
     private void MakeSlot(Transform parent, Monster monster, List<EntrySlotUI> slotList)
     {
@@ -55,7 +60,8 @@ public class EntryUIManager : Singleton<EntryUIManager>
 
         slotList.Add(slot);
     }
-    //슬롯비우기
+
+    //슬롯 비우기
     private void ClearAllSlots()
     {
         foreach (Transform child in BattleParent)
@@ -67,21 +73,20 @@ public class EntryUIManager : Singleton<EntryUIManager>
         benchEntrySlots.Clear();
         selectedSlot = null;
     }
+
     //슬롯 선택
     public void SelectSlot(EntrySlotUI slot)
     {
         if (slot == selectedSlot)
-        {
-            //selectedSlot.SetSelected(false);
-            //selectedSlot = null;
             return;
-        }
 
         if (selectedSlot != null)
             selectedSlot.SetSelected(false);
 
         selectedSlot = slot;
         selectedSlot.SetSelected(true);
+        Debug.Log(selectedSlot.GetMonster().monsterName);
+        entryUI.SetMonsterDetailUI(selectedSlot.GetMonster());
     }
 
     //슬롯지우기
@@ -144,6 +149,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
         placeholder.transform.SetParent(dropTarget);
         placeholder.transform.SetSiblingIndex(index);
     }
+
     //예상 위치 객체 삭제
     public void ClearPlaceholder()
     {

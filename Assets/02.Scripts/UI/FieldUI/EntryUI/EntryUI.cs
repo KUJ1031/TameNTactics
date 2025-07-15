@@ -47,10 +47,12 @@ public class EntryUI : FieldMenuBaseUI
     {
         closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
     }
+    //닫기버튼
     public void OnClickCloseMenuButton()
     {
         FieldUIManager.Instance.CloseAllUI();
     }
+
     //몬스터 디테일 유아이 셋팅
     public void SetMonsterDetailUI(Monster newMonster)
     {

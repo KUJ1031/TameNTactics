@@ -1434,7 +1434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0.39215687}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17192,6 +17192,7 @@ MonoBehaviour:
   BattleParent: {fileID: 1724350748}
   BenchParent: {fileID: 1630723816}
   EntrySlotPrefab: {fileID: 6678341448844921113, guid: 8f0cd039820bd9c49b29dcccebcba2a5, type: 3}
+  entryUI: {fileID: 5378042602285802826}
 --- !u!4 &1563584146
 Transform:
   m_ObjectHideFlags: 0
