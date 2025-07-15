@@ -1,9 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using System.IO;
+
+
+using static RuntimePlayerSaveManager;
 
 public class PlayerSaveManager : Singleton<PlayerSaveManager>
 {
+    [System.Serializable]
+    public class PlayerSaveData
+    {
+        public List<Monster> ownedMonsters = new(); // 이건 풀 데이터 저장
+        public List<int> entryMonsterIDs = new();   // entryMonsters는 ID만 저장
+        public List<int> battleMonsterIDs = new();
+        public List<int> benchMonsterIDs = new();
+
+        // ...기타 다른 필드들
+    }
     public void SavePlayerData(Player player)
     {
         var flow = GameTimeFlow.Instance;
@@ -13,25 +28,52 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
 
         KeyRebinderManager.Instance.SaveCurrentBindingsToPlayer(player);
 
-        string json = JsonUtility.ToJson(player, true);
-        System.IO.File.WriteAllText(Application.persistentDataPath + "/playerData.json", json);
+        var saveData = new PlayerSaveData
+        {
+            ownedMonsters = player.ownedMonsters,
+            entryMonsterIDs = player.entryMonsters.Select(m => m.monsterID).ToList(),
+            battleMonsterIDs = player.battleEntry.Select(m => m.monsterID).ToList(),
+            benchMonsterIDs = player.benchEntry.Select(m => m.monsterID).ToList(),
+            // 다른 필드들 복사...
+        };
+
+        string json = JsonUtility.ToJson(saveData, true);
+        File.WriteAllText(Application.persistentDataPath + "/playerData.json", json);
     }
 
     public Player LoadPlayerData()
     {
         string path = Application.persistentDataPath + "/playerData.json";
-        if (System.IO.File.Exists(path))
-        {
-            string json = System.IO.File.ReadAllText(path);
-            Player loadedPlayer = JsonUtility.FromJson<Player>(json);
-            return loadedPlayer;
-        }
-        else
+        if (!File.Exists(path))
         {
             Debug.LogWarning("저장된 플레이어 데이터가 없습니다.");
             return null;
         }
+
+        string json = File.ReadAllText(path);
+        PlayerSaveData saved = JsonUtility.FromJson<PlayerSaveData>(json);
+
+        Player player = new Player();
+        player.ownedMonsters = saved.ownedMonsters;
+
+        // ID 기반으로 entry 복원
+        player.entryMonsters = player.ownedMonsters
+            .Where(mon => saved.entryMonsterIDs.Contains(mon.monsterID))
+            .ToList();
+
+        player.battleEntry = player.ownedMonsters
+            .Where(mon => saved.battleMonsterIDs.Contains(mon.monsterID))
+            .ToList();
+
+        player.benchEntry = player.ownedMonsters
+            .Where(mon => saved.benchMonsterIDs.Contains(mon.monsterID))
+            .ToList();
+
+        // 기타 필드 복원...
+
+        return player;
     }
+
 
     // 저장 버튼에 연결할 메서드: 저장 기능 호출만 담당
     public void OnSaveButtonPressed()
