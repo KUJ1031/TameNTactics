@@ -205,7 +205,10 @@ public class Player
         if (!CheckMonster(monster)) return ;
         if (!battleEntry.Remove(monster)) return ;
         benchEntry.Add(monster);
+        Debug.Log(monster.monsterName + "이 벤치로 이동");
     }
+
+
 
     //전체 엔트리 초기화
     public void ClearEntry()
