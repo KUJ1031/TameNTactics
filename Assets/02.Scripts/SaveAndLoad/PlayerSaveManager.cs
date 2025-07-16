@@ -9,6 +9,9 @@ using static RuntimePlayerSaveManager;
 
 public class PlayerSaveManager : Singleton<PlayerSaveManager>
 {
+
+    protected override bool IsDontDestroy => true;
+
     [System.Serializable]
     public class PlayerSaveData
     {
