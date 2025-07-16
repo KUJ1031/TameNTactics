@@ -21,6 +21,7 @@ public class DialogueManager : Singleton<DialogueManager>
     private string currentSpeakerName;
 
     private bool isSkipping = false;
+    public bool isCommunicationEneded = false; // 대화 종료 여부
 
     private Coroutine skipBlinkCoroutine;
 
@@ -105,11 +106,14 @@ public class DialogueManager : Singleton<DialogueManager>
 
         if (choiceIndex == 1) nextID = currentNode.Choice1Next;
         else if (choiceIndex == 2) nextID = currentNode.Choice2Next;
+        else if (choiceIndex == 3) nextID = currentNode.Choice3Next;
         else nextID = currentNode.Next;
 
         if (nextID == -1)
         {
             dialogueUI.Hide();
+            isCommunicationEneded = true; // 대화 종료 상태로 설정
+
             return;
         }
 
