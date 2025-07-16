@@ -52,6 +52,7 @@ public class Player
         if (!CheckMonster(monster)) return false;
 
         ownedMonsters.Add(monster);
+        monster.monsterData.captureCount++;
         playerGetMonsterCount++;
         return true;
     }
@@ -185,57 +186,25 @@ public class Player
         return;
     }
 
-    // benchEntry -> battleEntry 이동
-    public bool AddBattleEntry(Monster monster)
+    //battleEntry에 추가
+    public void AddBattleEntry(Monster monster)
     {
-        if (!CheckMonster(monster)) return false;
-        if (battleEntry.Contains(monster)) return false;
-        if (!entryMonsters.Contains(monster)) return false;
-        if (battleEntry.Count >= maxBattleCount) return false;
-
-        // 벤치에 있었다면 제거
+        if (!CheckMonster(monster)) return ;
+        if (battleEntry.Contains(monster)) return ;
+        if (!entryMonsters.Contains(monster)) return ;
+        if (battleEntry.Count >= maxBattleCount) {
+            MoveToBenchEntry(battleEntry[battleEntry.Count - 1]);
+        } 
         benchEntry.Remove(monster);
-
         battleEntry.Add(monster);
-        return true;
     }
 
     // battleEntry -> benchEntry 이동
-    public bool RemoveBattleEntry(Monster monster)
-    {
-        if (!CheckMonster(monster)) return false;
-        if (!battleEntry.Remove(monster)) return false;
-
-        // 벤치로 내림
+    public void MoveToBenchEntry(Monster monster) { 
+    
+        if (!CheckMonster(monster)) return ;
+        if (!battleEntry.Remove(monster)) return ;
         benchEntry.Add(monster);
-        return true;
-    }
-
-    //몬스터 위치 변경 (battleEntry <-> benchEntry)(엔트리UI에서 쓸거)
-    public bool InsertWithSwapIfFull(List<Monster> fromList, List<Monster> toList, Monster monster, int toIndex)
-    {
-        if (!CheckMonster(monster)) return false;
-        if (!fromList.Contains(monster)) return false;
-        if (toList.Contains(monster)) return false;
-
-        // 몬스터를 출발 리스트에서 제거
-        fromList.Remove(monster);
-
-        // toList가 가득 찼다면 밀려날 몬스터를 빼서 fromList로 이동
-        if (toList.Count >= maxBattleCount)
-        {
-            // 밀릴 몬스터 선정: 맨 마지막 or toIndex 위치
-            int removeIndex = Mathf.Clamp(toIndex, 0, toList.Count - 1);
-            Monster displaced = toList[removeIndex];
-            toList.RemoveAt(removeIndex);
-            fromList.Add(displaced);
-        }
-
-        // toIndex에 삽입 (정확한 위치로)
-        toIndex = Mathf.Clamp(toIndex, 0, toList.Count);
-        toList.Insert(toIndex, monster);
-
-        return true;
     }
 
     //전체 엔트리 초기화
