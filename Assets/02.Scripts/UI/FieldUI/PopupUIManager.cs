@@ -2,21 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopupUIManager : MonoBehaviour
+public class PopupUIManager : Singleton<PopupUIManager>
 {
-    public static PopupUIManager Instance { get; private set; }
-
     [SerializeField] private GameObject blockerPanel; // 클릭 막는 반투명 배경
     [SerializeField] private List<GameObject> panelObjects; // 미리 배치된 모든 팝업들 (SetActive(false) 상태)
 
     private Dictionary<string, GameObject> panelDict = new();
     private Stack<GameObject> openedPanels = new(); // 열려 있는 순서대로 관리
 
-    private void Awake()
+    private void Start()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-
         foreach (var panel in panelObjects)
         {
             if (panel != null)

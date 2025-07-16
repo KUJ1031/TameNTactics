@@ -2,21 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class OwnedMonsterUIManager : MonoBehaviour 
+public class OwnedMonsterUIManager : Singleton<OwnedMonsterUIManager> 
 {
-    public static OwnedMonsterUIManager Instance { get; private set; }
     [SerializeField] private OwnedMonsterUI ownedMonsterUI;
-
     [SerializeField] private Transform ownedParent;             //owned슬롯이 만들어질 위치
     [SerializeField] private GameObject ownedMonsterSlotPrefab; //owned슬롯 프리팹
+
     private List<OwnedMonsterSlotUI> ownedSlotUIList = new();     //만들어진 owned슬롯들
     private OwnedMonsterSlotUI selectedSlot;                      //선택된 owned슬롯
 
-    private void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
+
     private void Start()
     {
         RefreshOwnedMonsterUI();
