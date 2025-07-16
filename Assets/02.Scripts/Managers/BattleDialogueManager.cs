@@ -16,6 +16,11 @@ public class BattleDialogueManager : Singleton<BattleDialogueManager>
         ScrollToBottom();
     }
 
+    public void ClearBattleDialogue()
+    {
+        UIManager.Instance.battleUIManager.BattleInfoView.ClearBattleDialogue();
+    }
+
     private void ScrollToBottom()
     {
         StartCoroutine(ScrollCoroutine());
