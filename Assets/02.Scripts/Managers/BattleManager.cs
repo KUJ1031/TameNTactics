@@ -108,9 +108,19 @@ public class BattleManager : Singleton<BattleManager>
         target.TakeDamage(damage);
         target.TriggerOnDamaged(damage, attacker);
 
+        bool isAlly = true;
+
+        if (BattleEntryTeam.Contains(attacker))
+        {
+            isAlly = true;
+        }
+        else
+        {
+            isAlly = false;
+        }
         string skillName = skillData.skillName;
-        string useSkill = $"{attacker.monsterName}의 {skillName} 공격!\n";
-        string message = $"{attacker.monsterName}이(가) {target.monsterName}에게 {damage}의 데미지를 주었습니다!\n";
+        string useSkill = $"{(isAlly ? "우리" : "적")} {attacker.monsterName}의 {skillName} 공격!\n";
+        string message = $"{(isAlly ? "" : "적의")} {attacker.monsterName}이(가) {(isAlly ? "적" : "우리")} {target.monsterName}에게 {damage}의 데미지를 주었습니다!\n";
 
         BattleDialogueManager.Instance.BattleDialogueAppend(useSkill + message);
     }
