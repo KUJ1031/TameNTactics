@@ -103,10 +103,16 @@ public class BattleManager : Singleton<BattleManager>
     }
 
     // 데미지 넣기 + 데미지 후 패시브 발동
-    public void DealDamage(Monster target, int damage, Monster attacker)
+    public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData)
     {
         target.TakeDamage(damage);
         target.TriggerOnDamaged(damage, attacker);
+
+        string skillName = skillData.skillName;
+        string useSkill = $"{attacker.monsterName}의 {skillName} 공격!\n";
+        string message = $"{attacker.monsterName}이(가) {target.monsterName}에게 {damage}의 데미지를 주었습니다!\n";
+
+        BattleDialogueManager.Instance.BattleDialogueAppend(useSkill + message);
     }
 
     // 공격 실행할 몬스터 고르기

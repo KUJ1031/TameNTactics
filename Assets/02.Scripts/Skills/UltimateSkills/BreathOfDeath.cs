@@ -15,7 +15,7 @@ public class BreathOfDeath : ISkillEffect
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
-        
+
         var targetCopy = new List<Monster>(targets);
 
         foreach (var target in targetCopy)
@@ -29,10 +29,10 @@ public class BreathOfDeath : ISkillEffect
             else
             {
                 var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-                BattleManager.Instance.DealDamage(target, result.damage, caster);
+                BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData);
             }
         }
-        
+
         yield break;
     }
 }

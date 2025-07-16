@@ -15,14 +15,14 @@ public class WaterSlash : ISkillEffect
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
-        
+
         var targetCopy = new List<Monster>(targets);
-        
+
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster);
-            
+            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData);
+
             if (caster.Level >= 10)
             {
                 yield return new WaitForSeconds(1f);
@@ -30,7 +30,7 @@ public class WaterSlash : ISkillEffect
                 caster.Heal(healAmount);
             }
         }
-        
+
         yield break;
     }
 }

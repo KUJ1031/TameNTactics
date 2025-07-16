@@ -5,27 +5,27 @@ using UnityEngine;
 public class PowerSlam : ISkillEffect
 {
     private SkillData skillData;
-    
+
     public PowerSlam(SkillData data)
     {
         skillData = data;
     }
-    
+
     // 100% 스턴 성공
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
-        
+
         var targetCopy = new List<Monster>(targets);
-        
+
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster);
+            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData);
             yield return new WaitForSeconds(1f);
             target.ApplyStatus(new Stun(2));
         }
-        
+
         yield break;
     }
 }
