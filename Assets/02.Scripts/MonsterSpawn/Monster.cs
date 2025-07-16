@@ -53,6 +53,7 @@ public class Monster
     private List<IPassiveSkill> passiveSkills = new();
 
     public bool canAct { get; private set; } = true;
+    private int skipTurnCount = 0;
 
     public Action<Monster> HpChange;
     public Action<Monster> ultimateCostChange;
@@ -372,5 +373,23 @@ public class Monster
     public void ToggleFavorite()
     {
         IsFavorite = !IsFavorite;
+    }
+
+    public void SetActionRestriction(int turns)
+    {
+        skipTurnCount = turns;
+        canAct = false;
+    }
+
+    public void OnTurnEnd()
+    {
+        if (skipTurnCount > 0)
+        {
+            skipTurnCount--;
+        }
+        else if (skipTurnCount <= 0)
+        {
+            canAct = true;
+        }
     }
 }

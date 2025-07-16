@@ -20,6 +20,7 @@ public class BattleManager : Singleton<BattleManager>
 
     public Monster selectedPlayerMonster;
     public SkillData selectedSkill;
+    public Transform AttackPosition { get; set; }
 
     private EnemyAIController.EnemyAction enemyChosenAction;
 
@@ -249,21 +250,31 @@ public class BattleManager : Singleton<BattleManager>
 
         if (!caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
 
-        ISkillEffect effect = null;
+        MonsterCharacter casterChar = FindMonsterCharacter(caster);
 
-        if (skill.skillType == SkillType.UltimateSkill)
+        if (casterChar != null)
         {
-            effect = UltimateSkillFactory.GetUltimateSkill(skill);
-            caster.InitializeUltimateCost();
-        }
-        else
-        {
-            effect = NormalSkillFactory.GetNormalSkill(skill);
-        }
+            Vector2 originalPos = casterChar.transform.position;
+            Vector2 attackPos = AttackPosition.transform.position;
 
-        if (effect == null) yield break;
+            yield return StartCoroutine(MoveToPosition(casterChar, attackPos, 0.3f));
 
-        yield return StartCoroutine(effect.Execute(caster, targets));
+            ISkillEffect effect = null;
+
+            if (skill.skillType == SkillType.UltimateSkill)
+            {
+                effect = UltimateSkillFactory.GetUltimateSkill(skill);
+                caster.InitializeUltimateCost();
+            }
+            else
+            {
+                effect = NormalSkillFactory.GetNormalSkill(skill);
+            }
+
+            if (effect != null) yield return StartCoroutine(effect.Execute(caster, targets));
+
+            yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f));
+        }
 
         CheckDeadMonster();
         IncreaseUltCost(caster);
@@ -452,5 +463,35 @@ public class BattleManager : Singleton<BattleManager>
     {
         BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
         BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
+    }
+
+    // 공격중인 몬스터의 character를 가져오기 위한 메서드
+    private MonsterCharacter FindMonsterCharacter(Monster monster)
+    {
+        var allChars = GameObject.FindObjectsOfType<MonsterCharacter>();
+        foreach (var mc in allChars)
+        {
+            if (mc.monster == monster) return mc;
+        }
+        return null;
+    }
+
+    // 몬스터 공격 시 화면 중앙/원래 위치로 이동
+    private IEnumerator MoveToPosition(MonsterCharacter character, Vector2 targetPos, float duration)
+    {
+        Vector2 startPos = character.transform.position;
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            character.transform.position = Vector3.Lerp(startPos, targetPos, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        character.transform.position = targetPos;
+
+        yield return new WaitForSeconds(duration);
     }
 }
