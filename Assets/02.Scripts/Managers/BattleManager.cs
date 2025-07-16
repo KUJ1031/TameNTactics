@@ -97,7 +97,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             monster.TriggerOnTurnEnd();
             monster.UpdateStatusEffects();
-            monster.OnTurnEnd();
+            monster.CheckMonsterAction();
         }
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
