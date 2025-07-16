@@ -65,7 +65,6 @@ public class BattleSelectView : MonoBehaviour
         return gauge;
     }
 
-    // 추후에 되살릴 겁니다! 지우지 마세요!
     public GameObject InitiateSelectImage(Transform tr)
     {
         GameObject selectImage = Instantiate(selectMonsterImage, battleSelectCanvas.transform);

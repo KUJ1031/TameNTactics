@@ -483,13 +483,35 @@ public class BattleManager : Singleton<BattleManager>
     private IEnumerator MoveToPosition(MonsterCharacter character, Vector2 targetPos, float duration)
     {
         Vector2 startPos = character.transform.position;
-
         float elapsed = 0f;
+
+        var gaugeHolder = character.GetComponent<MonsterGaugeHolder>();
+        RectTransform gaugeRect = null;
+        Canvas parentCanvas = null;
+
+        if (gaugeHolder != null && gaugeHolder.gauge != null)
+        {
+            gaugeRect = gaugeHolder.gauge.GetComponent<RectTransform>();
+            parentCanvas = gaugeHolder.gauge.GetComponentInParent<Canvas>();
+        }
 
         while (elapsed < duration)
         {
             character.transform.position = Vector3.Lerp(startPos, targetPos, elapsed / duration);
             elapsed += Time.deltaTime;
+
+            // gauge 위치 갱신
+            if (gaugeRect != null && parentCanvas != null)
+            {
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
+                RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
+
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
+                {
+                    gaugeRect.localPosition = localPoint;
+                }
+            }
+
             yield return null;
         }
 
@@ -497,7 +519,7 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return new WaitForSeconds(duration);
     }
-    
+
     private void Stage1BossBattleCheck(Monster caster, Monster target)
     {
         if (target.monsterData.monsterNumber == 100)
