@@ -23,6 +23,8 @@ public class DialogueUI : MonoBehaviour
     public TMP_Text choice1Text;
     public Button choiceButton2;
     public TMP_Text choice2Text;
+    public Button choiceButton3;
+    public TMP_Text choice3Text;
     public Button skipButton;
 
     /// <summary>
@@ -32,19 +34,30 @@ public class DialogueUI : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        UpdateImages(npcSprite);
+        UpdateImages(npcSprite, speakerName);
         UpdateText(node, speakerName);
         UpdateChoices(node);
+        UpdateSpeakerPosition(speakerName);
     }
 
     /// <summary>
     /// 대화 이미지 관련 요소 설정
     /// </summary>
-    private void UpdateImages(Sprite npcSprite)
+    private void UpdateImages(Sprite npcSprite, string speaker)
     {
         if (npcImage != null) npcImage.sprite = npcSprite;
 
-        // playerImage나 dialogueWindowImage는 고정일 경우 생략 가능
+        // 밝기 조절용 색상
+        Color bright = Color.white;                     // (1,1,1,1)
+        Color dim = new Color(0.25f, 0.25f, 0.25f, 1f);     // 어둡게
+
+        bool isPlayerSpeaking = speaker == "나";
+
+        if (npcImage != null)
+            npcImage.color = isPlayerSpeaking ? dim : bright;
+
+        if (playerImage != null)
+            playerImage.color = isPlayerSpeaking ? bright : dim;
     }
 
     /// <summary>
@@ -56,29 +69,67 @@ public class DialogueUI : MonoBehaviour
         if (dialogueText != null) dialogueText.text = node.Text;
     }
 
+    private void UpdateSpeakerPosition(string speaker)
+    {
+        bool isPlayer = speaker == "나";
+
+        Vector2 anchor = isPlayer ? new Vector2(1, 1) : new Vector2(0, 1);
+        Vector2 pivot = anchor;
+        Vector2 anchoredPos = new Vector2(0, 85);
+
+        RectTransform imageRect = speakerImage.rectTransform;
+        imageRect.anchorMin = anchor;
+        imageRect.anchorMax = anchor;
+        imageRect.pivot = pivot;
+        imageRect.anchoredPosition = anchoredPos;
+
+        // speakerNameText는 자식이므로 자동 따라감
+    }
+
     /// <summary>
     /// 선택지 버튼 세팅
     /// </summary>
     private void UpdateChoices(DialogueNode node)
     {
-        choicePanel.SetActive(true); // 패널은 항상 켜두고
+        choicePanel.SetActive(true);
 
         bool hasChoice1 = !string.IsNullOrEmpty(node.Choice1);
         bool hasChoice2 = !string.IsNullOrEmpty(node.Choice2);
-        bool hasAnyChoice = hasChoice1 || hasChoice2;
+        bool hasChoice3 = !string.IsNullOrEmpty(node.Choice3);
+        bool hasAnyChoice = hasChoice1 || hasChoice2 || hasChoice3;
 
-        // 선택지 버튼 보이기/숨기기
+        // 버튼 텍스트 및 활성화
         choiceButton1.gameObject.SetActive(hasChoice1);
         choice1Text.text = hasChoice1 ? node.Choice1 : "";
 
         choiceButton2.gameObject.SetActive(hasChoice2);
         choice2Text.text = hasChoice2 ? node.Choice2 : "";
 
-        // 스킵 버튼은 선택지가 없을 때만 보이게
-        skipButton.gameObject.SetActive(!hasChoice1 && !hasChoice2);
+        choiceButton3.gameObject.SetActive(hasChoice3);
+        choice3Text.text = hasChoice3 ? node.Choice3 : "";
 
-        // continue 버튼은 선택지가 없을 때만 보이게
+        // 버튼 위치 조정
+        if (hasChoice1 && hasChoice2 && !hasChoice3)
+        {
+            // 선택지 2개일 때: 중앙 정렬
+            SetButtonPosition(choiceButton1.GetComponent<RectTransform>(), new Vector2(0, 70));
+            SetButtonPosition(choiceButton2.GetComponent<RectTransform>(), new Vector2(0, -70));
+        }
+        else if (hasChoice1 && hasChoice2 && hasChoice3)
+        {
+            // 선택지 3개일 때: 세로 정렬
+            SetButtonPosition(choiceButton1.GetComponent<RectTransform>(), new Vector2(0, 100));
+            SetButtonPosition(choiceButton2.GetComponent<RectTransform>(), new Vector2(0, 0));
+            SetButtonPosition(choiceButton3.GetComponent<RectTransform>(), new Vector2(0, -100));
+        }
+
+        skipButton.gameObject.SetActive(!hasAnyChoice);
         continueButton.gameObject.SetActive(!hasAnyChoice);
+    }
+
+    private void SetButtonPosition(RectTransform rect, Vector2 anchoredPos)
+    {
+        rect.anchoredPosition = anchoredPos;
     }
 
     /// <summary>
@@ -92,6 +143,8 @@ public class DialogueUI : MonoBehaviour
     // 버튼 이벤트 → DialogueManager에게 선택 전달
     public void OnClickChoice1() => DialogueManager.Instance.OnSelectChoice(1);
     public void OnClickChoice2() => DialogueManager.Instance.OnSelectChoice(2);
+
+    public void OnClickChoice3() => DialogueManager.Instance.OnSelectChoice(3);
     public void OnClickContinue() => DialogueManager.Instance.OnSelectChoice(0);
     public void OnClickSkip() => DialogueManager.Instance.OnClickSkip();
 }

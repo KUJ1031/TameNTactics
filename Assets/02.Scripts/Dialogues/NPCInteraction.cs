@@ -1,27 +1,116 @@
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 public class NPCInteraction : MonoBehaviour
 {
     public Sprite npcSprite;           // NPC 이미지
     public string npcName = "이름 없음"; // 말하는 사람 이름
-    public int startID;        // 이 NPC의 대화 시작 ID (기본값 100)
+    public int startID;                // 대화 시작 ID
 
-    public void Interact()
+    [Header("상호작용 키")]
+    public string keySettingName = "Player.Interaction.0"; // 키 설정 이름
+
+    private bool isPlayerTouching = false;
+    private ButtonControl interactButton;
+    private string lastKeyPath = "";
+
+    private PlayerController playerController;
+    private void Start()
     {
-        DialogueManager.Instance.StartDialogue(
-            npcName,   // 대화 트리 ID
-            npcSprite, // NPC 이미지
-            startID    // 시작 노드 ID
-        );
+        // 키 경로 받아서 ButtonControl 캐싱
+        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path))
+        {
+            var control = InputSystem.FindControl(path);
+            interactButton = control as ButtonControl;
+
+            if (interactButton == null)
+                Debug.LogWarning($"입력 경로 '{path}'에 해당하는 ButtonControl을 찾지 못했습니다.");
+        }
+        else
+        {
+            Debug.LogWarning($"키 설정 '{keySettingName}'이 없습니다.");
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log($"NPC {npcName}와 상호작용 시작");
-            Interact();
+            isPlayerTouching = true;
+            playerController = collision.gameObject.GetComponent<PlayerController>();
         }
+    }
+
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            isPlayerTouching = false;
+
+
+            if (playerController != null)
+            {
+                playerController.isInputBlocked = false;
+                playerController = null;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (!isPlayerTouching) return;
+
+        UpdateInteractButton();
+
+        if (interactButton != null && interactButton.wasPressedThisFrame)
+        {
+            HandleInteraction();
+        }
+
+        HandleDialogueEnd();
+    }
+
+    private void UpdateInteractButton()
+    {
+        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path))
+        {
+            if (path != lastKeyPath)
+            {
+                lastKeyPath = path;
+                interactButton = InputSystem.FindControl(path) as ButtonControl;
+            }
+        }
+    }
+
+    private void HandleInteraction()
+    {
+        Interact();
+
+        if (playerController != null)
+        {
+            playerController.isInputBlocked = true;
+            DialogueManager.Instance.isCommunicationEneded = false; // 대화 중 상태 유지
+        }
+    }
+
+    private void HandleDialogueEnd()
+    {
+        if (DialogueManager.Instance.isCommunicationEneded && playerController != null)
+        {
+            playerController.isInputBlocked = false;
+            DialogueManager.Instance.isCommunicationEneded = false; // 다음 대화 방지를 위해 초기화
+            Debug.Log("대화 종료: 입력 차단 해제됨");
+        }
+    }
+
+    public void Interact()
+    {
+        DialogueManager.Instance.StartDialogue(
+            npcName,    // 대화 트리 ID
+            npcSprite,  // NPC 이미지
+            startID     // 시작 노드 ID
+        );
     }
 }
