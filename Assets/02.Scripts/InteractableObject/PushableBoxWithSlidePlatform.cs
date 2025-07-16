@@ -18,8 +18,12 @@ public class PushableBoxWithSlidePlatform : MonoBehaviour
     private Collider2D playerCol;
     private Collider2D boxCol;
 
-    public CinemachineVirtualCamera virtualCamera = PlayerManager.Instance.virtualCamera;
+    public CinemachineVirtualCamera virtualCamera;
+    private void Start()
+    {
+        virtualCamera  = PlayerManager.Instance.virtualCamera;
 
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         var controller = collision.gameObject.GetComponent<PlayerController>();

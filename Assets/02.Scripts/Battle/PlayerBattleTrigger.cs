@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerBattleTrigger : MonoBehaviour
 {
@@ -32,8 +33,29 @@ public class PlayerBattleTrigger : MonoBehaviour
 
         RuntimePlayerSaveManager.Instance.SaveCurrentGameState(PlayerManager.Instance.player); // 현재 플레이어 상태 저장
 
+        SceneManager.sceneLoaded += OnBattleSceneLoaded;
+
         //씬이동
-        UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene");
+        SceneManager.LoadScene("BattleScene");
+
+    }
+
+    private void OnBattleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "BattleScene")
+        {
+            GameObject attackObj = GameObject.Find("AttackPosition");
+            if (attackObj != null)
+            {
+                BattleManager.Instance.AttackPosition = attackObj.transform;
+            }
+            else
+            {
+                Debug.LogWarning("AttackPosition 오브젝트를 찾지 못했음.");
+            }
+
+            SceneManager.sceneLoaded -= OnBattleSceneLoaded;
+        }
     }
 
     public void DisableTriggerTemporarily(float disableTime)

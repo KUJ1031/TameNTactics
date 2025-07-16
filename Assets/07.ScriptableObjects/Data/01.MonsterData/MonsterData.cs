@@ -29,7 +29,7 @@ public class MonsterData : ScriptableObject
     [Header("기본 정보")]
     public MonsterClass monsterClass;
     public string monsterName;
-    public int monsterID;
+    public int monsterNumber;//도감번호
     public Sprite monsterImage;
     public int encounterCount; // 만난 횟수
     public int captureCount; // 잡은 횟수
@@ -55,6 +55,7 @@ public class MonsterData : ScriptableObject
     [Header("몬스터 정보")]
     public string spawnArea;
     public int spawnTime;
+    public float captureRate;//기본포획확률
     [TextArea]
     public string description;
 }
