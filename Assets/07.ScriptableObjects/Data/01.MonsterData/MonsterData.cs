@@ -17,17 +17,10 @@ public enum Personality
     Aggressive,
 }
 
-public enum MonsterClass
-{
-    Normal,
-    Boss
-}
-
 [CreateAssetMenu(fileName = "NewMonster", menuName = "New Monster/Create New Monster")]
 public class MonsterData : ScriptableObject
 {
     [Header("기본 정보")]
-    public MonsterClass monsterClass;
     public string monsterName;
     public int monsterNumber;//도감번호
     public Sprite monsterImage;
