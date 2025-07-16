@@ -17,6 +17,7 @@ public class RunAwayState : BaseBattleState
         else
         {
             Debug.Log("도망가기 실패!");
+            BattleDialogueManager.Instance.UseRunFailDialogue();
             BattleManager.Instance.EnemyAttackAfterPlayerTurn();
             BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
         }
