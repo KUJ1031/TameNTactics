@@ -85,7 +85,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
 
         selectedSlot = slot;
         selectedSlot.SetSelected(true);
-        Debug.Log(selectedSlot.GetMonster().monsterName);
+
         entryUI.SetMonsterDetailUI(selectedSlot.GetMonster());
     }
 
