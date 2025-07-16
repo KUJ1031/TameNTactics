@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager>
 {
+    protected override bool IsDontDestroy => true;
     public List<Monster> BattleEntry => PlayerManager.Instance.player.battleEntry;
     public List<Monster> BenchMonsters => PlayerManager.Instance.player.benchEntry;
     public List<Monster> OwnedMonsters => PlayerManager.Instance.player.ownedMonsters;
