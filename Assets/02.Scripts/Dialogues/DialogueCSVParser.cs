@@ -15,14 +15,16 @@ public static class DialogueCSVParser
             string line = reader.ReadLine();
             if (isFirstLine) { isFirstLine = false; continue; }
 
-            string[] values = line.Split(',');
-            if (values.Length < 9) // 트리ID 포함 9개 이상이어야 함
+            // 기존 line.Split(',') 대신 큰따옴표 처리 가능한 파서 사용
+            List<string> values = ParseCSVLine(line);
+
+            if (values.Count < 11) // 필드 11개 이상인지 체크
             {
                 Debug.LogWarning("CSV 데이터 부족: " + line);
                 continue;
             }
 
-            string currentTreeId = values[0]; // 첫 칼럼을 트리ID로 사용
+            string currentTreeId = values[0];
 
             var node = new DialogueNode
             {
@@ -33,7 +35,9 @@ public static class DialogueCSVParser
                 Choice1Next = ParseIntOrDefault(values[5]),
                 Choice2 = values[6],
                 Choice2Next = ParseIntOrDefault(values[7]),
-                Next = ParseIntOrDefault(values[8])
+                Choice3 = values[8],
+                Choice3Next = ParseIntOrDefault(values[9]),
+                Next = ParseIntOrDefault(values[10])
             };
 
             if (!result.ContainsKey(currentTreeId))
@@ -50,4 +54,43 @@ public static class DialogueCSVParser
         }
     }
 
+    // 큰따옴표 안 쉼표 무시하며 한 줄을 필드 리스트로 분리하는 메서드
+    private static List<string> ParseCSVLine(string line)
+    {
+        var values = new List<string>();
+        bool inQuotes = false;
+        var current = new System.Text.StringBuilder();
+
+        for (int i = 0; i < line.Length; i++)
+        {
+            char c = line[i];
+
+            if (c == '"')
+            {
+                // 큰따옴표 안/밖 토글, 두 개 연속 큰따옴표는 큰따옴표 문자로 처리
+                if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                {
+                    current.Append('"');
+                    i++; // 두번째 큰따옴표 건너뛰기
+                }
+                else
+                {
+                    inQuotes = !inQuotes;
+                }
+            }
+            else if (c == ',' && !inQuotes)
+            {
+                values.Add(current.ToString());
+                current.Clear();
+            }
+            else
+            {
+                current.Append(c);
+            }
+        }
+        values.Add(current.ToString());
+
+        return values;
+    }
 }
+
