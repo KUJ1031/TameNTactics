@@ -5,6 +5,7 @@ using Scene = UnityEngine.SceneManagement.Scene;
 
 public class UIManager : Singleton<UIManager>
 {
+    protected override bool IsDontDestroy => true;
     public BattleUIManager battleUIManager;
     public BattleDialogueManager battleDialogueManager;
 
