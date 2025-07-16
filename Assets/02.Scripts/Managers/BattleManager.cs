@@ -97,6 +97,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             monster.TriggerOnTurnEnd();
             monster.UpdateStatusEffects();
+            monster.CheckMonsterAction();
         }
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
@@ -111,7 +112,7 @@ public class BattleManager : Singleton<BattleManager>
     // 공격 실행할 몬스터 고르기
     public void SelectPlayerMonster(Monster selectedMonster)
     {
-        if (selectedMonster.CurHp <= 0) return;
+        if (selectedMonster.CurHp <= 0 || !selectedMonster.canAct) return;
         selectedPlayerMonster = selectedMonster;
     }
 
@@ -282,6 +283,7 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var t in targets)
         {
             IncreaseUltCost(t);
+            Stage1BossBattleCheck(caster, t);
         }
 
         yield return new WaitForSeconds(1f);
@@ -481,18 +483,48 @@ public class BattleManager : Singleton<BattleManager>
     private IEnumerator MoveToPosition(MonsterCharacter character, Vector2 targetPos, float duration)
     {
         Vector2 startPos = character.transform.position;
-
         float elapsed = 0f;
+
+        var gaugeHolder = character.GetComponent<MonsterGaugeHolder>();
+        RectTransform gaugeRect = null;
+        Canvas parentCanvas = null;
+
+        if (gaugeHolder != null && gaugeHolder.gauge != null)
+        {
+            gaugeRect = gaugeHolder.gauge.GetComponent<RectTransform>();
+            parentCanvas = gaugeHolder.gauge.GetComponentInParent<Canvas>();
+        }
 
         while (elapsed < duration)
         {
             character.transform.position = Vector3.Lerp(startPos, targetPos, elapsed / duration);
             elapsed += Time.deltaTime;
+
+            // gauge 위치 갱신
+            if (gaugeRect != null && parentCanvas != null)
+            {
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
+                RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
+
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
+                {
+                    gaugeRect.localPosition = localPoint;
+                }
+            }
+
             yield return null;
         }
 
         character.transform.position = targetPos;
 
         yield return new WaitForSeconds(duration);
+    }
+
+    private void Stage1BossBattleCheck(Monster caster, Monster target)
+    {
+        if (target.monsterData.monsterNumber == 100)
+        {
+            caster.SetActionRestriction(1);
+        }
     }
 }
