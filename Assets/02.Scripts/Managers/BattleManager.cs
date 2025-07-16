@@ -97,6 +97,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             monster.TriggerOnTurnEnd();
             monster.UpdateStatusEffects();
+            monster.OnTurnEnd();
         }
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
@@ -111,7 +112,7 @@ public class BattleManager : Singleton<BattleManager>
     // 공격 실행할 몬스터 고르기
     public void SelectPlayerMonster(Monster selectedMonster)
     {
-        if (selectedMonster.CurHp <= 0) return;
+        if (selectedMonster.CurHp <= 0 || !selectedMonster.canAct) return;
         selectedPlayerMonster = selectedMonster;
     }
 
@@ -282,6 +283,7 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var t in targets)
         {
             IncreaseUltCost(t);
+            Stage1BossBattleCheck(caster, t);
         }
 
         yield return new WaitForSeconds(1f);
@@ -494,5 +496,13 @@ public class BattleManager : Singleton<BattleManager>
         character.transform.position = targetPos;
 
         yield return new WaitForSeconds(duration);
+    }
+    
+    private void Stage1BossBattleCheck(Monster caster, Monster target)
+    {
+        if (target.monsterData.monsterNumber == 100)
+        {
+            caster.SetActionRestriction(1);
+        }
     }
 }
