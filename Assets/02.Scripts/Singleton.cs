@@ -16,19 +16,25 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             {
                 GameObject obj = new GameObject(typeof(T).Name);
                 instance = obj.AddComponent<T>();
-                DontDestroyOnLoad(obj);
             }
 
             return instance;
         }
     }
 
+    //기본은 씬 이동시 삭제
+    //DontDistroy가 필요하다면 아래 한줄 복붙
+    //protected override bool IsPersistent => true;
+    protected virtual bool IsDontDestroy => false;
+
     protected virtual void Awake()
     {
         if (instance == null)
         {
             instance = this as T;
-            DontDestroyOnLoad(gameObject);
+
+            if (IsDontDestroy)
+                DontDestroyOnLoad(gameObject);
         }
         else if (instance != this)
         {
