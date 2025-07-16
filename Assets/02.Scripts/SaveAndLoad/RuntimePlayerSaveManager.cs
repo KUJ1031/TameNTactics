@@ -8,6 +8,9 @@ using System.IO;
 
 public class RuntimePlayerSaveManager : Singleton<RuntimePlayerSaveManager>
 {
+
+    protected override bool IsDontDestroy => true;
+
     [System.Serializable]
     public class PlayerSaveData
     {

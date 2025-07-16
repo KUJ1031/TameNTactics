@@ -1,25 +1,13 @@
 using Cinemachine;
 using UnityEngine;
 
-public class GlobalCamera : MonoBehaviour
+public class GlobalCamera : Singleton<GlobalCamera>
 {
     private static GlobalCamera instance;
-    public static GlobalCamera Instance => instance;
 
     public CinemachineVirtualCamera virtualCamera; // 인스펙터에서 할당
 
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); // 중복 제거
-        }
-    }
+    protected override bool IsDontDestroy => true;
 
     public void SetFollow(Transform target)
     {

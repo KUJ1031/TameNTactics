@@ -9,6 +9,9 @@ using static RuntimePlayerSaveManager;
 
 public class PlayerSaveManager : Singleton<PlayerSaveManager>
 {
+
+    protected override bool IsDontDestroy => true;
+
     [System.Serializable]
     public class PlayerSaveData
     {
@@ -16,6 +19,16 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         public List<int> entryMonsterIDs = new();   // entryMonsters는 ID만 저장
         public List<int> battleMonsterIDs = new();
         public List<int> benchMonsterIDs = new();
+        public float playerLastGameTime;
+        public Vector3 playerLastPosition;
+        public int totalPlaytime;
+        public string playerName;
+        public int playerGetMonsterCount;
+        public SerializableDictionary<int, bool> playerBossClearCheck = new();
+        public SerializableDictionary<int, bool> playerQuestClearCheck = new();
+        public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();
+        public SerializableDictionary<string, string> playerKeySetting = new();
+
 
         // ...기타 다른 필드들
     }
@@ -35,6 +48,15 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             battleMonsterIDs = player.battleEntry.Select(m => m.monsterID).ToList(),
             benchMonsterIDs = player.benchEntry.Select(m => m.monsterID).ToList(),
             // 다른 필드들 복사...
+            playerLastGameTime = player.playerLastGameTime,
+            playerLastPosition = player.playerLastPosition,
+            totalPlaytime = player.totalPlaytime,
+            playerName = player.playerName,
+            playerGetMonsterCount = player.playerGetMonsterCount,
+            playerBossClearCheck = player.playerBossClearCheck,
+            playerQuestClearCheck = player.playerQuestClearCheck,
+            playerPuzzleClearCheck = player.playerPuzzleClearCheck,
+            playerKeySetting = player.playerKeySetting
         };
 
         string json = JsonUtility.ToJson(saveData, true);
@@ -70,6 +92,15 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             .ToList();
 
         // 기타 필드 복원...
+        player.playerLastGameTime = saved.playerLastGameTime;
+        player.playerLastPosition = saved.playerLastPosition;
+        player.totalPlaytime = saved.totalPlaytime;
+        player.playerName = saved.playerName;
+        player.playerGetMonsterCount = saved.playerGetMonsterCount;
+        player.playerBossClearCheck = saved.playerBossClearCheck;
+        player.playerQuestClearCheck = saved.playerQuestClearCheck;
+        player.playerPuzzleClearCheck = saved.playerPuzzleClearCheck;
+        player.playerKeySetting = saved.playerKeySetting;
 
         return player;
     }
