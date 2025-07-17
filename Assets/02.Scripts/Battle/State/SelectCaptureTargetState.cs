@@ -34,7 +34,7 @@ public class SelectCaptureTargetState : BaseBattleState
                     {
                         Monster clickedMonster = monsterCharacter.monster;
 
-                        if (!BattleManager.Instance.BattleEntryTeam.Contains(clickedMonster))
+                        if (BattleManager.Instance.BattleEnemyTeam.Contains(clickedMonster))
                         {
                             if (clickedMonster.CurHp <= 0)
                             {
