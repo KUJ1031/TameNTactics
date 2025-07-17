@@ -9,7 +9,7 @@ public class BattleInfoView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI battleDialogue;
     [SerializeField] private TextMeshProUGUI endBattleMessage;
 
-    private StringBuilder logBuilder = new StringBuilder();
+    private StringBuilder logBuilder = new();
 
     // 배틀 중 Dialogue를 출력해줄 메서드
     public void BattleDialogue(string battleLog)

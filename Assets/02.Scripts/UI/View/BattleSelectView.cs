@@ -103,27 +103,6 @@ public class BattleSelectView : MonoBehaviour
         ultimateBar.fillAmount = ultimateRatio;
     }
 
-    public void MoveSelectMonster(Transform tr)
-    {
-        // 몬스터의 Sprite Renderer 참조
-        SpriteRenderer sr = tr.GetComponentInChildren<SpriteRenderer>();
-
-        // 몬스터 sprite의 중앙
-        Vector3 monsterCenterPos = sr.bounds.center;
-
-        // UI 좌표를 몬스터의 좌표로 옮기기 위한 변수
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterCenterPos);
-
-        Canvas canvas = selectMonsterRect.GetComponentInParent<Canvas>();
-        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out localPoint);
-
-        selectMonsterRect.GetComponent<RectTransform>().localPosition = localPoint;
-        selectMonsterRect.gameObject.SetActive(true);
-    }
-
     public void OffSelectMonster()
     {
         selectMonsterImage.SetActive(false);

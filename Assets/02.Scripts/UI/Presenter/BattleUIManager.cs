@@ -15,6 +15,7 @@ public class BattleUIManager : MonoBehaviour
 
     public EmbraceView EmbraceView { get { return embraceView; } }
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
+    public BattleInfoView BattleInfoView { get { return battleInfoView; } }
     public bool CanHoverSelect { get; private set; } = false;
     public HoverTargetType CurrentHoverTarget { get; private set; } = HoverTargetType.None;
 
