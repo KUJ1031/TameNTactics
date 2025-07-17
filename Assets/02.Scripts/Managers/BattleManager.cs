@@ -16,6 +16,7 @@ public class BattleManager : Singleton<BattleManager>
     public List<Monster> BattleEntryTeam { get; private set; } = new();
     public List<Monster> BattleEnemyTeam { get; private set; } = new();
 
+    public List<Monster> possibleActPlayerMonsters = new();
     public List<Monster> possibleTargets = new();
     public List<Monster> selectedTargets = new();
 
@@ -99,6 +100,8 @@ public class BattleManager : Singleton<BattleManager>
             monster.UpdateStatusEffects();
             monster.CheckMonsterAction();
         }
+
+        PossibleActMonster();
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
 
@@ -109,6 +112,22 @@ public class BattleManager : Singleton<BattleManager>
         target.TriggerOnDamaged(damage, attacker);
 
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, damage, skillData);
+    }
+
+    private void PossibleActMonster()
+    {
+        foreach (var monster in BattleEntryTeam)
+        {
+            if (monster.canAct && monster.CurHp > 0)
+            {
+                possibleActPlayerMonsters.Add(monster);
+            }
+
+            else if (!monster.canAct || monster.CurHp <= 0)
+            {
+                possibleActPlayerMonsters.Remove(monster);
+            }
+        }
     }
 
     // 공격 실행할 몬스터 고르기

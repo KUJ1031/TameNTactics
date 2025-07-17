@@ -21,29 +21,26 @@ public class SelectSkillState : BaseBattleState
         // todo 몬스터 공격자세 애니메이션 활성화
         //UIManager.Instance.battleUIManager.SelectMonster();
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //    RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
-        //    if (hit.collider != null)
-        //    {
-        //        if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
-        //        {
-        //            Monster clickedMonster = monsterCharacter.monster;
-
-        //            if (PlayerManager.Instance.player.battleEntry.Contains(clickedMonster))
-        //            {
-        //                BattleManager.Instance.selectedPlayerMonster = clickedMonster;
-
-        //                UIManager.Instance.battleUIManager.ShowMonsterSkills(clickedMonster.monsterData);
-        //                UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
-
-        //                Debug.Log($"몬스터 변경됨: {clickedMonster.monsterData.monsterName}");
-        //            }
-        //        }
-        //    }
-        //}
+        // if (Input.GetMouseButtonDown(0))
+        // {
+        //     Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //     RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+        //
+        //     if (hit.collider != null)
+        //     {
+        //         if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
+        //         {
+        //             Monster clickedMonster = monsterCharacter.monster;
+        //
+        //             if (BattleManager.Instance.selectedPlayerMonster == clickedMonster)
+        //             {
+        //                 UIManager.Instance.battleUIManager.ShowMonsterSkills(clickedMonster.monsterData);
+        //
+        //                 Debug.Log($"몬스터 변경됨: {clickedMonster.monsterData.monsterName}");
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     public void OnSelectedSkill(SkillData skill)
@@ -56,10 +53,5 @@ public class SelectSkillState : BaseBattleState
     public void OnCancelSkill()
     {
         battleSystem.ChangeState(new SelectPlayerMonsterState(battleSystem));
-    }
-
-    public override void Exit()
-    {
-        // todo 아군 몬스터 강조 효과 UI 숨기기
     }
 }

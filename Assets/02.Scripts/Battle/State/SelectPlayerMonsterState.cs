@@ -23,7 +23,7 @@ public class SelectPlayerMonsterState : BaseBattleState
     {
         if (monster.CurHp <= 0 || !monster.canAct) return;
         BattleManager.Instance.SelectPlayerMonster(monster);
-        if (PlayerManager.Instance.player.battleEntry.Contains(monster))
+        if (BattleManager.Instance.BattleEntryTeam.Contains(monster))
         {
             battleSystem.ChangeState(new SelectSkillState(battleSystem));
         }
