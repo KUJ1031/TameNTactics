@@ -54,9 +54,11 @@ public class MonsterHoverHandler : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        if (!IsValideHoverTarget()) return;
+        bool isPossibleAct = BattleManager.Instance.possibleActPlayerMonsters.Contains(monsterCharacter.monster);
+        
+        if (!IsValideHoverTarget() && !isPossibleAct) return;
 
-        if (!isSelected && selectImage != null)
+        if (!isSelected && selectImage != null && isPossibleAct)
         {
             selectImage.SetActive(true);
         }
