@@ -392,4 +392,10 @@ public class Monster
             canAct = true;
         }
     }
+
+    public void InitializeMonsterAct()
+    {
+        canAct = true;
+        skipTurnCount = 0;
+    }
 }

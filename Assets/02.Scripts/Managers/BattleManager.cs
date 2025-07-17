@@ -74,6 +74,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
             monster.TriggerOnBattleStart(BattleEntryTeam);
+            monster.InitializeMonsterAct();
             Debug.Log($"Entry Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Entry Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
@@ -83,6 +84,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.RecalculateStats();
             monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
+            monster.InitializeMonsterAct();
             monster.TriggerOnBattleStart(BattleEnemyTeam);
             Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
@@ -115,16 +117,13 @@ public class BattleManager : Singleton<BattleManager>
 
     public void PossibleActMonster()
     {
+        possibleActPlayerMonsters.Clear();
+        
         foreach (var monster in BattleEntryTeam)
         {
             if (monster.canAct && monster.CurHp > 0)
             {
                 possibleActPlayerMonsters.Add(monster);
-            }
-
-            else if (!monster.canAct || monster.CurHp <= 0)
-            {
-                possibleActPlayerMonsters.Remove(monster);
             }
         }
     }

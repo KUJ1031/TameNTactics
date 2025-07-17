@@ -11,7 +11,6 @@ public class SelectSkillState : BaseBattleState
         Debug.Log("스킬 선택 상태로 진입했습니다. 스킬을 선택하세요.");
 
         MonsterData monsterCharacter = BattleManager.Instance.selectedPlayerMonster.monsterData;
-        UIManager.Instance.battleUIManager.DisableHoverSelect();
         UIManager.Instance.battleUIManager.ShowMonsterSkills(monsterCharacter);
     }
 
@@ -21,26 +20,29 @@ public class SelectSkillState : BaseBattleState
         // todo 몬스터 공격자세 애니메이션 활성화
         //UIManager.Instance.battleUIManager.SelectMonster();
 
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //     RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-        //
-        //     if (hit.collider != null)
-        //     {
-        //         if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
-        //         {
-        //             Monster clickedMonster = monsterCharacter.monster;
-        //
-        //             if (BattleManager.Instance.selectedPlayerMonster == clickedMonster)
-        //             {
-        //                 UIManager.Instance.battleUIManager.ShowMonsterSkills(clickedMonster.monsterData);
-        //
-        //                 Debug.Log($"몬스터 변경됨: {clickedMonster.monsterData.monsterName}");
-        //             }
-        //         }
-        //     }
-        // }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+            
+            if (hit.collider != null && BattleManager.Instance.BattleEntryTeam
+                    .Contains(BattleManager.Instance.selectedPlayerMonster))
+            {
+                if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
+                {
+                    Monster clickedMonster = monsterCharacter.monster;
+        
+                    if (BattleManager.Instance.possibleActPlayerMonsters.Contains(clickedMonster) &&
+                        clickedMonster != BattleManager.Instance.selectedPlayerMonster)
+                    {
+                        UIManager.Instance.battleUIManager.DeselectMonster(BattleManager.Instance.selectedPlayerMonster);
+                        UIManager.Instance.battleUIManager.ShowMonsterSkills(clickedMonster.monsterData);
+                        BattleManager.Instance.SelectPlayerMonster(clickedMonster);
+                        Debug.Log($"몬스터 변경됨: {clickedMonster.monsterData.monsterName}");
+                    }
+                }
+            }
+        }
     }
 
     public void OnSelectedSkill(SkillData skill)

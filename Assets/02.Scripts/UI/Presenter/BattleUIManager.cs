@@ -41,7 +41,7 @@ public class BattleUIManager : MonoBehaviour
     public void DisableHoverSelect()
     {
         CanHoverSelect = false;
-        CurrentHoverTarget.Clear();
+        CurrentHoverTarget = null;
     }
 
     private void OnEnable()
