@@ -187,6 +187,7 @@ public class BattleManager : Singleton<BattleManager>
         if (selectedTargets.Count == selectedSkill.targetCount &&
             selectedTargets.All(t => t.CurHp > 0))
         {
+            UIManager.Instance.battleUIManager.HidePossibleTargets();
             StartCoroutine(CompareSpeedAndFight());
         }
     }

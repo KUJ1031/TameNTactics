@@ -17,17 +17,6 @@ public class SelectPlayerMonsterState : BaseBattleState
         // todo 방향키 혹은 마우스 위에 올려놓을 시 빛나면서 고르는거 대기 상태
         //Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
-        //if (hit.collider != null)
-        //{
-        //    if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
-        //    {
-        //        if (BattleManager.Instance.BattleEntryTeam.Contains(monsterCharacter.monster))
-        //        {
-        //            UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
-        //        }
-        //    }
-        //}
     }
 
     public void OnMonsterSelected(Monster monster)
