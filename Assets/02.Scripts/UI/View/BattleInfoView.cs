@@ -46,6 +46,7 @@ public class BattleInfoView : MonoBehaviour
     {
         GameObject passiveIcon = Instantiate(passiveImage, passivePanel);
 
-        passiveIcon.GetComponent<Image>().sprite = skillIcon;
+        Image passiveSkillImage = passiveIcon.transform.Find("PassiveIcon").GetComponent<Image>();
+        passiveSkillImage.sprite = skillIcon;
     }
 }
