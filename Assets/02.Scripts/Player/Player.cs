@@ -296,8 +296,4 @@ public class Player
         playerPuzzleClearCheck[puzzleId] = true;
     }
 
-    public void SetPlayerKeySetting(string keyName, string keyValue)
-    {
-        playerKeySetting[keyName] = keyValue;
-    }
 }
