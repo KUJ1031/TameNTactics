@@ -12,10 +12,12 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private SkillView skillView;
     [SerializeField] private MenuView menuView;
     [SerializeField] private EmbraceView embraceView;
+    [SerializeField] private SkillTooltip skillTooltip;
 
     public EmbraceView EmbraceView { get { return embraceView; } }
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
     public BattleInfoView BattleInfoView { get { return battleInfoView; } }
+    public SkillTooltip SkillTooltip { get { return skillTooltip; } }
     public bool CanHoverSelect { get; private set; } = false;
     public List<Monster> CurrentHoverTarget { get; private set; }
 
