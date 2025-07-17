@@ -8,7 +8,7 @@ public class KeyInputRouter : MonoBehaviour
     private InputAction Interaction;
     private InputAction Inventory;
     private InputAction Menu;
-    private InputAction Minigam;
+    private InputAction Minigame;
     private InputAction Select;
     private InputAction Map;
     private InputAction Playerinformation;
@@ -23,7 +23,7 @@ public class KeyInputRouter : MonoBehaviour
         Interaction = map.FindAction("Interaction");
         Inventory = map.FindAction("Inventory");
         Menu = map.FindAction("Menu");
-        Minigam = map.FindAction("Minigam");
+        Minigame = map.FindAction("Minigame");
         Select = map.FindAction("Select");
         Map = map.FindAction("Map");
         Playerinformation = map.FindAction("Playerinformation");
@@ -33,7 +33,7 @@ public class KeyInputRouter : MonoBehaviour
         Interaction.Enable();
         Inventory.Enable();
         Menu.Enable();
-        Minigam.Enable();
+        Minigame.Enable();
         Select.Enable();
     }
 
@@ -61,9 +61,9 @@ public class KeyInputRouter : MonoBehaviour
         }
     }
 
-    private void Minigamkey()
+    private void Minigamekey()
     {
-        if (Minigam.triggered)
+        if (Minigame.triggered)
         {
             Debug.Log("미니게임");
         }
@@ -122,7 +122,7 @@ public class KeyInputRouter : MonoBehaviour
         Interactionkey();
         Inventorykey();
         Menukey();
-        Minigamkey();
+        Minigamekey();
         Selectkey();
         Mapkey();
         Playerinformationkey();
