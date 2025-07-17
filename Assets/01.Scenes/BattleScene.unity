@@ -1982,18 +1982,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4915247417769277168, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4915247417769277168, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4915247417769277168, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5114788815613752310, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
       propertyPath: m_Name
       value: BattleInfoUI
@@ -2016,7 +2004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7426897300199404703, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000013828278
+      value: -0.0000038146973
       objectReference: {fileID: 0}
     - target: {fileID: 7488723731987181473, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
       propertyPath: m_Value

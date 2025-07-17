@@ -18,10 +18,9 @@ MonoBehaviour:
   ultimateSkillList: 0
   skillName: q
   skillPower: 0
-  isTargetSingleAlly: 0
-  isAreaAttack: 0
-  isTargetSelf: 0
-  icon: {fileID: 0}
+  targetScope: 0
+  targetCount: 0
+  icon: {fileID: 2309975238256837792, guid: 79d9ce216bde0c141a38cb7d44037a1a, type: 3}
   upgradeIcon: {fileID: 0}
   description: qqqqqqq
   upgradeDescription: 

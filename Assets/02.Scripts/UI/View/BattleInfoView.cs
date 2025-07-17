@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleInfoView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI battleDialogue;
     [SerializeField] private TextMeshProUGUI endBattleMessage;
+    [SerializeField] private RectTransform passivePanel;
+    [SerializeField] private GameObject passiveImage;
 
     private StringBuilder logBuilder = new();
 
@@ -37,5 +40,12 @@ public class BattleInfoView : MonoBehaviour
         {
             endBattleMessage.text = "패배했습니다...";
         }
+    }
+
+    public void InitializePassiveIcon(Sprite skillIcon)
+    {
+        GameObject passiveIcon = Instantiate(passiveImage, passivePanel);
+
+        passiveIcon.GetComponent<Image>().sprite = skillIcon;
     }
 }
