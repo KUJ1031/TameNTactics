@@ -22,12 +22,14 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
     [SerializeField] private DamagePopup damagePopupPrefab;
+    [SerializeField] private GameObject PossibleTargetPrefab;
 
     [Header("포섭하기 미니게임")]
     [SerializeField] private GameObject miniGamePrefab;
 
     public GameObject MiniGamePrefab { get { return miniGamePrefab; } }
-
+    
+    private List<GameObject> IndicatorList = new();
     private List<MonsterCharacter> allMonsterCharacters = new();
 
     public void EnableHoverSelect(HoverTargetType targetType)
@@ -229,5 +231,24 @@ public class BattleUIManager : MonoBehaviour
 
         DamagePopup popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
         popup.SetUp(damage);
+    }
+
+    public void ShowPossibleTargets(MonsterCharacter possibleTarget)
+    {
+        Vector3 spawnPos = possibleTarget.transform.position + Vector3.up * 1.8f;
+        GameObject indicator = Instantiate(PossibleTargetPrefab, spawnPos, Quaternion.identity);
+        
+        indicator.transform.SetParent(possibleTarget.transform);
+        IndicatorList.Add(indicator);
+    }
+
+    public void HidePossibleTargets()
+    {
+        foreach (var indicator in IndicatorList)
+        {
+            Destroy(indicator);
+        }
+        
+        IndicatorList.Clear();
     }
 }

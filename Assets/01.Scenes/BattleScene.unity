@@ -227,6 +227,7 @@ MonoBehaviour:
   embraceView: {fileID: 985042919}
   battleUIButtonHandler: {fileID: 1105279946}
   damagePopupPrefab: {fileID: 1837614001571863126, guid: 36e20260603b14347a396371c855a293, type: 3}
+  PossibleTargetPrefab: {fileID: 398118227331626419, guid: 6e0537f8fa19ead4baaf1e0be6292cfb, type: 3}
   miniGamePrefab: {fileID: 3609670787628734108, guid: 505f5ebe8cc94734c9897eeae5d3e8b4, type: 3}
 --- !u!4 &117401386
 Transform:
@@ -1979,6 +1980,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3982948143919122880, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915247417769277168, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915247417769277168, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915247417769277168, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5114788815613752310, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
