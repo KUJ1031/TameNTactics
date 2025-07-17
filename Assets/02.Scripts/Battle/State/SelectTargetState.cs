@@ -22,11 +22,6 @@ public class SelectTargetState : BaseBattleState
         // todo 타겟 몬스터 강조 효과(빛나기) UI 활성화
     }
 
-    public override void Execute()
-    {
-        
-    }
-
     public void OnSelectTargetMonster(Monster monster)
     {
         if (!BattleManager.Instance.possibleTargets.Contains(monster))
@@ -43,14 +38,6 @@ public class SelectTargetState : BaseBattleState
     public void OnCancelSelectTarget()
     {
         battleSystem.ChangeState(new SelectSkillState(battleSystem));
-    }
-
-    public override void Exit()
-    {
-        UIManager.Instance.battleUIManager.HidePossibleTargets();
-        // todo 몬스터 강조 효과(빛나기)UI 숨기기
-        // todo 스킬 목록 UI 숨기기
-        //UIManager.Instance.battleUIManager.DeselectAllMonsters();
     }
 
     private void ShowPossibleTargets()
