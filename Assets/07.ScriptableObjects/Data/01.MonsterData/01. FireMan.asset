@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 01. FireMan
   m_EditorClassIdentifier: 
   monsterName: FireMan
-  monsterNumber: 100
+  monsterNumber: 0
   monsterImage: {fileID: -7855327871636034459, guid: 8943f3cde4970e94b8df9534b704922d, type: 3}
   encounterCount: 0
-  captureCount: 16
+  captureCount: 96
   type: 0
   personality: 2
   maxHp: 90

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 04. EarthMan
   m_EditorClassIdentifier: 
   monsterName: EarthMan
-  monsterNumber: 100
+  monsterNumber: 0
   monsterImage: {fileID: 3537242770394404238, guid: 6909d108ca31dfa4abfec3a7aeb90ec2, type: 3}
   encounterCount: 0
-  captureCount: 16
+  captureCount: 96
   type: 3
   personality: 1
   maxHp: 130

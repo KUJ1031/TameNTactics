@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 03. GrassMan
   m_EditorClassIdentifier: 
   monsterName: GrassMan
-  monsterNumber: 100
+  monsterNumber: 0
   monsterImage: {fileID: 1745192818456827540, guid: 7ea332978c8f0754a9b62dadc9c6472f, type: 3}
   encounterCount: 0
-  captureCount: 16
+  captureCount: 96
   type: 2
   personality: 1
   maxHp: 80
