@@ -16,6 +16,7 @@ public class BattleManager : Singleton<BattleManager>
     public List<Monster> BattleEntryTeam { get; private set; } = new();
     public List<Monster> BattleEnemyTeam { get; private set; } = new();
 
+    public List<Monster> possibleActPlayerMonsters = new();
     public List<Monster> possibleTargets = new();
     public List<Monster> selectedTargets = new();
 
@@ -73,6 +74,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
             monster.TriggerOnBattleStart(BattleEntryTeam);
+            monster.InitializeMonsterAct();
             Debug.Log($"Entry Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Entry Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
@@ -82,6 +84,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.RecalculateStats();
             monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
+            monster.InitializeMonsterAct();
             monster.TriggerOnBattleStart(BattleEnemyTeam);
             Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
@@ -99,6 +102,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.UpdateStatusEffects();
             monster.CheckMonsterAction();
         }
+
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
 
@@ -109,6 +113,19 @@ public class BattleManager : Singleton<BattleManager>
         target.TriggerOnDamaged(damage, attacker);
 
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, damage, skillData);
+    }
+
+    public void PossibleActMonster()
+    {
+        possibleActPlayerMonsters.Clear();
+        
+        foreach (var monster in BattleEntryTeam)
+        {
+            if (monster.canAct && monster.CurHp > 0)
+            {
+                possibleActPlayerMonsters.Add(monster);
+            }
+        }
     }
 
     // 공격 실행할 몬스터 고르기
@@ -195,6 +212,8 @@ public class BattleManager : Singleton<BattleManager>
     // 속도 비교해서 누가 먼저 공격하는지 정함
     private IEnumerator CompareSpeedAndFight()
     {
+        UIManager.Instance.battleUIManager.DeselectAllMonsters();
+        UIManager.Instance.battleUIManager.OnActionComplete();
         if (enemyChosenAction == null)
             enemyChosenAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
@@ -244,7 +263,6 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
         EndTurn();
-        UIManager.Instance.battleUIManager.DeselectAllMonsters();
         ClearSelections();
     }
 

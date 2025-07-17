@@ -17,7 +17,7 @@ public class BattleUIManager : MonoBehaviour
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
     public BattleInfoView BattleInfoView { get { return battleInfoView; } }
     public bool CanHoverSelect { get; private set; } = false;
-    public HoverTargetType CurrentHoverTarget { get; private set; } = HoverTargetType.None;
+    public List<Monster> CurrentHoverTarget { get; private set; }
 
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
@@ -28,20 +28,20 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private GameObject miniGamePrefab;
 
     public GameObject MiniGamePrefab { get { return miniGamePrefab; } }
-    
+
     private List<GameObject> IndicatorList = new();
     private List<MonsterCharacter> allMonsterCharacters = new();
 
-    public void EnableHoverSelect(HoverTargetType targetType)
+    public void EnableHoverSelect(List<Monster> monsters)
     {
         CanHoverSelect = true;
-        CurrentHoverTarget = targetType;
+        CurrentHoverTarget = monsters;
     }
 
     public void DisableHoverSelect()
     {
         CanHoverSelect = false;
-        CurrentHoverTarget = HoverTargetType.None;
+        CurrentHoverTarget = null;
     }
 
     private void OnEnable()
@@ -61,7 +61,7 @@ public class BattleUIManager : MonoBehaviour
 
     public void OnAttackButtonClick()
     {
-        EnableHoverSelect(HoverTargetType.PlayerTeam);
+        EnableHoverSelect(BattleManager.Instance.possibleActPlayerMonsters);
         battleSelectView.HideSelectPanel();
     }
 
@@ -72,7 +72,7 @@ public class BattleUIManager : MonoBehaviour
 
     public void OnEmbraceButtonClick()
     {
-        EnableHoverSelect(HoverTargetType.EnemyTeam);
+        EnableHoverSelect(BattleManager.Instance.BattleEnemyTeam);
     }
 
     public void OnActionComplete()
@@ -237,7 +237,7 @@ public class BattleUIManager : MonoBehaviour
     {
         Vector3 spawnPos = possibleTarget.transform.position + Vector3.up * 1.8f;
         GameObject indicator = Instantiate(PossibleTargetPrefab, spawnPos, Quaternion.identity);
-        
+
         indicator.transform.SetParent(possibleTarget.transform);
         IndicatorList.Add(indicator);
     }
@@ -248,7 +248,7 @@ public class BattleUIManager : MonoBehaviour
         {
             Destroy(indicator);
         }
-        
+
         IndicatorList.Clear();
     }
 }

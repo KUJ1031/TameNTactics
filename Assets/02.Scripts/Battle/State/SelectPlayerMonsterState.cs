@@ -9,8 +9,9 @@ public class SelectPlayerMonsterState : BaseBattleState
     public override void Enter()
     {
         Debug.Log("플레이어 몬스터 선택 상태로 진입했습니다. 몬스터를 선택하세요.");
+        BattleManager.Instance.PossibleActMonster();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("공격할 몬스터를 선택하세요.");
-        UIManager.Instance.battleUIManager.EnableHoverSelect(HoverTargetType.PlayerTeam);
+        UIManager.Instance.battleUIManager.EnableHoverSelect(BattleManager.Instance.possibleActPlayerMonsters);
     }
     public override void Execute()
     {
@@ -23,7 +24,7 @@ public class SelectPlayerMonsterState : BaseBattleState
     {
         if (monster.CurHp <= 0 || !monster.canAct) return;
         BattleManager.Instance.SelectPlayerMonster(monster);
-        if (PlayerManager.Instance.player.battleEntry.Contains(monster))
+        if (BattleManager.Instance.BattleEntryTeam.Contains(monster))
         {
             battleSystem.ChangeState(new SelectSkillState(battleSystem));
         }
