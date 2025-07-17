@@ -45,6 +45,10 @@ public class BattleDialogueManager : Singleton<BattleDialogueManager>
         UIManager.Instance.battleUIManager.BattleInfoView.ClearBattleDialogue();
     }
 
+    /// <summary>
+    /// 배틀 관련 내용이 스크롤에 많아질 경우
+    /// 스크롤을 자동으로 아래로 내리도록 하는 코루틴
+    /// </summary>
     private void ScrollToBottom()
     {
         StartCoroutine(ScrollCoroutine());
