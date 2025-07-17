@@ -101,7 +101,6 @@ public class BattleManager : Singleton<BattleManager>
             monster.CheckMonsterAction();
         }
 
-        PossibleActMonster();
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
 
@@ -114,7 +113,7 @@ public class BattleManager : Singleton<BattleManager>
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, damage, skillData);
     }
 
-    private void PossibleActMonster()
+    public void PossibleActMonster()
     {
         foreach (var monster in BattleEntryTeam)
         {
@@ -214,6 +213,8 @@ public class BattleManager : Singleton<BattleManager>
     // 속도 비교해서 누가 먼저 공격하는지 정함
     private IEnumerator CompareSpeedAndFight()
     {
+        UIManager.Instance.battleUIManager.DeselectAllMonsters();
+        UIManager.Instance.battleUIManager.OnActionComplete();
         if (enemyChosenAction == null)
             enemyChosenAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
@@ -263,7 +264,6 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
         EndTurn();
-        UIManager.Instance.battleUIManager.DeselectAllMonsters();
         ClearSelections();
     }
 

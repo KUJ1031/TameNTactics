@@ -11,7 +11,7 @@ public class SelectCaptureTargetState : BaseBattleState
         Debug.Log("포섭하기 상태로 변경");
         UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("포섭하고 싶은 몬스터를 선택하세요.");
-        UIManager.Instance.battleUIManager.EnableHoverSelect(HoverTargetType.EnemyTeam);
+        UIManager.Instance.battleUIManager.EnableHoverSelect(BattleManager.Instance.BattleEnemyTeam);
         battleSystem.StartCoroutine(WaitForMonsterSelection());
     }
 
@@ -56,7 +56,7 @@ public class SelectCaptureTargetState : BaseBattleState
             }
             yield return null;
         }
-        UIManager.Instance.battleUIManager.OnActionComplete();
+        UIManager.Instance.battleUIManager.DisableHoverSelect();
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 포섭을 시도하세요!");
 
@@ -114,6 +114,7 @@ public class SelectCaptureTargetState : BaseBattleState
                 {
                     Debug.Log("포섭 실패...!");
                     UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
+                    UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
                     BattleManager.Instance.EnemyAttackAfterPlayerTurn();
                 }
 

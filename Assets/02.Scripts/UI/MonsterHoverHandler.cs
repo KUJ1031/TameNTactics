@@ -4,13 +4,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public enum HoverTargetType
-{
-    None,
-    PlayerTeam,
-    EnemyTeam
-}
-
 public class MonsterHoverHandler : MonoBehaviour
 {
     private GameObject selectImage;
@@ -18,12 +11,12 @@ public class MonsterHoverHandler : MonoBehaviour
 
     private BattleUIManager battleUIManager;
 
-    private MonsterCharacter monsterCharacter;
+    private Monster monster;
 
     private void Start()
     {
         battleUIManager = UIManager.Instance.battleUIManager;
-        monsterCharacter = GetComponent<MonsterCharacter>();
+        monster = GetComponent<MonsterCharacter>().monster;
     }
 
     public void SetUp(GameObject image)
@@ -37,14 +30,7 @@ public class MonsterHoverHandler : MonoBehaviour
 
         if (!battleUIManager.CanHoverSelect) return false;
 
-        if (battleUIManager.CurrentHoverTarget == HoverTargetType.PlayerTeam &&
-            BattleManager.Instance.BattleEntryTeam.Contains(monsterCharacter.monster))
-        {
-            return true;
-        }
-
-        if (battleUIManager.CurrentHoverTarget == HoverTargetType.EnemyTeam &&
-            BattleManager.Instance.BattleEnemyTeam.Contains(monsterCharacter.monster))
+        if (battleUIManager.CanHoverSelect && battleUIManager.CurrentHoverTarget.Contains(monster))
         {
             return true;
         }
@@ -54,13 +40,14 @@ public class MonsterHoverHandler : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        bool isPossibleAct = BattleManager.Instance.possibleActPlayerMonsters.Contains(monsterCharacter.monster);
-        
-        if (!IsValideHoverTarget() && !isPossibleAct) return;
+        if (!IsValideHoverTarget()) return;
 
-        if (!isSelected && selectImage != null && isPossibleAct)
+        if (battleUIManager.CurrentHoverTarget.Contains(monster))
         {
-            selectImage.SetActive(true);
+            if (!isSelected && selectImage != null)
+            {
+                selectImage.SetActive(true);
+            }
         }
     }
 
@@ -80,9 +67,12 @@ public class MonsterHoverHandler : MonoBehaviour
 
         isSelected = true;
 
-        if (selectImage != null)
+        if (battleUIManager.CurrentHoverTarget.Contains(monster))
         {
-            selectImage.SetActive(true);
+            if (selectImage != null)
+            {
+                selectImage.SetActive(true);
+            }
         }
     }
 
