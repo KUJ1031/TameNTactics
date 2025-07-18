@@ -18,10 +18,9 @@ MonoBehaviour:
   ultimateSkillList: 0
   skillName: w
   skillPower: 0
-  isTargetSingleAlly: 0
-  isAreaAttack: 0
-  isTargetSelf: 0
-  icon: {fileID: 0}
+  targetScope: 0
+  targetCount: 0
+  icon: {fileID: 21300000, guid: 14391a47a8674c543bc7f27bf9862266, type: 3}
   upgradeIcon: {fileID: 0}
   description: wwwww
   upgradeDescription: 

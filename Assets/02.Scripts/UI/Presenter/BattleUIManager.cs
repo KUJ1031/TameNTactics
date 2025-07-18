@@ -12,10 +12,12 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private SkillView skillView;
     [SerializeField] private MenuView menuView;
     [SerializeField] private EmbraceView embraceView;
+    [SerializeField] private SkillTooltip skillTooltip;
 
     public EmbraceView EmbraceView { get { return embraceView; } }
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
     public BattleInfoView BattleInfoView { get { return battleInfoView; } }
+    public SkillTooltip SkillTooltip { get { return skillTooltip; } }
     public bool CanHoverSelect { get; private set; } = false;
     public List<Monster> CurrentHoverTarget { get; private set; }
 
@@ -114,6 +116,22 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
+    public void SettingMonsterPassive(List<Monster> allys)
+    {
+        foreach (var monster in allys)
+        {
+            List<SkillData> monsterSkill = monster.skills;
+
+            foreach (var skill in monsterSkill)
+            {
+                if (skill.skillType == SkillType.PassiveSkill)
+                {
+                    battleInfoView.InitializePassiveIcon(skill.icon);
+                }
+            }
+        }
+    }
+
     public void SettingMonsterSelecter(Transform ally, Transform enemy)
     {
         foreach (var mon in allMonsterCharacters)
@@ -182,11 +200,6 @@ public class BattleUIManager : MonoBehaviour
             }
         }
         return null;
-    }
-
-    public void OffSelectMonsterUI()
-    {
-        battleSelectView.OffSelectMonster();
     }
 
     public void BattleEndMessage(bool isWin)

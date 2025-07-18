@@ -18,10 +18,9 @@ MonoBehaviour:
   ultimateSkillList: 0
   skillName: e
   skillPower: 0
-  isTargetSingleAlly: 0
-  isAreaAttack: 0
-  isTargetSelf: 0
-  icon: {fileID: 0}
+  targetScope: 0
+  targetCount: 0
+  icon: {fileID: 1668693436, guid: 22ee27c46945df345ab49f1a657177fb, type: 3}
   upgradeIcon: {fileID: 0}
   description: eeeeeee
   upgradeDescription: 
