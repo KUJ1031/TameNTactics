@@ -118,7 +118,7 @@ public class BattleManager : Singleton<BattleManager>
     public void PossibleActMonster()
     {
         possibleActPlayerMonsters.Clear();
-        
+
         foreach (var monster in BattleEntryTeam)
         {
             if (monster.canAct && monster.CurHp > 0)
@@ -521,17 +521,17 @@ public class BattleManager : Singleton<BattleManager>
             character.transform.position = Vector3.Lerp(startPos, targetPos, elapsed / duration);
             elapsed += Time.deltaTime;
 
-            // gauge 위치 갱신
-            if (gaugeRect != null && parentCanvas != null)
-            {
-                Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
-                RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
+            //// gauge 위치 갱신
+            //if (gaugeRect != null && parentCanvas != null)
+            //{
+            //    Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
+            //    RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
 
-                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
-                {
-                    gaugeRect.localPosition = localPoint;
-                }
-            }
+            //    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
+            //    {
+            //        gaugeRect.localPosition = localPoint;
+            //    }
+            //}
 
             yield return null;
         }
