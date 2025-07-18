@@ -91,7 +91,7 @@ public class BattleUIManager : MonoBehaviour
 
 
     // 배틀씬 진입 시 몬스터 체력, 궁극기 게이지 세팅
-    public void SettingMonsterGauge(Transform ally, Transform enemy)
+    public void SettingMonsterInfo(Transform ally, Transform enemy)
     {
         allMonsterCharacters.Clear();
 
@@ -106,11 +106,12 @@ public class BattleUIManager : MonoBehaviour
             mon.monster.DamagePopup += OnMonsterDamaged;
 
             Vector3 screenPos = Camera.main.WorldToScreenPoint(mon.transform.position);
-            GameObject gauge = battleSelectView.InitiateGauge(screenPos);
+            GameObject gauge = battleSelectView.InitiateInfo(screenPos);
 
             float hpRatio = (float)mon.monster.CurHp / mon.monster.CurMaxHp;
 
             battleSelectView.SetHpGauge(gauge, hpRatio);
+            BattleSelectView.SetMonsterInfo(gauge, mon.monster);
 
             mon.gameObject.AddComponent<MonsterGaugeHolder>().InitGauge(gauge);
         }
@@ -173,6 +174,20 @@ public class BattleUIManager : MonoBehaviour
 
         float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
         battleSelectView.SetUltimateGauge(gaugeHolder.gauge, ultimateRatio);
+    }
+
+    public void UpdateMonsterLevel(Monster monster)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+
+        if (mc == null) return;
+
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+
+        if (gaugeHolder == null || gaugeHolder.gauge == null) return;
+
+        int monsterLevel = monster.Level;
+        battleSelectView.SetMonsterInfo(gaugeHolder.gauge, monster);
     }
 
     public void RemoveGauge(Monster monster)

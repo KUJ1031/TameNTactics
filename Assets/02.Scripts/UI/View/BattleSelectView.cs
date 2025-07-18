@@ -14,13 +14,14 @@ public class BattleSelectView : MonoBehaviour
 
     [SerializeField] private GameObject selectPanel;
     [SerializeField] private GameObject skillPanel;
-    [SerializeField] private GameObject gaugePanel;
+    [SerializeField] private GameObject monsterInfoPanel;
     [SerializeField] private GameObject behaviorPanel;
     [SerializeField] private GameObject selectMonsterImage;
-    [SerializeField] private RectTransform selectMonsterRect;
 
     [SerializeField] private Canvas gaugeCanvas;
     [SerializeField] private Canvas battleSelectCanvas;
+
+    [SerializeField] private MonsterTypeIconDB monsterTypeIconDB;
 
     public void HideSelectPanel()
     {
@@ -55,14 +56,14 @@ public class BattleSelectView : MonoBehaviour
         selectPanel.SetActive(true);
     }
 
-    public GameObject InitiateGauge(Vector3 screenPos)
+    public GameObject InitiateInfo(Vector3 screenPos)
     {
-        GameObject gauge = Instantiate(gaugePanel, gaugeCanvas.transform);
+        GameObject infoPanel = Instantiate(monsterInfoPanel, gaugeCanvas.transform);
 
-        gauge.transform.position = screenPos;
-        gauge.SetActive(true);
+        infoPanel.transform.position = screenPos;
+        infoPanel.SetActive(true);
 
-        return gauge;
+        return infoPanel;
     }
 
     public GameObject InitiateSelectImage(Transform tr)
@@ -89,18 +90,37 @@ public class BattleSelectView : MonoBehaviour
         return selectImage;
     }
 
-    public void SetHpGauge(GameObject gauge, float hpRatio)
+    public void SetHpGauge(GameObject panel, float hpRatio)
     {
-        Image hpBar = gauge.transform.GetChild(0).GetComponent<Image>();
+        Image hpBar = panel.transform.GetChild(0).GetComponent<Image>();
 
         hpBar.fillAmount = hpRatio;
     }
 
-    public void SetUltimateGauge(GameObject gauge, float ultimateRatio)
+    public void SetUltimateGauge(GameObject panel, float ultimateRatio)
     {
-        Image ultimateBar = gauge.transform.GetChild(1).GetComponent<Image>();
+        Image ultimateBar = panel.transform.GetChild(1).GetComponent<Image>();
 
         ultimateBar.fillAmount = ultimateRatio;
+    }
+
+    public void SetMonsterInfo(GameObject panel, Monster monster)
+    {
+        Image monsterType = panel.transform.GetChild(2).GetComponent<Image>();
+        TextMeshProUGUI levelText = panel.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
+
+        if (monsterTypeIconDB == null)
+        {
+            Debug.LogError("MonsterTypeIconDB가 존재하지 않습니다. 생성 후 다시 시도하세요.");
+        }
+
+        Sprite icon = monsterTypeIconDB.GetTypeIcon(monster.type);
+
+        if (icon != null)
+        {
+            monsterType.sprite = icon;
+            levelText.text = $"Lv {monster.Level}";
+        }
     }
 
     public void OffSelectMonster()
