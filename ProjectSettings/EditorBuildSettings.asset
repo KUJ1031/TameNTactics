@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/01.Scenes/PlayerControls.unity
     guid: c95e839864df43843a6928585102fdf8
   - enabled: 1
+    path: Assets/01.Scenes/MainMapScene.unity
+    guid: 7a77c0fd5cf69014392aa8d39672800e
+  - enabled: 0
     path: Assets/01.Scenes/Map.unity
     guid: 84d7c6b267033164c81920ff5d257418
   m_configObjects:
