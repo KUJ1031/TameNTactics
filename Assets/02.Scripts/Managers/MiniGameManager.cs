@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -21,24 +19,28 @@ public class MiniGameManager : Singleton<MiniGameManager>
     private Action<bool, Monster> resultCallback;
     private Monster returnMonster;
 
-    public string keySettingName = "Player.Minigame.0";
+    private string keySettingName = "Player.Minigame.0";
 
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
 
     private void Update()
     {
-
-        //여기서 확인
-
-            if (true)
+        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path))
+        {
+            string InputControlPath = path;
+            var control = InputSystem.FindControl(path);
+            if (control is ButtonControl button && button.wasPressedThisFrame)
             {
                 rotatePoint.SetRotateSpeed(0);
                 bool result = rotatePoint.isInSuccessZone;
-                resultCallback?.Invoke(result,returnMonster);
+                resultCallback?.Invoke(result, returnMonster);
                 resultCallback = null;
                 transform.gameObject.SetActive(false);
             }
-
-        
+        }
     }
 
     //랜덤 범위지정
@@ -51,26 +53,33 @@ public class MiniGameManager : Singleton<MiniGameManager>
         ranges.Add(new RotationRange(min, max));
     }
 
-    //범위 0~100
+    
     /// <summary>
     /// 미니게임을 생성합니다. 몬스터를 받고 성공여부와 사용된 몬스터를 반환합니다.
     /// </summary>
     /// <param name="percent"></param>
     /// <param name="speed"></param>
-    public void StartMiniGame(Monster targetMonster, Action<bool,Monster> callback)
+    public void StartMiniGame(Monster targetMonster, Action<bool, Monster> callback)
     {
         transform.gameObject.SetActive(true);
         ranges.Clear();
 
-        //확률 계산
-        //float p = percent / 100f * 360f;
-        //SetSuccessRanges(p);
-        SetSuccessRanges(10);
-        rotatePoint.SetRotateSpeed(1);
+        float speed;
+        float range;
+        float hpPercent;
+
+        hpPercent = targetMonster.CurHp / targetMonster.CurMaxHp;
+        speed = -0.008f * hpPercent + 0.9f;
+        range = 50;//추후 제스쳐 확인 후 범위 수정 추가
+
+        SetSuccessRanges(range);
+        rotatePoint.SetRotateSpeed(speed);
         rotatePoint.SetRanges(ranges);
         spawner.SpawnRanges(ranges);
 
-        // 콜백 저장
+        returnMonster = targetMonster;
         resultCallback = callback;
     }
+
+    
 }
