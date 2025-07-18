@@ -33,7 +33,7 @@ public class GameStart : MonoBehaviour
             Debug.Log("기존 저장된 데이터를 삭제했습니다.");
         }
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMapScene");
     }
 
     private void OnLoadButtonClicked()
@@ -46,7 +46,7 @@ public class GameStart : MonoBehaviour
         if (loadedPlayer != null)
         {
             PlayerManager.Instance.player = loadedPlayer;
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMapScene");
             Debug.Log("저장된 플레이어 데이터를 불러왔습니다.");
         }
         else

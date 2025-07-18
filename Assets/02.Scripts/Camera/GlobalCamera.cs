@@ -7,8 +7,6 @@ public class GlobalCamera : Singleton<GlobalCamera>
 
     public CinemachineVirtualCamera virtualCamera; // 인스펙터에서 할당
 
-    protected override bool IsDontDestroy => true;
-
     public void SetFollow(Transform target)
     {
         if (virtualCamera != null)

@@ -2114,6 +2114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   csvAddress: dialogue
   dialogueUI: {fileID: 7568180070917519526}
+  isCommunicationEneded: 0
 --- !u!4 &203587293
 Transform:
   m_ObjectHideFlags: 0
@@ -35466,6 +35467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyTeam: []
+  possibleActPlayerMonsters: []
   possibleTargets: []
   selectedTargets: []
   selectedPlayerMonster:
