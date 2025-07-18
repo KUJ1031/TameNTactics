@@ -34,6 +34,22 @@ public class BattleUIManager : MonoBehaviour
     private List<GameObject> IndicatorList = new();
     private List<MonsterCharacter> allMonsterCharacters = new();
 
+    private void Update()
+    {
+        foreach (var character in allMonsterCharacters)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
+            RectTransform canvasRect = battleSelectView.GaugeCanvas.GetComponent<RectTransform>();
+
+            RectTransform gaugeRectTr = character.GetComponent<MonsterGaugeHolder>().gauge.GetComponent<RectTransform>();
+
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
+            {
+                gaugeRectTr.transform.localPosition = localPoint;
+            }
+        }
+    }
+
     public void EnableHoverSelect(List<Monster> monsters)
     {
         CanHoverSelect = true;

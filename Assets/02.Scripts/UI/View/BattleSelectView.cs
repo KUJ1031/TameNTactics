@@ -23,6 +23,8 @@ public class BattleSelectView : MonoBehaviour
 
     [SerializeField] private MonsterTypeIconDB monsterTypeIconDB;
 
+    public Canvas GaugeCanvas { get { return gaugeCanvas; } }
+
     public void HideSelectPanel()
     {
         selectPanel.SetActive(false);
