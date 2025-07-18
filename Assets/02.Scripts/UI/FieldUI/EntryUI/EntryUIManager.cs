@@ -234,7 +234,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
     }
 
     /// <summary>
-    /// 포인터 위치에 따라 드롭 가능한 대상을 반환합니다.
+    /// 포인터 위치에 따라 드롭 가능한 부모를 반환합니다.
     /// </summary>
     public Transform GetDropTarget(Vector2 pointerPosition)
     {

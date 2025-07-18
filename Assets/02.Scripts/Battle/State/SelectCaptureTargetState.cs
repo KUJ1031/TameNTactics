@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SelectCaptureTargetState : BaseBattleState
@@ -60,75 +59,49 @@ public class SelectCaptureTargetState : BaseBattleState
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 포섭을 시도하세요!");
 
-        StartEmbraceMiniGame(selectedMonster, 50f);
+        StartEmbraceMiniGame(selectedMonster);
     }
 
-    private void StartEmbraceMiniGame(Monster targetMonster, float successPercent)
+    private void StartEmbraceMiniGame(Monster targetMonster)
     {
-        GameObject miniGameObj = Object.Instantiate(UIManager.Instance.battleUIManager.MiniGamePrefab);
-
         // UI 초기화
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
-        //UIManager.Instance.battleUIManager.EmbraceView.HideMessage();
-
-        // MiniGameManager 가져오기
-        MiniGameManager miniGameManager = miniGameObj.GetComponent<MiniGameManager>();
-
-        // MiniGame 시작
-        miniGameManager.StartMiniGame(successPercent);
-
-        // 결과 판정 코루틴 실행
-        battleSystem.StartCoroutine(CheckEmbraceResult(miniGameManager, targetMonster));
+        MiniGameManager.Instance.StartMiniGame(targetMonster, CheckEmbraceResult);
     }
 
-    private IEnumerator CheckEmbraceResult(MiniGameManager miniGameManager, Monster targetMonster)
+    private void CheckEmbraceResult(bool isSuccess, Monster targetMonster)
     {
-        RotatePoint rotatePoint = miniGameManager.GetComponentInChildren<RotatePoint>();
-
-        bool finished = false;
-
-        while (!finished)
+        if (isSuccess)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            Debug.Log("포섭 성공!");
+            UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
+            BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
+            UIManager.Instance.battleUIManager.RemoveGauge(targetMonster);
+            UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
+
+            if (BattleManager.Instance.BattleEnemyTeam.Count <= 0)
             {
-                rotatePoint.SetRotateSpeed(0);
-
-                if (rotatePoint.isInSuccessZone)
-                {
-                    Debug.Log("포섭 성공!");
-                    UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
-                    BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
-                    UIManager.Instance.battleUIManager.RemoveGauge(targetMonster);
-                    UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
-
-                    if (BattleManager.Instance.BattleEnemyTeam.Count <= 0)
-                    {
-                        BattleSystem.Instance.ChangeState(new EndBattleState(battleSystem));
-                    }
-                    else
-                    {
-                        BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-                    }
-                }
-                else
-                {
-                    Debug.Log("포섭 실패...!");
-                    UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
-                    UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
-                    BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-                }
-
-                finished = true;
+                BattleSystem.Instance.ChangeState(new EndBattleState(battleSystem));
             }
-
-            yield return null;
+            else
+            {
+                BattleManager.Instance.EnemyAttackAfterPlayerTurn();
+            }
         }
-
-        yield return new WaitForSeconds(2f);
-
-        Object.Destroy(miniGameManager.gameObject);
-
+        else
+        {
+            Debug.Log("포섭 실패...!");
+            UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
+            UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
+            BattleManager.Instance.EnemyAttackAfterPlayerTurn();
+        }
+        battleSystem.StartCoroutine(Delay(2.0f));
         targetMonster = null;
+    }
+
+    IEnumerator Delay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
     }
 
     public override void Execute()

@@ -31,14 +31,14 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Player.Enable();
-        ChanageState(new Idlestate());
+        ChangeState(new Idlestate());
 
         var map = lnputActions.FindActionMap("Player", true);
         moveAction = map.FindAction("Move", true);
 
         moveAction.Enable();
         Debug.Log(moveAction);
-        ChanageState(new Idlestate());
+        ChangeState(new Idlestate());
     }
 
     private void OnDisable()
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     }
 
     //상태변환
-    public void ChanageState(IPlayerState newState)
+    public void ChangeState(IPlayerState newState)
     {
         currentState?.OnExit(this);
         currentState = newState;

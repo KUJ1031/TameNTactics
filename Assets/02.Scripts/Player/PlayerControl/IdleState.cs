@@ -22,7 +22,7 @@ public class Idlestate : IPlayerState
         Vector2 moves = player.moveAction.ReadValue<Vector2>();
         if (moves != Vector2.zero)
         {
-            player.ChanageState(new MoveState()); //이동 상태로 전환
+            player.ChangeState(new MoveState()); //이동 상태로 전환
         }
     }
 

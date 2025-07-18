@@ -22,7 +22,7 @@ public class MoveState : IPlayerState
         //Debug.Log(inputdir.y);
         if (inputdir.sqrMagnitude < 0.01f)
         {
-            player.ChanageState(new Idlestate());//IDIe 상태로 전환
+            player.ChangeState(new Idlestate());//IDIe 상태로 전환
         }
     }
 
