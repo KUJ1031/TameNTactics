@@ -65,13 +65,19 @@ public class Player
             onCompleted?.Invoke(false);
             return;
         }
-
+        if(entryMonsters.Count == 1 && entryMonsters.Contains(monster))
+        {
+            string warningMessage = "배틀 엔트리에는 최소 한마리의 몬스터는 존재해야 합니다!";
+            FieldUIManager.Instance.OpenConfirmPopup(PopupType.Warning, warningMessage, (_) => { });
+            return;
+        }
         //정말 내보낼까요? 팝업띄우고 ok했을때 내보내기
         string message = "정말 내보내겠습니까?";
         FieldUIManager.Instance.OpenConfirmPopup(PopupType.Confirm, message, (isOK) =>
         {
             if (isOK)
             {
+      
                 if (ownedMonsters.Remove(monster))
                 {
                     if (entryMonsters.Remove(monster))
