@@ -19,7 +19,7 @@ public static class EnemyAIController
         // 1. 궁극기 사용 가능한 몬스터가 있다면 우선
         foreach (var enemy in actors)
         {
-            if (enemy.CurHp <= 0) continue;
+            if (enemy.CurHp <= 0 || !enemy.canAct) continue;
 
             var ultimateSkill = enemy.skills.FirstOrDefault(s => s.skillType == SkillType.UltimateSkill);
             bool maxUltCost = enemy.CurUltimateCost >= enemy.MaxUltimateCost;
@@ -43,7 +43,7 @@ public static class EnemyAIController
         // 2. 상성 유리한 대상이 있다면 NormalSkill 사용
         foreach (var enemy in actors)
         {
-            if (enemy.CurHp <= 0) continue;
+            if (enemy.CurHp <= 0 || !enemy.canAct) continue;
 
             bool hasAdvantage = targetMonsters.Any(player =>
                 player.CurHp > 0 &&
@@ -70,7 +70,7 @@ public static class EnemyAIController
         }
 
         // 3. 조건이 없으면 랜덤 몬스터가 NormalSkill 사용
-        var aliveEnemies = actors.Where(m => m.CurHp > 0).ToList();
+        var aliveEnemies = actors.Where(m => m.CurHp > 0 || !m.canAct).ToList();
         if (aliveEnemies.Count == 0) return null;
 
         var randomEnemy = aliveEnemies[Random.Range(0, aliveEnemies.Count)];

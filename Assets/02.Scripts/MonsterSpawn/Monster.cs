@@ -381,7 +381,7 @@ public class Monster
         canAct = false;
     }
 
-    public void OnTurnEnd()
+    public void CheckMonsterAction()
     {
         if (skipTurnCount > 0)
         {
@@ -391,5 +391,11 @@ public class Monster
         {
             canAct = true;
         }
+    }
+
+    public void InitializeMonsterAct()
+    {
+        canAct = true;
+        skipTurnCount = 0;
     }
 }

@@ -12,33 +12,38 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private SkillView skillView;
     [SerializeField] private MenuView menuView;
     [SerializeField] private EmbraceView embraceView;
+    [SerializeField] private SkillTooltip skillTooltip;
 
     public EmbraceView EmbraceView { get { return embraceView; } }
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
+    public BattleInfoView BattleInfoView { get { return battleInfoView; } }
+    public SkillTooltip SkillTooltip { get { return skillTooltip; } }
     public bool CanHoverSelect { get; private set; } = false;
-    public HoverTargetType CurrentHoverTarget { get; private set; } = HoverTargetType.None;
+    public List<Monster> CurrentHoverTarget { get; private set; }
 
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
     [SerializeField] private DamagePopup damagePopupPrefab;
+    [SerializeField] private GameObject PossibleTargetPrefab;
 
     [Header("포섭하기 미니게임")]
     [SerializeField] private GameObject miniGamePrefab;
 
     public GameObject MiniGamePrefab { get { return miniGamePrefab; } }
 
+    private List<GameObject> IndicatorList = new();
     private List<MonsterCharacter> allMonsterCharacters = new();
 
-    public void EnableHoverSelect(HoverTargetType targetType)
+    public void EnableHoverSelect(List<Monster> monsters)
     {
         CanHoverSelect = true;
-        CurrentHoverTarget = targetType;
+        CurrentHoverTarget = monsters;
     }
 
     public void DisableHoverSelect()
     {
         CanHoverSelect = false;
-        CurrentHoverTarget = HoverTargetType.None;
+        CurrentHoverTarget = null;
     }
 
     private void OnEnable()
@@ -58,7 +63,7 @@ public class BattleUIManager : MonoBehaviour
 
     public void OnAttackButtonClick()
     {
-        EnableHoverSelect(HoverTargetType.PlayerTeam);
+        EnableHoverSelect(BattleManager.Instance.possibleActPlayerMonsters);
         battleSelectView.HideSelectPanel();
     }
 
@@ -69,7 +74,7 @@ public class BattleUIManager : MonoBehaviour
 
     public void OnEmbraceButtonClick()
     {
-        EnableHoverSelect(HoverTargetType.EnemyTeam);
+        EnableHoverSelect(BattleManager.Instance.BattleEnemyTeam);
     }
 
     public void OnActionComplete()
@@ -108,6 +113,22 @@ public class BattleUIManager : MonoBehaviour
             battleSelectView.SetHpGauge(gauge, hpRatio);
 
             mon.gameObject.AddComponent<MonsterGaugeHolder>().InitGauge(gauge);
+        }
+    }
+
+    public void SettingMonsterPassive(List<Monster> allys)
+    {
+        foreach (var monster in allys)
+        {
+            List<SkillData> monsterSkill = monster.skills;
+
+            foreach (var skill in monsterSkill)
+            {
+                if (skill.skillType == SkillType.PassiveSkill)
+                {
+                    battleInfoView.InitializePassiveIcon(skill.icon);
+                }
+            }
         }
     }
 
@@ -181,11 +202,6 @@ public class BattleUIManager : MonoBehaviour
         return null;
     }
 
-    public void OffSelectMonsterUI()
-    {
-        battleSelectView.OffSelectMonster();
-    }
-
     public void BattleEndMessage(bool isWin)
     {
         battleInfoView.ShowEndBattleMessage(isWin);
@@ -228,5 +244,24 @@ public class BattleUIManager : MonoBehaviour
 
         DamagePopup popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
         popup.SetUp(damage);
+    }
+
+    public void ShowPossibleTargets(MonsterCharacter possibleTarget)
+    {
+        Vector3 spawnPos = possibleTarget.transform.position + Vector3.up * 1.8f;
+        GameObject indicator = Instantiate(PossibleTargetPrefab, spawnPos, Quaternion.identity);
+
+        indicator.transform.SetParent(possibleTarget.transform);
+        IndicatorList.Add(indicator);
+    }
+
+    public void HidePossibleTargets()
+    {
+        foreach (var indicator in IndicatorList)
+        {
+            Destroy(indicator);
+        }
+
+        IndicatorList.Clear();
     }
 }

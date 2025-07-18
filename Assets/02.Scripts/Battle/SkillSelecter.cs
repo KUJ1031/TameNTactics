@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SkillSelecter : MonoBehaviour, IPointerClickHandler
+public class SkillSelecter : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public int skillIndex; // 스킬 인덱스
 
@@ -13,16 +13,16 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!(BattleSystem.Instance.CurrentState is SelectSkillState)) return;
-        
+
         SetMonsterSkills(BattleManager.Instance.selectedPlayerMonster);
         if (skillData == null) return;
-        
+
         if (!IsSkillUsable(caster, skillData))
         {
             Debug.Log("레벨이 낮아서 궁극기 사용 불가!");
             return;
         }
-        
+
         if (BattleSystem.Instance.CurrentState is SelectSkillState state)
         {
             BattleManager.Instance.selectedSkill = skillData;
@@ -33,9 +33,9 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler
     private void SetMonsterSkills(Monster monster)
     {
         caster = monster;
-        
+
         if (caster == null || caster.skills.Count == 0) return;
-        
+
         if (monster != null && monster.skills.Count > 0)
         {
             //스킬 인덱스에 따른 스킬 설정
@@ -50,15 +50,29 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler
             }
         }
     }
-    
+
     private bool IsSkillUsable(Monster monster, SkillData skill)
     {
         if (monster == null || skill == null)
             return false;
-        
+
         if (skill.skillType == SkillType.UltimateSkill && monster.Level < 15)
             return false;
-        
+
         return true;
+    }
+
+    // 스킬 툴팁 표시
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        SetMonsterSkills(BattleManager.Instance.selectedPlayerMonster);
+        if (skillData == null) return;
+
+        UIManager.Instance.battleUIManager.SkillTooltip.ShowSkillTooltip(skillData.name, skillData.description);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIManager.Instance.battleUIManager.SkillTooltip.HideSkillTooltip();
     }
 }

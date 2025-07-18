@@ -16,6 +16,7 @@ public class BattleManager : Singleton<BattleManager>
     public List<Monster> BattleEntryTeam { get; private set; } = new();
     public List<Monster> BattleEnemyTeam { get; private set; } = new();
 
+    public List<Monster> possibleActPlayerMonsters = new();
     public List<Monster> possibleTargets = new();
     public List<Monster> selectedTargets = new();
 
@@ -73,6 +74,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
             monster.TriggerOnBattleStart(BattleEntryTeam);
+            monster.InitializeMonsterAct();
             Debug.Log($"Entry Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Entry Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
@@ -82,6 +84,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.RecalculateStats();
             monster.InitializeBattleStats();
             monster.InitializePassiveSkills();
+            monster.InitializeMonsterAct();
             monster.TriggerOnBattleStart(BattleEnemyTeam);
             Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
@@ -97,21 +100,38 @@ public class BattleManager : Singleton<BattleManager>
         {
             monster.TriggerOnTurnEnd();
             monster.UpdateStatusEffects();
+            monster.CheckMonsterAction();
         }
+
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
 
     // 데미지 넣기 + 데미지 후 패시브 발동
-    public void DealDamage(Monster target, int damage, Monster attacker)
+    public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData)
     {
         target.TakeDamage(damage);
         target.TriggerOnDamaged(damage, attacker);
+
+        BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, damage, skillData);
+    }
+
+    public void PossibleActMonster()
+    {
+        possibleActPlayerMonsters.Clear();
+        
+        foreach (var monster in BattleEntryTeam)
+        {
+            if (monster.canAct && monster.CurHp > 0)
+            {
+                possibleActPlayerMonsters.Add(monster);
+            }
+        }
     }
 
     // 공격 실행할 몬스터 고르기
     public void SelectPlayerMonster(Monster selectedMonster)
     {
-        if (selectedMonster.CurHp <= 0) return;
+        if (selectedMonster.CurHp <= 0 || !selectedMonster.canAct) return;
         selectedPlayerMonster = selectedMonster;
     }
 
@@ -184,6 +204,7 @@ public class BattleManager : Singleton<BattleManager>
         if (selectedTargets.Count == selectedSkill.targetCount &&
             selectedTargets.All(t => t.CurHp > 0))
         {
+            UIManager.Instance.battleUIManager.HidePossibleTargets();
             StartCoroutine(CompareSpeedAndFight());
         }
     }
@@ -191,6 +212,8 @@ public class BattleManager : Singleton<BattleManager>
     // 속도 비교해서 누가 먼저 공격하는지 정함
     private IEnumerator CompareSpeedAndFight()
     {
+        UIManager.Instance.battleUIManager.DeselectAllMonsters();
+        UIManager.Instance.battleUIManager.OnActionComplete();
         if (enemyChosenAction == null)
             enemyChosenAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
@@ -240,7 +263,6 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return StartCoroutine(IncreaseUltCostAllMonsters());
         EndTurn();
-        UIManager.Instance.battleUIManager.DeselectAllMonsters();
         ClearSelections();
     }
 
@@ -282,6 +304,7 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var t in targets)
         {
             IncreaseUltCost(t);
+            Stage1BossBattleCheck(caster, t);
         }
 
         yield return new WaitForSeconds(1f);
@@ -481,18 +504,48 @@ public class BattleManager : Singleton<BattleManager>
     private IEnumerator MoveToPosition(MonsterCharacter character, Vector2 targetPos, float duration)
     {
         Vector2 startPos = character.transform.position;
-
         float elapsed = 0f;
+
+        var gaugeHolder = character.GetComponent<MonsterGaugeHolder>();
+        RectTransform gaugeRect = null;
+        Canvas parentCanvas = null;
+
+        if (gaugeHolder != null && gaugeHolder.gauge != null)
+        {
+            gaugeRect = gaugeHolder.gauge.GetComponent<RectTransform>();
+            parentCanvas = gaugeHolder.gauge.GetComponentInParent<Canvas>();
+        }
 
         while (elapsed < duration)
         {
             character.transform.position = Vector3.Lerp(startPos, targetPos, elapsed / duration);
             elapsed += Time.deltaTime;
+
+            // gauge 위치 갱신
+            if (gaugeRect != null && parentCanvas != null)
+            {
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
+                RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
+
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
+                {
+                    gaugeRect.localPosition = localPoint;
+                }
+            }
+
             yield return null;
         }
 
         character.transform.position = targetPos;
 
         yield return new WaitForSeconds(duration);
+    }
+
+    private void Stage1BossBattleCheck(Monster caster, Monster target)
+    {
+        if (target.monsterData.monsterNumber == 100)
+        {
+            caster.SetActionRestriction(1);
+        }
     }
 }

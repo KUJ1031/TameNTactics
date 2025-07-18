@@ -11,32 +11,16 @@ public class SelectTargetState : BaseBattleState
     {
         Debug.Log("타겟 선택 상태로 진입했습니다. 공격할 몬스터를 선택하세요.");
         ShowPossibleTargets();
-        UIManager.Instance.battleUIManager.EnableHoverSelect(HoverTargetType.EnemyTeam);
+        UIManager.Instance.battleUIManager.EnableHoverSelect(BattleManager.Instance.possibleTargets);
         UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
         UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+        UIManager.Instance.battleUIManager.SkillTooltip.HideSkillTooltip();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("공격할 상대 몬스터를 선택하세요.");
 
         // todo 타겟 몬스터 강조 효과(빛나기) UI 보여주기
         // todo 스킬 목록 UI 보여주기
 
         // todo 타겟 몬스터 강조 효과(빛나기) UI 활성화
-    }
-
-    public override void Execute()
-    {
-        //Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
-        //if (hit.collider != null)
-        //{
-        //    if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
-        //    {
-        //        if (BattleManager.Instance.BattleEnemyTeam.Contains(monsterCharacter.monster))
-        //        {
-        //            UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
-        //        }
-        //    }
-        //}
     }
 
     public void OnSelectTargetMonster(Monster monster)
@@ -57,20 +41,13 @@ public class SelectTargetState : BaseBattleState
         battleSystem.ChangeState(new SelectSkillState(battleSystem));
     }
 
-    public override void Exit()
-    {
-        // todo 몬스터 강조 효과(빛나기)UI 숨기기
-        // todo 스킬 목록 UI 숨기기
-        //UIManager.Instance.battleUIManager.DeselectAllMonsters();
-    }
-
     private void ShowPossibleTargets()
     {
         List<MonsterCharacter> possibleTargets = BattleManager.Instance.CheckPossibleTargets();
 
         foreach (var target in possibleTargets)
         {
-            //todo 여러마리 빛나게 표시 가능하도록 하는 UI
+            UIManager.Instance.battleUIManager.ShowPossibleTargets(target);
         }
     }
 }
