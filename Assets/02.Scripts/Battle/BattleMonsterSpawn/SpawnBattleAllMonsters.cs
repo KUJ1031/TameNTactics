@@ -21,7 +21,7 @@ public class SpawnBattleAllMonsters : MonoBehaviour
 
         BattleManager.Instance.FindSpawnMonsters();
         AnimationManager.Instance.SubscribeEvents();
-        UIManager.Instance.battleUIManager.SettingMonsterGauge(allySpawner, enemySpawner);
+        UIManager.Instance.battleUIManager.SettingMonsterInfo(allySpawner, enemySpawner);
         UIManager.Instance.battleUIManager.SettingMonsterPassive(playerTeam);
         UIManager.Instance.battleUIManager.SettingMonsterSelecter(allySpawner, enemySpawner);
         BattleManager.Instance.StartBattle();

@@ -121,12 +121,12 @@ MonoBehaviour:
   runButton: {fileID: 8168713640582141468}
   selectPanel: {fileID: 4519120855444623792}
   skillPanel: {fileID: 0}
-  gaugePanel: {fileID: 2285872911564272583, guid: 4e8d1e26a1541d549b1f760f80bd4ba9, type: 3}
+  monsterInfoPanel: {fileID: 2285872911564272583, guid: 4e8d1e26a1541d549b1f760f80bd4ba9, type: 3}
   behaviorPanel: {fileID: 0}
   selectMonsterImage: {fileID: 6506855154397374951, guid: 13b0a84fba5c56c4cb39ce1f595c075d, type: 3}
-  selectMonsterRect: {fileID: 0}
   gaugeCanvas: {fileID: 0}
   battleSelectCanvas: {fileID: 3019345627977933484}
+  monsterTypeIconDB: {fileID: 11400000, guid: 9d109b11eebf6594da6f5c1930623dc9, type: 2}
 --- !u!1 &1884185142462629258
 GameObject:
   m_ObjectHideFlags: 0
