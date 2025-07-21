@@ -43,6 +43,7 @@ public class EntryUI : FieldMenuBaseUI
     private Monster monster;
     private Player player;
 
+
     private void Awake()
     {
         closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
