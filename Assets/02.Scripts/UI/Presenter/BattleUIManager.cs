@@ -38,10 +38,15 @@ public class BattleUIManager : MonoBehaviour
     {
         foreach (var character in allMonsterCharacters)
         {
+            if (character == null) continue;
+
+            var gaugeHolder = character.GetComponent<MonsterGaugeHolder>();
+            if (gaugeHolder == null || gaugeHolder.gauge == null) continue;
+
             Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
             RectTransform canvasRect = battleSelectView.GaugeCanvas.GetComponent<RectTransform>();
 
-            RectTransform gaugeRectTr = character.GetComponent<MonsterGaugeHolder>().gauge.GetComponent<RectTransform>();
+            RectTransform gaugeRectTr = gaugeHolder.gauge.GetComponent<RectTransform>();
 
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
             {
@@ -219,6 +224,8 @@ public class BattleUIManager : MonoBehaviour
             Destroy(gaugeHolder.gauge);
             gaugeHolder.gauge = null;
         }
+
+        allMonsterCharacters.Remove(mc);
     }
 
     private MonsterCharacter FindMonsterCharacter(Monster monster)
