@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class CollectionUI : FieldMenuBaseUI
 {
+
     [SerializeField] private Image MonsterImage;
     [SerializeField] private TextMeshProUGUI MonsterName;
     [SerializeField] private TextMeshProUGUI MonsterType;
@@ -35,6 +36,6 @@ public class CollectionUI : FieldMenuBaseUI
         MonstereNcounterCount.text = data.encounterCount.ToString();
         MonsterCaptureCount.text = data.captureCount.ToString();
         MonsterPersonality.text = data.personality.ToString();
-
     }
+
 }
