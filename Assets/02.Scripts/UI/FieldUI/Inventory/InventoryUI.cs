@@ -7,6 +7,10 @@ public class InventoryUI : FieldMenuBaseUI
     [SerializeField] private Transform slotParent;         // 슬롯들을 넣을 부모 오브젝트
     [SerializeField] private GameObject slotPrefab;        // 슬롯 프리팹
     [SerializeField] private Button useButton, equipButton, unequipButton, dropButton;
+    [SerializeField] private Image ItemImage;
+    [SerializeField] private Text ItemInfoText;
+
+
 
     private ItemInstance selectedItem;
 
