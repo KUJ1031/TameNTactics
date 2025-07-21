@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     public Player player;                       //플레이어 데이터
     public PlayerController playerController;   // 플레이어 조작 클래스
     public GameObject playerPrefab;             //실제 플레이어
+    public Sprite playerImage; // 플레이어 이미지
 
     public List<MonsterData> testMonsterList; //테스트용 플레이어 몬스터들(추후 삭제)
 
@@ -42,7 +43,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "MainScene")
+        if (scene.name == "MainMapScene")
         {
             // 1. 저장된 데이터가 있는지 시도해서 불러옴
             SpawnPlayerCharacter(player);
