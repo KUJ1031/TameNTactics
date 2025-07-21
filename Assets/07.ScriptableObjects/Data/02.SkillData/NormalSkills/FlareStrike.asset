@@ -18,6 +18,7 @@ MonoBehaviour:
   ultimateSkillList: 0
   skillName: a
   skillPower: 1.3
+  skillEffectPrefab: {fileID: 8773540997736616282, guid: e82f3116bba4493468a0b5d370828100, type: 3}
   targetScope: 3
   targetCount: 1
   icon: {fileID: 21300000, guid: 14391a47a8674c543bc7f27bf9862266, type: 3}
