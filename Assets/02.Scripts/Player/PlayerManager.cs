@@ -1,6 +1,4 @@
-using Cinemachine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,8 +13,6 @@ public class PlayerManager : MonoBehaviour
     public Sprite playerImage; // 플레이어 이미지
 
     public List<MonsterData> testMonsterList; //테스트용 플레이어 몬스터들(추후 삭제)
-
-    public CinemachineVirtualCamera virtualCamera; // 줌 아웃 카메라
 
 
     private void Awake()
@@ -103,13 +99,6 @@ public class PlayerManager : MonoBehaviour
     private void SpawnPlayerCharacter(Player loadedPlayer)
     {
         GameObject playerInstance = Instantiate(playerPrefab);
-
-        if (virtualCamera != null)
-        {
-            virtualCamera.Follow = playerInstance.transform; // 카메라 팔로우 설정
-            virtualCamera.LookAt = playerInstance.transform; // 카메라 룩앳 설정
-            Debug.Log("CinemachineVirtualCamera가 설정되었습니다.");
-        }
 
         playerInstance.name = "Player";
 
