@@ -56,10 +56,10 @@ public class SkillData : ScriptableObject
     public string skillName;
     public float skillPower;
     public GameObject skillEffectPrefab;
-    
+
     public TargetScope targetScope;
     public int targetCount;
-    
+
     public Sprite icon;
     public Sprite upgradeIcon;
     [TextArea]

@@ -9,10 +9,13 @@ public class SkillView : MonoBehaviour
     [SerializeField] private Image skillSlot1;
     [SerializeField] private Image skillSlot2;
     [SerializeField] private Transform skillPanel;
-    [SerializeField] private Transform skillTooltipPanel;
+    [SerializeField] private Transform activeSkillTooltipPanel;
+    [SerializeField] private Transform passiveSkillTooltipPanel;
 
-    [SerializeField] private TextMeshProUGUI skillName;
-    [SerializeField] private TextMeshProUGUI skillDescription;
+    [SerializeField] private TextMeshProUGUI activeSkillName;
+    [SerializeField] private TextMeshProUGUI activeSkillDescription;
+    [SerializeField] private TextMeshProUGUI passiveSkillName;
+    [SerializeField] private TextMeshProUGUI passiveSkillDescription;
 
     public void ShowSkillList(List<SkillData> skills)
     {
@@ -43,15 +46,27 @@ public class SkillView : MonoBehaviour
         skillPanel.gameObject.SetActive(true);
     }
 
-    public void ShowSkillTooltip(string name, string desc)
+    public void ShowActiveSkillTooltip(string name, string desc)
     {
-        skillName.text = name;
-        skillDescription.text = desc;
-        skillTooltipPanel.gameObject.SetActive(true);
+        activeSkillName.text = name;
+        activeSkillDescription.text = desc;
+        activeSkillTooltipPanel.gameObject.SetActive(true);
     }
 
-    public void HideSkillTooltip()
+    public void HideActiveSkillTooltip()
     {
-        skillTooltipPanel.gameObject.SetActive(false);
+        activeSkillTooltipPanel.gameObject.SetActive(false);
+    }
+
+    public void ShowPassiveSkillTooltip(string name, string desc)
+    {
+        passiveSkillName.text = name;
+        passiveSkillDescription.text = desc;
+        passiveSkillTooltipPanel.gameObject.SetActive(true);
+    }
+
+    public void HidePassiveSkillTooltip()
+    {
+        passiveSkillTooltipPanel.gameObject.SetActive(false);
     }
 }

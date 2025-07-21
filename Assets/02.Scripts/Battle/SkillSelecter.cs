@@ -10,6 +10,7 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 
     private SkillData skillData;
     private Monster caster;
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!(BattleSystem.Instance.CurrentState is SelectSkillState)) return;
@@ -68,11 +69,11 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         SetMonsterSkills(BattleManager.Instance.selectedPlayerMonster);
         if (skillData == null) return;
 
-        UIManager.Instance.battleUIManager.SkillView.ShowSkillTooltip(skillData.name, skillData.description);
+        UIManager.Instance.battleUIManager.SkillView.ShowActiveSkillTooltip(skillData.skillName, skillData.description);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        UIManager.Instance.battleUIManager.SkillView.HideSkillTooltip();
+        UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
     }
 }
