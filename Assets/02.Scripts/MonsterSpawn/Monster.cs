@@ -217,7 +217,7 @@ public class Monster
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(this, damage);
-        
+
         if (CurHp <= 0)
         {
             EventBus.OnMonsterDead?.Invoke(this);
@@ -396,5 +396,10 @@ public class Monster
     {
         canAct = true;
         skipTurnCount = 0;
+    }
+
+    public void EncounterPlus()
+    {
+        monsterData.encounterCount++;
     }
 }

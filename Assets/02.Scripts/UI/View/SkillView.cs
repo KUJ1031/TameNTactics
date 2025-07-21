@@ -9,6 +9,13 @@ public class SkillView : MonoBehaviour
     [SerializeField] private Image skillSlot1;
     [SerializeField] private Image skillSlot2;
     [SerializeField] private Transform skillPanel;
+    [SerializeField] private Transform activeSkillTooltipPanel;
+    [SerializeField] private Transform passiveSkillTooltipPanel;
+
+    [SerializeField] private TextMeshProUGUI activeSkillName;
+    [SerializeField] private TextMeshProUGUI activeSkillDescription;
+    [SerializeField] private TextMeshProUGUI passiveSkillName;
+    [SerializeField] private TextMeshProUGUI passiveSkillDescription;
 
     public void ShowSkillList(List<SkillData> skills)
     {
@@ -39,8 +46,27 @@ public class SkillView : MonoBehaviour
         skillPanel.gameObject.SetActive(true);
     }
 
-    public void HideSkills()
+    public void ShowActiveSkillTooltip(string name, string desc)
     {
-        skillPanel.gameObject.SetActive(false);
+        activeSkillName.text = name;
+        activeSkillDescription.text = desc;
+        activeSkillTooltipPanel.gameObject.SetActive(true);
+    }
+
+    public void HideActiveSkillTooltip()
+    {
+        activeSkillTooltipPanel.gameObject.SetActive(false);
+    }
+
+    public void ShowPassiveSkillTooltip(string name, string desc)
+    {
+        passiveSkillName.text = name;
+        passiveSkillDescription.text = desc;
+        passiveSkillTooltipPanel.gameObject.SetActive(true);
+    }
+
+    public void HidePassiveSkillTooltip()
+    {
+        passiveSkillTooltipPanel.gameObject.SetActive(false);
     }
 }
