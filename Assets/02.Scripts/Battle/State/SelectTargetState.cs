@@ -14,7 +14,7 @@ public class SelectTargetState : BaseBattleState
         UIManager.Instance.battleUIManager.EnableHoverSelect(BattleManager.Instance.possibleTargets);
         UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
         UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
-        UIManager.Instance.battleUIManager.SkillTooltip.HideSkillTooltip();
+        UIManager.Instance.battleUIManager.SkillView.HideSkillTooltip();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("공격할 상대 몬스터를 선택하세요.");
 
         // todo 타겟 몬스터 강조 효과(빛나기) UI 보여주기

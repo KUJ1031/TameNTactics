@@ -326,7 +326,6 @@ MonoBehaviour:
   skillView: {fileID: 1563213026374987012}
   menuView: {fileID: 0}
   embraceView: {fileID: 985042919}
-  skillTooltip: {fileID: 1107775624}
   battleUIButtonHandler: {fileID: 1105279946}
   damagePopupPrefab: {fileID: 1837614001571863126, guid: 36e20260603b14347a396371c855a293, type: 3}
   PossibleTargetPrefab: {fileID: 398118227331626419, guid: 6e0537f8fa19ead4baaf1e0be6292cfb, type: 3}
@@ -1357,17 +1356,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7076678446697740920, guid: f246e78b9087d1d49ab1308b03a50ff0, type: 3}
   m_PrefabInstance: {fileID: 1107775622}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1107775624 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8082161967375948172, guid: f246e78b9087d1d49ab1308b03a50ff0, type: 3}
-  m_PrefabInstance: {fileID: 1107775622}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c86ba34a10793354a9b7a7a2582913a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1561877809
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,8 +1519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f9974f796bbd9c4980c9b55cceed772, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brain: {fileID: 674537708}
-  virtualCamera: {fileID: 2116447650}
 --- !u!4 &1674221691
 Transform:
   m_ObjectHideFlags: 0
@@ -1929,29 +1915,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4307276896368306745, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 4307276896368306745, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 120
-      objectReference: {fileID: 0}
     - target: {fileID: 5018849659410706846, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
       propertyPath: m_Name
       value: MonsterSkillUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 5167087862342541000, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5932566669011842264, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 5932566669011842264, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 6060898198549399044, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
       propertyPath: m_Pivot.x
@@ -2032,38 +1998,6 @@ PrefabInstance:
     - target: {fileID: 6060898198549399044, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7124546726447039697, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7124546726447039697, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7124546726447039697, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7124546726447039697, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -100
-      objectReference: {fileID: 0}
-    - target: {fileID: 9082908980306749634, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9082908980306749634, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9082908980306749634, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 9082908980306749634, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2636,6 +2570,10 @@ PrefabInstance:
     - target: {fileID: 894520692203782022, guid: 546ef10333cf1a842a87d45a3a64cca0, type: 3}
       propertyPath: m_Name
       value: BattleSelectUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 894520692203782022, guid: 546ef10333cf1a842a87d45a3a64cca0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2684984429478296836, guid: 546ef10333cf1a842a87d45a3a64cca0, type: 3}
       propertyPath: m_Pivot.x

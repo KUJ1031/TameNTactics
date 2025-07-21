@@ -68,11 +68,11 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         SetMonsterSkills(BattleManager.Instance.selectedPlayerMonster);
         if (skillData == null) return;
 
-        UIManager.Instance.battleUIManager.SkillTooltip.ShowSkillTooltip(skillData.name, skillData.description);
+        UIManager.Instance.battleUIManager.SkillView.ShowSkillTooltip(skillData.name, skillData.description);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        UIManager.Instance.battleUIManager.SkillTooltip.HideSkillTooltip();
+        UIManager.Instance.battleUIManager.SkillView.HideSkillTooltip();
     }
 }
