@@ -55,6 +55,7 @@ public class SkillData : ScriptableObject
     public UltimateSkillList ultimateSkillList;
     public string skillName;
     public float skillPower;
+    public GameObject skillEffectPrefab;
     
     public TargetScope targetScope;
     public int targetCount;

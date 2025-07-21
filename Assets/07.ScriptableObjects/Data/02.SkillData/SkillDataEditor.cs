@@ -30,6 +30,7 @@ public class SkillDataEditor : Editor
         // 나머지 공통 필드들 표시
         skillData.skillName = EditorGUILayout.TextField("Skill Name", skillData.skillName);
         skillData.skillPower = EditorGUILayout.FloatField("Skill Power", skillData.skillPower);
+        skillData.skillEffectPrefab = (GameObject)EditorGUILayout.ObjectField("Skill Effect Prefab", skillData.skillEffectPrefab, typeof(GameObject), false);
 
         skillData.targetScope = (TargetScope)EditorGUILayout.EnumPopup("Target Scope", skillData.targetScope);
         skillData.targetCount = EditorGUILayout.IntField("Target Count", skillData.targetCount);
