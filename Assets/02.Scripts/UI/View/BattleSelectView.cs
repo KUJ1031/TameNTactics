@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -94,14 +91,14 @@ public class BattleSelectView : MonoBehaviour
 
     public void SetHpGauge(GameObject panel, float hpRatio)
     {
-        Image hpBar = panel.transform.GetChild(0).GetComponent<Image>();
+        Image hpBar = panel.transform.GetChild(0).GetChild(0).GetComponent<Image>();
 
         hpBar.fillAmount = hpRatio;
     }
 
     public void SetUltimateGauge(GameObject panel, float ultimateRatio)
     {
-        Image ultimateBar = panel.transform.GetChild(1).GetComponent<Image>();
+        Image ultimateBar = panel.transform.GetChild(1).GetChild(0).GetComponent<Image>();
 
         ultimateBar.fillAmount = ultimateRatio;
     }
