@@ -30,6 +30,6 @@ public class EndBattleState : BaseBattleState
         yield return new WaitForSeconds(2f);
 
         BattleDialogueManager.Instance.ClearBattleDialogue();
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("MainMapScene");
     }
 }
