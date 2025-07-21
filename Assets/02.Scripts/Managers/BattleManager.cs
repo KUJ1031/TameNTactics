@@ -333,7 +333,7 @@ public class BattleManager : Singleton<BattleManager>
         }
         else
         {
-            OwnedMonsters.Add(target);
+            PlayerManager.Instance.player.ownedMonsters.Add(target);
         }
 
         GameObject enemyObj = GameObject.Find("EnemySpawner");
