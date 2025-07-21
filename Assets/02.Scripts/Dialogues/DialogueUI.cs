@@ -45,6 +45,8 @@ public class DialogueUI : MonoBehaviour
     /// </summary>
     private void UpdateImages(Sprite npcSprite, string speaker)
     {
+        // 대화창 이미지 설정
+        if (playerImage != null) playerImage.sprite = PlayerManager.Instance.playerImage; // 플레이어 이미지 설정
         if (npcImage != null) npcImage.sprite = npcSprite;
 
         // 밝기 조절용 색상

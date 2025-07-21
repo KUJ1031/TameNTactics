@@ -21,10 +21,19 @@ public class PlayerController : MonoBehaviour
     public Vector2 slideDirection { get; set; } = Vector2.zero;
     public Vector2 lastMoveInput { get; private set; } = Vector2.zero;
 
+    private Animator animator;
+    private Vector3 originalScale;
+
 
     private void Awake()
     {
         inputActions = new PlayerinputAction();
+        animator = GetComponentInChildren<Animator>();
+    }
+
+    void Start()
+    {
+        originalScale = transform.localScale;
     }
 
 
@@ -65,6 +74,13 @@ public class PlayerController : MonoBehaviour
 
         currentState?.OnHandlelnput(this);
         currentState?.OnUpdate(this);
+
+        Vector2 input = moveAction.ReadValue<Vector2>();
+        bool isMoving = input.sqrMagnitude > 0.01f;
+        animator.SetBool("1_Move", isMoving);
+
+        if (Mathf.Abs(input.x) > 0.01f)
+            Flip(input.x);
     }
 
     public void UpdateLastMoveInput()
@@ -94,5 +110,12 @@ public class PlayerController : MonoBehaviour
 
         // 3. 완전히 멈춰있는 경우
         return Vector2.zero;
+    }
+
+    void Flip(float moveX)
+    {
+        Vector3 scale = originalScale;
+        scale.x = Mathf.Abs(originalScale.x) * (moveX > 0 ? -1 : 1);
+        transform.localScale = scale;
     }
 }
