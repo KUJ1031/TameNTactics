@@ -38,9 +38,4 @@ public class SkillView : MonoBehaviour
 
         skillPanel.gameObject.SetActive(true);
     }
-
-    public void HideSkills()
-    {
-        skillPanel.gameObject.SetActive(false);
-    }
 }
