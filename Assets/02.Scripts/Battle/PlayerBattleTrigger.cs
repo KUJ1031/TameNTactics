@@ -22,7 +22,6 @@ public class PlayerBattleTrigger : MonoBehaviour
         Monster monster = character.monster;
         if (monster == null) return;
 
-
         // 적 팀 구성
         List<Monster> enemyTeam = factory.GetRandomEnemyTeam(monster);
 
