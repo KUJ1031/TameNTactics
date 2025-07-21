@@ -28,11 +28,19 @@ public class RotatePoint : MonoBehaviour
         CheckSuccessZone();
     }
     //성공범위 설정
+    /// <summary>
+    /// 미니게임의 성공 범위를 정합니다.
+    /// </summary>
+    /// <param name="ranges"></param>
     public void SetRanges(List<RotationRange> ranges)
     {
         successRanges = ranges;
     }
-    //외부에서 속도 변경
+ 
+    /// <summary>
+    /// 포인터가 한바퀴 도는 데 필요한 시간을 정합니다.
+    /// </summary>
+    /// <param name="speed"></param>
     public void SetRotateSpeed(float speed)
     {
         rotateSpeed = speed;

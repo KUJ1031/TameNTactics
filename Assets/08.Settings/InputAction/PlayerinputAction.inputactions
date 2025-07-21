@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Minigam",
+                    "name": "Minigame",
                     "type": "Button",
                     "id": "939e4cc0-639a-4800-8b96-45a5abf8e2b0",
                     "expectedControlType": "Button",
@@ -201,7 +201,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Minigam",
+                    "action": "Minigame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

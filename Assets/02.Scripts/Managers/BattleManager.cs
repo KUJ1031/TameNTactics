@@ -48,7 +48,6 @@ public class BattleManager : Singleton<BattleManager>
             if (monsterChar != null && monsterChar.monster != null)
             {
                 BattleEntryTeam.Add(monsterChar.monster);
-                AnimationManager.Instance.AddAllMonsters(monsterChar);
             }
         }
 
@@ -58,7 +57,6 @@ public class BattleManager : Singleton<BattleManager>
             if (monsterChar != null && monsterChar.monster != null)
             {
                 BattleEnemyTeam.Add(monsterChar.monster);
-                AnimationManager.Instance.AddAllMonsters(monsterChar);
             }
         }
     }
@@ -118,7 +116,7 @@ public class BattleManager : Singleton<BattleManager>
     public void PossibleActMonster()
     {
         possibleActPlayerMonsters.Clear();
-        
+
         foreach (var monster in BattleEntryTeam)
         {
             if (monster.canAct && monster.CurHp > 0)
@@ -274,6 +272,13 @@ public class BattleManager : Singleton<BattleManager>
         if (!caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
 
         MonsterCharacter casterChar = FindMonsterCharacter(caster);
+        List<MonsterCharacter> targetChars = new();
+        
+        foreach (var t in targets)
+        {
+            MonsterCharacter targetChar = FindMonsterCharacter(t);
+            if (targetChar != null) targetChars.Add(targetChar);
+        }
 
         if (casterChar != null)
         {
@@ -294,8 +299,12 @@ public class BattleManager : Singleton<BattleManager>
                 effect = NormalSkillFactory.GetNormalSkill(skill);
             }
 
-            if (effect != null) yield return StartCoroutine(effect.Execute(caster, targets));
-
+            if (effect != null)
+            {
+                yield return StartCoroutine(effect.Execute(caster, targets));
+                SkillEffectController.PlayEffect(skill, casterChar, targetChars);
+            }
+            
             yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f));
         }
 
@@ -324,7 +333,7 @@ public class BattleManager : Singleton<BattleManager>
         }
         else
         {
-            OwnedMonsters.Add(target);
+            PlayerManager.Instance.player.ownedMonsters.Add(target);
         }
 
         GameObject enemyObj = GameObject.Find("EnemySpawner");
@@ -521,17 +530,17 @@ public class BattleManager : Singleton<BattleManager>
             character.transform.position = Vector3.Lerp(startPos, targetPos, elapsed / duration);
             elapsed += Time.deltaTime;
 
-            // gauge 위치 갱신
-            if (gaugeRect != null && parentCanvas != null)
-            {
-                Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
-                RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
+            //// gauge 위치 갱신
+            //if (gaugeRect != null && parentCanvas != null)
+            //{
+            //    Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
+            //    RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
 
-                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
-                {
-                    gaugeRect.localPosition = localPoint;
-                }
-            }
+            //    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
+            //    {
+            //        gaugeRect.localPosition = localPoint;
+            //    }
+            //}
 
             yield return null;
         }

@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class KeyRebinderManager : MonoBehaviour
+public class KeyRebinderManager : Singleton<KeyRebinderManager>
 {
-    public static KeyRebinderManager Instance;
     public InputActionAsset inputActions;
     private KeyBindableField currentField;
     public GameObject CheckUI;
@@ -20,14 +16,12 @@ public class KeyRebinderManager : MonoBehaviour
     public Button playerKeySettingButton;
     public Button exitButton; // UI에서 버튼을 연결
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance != null && Instance != this)
-            Destroy(gameObject);
-        else
-            Instance = this;
+        base.Awake();
         LoadAllSavedBindings(); // 저장된 키 로드
     }
+
     private void Start()
     {
         RefreshAllKeyFields();
@@ -79,30 +73,20 @@ public class KeyRebinderManager : MonoBehaviour
                 }
                 catch (System.Exception ex)
                 {
-
+                    Debug.LogWarning($"Key bind 실패: {ex.Message}");
                 }
                 currentField = null;
                 break;
             }
         }
     }
-    public void SaveBinding(string actionMap, string actionName, int bindingIndex, string overridePath)
+    public void SaveBinding(string actionMap,string actionName, int bindingIndex, string overridePath)
     {
         string key = $"{actionMap}.{actionName}.{bindingIndex}";
         PlayerPrefs.SetString(key, overridePath);
-
-        //JSON으로 플레이어 키 설정값 저장
-        if (PlayerManager.Instance != null && PlayerManager.Instance.player != null)
-        {
-            PlayerManager.Instance.player.playerKeySetting[key] = overridePath;
-            PlayerSaveManager.Instance.SavePlayerData(PlayerManager.Instance.player);
-        }
-        else
-        {
-        }
-
         PlayerPrefs.Save();
     }
+
     //Player
     public void LoadAllSavedBindings()
     {

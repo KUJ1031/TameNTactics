@@ -217,7 +217,6 @@ public class Monster
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(this, damage);
-        DamagedAnimation?.Invoke(this);
         
         if (CurHp <= 0)
         {
