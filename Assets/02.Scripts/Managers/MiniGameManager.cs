@@ -80,12 +80,12 @@ public class MiniGameManager : Singleton<MiniGameManager>
         float range;
         float hpPercent;
 
-        Debug.Log("현재 체력 : " + targetMonster.CurHp + "최대 체력 : " + targetMonster.CurMaxHp);
+        //Debug.Log("현재 체력 : " + targetMonster.CurHp + "최대 체력 : " + targetMonster.CurMaxHp);
         hpPercent = (float)targetMonster.CurHp / targetMonster.CurMaxHp;
         speed = 1 - (hpPercent * 0.9f);
 
-        range = 1;//추후 제스쳐 확인 후 범위 수정 추가
-        Debug.Log("몬스터 체력퍼 : " + hpPercent + "속도 : " + speed);
+        range = 30;//추후 제스쳐 확인 후 범위 수정 추가
+        //Debug.Log("몬스터 체력퍼 : " + hpPercent + "속도 : " + speed);
         SetSuccessRanges(range);
         rotatePoint.SetRotateSpeed(speed);
         rotatePoint.SetRanges(ranges);
