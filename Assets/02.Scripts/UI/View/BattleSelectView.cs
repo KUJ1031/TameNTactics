@@ -38,21 +38,24 @@ public class BattleSelectView : MonoBehaviour
 
     public void HideBeHaviorPanel()
     {
-        behaviorPanel.SetActive(false);
-    }
-
-    // 배틀 중의 선택지 Panel 나타냄
-    public void ShowSkillPanel()
-    {
-        skillPanel.SetActive(true);
-        selectPanel.SetActive(false);
+        if (behaviorPanel != null)
+        {
+            behaviorPanel.SetActive(false);
+        }
     }
 
     // 배틀 중의 선택지 Panel 숨김
     public void HideSkillPanel()
     {
-        skillPanel.SetActive(false);
-        selectPanel.SetActive(true);
+        if (skillPanel != null)
+        {
+            skillPanel.SetActive(false);
+        }
+
+        if (selectPanel != null)
+        {
+            selectPanel.SetActive(true);
+        }
     }
 
     public GameObject InitiateInfo(Vector3 screenPos)

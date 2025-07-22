@@ -19,6 +19,13 @@ public class SpawnBattleAllMonsters : MonoBehaviour
         CreateMonster(playerTeam, allySpawner);
         CreateMonster(enemyTeam, enemySpawner);
 
+        foreach (Monster monster in enemyTeam)
+        {
+            if (enemyTeam.Count == 0) break;
+
+            monster.EncounterPlus();
+        }
+
         BattleManager.Instance.FindSpawnMonsters();
         UIManager.Instance.battleUIManager.SettingMonsterInfo(allySpawner, enemySpawner);
         UIManager.Instance.battleUIManager.SettingMonsterPassive(playerTeam);

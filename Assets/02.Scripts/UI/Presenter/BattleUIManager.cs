@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -12,12 +13,11 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private SkillView skillView;
     [SerializeField] private MenuView menuView;
     [SerializeField] private EmbraceView embraceView;
-    [SerializeField] private SkillTooltip skillTooltip;
 
     public EmbraceView EmbraceView { get { return embraceView; } }
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
     public BattleInfoView BattleInfoView { get { return battleInfoView; } }
-    public SkillTooltip SkillTooltip { get { return skillTooltip; } }
+    public SkillView SkillView { get { return skillView; } }
     public bool CanHoverSelect { get; private set; } = false;
     public List<Monster> CurrentHoverTarget { get; private set; }
 
@@ -140,15 +140,24 @@ public class BattleUIManager : MonoBehaviour
 
     public void SettingMonsterPassive(List<Monster> allys)
     {
-        foreach (var monster in allys)
+        for (int i = 0; i < allys.Count; i++)
         {
+            Monster monster = allys[i];
             List<SkillData> monsterSkill = monster.skills;
 
-            foreach (var skill in monsterSkill)
+            foreach (SkillData skill in monsterSkill)
             {
                 if (skill.skillType == SkillType.PassiveSkill)
                 {
-                    battleInfoView.InitializePassiveIcon(skill.icon);
+                    GameObject passiveIconObject = battleInfoView.InitializePassiveIcon(skill.icon);
+                    PassiveSkillSelecter selecter = passiveIconObject.GetComponent<PassiveSkillSelecter>();
+
+                    if (selecter != null)
+                    {
+                        selecter.InitializePassiveSkill(i);
+                    }
+
+                    break;
                 }
             }
         }

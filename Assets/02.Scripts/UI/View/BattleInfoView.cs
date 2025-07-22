@@ -42,11 +42,13 @@ public class BattleInfoView : MonoBehaviour
         }
     }
 
-    public void InitializePassiveIcon(Sprite skillIcon)
+    public GameObject InitializePassiveIcon(Sprite skillIcon)
     {
         GameObject passiveIcon = Instantiate(passiveImage, passivePanel);
 
         Image passiveSkillImage = passiveIcon.transform.Find("PassiveIcon").GetComponent<Image>();
         passiveSkillImage.sprite = skillIcon;
+
+        return passiveIcon;
     }
 }

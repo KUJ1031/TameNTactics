@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CollectionslotsUI : MonoBehaviour
@@ -12,6 +13,24 @@ public class CollectionslotsUI : MonoBehaviour
     private void Awake()
     {
         Setup(data);
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMapScene")
+        {
+            Setup(data);
+        }
     }
 
     public void Setup(MonsterData Data)
