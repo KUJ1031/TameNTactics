@@ -93,7 +93,8 @@ public class SelectCaptureTargetState : BaseBattleState
             Debug.Log("포섭 실패...!");
             UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
             UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
-            BattleManager.Instance.EnemyAttackAfterPlayerTurn();
+            battleSystem.StartCoroutine(EnemyAttackAfterDelay(2.0f));
+            //BattleManager.Instance.EnemyAttackAfterPlayerTurn();
         }
         battleSystem.StartCoroutine(Delay(2.0f));
         targetMonster = null;
@@ -102,6 +103,12 @@ public class SelectCaptureTargetState : BaseBattleState
     IEnumerator Delay(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
+    }
+
+    private IEnumerator EnemyAttackAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        BattleManager.Instance.EnemyAttackAfterPlayerTurn();
     }
 
     public override void Execute()
