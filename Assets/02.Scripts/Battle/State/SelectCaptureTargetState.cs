@@ -85,7 +85,7 @@ public class SelectCaptureTargetState : BaseBattleState
             }
             else
             {
-                BattleManager.Instance.EnemyAttackAfterPlayerTurn();
+                battleSystem.StartCoroutine(EnemyAttackAfterDelay(2.0f));
             }
         }
         else
