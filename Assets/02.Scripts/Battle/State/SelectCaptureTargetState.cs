@@ -64,14 +64,12 @@ public class SelectCaptureTargetState : BaseBattleState
 
     private void StartEmbraceMiniGame(Monster targetMonster)
     {
+        // UI 초기화
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
-        MiniGameManager.Instance.StartMiniGame(targetMonster, (isSuccess, monster) =>
-        {
-            battleSystem.StartCoroutine(CheckEmbraceResultCoroutine(isSuccess, monster));
-        });
+        MiniGameManager.Instance.StartMiniGame(targetMonster, CheckEmbraceResult);
     }
 
-    private IEnumerator CheckEmbraceResultCoroutine(bool isSuccess, Monster targetMonster)
+    private void CheckEmbraceResult(bool isSuccess, Monster targetMonster)
     {
         if (isSuccess)
         {
@@ -83,13 +81,11 @@ public class SelectCaptureTargetState : BaseBattleState
 
             if (BattleManager.Instance.BattleEnemyTeam.Count <= 0)
             {
-                yield return new WaitForSeconds(2.0f);
                 BattleSystem.Instance.ChangeState(new EndBattleState(battleSystem));
             }
             else
             {
-                yield return new WaitForSeconds(2.0f);
-                BattleManager.Instance.EnemyAttackAfterPlayerTurn();
+                battleSystem.StartCoroutine(EnemyAttackAfterDelay(2.0f));
             }
         }
         else
@@ -97,12 +93,22 @@ public class SelectCaptureTargetState : BaseBattleState
             Debug.Log("포섭 실패...!");
             UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
             UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
-
-            yield return new WaitForSeconds(2.0f);
-            BattleManager.Instance.EnemyAttackAfterPlayerTurn();
+            battleSystem.StartCoroutine(EnemyAttackAfterDelay(2.0f));
+            //BattleManager.Instance.EnemyAttackAfterPlayerTurn();
         }
-
+        battleSystem.StartCoroutine(Delay(2.0f));
         targetMonster = null;
+    }
+
+    IEnumerator Delay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+    }
+
+    private IEnumerator EnemyAttackAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        BattleManager.Instance.EnemyAttackAfterPlayerTurn();
     }
 
     public override void Execute()
