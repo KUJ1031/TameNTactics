@@ -132,7 +132,7 @@ public class BattleUIManager : MonoBehaviour
             float hpRatio = (float)mon.monster.CurHp / mon.monster.CurMaxHp;
 
             battleSelectView.SetHpGauge(gauge, hpRatio);
-            BattleSelectView.SetMonsterInfo(gauge, mon.monster);
+            battleSelectView.SetMonsterInfo(gauge, mon.monster);
 
             mon.gameObject.AddComponent<MonsterGaugeHolder>().InitGauge(gauge);
         }
