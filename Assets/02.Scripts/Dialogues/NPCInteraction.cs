@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -16,6 +17,10 @@ public class NPCInteraction : MonoBehaviour
     private string lastKeyPath = "";
 
     private PlayerController playerController;
+
+    [Header("UI")]
+    public GameObject interactPromptObj; // UI 오브젝트 (ex: 텍스트가 담긴 오브젝트)
+    public TMP_Text interactPromptText;  // 키 이름을 보여줄 TextMeshPro 텍스트
     private void Start()
     {
         // 키 경로 받아서 ButtonControl 캐싱
@@ -31,6 +36,8 @@ public class NPCInteraction : MonoBehaviour
         {
             Debug.LogWarning($"키 설정 '{keySettingName}'이 없습니다.");
         }
+        if (interactPromptObj != null)
+            interactPromptObj.SetActive(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -49,6 +56,8 @@ public class NPCInteraction : MonoBehaviour
         {
             isPlayerTouching = false;
 
+            if (interactPromptObj != null)
+                interactPromptObj.SetActive(false);
 
             if (playerController != null)
             {
@@ -60,9 +69,21 @@ public class NPCInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (!isPlayerTouching) return;
+        if (!isPlayerTouching)
+        {
+            if (interactPromptObj != null)
+                interactPromptObj.SetActive(false);
+            return;
+        }
 
         UpdateInteractButton();
+
+        // 프롬프트 표시
+        if (interactPromptObj != null && interactButton != null)
+        {
+            interactPromptObj.SetActive(true);
+            interactPromptText.text = $"[{interactButton.displayName}] 상호작용";
+        }
 
         if (interactButton != null && interactButton.wasPressedThisFrame)
         {
