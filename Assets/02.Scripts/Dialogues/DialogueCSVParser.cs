@@ -37,7 +37,8 @@ public static class DialogueCSVParser
                 Choice2Next = ParseIntOrDefault(values[7]),
                 Choice3 = values[8],
                 Choice3Next = ParseIntOrDefault(values[9]),
-                Next = ParseIntOrDefault(values[10])
+                Next = ParseIntOrDefault(values[10]),
+                EventKey = values.Count > 11 ? values[11] : null
             };
 
             if (!result.ContainsKey(currentTreeId))

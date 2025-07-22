@@ -25,6 +25,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
     private Coroutine skipBlinkCoroutine;
 
+    private Dictionary<string, Sprite> speakerSprites = new(); // 이름 → 스프라이트
+
 
     void Start()
     {
@@ -77,17 +79,20 @@ public class DialogueManager : Singleton<DialogueManager>
         Debug.Log($"노드 표시: ID {node.ID}, 화자 {node.Speaker}, 텍스트 '{node.Text}'");
         currentNode = node;
 
-        // 스피커 이름으로 이미지 가져오기
+        // 이벤트 트리거
+        if (!string.IsNullOrEmpty(node.EventKey))
+        {
+            TriggerEvent(node.EventKey);
+        }
+
         Sprite speakerImage = GetSpeakerSprite(node.Speaker);
 
         dialogueUI.Show(
             node,
-            speakerImage,    // 현재 노드의 화자에 해당하는 이미지
-            node.Speaker     // 현재 노드의 화자 이름
+            speakerImage,
+            node.Speaker
         );
     }
-
-    private Dictionary<string, Sprite> speakerSprites = new(); // 이름 → 스프라이트
 
     private Sprite GetSpeakerSprite(string speakerName)
     {
@@ -188,10 +193,6 @@ public class DialogueManager : Singleton<DialogueManager>
         StopSkipBlink();
         isSkipping = false;
     }
-
-
-
-
     private IEnumerator BlinkSkipImage(Image image)
     {
         Color originalColor = image.color;
@@ -241,5 +242,62 @@ public class DialogueManager : Singleton<DialogueManager>
             image.color = c;
         }
     }
+
+    private void TriggerEvent(string eventKey)
+    {
+        switch (eventKey)
+        {
+
+            case "Shop_Buy":
+                Debug.Log("[이벤트] 상점 구매 로직 실행");
+                break;
+            case "Shop_Sell":
+                Debug.Log("[이벤트] 상점 판매 로직 실행");
+                break;
+            case "OwnedMonsters_Healing":
+                foreach (var monster in PlayerManager.Instance.player.ownedMonsters)
+                {
+                    if (monster != null)
+                    {
+                        int beforeHp = monster.CurHp;
+
+                        monster.HealFull(); // 전부 회복 시도
+
+                        int healedAmount = monster.CurHp - beforeHp;
+
+                        Debug.Log($"[이벤트] {monster.monsterData.monsterName} 회복 완료 (+{healedAmount} HP / {monster.CurHp}/{monster.MaxHp})");
+                    }
+                }
+                break;
+            case "EntryMonsters_Healing":
+                foreach (var monster in PlayerManager.Instance.player.entryMonsters)
+                {
+                    if (monster != null)
+                    {
+                        int beforeHp = monster.CurHp;
+
+                        monster.HealFull(); // 전부 회복 시도
+
+                        int healedAmount = monster.CurHp - beforeHp;
+
+                        Debug.Log($"[이벤트] {monster.monsterData.monsterName} 회복 완료 (+{healedAmount} HP / {monster.CurHp}/{monster.MaxHp})");
+                    }
+                }
+                break;
+            case "GivePotion":
+                Debug.Log("[이벤트] 힐링 포션 지급");
+                break;
+            case "MoveToPlayer":
+                Debug.Log("[이벤트] 플레이어 위치로 이동");
+                break;
+            case "UnlockSecretPassage":
+                Debug.Log("[이벤트] 숨겨진 통로 열림");
+                break;
+            default:
+                Debug.LogWarning($"[이벤트] 알 수 없는 이벤트 키: {eventKey}");
+                break;
+        }
+    }
+
 
 }

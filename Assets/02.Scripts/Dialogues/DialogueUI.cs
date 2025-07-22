@@ -77,7 +77,7 @@ public class DialogueUI : MonoBehaviour
 
         Vector2 anchor = isPlayer ? new Vector2(1, 1) : new Vector2(0, 1);
         Vector2 pivot = anchor;
-        Vector2 anchoredPos = new Vector2(0, 85);
+        Vector2 anchoredPos = new Vector2(0, 100);
 
         RectTransform imageRect = speakerImage.rectTransform;
         imageRect.anchorMin = anchor;
@@ -110,19 +110,21 @@ public class DialogueUI : MonoBehaviour
         choiceButton3.gameObject.SetActive(hasChoice3);
         choice3Text.text = hasChoice3 ? node.Choice3 : "";
 
+        int rectX = 230; // 버튼 위치 X 좌표
+
         // 버튼 위치 조정
         if (hasChoice1 && hasChoice2 && !hasChoice3)
         {
             // 선택지 2개일 때: 중앙 정렬
-            SetButtonPosition(choiceButton1.GetComponent<RectTransform>(), new Vector2(0, 70));
-            SetButtonPosition(choiceButton2.GetComponent<RectTransform>(), new Vector2(0, -70));
+            SetButtonPosition(choiceButton1.GetComponent<RectTransform>(), new Vector2(rectX, 70));
+            SetButtonPosition(choiceButton2.GetComponent<RectTransform>(), new Vector2(rectX, -70));
         }
         else if (hasChoice1 && hasChoice2 && hasChoice3)
         {
             // 선택지 3개일 때: 세로 정렬
-            SetButtonPosition(choiceButton1.GetComponent<RectTransform>(), new Vector2(0, 100));
-            SetButtonPosition(choiceButton2.GetComponent<RectTransform>(), new Vector2(0, 0));
-            SetButtonPosition(choiceButton3.GetComponent<RectTransform>(), new Vector2(0, -100));
+            SetButtonPosition(choiceButton1.GetComponent<RectTransform>(), new Vector2(rectX, 100));
+            SetButtonPosition(choiceButton2.GetComponent<RectTransform>(), new Vector2(rectX, 0));
+            SetButtonPosition(choiceButton3.GetComponent<RectTransform>(), new Vector2(rectX, -100));
         }
 
         skipButton.gameObject.SetActive(!hasAnyChoice);
