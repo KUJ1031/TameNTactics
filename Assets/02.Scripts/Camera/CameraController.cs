@@ -60,6 +60,12 @@ public class CameraController : Singleton<CameraController>
         }
     }
 
+    /// <summary>
+    /// 화면을 흔듭니다 시간(초), 진폭, 주파수 를 받습니다
+    /// </summary>
+    /// <param name="time"></param>
+    /// <param name="amplitude"></param>
+    /// <param name="frequency"></param>
     public void Shake(float time, float amplitude = 1f, float frequency = 1f)
     {
         if (shakeTime > time) return;
