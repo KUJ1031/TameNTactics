@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +5,7 @@ using UnityEngine;
 public class MonsterShaker : MonoBehaviour
 {
     private float shakeDuration = 0.2f;
-    private float shakeStrength = 0.3f;
-    private int vibrato = 10;
-    private float randomness = 180f;
+    private float shakeMagnitude = 0.1f;
 
     private Vector3 originalPos;
 
@@ -19,14 +16,23 @@ public class MonsterShaker : MonoBehaviour
 
     public void TriggerShake()
     {
+        StopAllCoroutines();
+        StartCoroutine(ShakeCoroutine());
+    }
+
+    private IEnumerator ShakeCoroutine()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < shakeDuration)
+        {
+            Vector2 randomOffset = Random.insideUnitCircle * shakeMagnitude;
+            transform.localPosition = originalPos + new Vector3(randomOffset.x, randomOffset.y, 0f);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
         transform.localPosition = originalPos;
-        transform.DOShakePosition(
-            duration: shakeDuration,
-            strength: shakeStrength,
-            vibrato: vibrato,
-            randomness: randomness,
-            snapping: false,
-            fadeOut: true
-            ).OnComplete(() => transform.localPosition = originalPos);
     }
 }
