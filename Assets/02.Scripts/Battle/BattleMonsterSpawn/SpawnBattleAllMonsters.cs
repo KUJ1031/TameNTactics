@@ -27,10 +27,10 @@ public class SpawnBattleAllMonsters : MonoBehaviour
         }
 
         BattleManager.Instance.FindSpawnMonsters();
+        BattleManager.Instance.StartBattle();
         UIManager.Instance.battleUIManager.SettingMonsterInfo(allySpawner, enemySpawner);
         UIManager.Instance.battleUIManager.SettingMonsterPassive(playerTeam);
         UIManager.Instance.battleUIManager.SettingMonsterSelecter(allySpawner, enemySpawner);
-        BattleManager.Instance.StartBattle();
     }
 
     //위치에 몬스터 생성

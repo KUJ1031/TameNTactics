@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,6 +22,7 @@ public class MiniGameManager : Singleton<MiniGameManager>
 
     private string keySettingName = "Player.Minigame.0";
 
+    private bool isCatting = false;
     private void Start()
     {
         gameObject.SetActive(false);
@@ -28,19 +30,29 @@ public class MiniGameManager : Singleton<MiniGameManager>
 
     private void Update()
     {
-        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path))
+        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path) && isCatting == false)
         {
             string InputControlPath = path;
             var control = InputSystem.FindControl(path);
             if (control is ButtonControl button && button.wasPressedThisFrame)
             {
-                rotatePoint.SetRotateSpeed(0);
-                bool result = rotatePoint.isInSuccessZone;
-                resultCallback?.Invoke(result, returnMonster);
-                resultCallback = null;
-                transform.gameObject.SetActive(false);
+                isCatting = true;
+                CameraController.Instance.Kick(onComplete: () =>
+                {
+                    rotatePoint.SetRotateSpeed(0);
+                    bool result = rotatePoint.isInSuccessZone;
+                    resultCallback?.Invoke(result, returnMonster);
+                    resultCallback = null;
+                    isCatting = false;
+                    StartCoroutine(CloseAfterDelay(2f));
+                });
             }
         }
+    }
+    IEnumerator CloseAfterDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        transform.gameObject.SetActive(false);
     }
 
     //랜덤 범위지정
@@ -53,7 +65,7 @@ public class MiniGameManager : Singleton<MiniGameManager>
         ranges.Add(new RotationRange(min, max));
     }
 
-    
+
     /// <summary>
     /// 미니게임을 생성합니다. 몬스터를 받고 성공여부와 사용된 몬스터를 반환합니다.
     /// </summary>
@@ -68,10 +80,12 @@ public class MiniGameManager : Singleton<MiniGameManager>
         float range;
         float hpPercent;
 
-        hpPercent = targetMonster.CurHp / targetMonster.CurMaxHp;
-        speed = -0.008f * hpPercent + 0.9f;
-        range = 50;//추후 제스쳐 확인 후 범위 수정 추가
+        //Debug.Log("현재 체력 : " + targetMonster.CurHp + "최대 체력 : " + targetMonster.CurMaxHp);
+        hpPercent = (float)targetMonster.CurHp / targetMonster.CurMaxHp;
+        speed = 1 - (hpPercent * 0.9f);
 
+        range = 30;//추후 제스쳐 확인 후 범위 수정 추가
+        //Debug.Log("몬스터 체력퍼 : " + hpPercent + "속도 : " + speed);
         SetSuccessRanges(range);
         rotatePoint.SetRotateSpeed(speed);
         rotatePoint.SetRanges(ranges);
@@ -81,5 +95,5 @@ public class MiniGameManager : Singleton<MiniGameManager>
         resultCallback = callback;
     }
 
-    
+
 }

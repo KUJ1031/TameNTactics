@@ -168,6 +168,7 @@ public class Monster
         int levelMinusOne = Level - 1;
 
         MaxHp = monsterData.maxHp + 12 * levelMinusOne;
+        CurHp = MaxHp;
         Attack = monsterData.attack + 3 * levelMinusOne;
         Defense = monsterData.defense + 3 * levelMinusOne;
         Speed = monsterData.speed + 3 * levelMinusOne;
@@ -223,6 +224,7 @@ public class Monster
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(this, damage);
+        DamagedAnimation?.Invoke(this);
 
         if (CurHp <= 0)
         {
