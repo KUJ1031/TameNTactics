@@ -1,10 +1,11 @@
+using System;
+using System.Collections;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CameraController : Singleton<CameraController>
 {
-    private CinemachineBrain brain;
     public CinemachineVirtualCamera CurrentVCam { get; private set; }
     private CinemachineBasicMultiChannelPerlin perlin;
 
@@ -12,6 +13,31 @@ public class CameraController : Singleton<CameraController>
     private float totalShakeTime;
     private float startAmplitude;
     private float startFrequency;
+
+    private Coroutine zoomCoroutine;
+    private float originalOrthoSize;
+    private bool isZooming = false;
+
+    private Coroutine rotationCoroutine;
+
+    protected override bool IsDontDestroy => true;
+
+    private void Update()
+    {
+        if (shakeTime > 0)
+        {
+            shakeTime -= Time.deltaTime;
+
+            float t = 1f - (shakeTime / totalShakeTime);
+            perlin.m_AmplitudeGain = Mathf.Lerp(startAmplitude, 0, t);
+            perlin.m_FrequencyGain = Mathf.Lerp(startFrequency, 0, t);
+
+            if (shakeTime <= 0f)
+            {
+                ShakeStop();
+            }
+        }
+    }
 
     private void OnEnable()
     {
@@ -28,38 +54,43 @@ public class CameraController : Singleton<CameraController>
         switch (scene.name)
         {
             case "MainMapScene":
-                CurrentVCam = GameObject.Find("PlayerCamera")?.GetComponent<Cinemachine.CinemachineVirtualCamera>();
+                CurrentVCam = GameObject.Find("PlayerCamera")?.GetComponent<CinemachineVirtualCamera>();
                 Transform playerTransform = GameObject.Find("Player")?.transform;
-                CurrentVCam.Follow = playerTransform;
-                CurrentVCam.LookAt = playerTransform;
+                SetTarget(playerTransform);
                 break;
+
             case "BattleScene":
-                CurrentVCam = GameObject.Find("BattleCamera")?.GetComponent<Cinemachine.CinemachineVirtualCamera>();
+                CurrentVCam = GameObject.Find("Virtual Camera")?.GetComponent<CinemachineVirtualCamera>();
                 break;
         }
 
-        if (CurrentVCam == null)
-            Debug.LogWarning("해당 씬에서 사용할 카메라를 찾을 수 없습니다.");
-    }
-
-    private void Update()
-    {
-        if (shakeTime > 0)
+        if (CurrentVCam != null)
         {
-            shakeTime -= Time.deltaTime;
-
-            float t = 1f - (shakeTime / totalShakeTime); // 0 → 1
-            // 부드러운 감쇠
-            perlin.m_AmplitudeGain = Mathf.Lerp(startAmplitude, 0, t);
-            perlin.m_FrequencyGain = Mathf.Lerp(startFrequency, 0, t);
-
-            if (shakeTime <= 0f)
-            {
-                ShakeStop();
-            }
+            perlin = CurrentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            originalOrthoSize = CurrentVCam.m_Lens.OrthographicSize;
+        }
+        else
+        {
+            Debug.LogWarning("해당 씬에서 사용할 카메라를 찾을 수 없습니다.");
         }
     }
 
+    /// <summary>
+    /// 카메라의 타겟을 변경합니다.
+    /// </summary>
+    public void SetTarget(Transform target)
+    {
+        if (CurrentVCam != null && target != null)
+        {
+            CurrentVCam.Follow = target;
+            CurrentVCam.LookAt = target;
+        }
+    }
+
+    #region Shake
+    /// <summary>
+    /// 카메라 흔들림을 시작합니다.
+    /// </summary>
     public void Shake(float time, float amplitude = 1f, float frequency = 1f)
     {
         if (shakeTime > time) return;
@@ -69,13 +100,19 @@ public class CameraController : Singleton<CameraController>
         startAmplitude = amplitude;
         startFrequency = frequency;
 
-        if (perlin == null)
+        if (perlin == null && CurrentVCam != null)
             perlin = CurrentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
-        perlin.m_AmplitudeGain = amplitude;
-        perlin.m_FrequencyGain = frequency;
+        if (perlin != null)
+        {
+            perlin.m_AmplitudeGain = amplitude;
+            perlin.m_FrequencyGain = frequency;
+        }
     }
 
+    /// <summary>
+    /// 카메라 흔들림을 중단합니다.
+    /// </summary>
     public void ShakeStop()
     {
         shakeTime = 0;
@@ -84,5 +121,123 @@ public class CameraController : Singleton<CameraController>
             perlin.m_AmplitudeGain = 0;
             perlin.m_FrequencyGain = 0;
         }
+    }
+    #endregion
+
+    #region Zoom
+    /// <summary>
+    /// 카메라를 특정 OrthographicSize로 줌합니다.
+    /// </summary>
+    public void Zoom(float targetSize, float duration)
+    {
+        if (CurrentVCam == null) return;
+
+        if (!isZooming)
+            originalOrthoSize = CurrentVCam.m_Lens.OrthographicSize;
+
+        if (zoomCoroutine != null)
+            StopCoroutine(zoomCoroutine);
+
+        zoomCoroutine = StartCoroutine(ZoomCoroutine(targetSize, duration));
+    }
+
+    /// <summary>
+    /// 카메라 줌을 원래 크기로 되돌립니다.
+    /// </summary>
+    public void ResetZoom(float duration = 0.3f)
+    {
+        if (CurrentVCam == null) return;
+
+        if (zoomCoroutine != null)
+            StopCoroutine(zoomCoroutine);
+
+        zoomCoroutine = StartCoroutine(ZoomCoroutine(originalOrthoSize, duration));
+    }
+
+    private IEnumerator ZoomCoroutine(float targetSize, float duration)
+    {
+        isZooming = true;
+
+        float startSize = CurrentVCam.m_Lens.OrthographicSize;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / duration;
+
+            CurrentVCam.m_Lens.OrthographicSize = Mathf.Lerp(startSize, targetSize, t);
+            yield return null;
+        }
+
+        CurrentVCam.m_Lens.OrthographicSize = targetSize;
+        zoomCoroutine = null;
+        isZooming = false;
+    }
+    #endregion
+
+    #region Rotation
+
+
+    public void RotateTo(float targetRotation, float duration)
+    {
+        if (CurrentVCam == null) return;
+
+        if (rotationCoroutine != null)
+            StopCoroutine(rotationCoroutine);
+
+        rotationCoroutine = StartCoroutine(RotateCoroutine(targetRotation, duration));
+    }
+
+    public void ResetRotation(float duration)
+    {
+        RotateTo(0f, duration);
+    }
+
+    private IEnumerator RotateCoroutine(float targetRotation, float duration)
+    {
+        float startRotation = CurrentVCam.m_Lens.Dutch;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / duration;
+            float current = Mathf.Lerp(startRotation, targetRotation, t);
+            CurrentVCam.m_Lens.Dutch = Mathf.Clamp(current, -180f, 180f);
+            yield return null;
+        }
+
+        CurrentVCam.m_Lens.Dutch = Mathf.Clamp(targetRotation, -180f, 180f);
+        rotationCoroutine = null;
+    }
+    #endregion
+    public void Kick(float kickSize = -2f, float totalDuration = 1f , Action onComplete = null)
+    {
+        if (CurrentVCam == null) return;
+        float kickTarget = CurrentVCam.m_Lens.OrthographicSize + kickSize;
+        float halfDuration = totalDuration * 0.5f;
+
+
+        float ran = UnityEngine.Random.Range(20f, 40f);
+        float r = UnityEngine.Random.Range(0, 2);
+        if (r == 1) { ran *= -1; }
+        RotateTo(ran, totalDuration);
+
+        // 줌 아웃
+        Zoom(0.5f, halfDuration/2);
+        Zoom(kickTarget, halfDuration);
+
+        // 복구 예약
+        StartCoroutine(ResetZoomDelayed(0.4f, onComplete));
+    }
+
+    private IEnumerator ResetZoomDelayed(float resetDelay, Action onComplete)
+    {
+        yield return new WaitForSeconds(0.01f);
+        ResetZoom(resetDelay);
+        ResetRotation(resetDelay);
+        yield return new WaitForSeconds(0.01f);
+        onComplete?.Invoke();
     }
 }
