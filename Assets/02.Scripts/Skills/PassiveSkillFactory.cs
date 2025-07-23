@@ -10,7 +10,11 @@ public static class PassiveSkillFactory
         { PassiveSkillList.SelfHealOnTurnEnd, () => new SelfHealOnTurnEnd() },
         { PassiveSkillList.ReflectDamage, () => new ReflectDamage() },
         { PassiveSkillList.EscapeMaster, () => new EscapeMaster() },
-        { PassiveSkillList.LowHpAttackBoost, () => new LowHpAttackBoost() }
+        { PassiveSkillList.LowHpAttackBoost, () => new LowHpAttackBoost() },
+        { PassiveSkillList.DefensiveStance, () => new DefensiveStance()},
+        { PassiveSkillList.IncreaseMissChance, () => new IncreaseMissChance()},
+        { PassiveSkillList.StatusEffectImmunity, () => new StatusEffectImmunity()},
+        { PassiveSkillList.OneHitShield, () => new OneHitShield()}
     };
 
     public static IPassiveSkill GetPassiveSkill(PassiveSkillList list)
