@@ -49,8 +49,8 @@ public class Monster
     public int CurCriticalChance { get; private set; }
 
 
-    public List<StatusEffect> ActiveStatusEffects { get; private set; }
-    public List<IPassiveSkill> PassiveSkills { get; private set; }
+    public List<StatusEffect> ActiveStatusEffects = new();
+    public List<IPassiveSkill> PassiveSkills = new();
 
     public bool canAct { get; private set; } = true;
     private int skipTurnCount = 0;
