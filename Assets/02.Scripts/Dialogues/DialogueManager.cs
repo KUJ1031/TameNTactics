@@ -4,6 +4,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
@@ -118,6 +119,11 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             dialogueUI.Hide();
             isCommunicationEneded = true; // 대화 종료 상태로 설정
+
+            if (!string.IsNullOrEmpty(currentNode.LateEventKey))
+            {
+                TriggerEvent(currentNode.LateEventKey);
+            }
 
             return;
         }
@@ -245,16 +251,70 @@ public class DialogueManager : Singleton<DialogueManager>
 
     private void TriggerEvent(string eventKey)
     {
+
+        if (eventKey == "GiveItem:ItemName")
+        {
+            // text는 현재 대사의 문장 (예: "중형 전체 회복 물약을 획득했다.")
+            string extractedName = ExtractItemNameFromText(currentNode.Text);
+            ItemData item = ItemManager.Instance.GetItemByName(extractedName);
+
+            if (item != null)
+            {
+                ItemManager.Instance.AddItemToPlayer(item);
+                currentNode.Text = currentNode.Text.Replace("ItemName", item.itemName);
+                Debug.Log($"[이벤트] 아이템 지급: {item.itemName}");
+            }
+            else
+            {
+                Debug.LogError($"[이벤트] 'ItemName' 대체용 아이템 '{extractedName}'을(를) 찾을 수 없음");
+            }
+
+            return;
+        }
+
+        if (eventKey.Contains(":"))
+        {
+            string[] split = eventKey.Split(':');
+            string command = split[0];
+            string arg = split.Length > 1 ? split[1] : null;
+
+            switch (command)
+            {
+                case "GiveItem":
+                    if (string.IsNullOrEmpty(arg))
+                    {
+                        Debug.LogWarning("[이벤트] 아이템 이름이 없음");
+                        return;
+                    }
+
+                    ItemData item = ItemManager.Instance.GetItemByName(arg);
+                    if (item != null)
+                    {
+                        ItemManager.Instance.AddItemToPlayer(item);
+                        Debug.Log($"[이벤트] 아이템 지급: {item.itemName}");
+                        Destroy(ItemManager.Instance.item); // 아이템 오브젝트 제거
+                    }
+                    else
+                    {
+                        Debug.LogError($"[이벤트] 아이템 '{arg}'을(를) 찾을 수 없음");
+                    }
+                    return;
+
+                    // 추후 확장 가능: PlayEffect:Fire, TriggerQuest:quest_001 등
+            }
+        }
         switch (eventKey)
         {
 
             case "Shop_Buy":
-                Debug.Log("[이벤트] 상점 구매 로직 실행");
+                ShopManager.Instance.OpenShopUI();
                 break;
             case "Shop_Sell":
-                Debug.Log("[이벤트] 상점 판매 로직 실행");
+                ShopManager.Instance.OpenShopUI_Sell();
                 break;
             case "OwnedMonsters_Healing":
+                List<HealedMonsterInfo> ownedHealedList = new List<HealedMonsterInfo>();
+
                 foreach (var monster in PlayerManager.Instance.player.ownedMonsters)
                 {
                     if (monster != null)
@@ -265,11 +325,32 @@ public class DialogueManager : Singleton<DialogueManager>
 
                         int healedAmount = monster.CurHp - beforeHp;
 
+                        if (healedAmount > 0)
+                        {
+                            var info = new HealedMonsterInfo(
+                                monster.monsterData.monsterName,
+                                healedAmount,
+                                monster.CurHp,
+                                monster.MaxHp,
+                                monster.monsterData.monsterImage
+                            );
+                            ownedHealedList.Add(info);
+                        }
+
                         Debug.Log($"[이벤트] {monster.monsterData.monsterName} 회복 완료 (+{healedAmount} HP / {monster.CurHp}/{monster.MaxHp})");
                     }
                 }
+
+                if (ownedHealedList.Count > 0)
+                {
+                    var popup = FindObjectOfType<HealingResultPopup>(true);
+                    popup.Show(ownedHealedList);
+                }
+
                 break;
             case "EntryMonsters_Healing":
+                List<HealedMonsterInfo> entryHealedList = new List<HealedMonsterInfo>();
+
                 foreach (var monster in PlayerManager.Instance.player.entryMonsters)
                 {
                     if (monster != null)
@@ -280,12 +361,31 @@ public class DialogueManager : Singleton<DialogueManager>
 
                         int healedAmount = monster.CurHp - beforeHp;
 
+                        if (healedAmount > 0)
+                        {
+                            var info = new HealedMonsterInfo(
+                                monster.monsterData.monsterName,
+                                healedAmount,
+                                monster.CurHp,
+                                monster.MaxHp,
+                                monster.monsterData.monsterImage
+                            );
+                            entryHealedList.Add(info);
+                        }
+
                         Debug.Log($"[이벤트] {monster.monsterData.monsterName} 회복 완료 (+{healedAmount} HP / {monster.CurHp}/{monster.MaxHp})");
                     }
                 }
+
+                if (entryHealedList.Count > 0)
+                {
+                    var popup = FindObjectOfType<HealingResultPopup>(true);
+                    popup.Show(entryHealedList);
+                }
+
                 break;
-            case "GivePotion":
-                Debug.Log("[이벤트] 힐링 포션 지급");
+            case "GiveItem":
+                Debug.Log("[이벤트] 아이템 지급");
                 break;
             case "MoveToPlayer":
                 Debug.Log("[이벤트] 플레이어 위치로 이동");
@@ -298,6 +398,14 @@ public class DialogueManager : Singleton<DialogueManager>
                 break;
         }
     }
-
+    private string ExtractItemNameFromText(string text)
+    {
+        // 예: "중형 전체 회복 물약을 획득했다." → "중형 전체 회복 물약"
+        if (text.Contains("을 획득했다.") || text.Contains("를 획득했다."))
+        {
+            return text.Replace("을 획득했다.", "").Replace("를 획득했다.", "").Trim();
+        }
+        return text.Trim(); // fallback
+    }
 
 }
