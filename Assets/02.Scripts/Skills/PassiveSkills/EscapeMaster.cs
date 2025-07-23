@@ -14,4 +14,5 @@ public class EscapeMaster : IPassiveSkill
     public void OnBattleStart(Monster self, List<Monster> monsters) {}
     public void OnDamaged(Monster self, int damage, Monster actor) {}
     public void OnTurnEnd(Monster self) {}
+    public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam) {}
 }

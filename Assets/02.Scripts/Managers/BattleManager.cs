@@ -15,6 +15,8 @@ public class BattleManager : Singleton<BattleManager>
 
     public List<Monster> BattleEntryTeam { get; private set; } = new();
     public List<Monster> BattleEnemyTeam { get; private set; } = new();
+    public List<Monster> DeadEntryMonsters { get; private set; } = new();
+    public List<Monster> DeadEnemyMonsters { get; private set; } = new();
 
     public List<Monster> possibleActPlayerMonsters = new();
     public List<Monster> possibleTargets = new();
@@ -64,15 +66,12 @@ public class BattleManager : Singleton<BattleManager>
     // 배틀 시작시 실행
     public void StartBattle()
     {
-        InitializeUltCost(BattleEntryTeam);
-        InitializeUltCost(BattleEnemyTeam);
+        InitializeDeadMonsters();
 
         foreach (var monster in BattleEntryTeam)
         {
-            monster.InitializeBattleStats();
-            monster.InitializePassiveSkills();
+            monster.InitializeBattleStart();
             monster.TriggerOnBattleStart(BattleEntryTeam);
-            monster.InitializeMonsterAct();
             Debug.Log($"Entry Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Entry Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
@@ -80,9 +79,7 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var monster in BattleEnemyTeam)
         {
             monster.RecalculateStats();
-            monster.InitializeBattleStats();
-            monster.InitializePassiveSkills();
-            monster.InitializeMonsterAct();
+            monster.InitializeBattleStart();
             monster.TriggerOnBattleStart(BattleEnemyTeam);
             Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
@@ -398,15 +395,6 @@ public class BattleManager : Singleton<BattleManager>
         BattleSystem.Instance.ChangeState(new EndBattleState(BattleSystem.Instance));
     }
 
-    // 배틀 시작시 궁극기 0으로 초기화
-    public void InitializeUltCost(List<Monster> team)
-    {
-        foreach (var monster in team)
-        {
-            monster.InitializeUltimateCost();
-        }
-    }
-
     // 몬스터 궁극기 코스트 1개 증가
     public void IncreaseUltCost(Monster monster)
     {
@@ -494,8 +482,33 @@ public class BattleManager : Singleton<BattleManager>
 
     public void CheckDeadMonster()
     {
+        DeadEntryMonsters = BattleEntryTeam.Where(m => m.CurHp <= 0).ToList();
+        DeadEnemyMonsters = BattleEnemyTeam.Where(m => m.CurHp <= 0).ToList();
+        
         BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
         BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
+
+        foreach (var monster in BattleEntryTeam)
+        {
+            foreach (var passive in monster.PassiveSkills)
+            {
+                if (passive is AtkUpOnAllyDeath)
+                {
+                    passive.OnAllyDeath(monster, DeadEntryMonsters);
+                }
+            }
+        }
+
+        foreach (var enemyMonster in BattleEnemyTeam)
+        {
+            foreach (var passive in enemyMonster.PassiveSkills)
+            {
+                if (passive is AtkUpOnAllyDeath)
+                {
+                    passive.OnAllyDeath(enemyMonster, DeadEnemyMonsters);
+                }
+            }
+        }
     }
 
     // 공격중인 몬스터의 character를 가져오기 위한 메서드
@@ -556,5 +569,11 @@ public class BattleManager : Singleton<BattleManager>
         {
             caster.SetActionRestriction(1);
         }
+    }
+    
+    private void InitializeDeadMonsters()
+    {
+        DeadEnemyMonsters.Clear();
+        DeadEntryMonsters.Clear();
     }
 }
