@@ -246,6 +246,14 @@ public class Monster
     // 상태이상 적용
     public void ApplyStatus(StatusEffect effect)
     {
+        foreach (var passive in passiveSkills)
+        {
+            if (passive is StatusEffectImmunity immunity && immunity.IsImmuneToStatus)
+            {
+                return;
+            }
+        }
+        
         foreach (var existing in activeStatusEffects)
         {
             if (existing.Type == effect.Type) return;

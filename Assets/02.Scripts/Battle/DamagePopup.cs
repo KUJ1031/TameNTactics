@@ -13,7 +13,12 @@ public class DamagePopup : MonoBehaviour
 
     public void SetUp(int damage)
     {
-        damageText.text = damage.ToString();
+        if (damage <= 0)
+        {
+            damageText.text = "Miss";
+        }
+        else damageText.text = damage.ToString();
+        
         StartCoroutine(ShowDamage());
     }
 
