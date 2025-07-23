@@ -19,6 +19,7 @@ public enum PassiveSkillList
     IncreaseMissChance, // 5% 확률로 공격 회피
     StatusEffectImmunity, // 모든 상태이상 무효
     OneHitShield, // 공격을 한번 막아주는 실드(상태이상은 못막음)
+    AtkUpOnAllyDeath, // 아군 쓰러질때마다 공격력 20% 상승
 }
 
 public enum NormalSkillList

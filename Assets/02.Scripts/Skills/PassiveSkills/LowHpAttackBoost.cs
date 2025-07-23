@@ -26,5 +26,5 @@ public class LowHpAttackBoost : IPassiveSkill
 
     public void OnBattleStart(Monster self, List<Monster> allies) { }
     public void OnDamaged(Monster self, int damage, Monster actor) { }
-    public bool TryEscape(Monster self, ref bool isGuaranteedEscape) => false;
+    public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam) {}
 }

@@ -22,5 +22,5 @@ public class OneHitShield : IPassiveSkill
     }
     
     public void OnTurnEnd(Monster self) {}
-    public bool TryEscape(Monster self, ref bool isGuaranteedEscape) => false;
+    public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam) {}
 }

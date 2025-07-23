@@ -49,8 +49,8 @@ public class Monster
     public int CurCriticalChance { get; private set; }
 
 
-    private List<StatusEffect> activeStatusEffects = new();
-    private List<IPassiveSkill> passiveSkills = new();
+    public List<StatusEffect> ActiveStatusEffects { get; private set; }
+    public List<IPassiveSkill> PassiveSkills { get; private set; }
 
     public bool canAct { get; private set; } = true;
     private int skipTurnCount = 0;
@@ -246,7 +246,7 @@ public class Monster
     // 상태이상 적용
     public void ApplyStatus(StatusEffect effect)
     {
-        foreach (var passive in passiveSkills)
+        foreach (var passive in PassiveSkills)
         {
             if (passive is StatusEffectImmunity immunity && immunity.IsImmuneToStatus)
             {
@@ -254,12 +254,12 @@ public class Monster
             }
         }
         
-        foreach (var existing in activeStatusEffects)
+        foreach (var existing in ActiveStatusEffects)
         {
             if (existing.Type == effect.Type) return;
         }
 
-        activeStatusEffects.Add(effect);
+        ActiveStatusEffects.Add(effect);
     }
 
     // 상태이상 정해진 턴 수가 지나면 제거
@@ -267,7 +267,7 @@ public class Monster
     {
         List<StatusEffect> expired = new();
 
-        foreach (var effect in activeStatusEffects)
+        foreach (var effect in ActiveStatusEffects)
         {
             effect.OnTurnStart(this);
 
@@ -279,14 +279,14 @@ public class Monster
 
         foreach (var effect in expired)
         {
-            activeStatusEffects.Remove(effect);
+            ActiveStatusEffects.Remove(effect);
         }
     }
 
     // 패시브 초기화(레벨5 해금)
     public void InitializePassiveSkills()
     {
-        passiveSkills.Clear();
+        PassiveSkills.Clear();
 
         foreach (var skill in skills)
         {
@@ -297,7 +297,7 @@ public class Monster
                     var passive = PassiveSkillFactory.GetPassiveSkill(skill.passiveSkillList);
                     if (passive != null)
                     {
-                        passiveSkills.Add(passive);
+                        PassiveSkills.Add(passive);
                     }
                 }
             }
@@ -307,7 +307,7 @@ public class Monster
     // 배틀 시작시 패시브 발동
     public void TriggerOnBattleStart(List<Monster> monsters)
     {
-        foreach (var passive in passiveSkills)
+        foreach (var passive in PassiveSkills)
         {
             passive.OnBattleStart(this, monsters);
         }
@@ -316,7 +316,7 @@ public class Monster
     // 턴 종료시 패시브 발동
     public void TriggerOnTurnEnd()
     {
-        foreach (var passive in passiveSkills)
+        foreach (var passive in PassiveSkills)
         {
             passive.OnTurnEnd(this);
         }
@@ -325,7 +325,7 @@ public class Monster
     // 데미지 받을 시 패시브 발동
     public void TriggerOnDamaged(int damage, Monster actor)
     {
-        foreach (var passive in passiveSkills)
+        foreach (var passive in PassiveSkills)
         {
             passive.OnDamaged(this, damage, actor);
         }
@@ -335,13 +335,15 @@ public class Monster
     public bool TryRunAwayWithPassive(out bool isGuaranteed)
     {
         isGuaranteed = false;
-        foreach (var passive in passiveSkills)
+        
+        foreach (var passive in PassiveSkills)
         {
-            if (passive.TryEscape(this, ref isGuaranteed))
+            if (passive is EscapeMaster escapeMaster)
             {
-                return true;
+                return escapeMaster.TryEscape(this, ref isGuaranteed);
             }
         }
+        
         return false;
     }
 
@@ -370,7 +372,7 @@ public class Monster
     // 상태이상 제거
     public void RemoveStatusEffects()
     {
-        activeStatusEffects.Clear();
+        ActiveStatusEffects.Clear();
     }
 
     // 행동불가 상태 적용/해제
@@ -417,5 +419,13 @@ public class Monster
     public void EncounterPlus()
     {
         monsterData.encounterCount++;
+    }
+
+    public void InitializeBattleStart()
+    {
+        InitializeMonsterAct();
+        InitializeUltimateCost();
+        InitializePassiveSkills();
+        InitializeBattleStats();
     }
 }

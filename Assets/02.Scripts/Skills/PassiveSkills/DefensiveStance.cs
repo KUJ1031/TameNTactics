@@ -12,5 +12,5 @@ public class DefensiveStance : IPassiveSkill
     
     public void OnBattleStart(Monster self, List<Monster> monsters) {}
     public void OnTurnEnd(Monster self) {}
-    public bool TryEscape(Monster self, ref bool isGuaranteedEscape) => false;
+    public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam) {}
 }
