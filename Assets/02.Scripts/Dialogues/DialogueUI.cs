@@ -75,7 +75,7 @@ public class DialogueUI : MonoBehaviour
     {
         bool isPlayer = speaker == "나";
 
-        Vector2 anchor = isPlayer ? new Vector2(1, 1) : new Vector2(0, 1);
+        Vector2 anchor = isPlayer ? new Vector2(0, 1) : new Vector2(1, 1);
         Vector2 pivot = anchor;
         Vector2 anchoredPos = new Vector2(0, 100);
 

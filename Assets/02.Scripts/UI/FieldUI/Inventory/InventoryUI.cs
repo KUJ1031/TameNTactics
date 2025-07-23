@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class InventoryUI : FieldMenuBaseUI
 {
@@ -8,13 +9,22 @@ public class InventoryUI : FieldMenuBaseUI
     [SerializeField] private GameObject slotPrefab;        // 슬롯 프리팹
     [SerializeField] private Button useButton, equipButton, unequipButton, dropButton;
     [SerializeField] private Image ItemImage;
-    [SerializeField] private Text ItemInfoText;
+    [SerializeField] private TextMeshProUGUI ItemInfoText;
 
 
 
     private ItemInstance selectedItem;
 
     public List<ItemInstance> items;
+
+
+    [SerializeField] private Button consumableButton;
+    [SerializeField] private Button equipableButton;
+    [SerializeField] private Button gestureButton;
+
+    private ItemType? currentFilter = null;
+
+    [SerializeField] private ItemSelectPopup itemSelectPopup; // 로고 오브젝트
 
     private void Start()
     {
@@ -23,6 +33,16 @@ public class InventoryUI : FieldMenuBaseUI
         unequipButton.onClick.AddListener(OnUnEquip);
         dropButton.onClick.AddListener(OnDrop);
 
+        consumableButton.onClick.AddListener(() => ApplyFilter(ItemType.consumable));
+        equipableButton.onClick.AddListener(() => ApplyFilter(ItemType.equipment));
+        gestureButton.onClick.AddListener(() => ApplyFilter(ItemType.gesture));
+
+        Refresh();
+    }
+
+    private void OnEnable()
+    {
+        items = PlayerManager.Instance.player.items;
         Refresh();
     }
 
@@ -36,9 +56,11 @@ public class InventoryUI : FieldMenuBaseUI
         }
 
         // 아이템 슬롯 생성
-        for (int i = 0; i < items.Count; i++)
+        foreach (var item in items)
         {
-            ItemInstance item = items[i];
+            if (currentFilter.HasValue && item.data.type != currentFilter.Value)
+                continue;
+
             GameObject slotObj = Instantiate(slotPrefab, slotParent);
             InventorySlotUI slotUI = slotObj.GetComponent<InventorySlotUI>();
             slotUI.Init(item, this);
@@ -78,20 +100,27 @@ public class InventoryUI : FieldMenuBaseUI
     {
         if (selectedItem == null) return;
 
-        for (int i = 0; i < selectedItem.data.itemEffects.Count; i++)
+        if (selectedItem.data.itemEffects.Exists(e => e.type == ItemEffectType.curHp))
         {
-            ItemEffect effect = selectedItem.data.itemEffects[i];
+            // 대상 몬스터 선택 창 띄우기
+            itemSelectPopup.gameObject.SetActive(true);
+            itemSelectPopup.Open(selectedItem);
+            return;
+        }
+
+        // 즉시 효과 처리용 (예: 골드 증가 등)
+        foreach (var effect in selectedItem.data.itemEffects)
+        {
             Debug.Log($"[사용] {effect.type} +{effect.value}");
         }
 
-        selectedItem.quantity -= 1;
+        selectedItem.quantity--;
         if (selectedItem.quantity <= 0)
-        {
             items.Remove(selectedItem);
-        }
 
         Refresh();
     }
+
 
     private void OnEquip()
     {
@@ -122,4 +151,19 @@ public class InventoryUI : FieldMenuBaseUI
 
         Refresh();
     }
+
+    public void DisplayItemInfo(ItemInstance item)
+    {
+        if (item == null) return;
+
+        ItemImage.sprite = item.data.itemImage;
+        ItemInfoText.text = $"{item.data.itemName}\n{item.data.description}\n가격: {item.data.goldValue} G";
+    }
+
+    private void ApplyFilter(ItemType type)
+    {
+        currentFilter = type;
+        Refresh(); // 필터 적용 후 다시 렌더링
+    }
+
 }

@@ -4,9 +4,6 @@ using System.Linq;
 using UnityEngine;
 using System.IO;
 
-
-using static RuntimePlayerSaveManager;
-
 public class PlayerSaveManager : Singleton<PlayerSaveManager>
 {
 
@@ -19,6 +16,8 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         public List<int> entryMonsterIDs = new();   // entryMonsters는 ID만 저장
         public List<int> battleMonsterIDs = new();
         public List<int> benchMonsterIDs = new();
+        public List<ItemInstance> items = new();
+        public int gold;
         public float playerLastGameTime;
         public Vector3 playerLastPosition;
         public int totalPlaytime;
@@ -48,6 +47,8 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             battleMonsterIDs = player.battleEntry.Select(m => m.monsterID).ToList(),
             benchMonsterIDs = player.benchEntry.Select(m => m.monsterID).ToList(),
             // 다른 필드들 복사...
+            items = player.items,
+            gold = player.gold,
             playerLastGameTime = player.playerLastGameTime,
             playerLastPosition = player.playerLastPosition,
             totalPlaytime = player.totalPlaytime,
@@ -92,6 +93,8 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             .ToList();
 
         // 기타 필드 복원...
+        player.items = saved.items;
+        player.gold = saved.gold;
         player.playerLastGameTime = saved.playerLastGameTime;
         player.playerLastPosition = saved.playerLastPosition;
         player.totalPlaytime = saved.totalPlaytime;
