@@ -18,7 +18,7 @@ public static class DialogueCSVParser
             // 기존 line.Split(',') 대신 큰따옴표 처리 가능한 파서 사용
             List<string> values = ParseCSVLine(line);
 
-            if (values.Count < 11) // 필드 11개 이상인지 체크
+            if (values.Count < 13) // 필드 11개 이상인지 체크
             {
                 Debug.LogWarning("CSV 데이터 부족: " + line);
                 continue;
@@ -38,7 +38,8 @@ public static class DialogueCSVParser
                 Choice3 = values[8],
                 Choice3Next = ParseIntOrDefault(values[9]),
                 Next = ParseIntOrDefault(values[10]),
-                EventKey = values.Count > 11 ? values[11] : null
+                EventKey = values.Count > 11 ? values[11] : null,
+                LateEventKey = values.Count > 12 ? values[12] : null
             };
 
             if (!result.ContainsKey(currentTreeId))

@@ -195,6 +195,12 @@ public class Monster
         HpChange?.Invoke(this);
     }
 
+    public void Heal_Potion(int amount)
+    {
+        CurHp += amount;
+        if (CurHp > MaxHp) CurHp = MaxHp;
+        HpChange?.Invoke(this);
+    }
     public void HealFull()
     {
         CurHp = MaxHp;
