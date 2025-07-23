@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class ItemInstance : MonoBehaviour
+public class ItemInstance
 {
     public ItemData data;      //원본 아이템 데이터
 
