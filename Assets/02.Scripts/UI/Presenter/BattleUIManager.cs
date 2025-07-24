@@ -206,20 +206,6 @@ public class BattleUIManager : MonoBehaviour
         battleSelectView.SetUltimateGauge(gaugeHolder.gauge, ultimateRatio);
     }
 
-    public void UpdateMonsterLevel(Monster monster)
-    {
-        MonsterCharacter mc = FindMonsterCharacter(monster);
-
-        if (mc == null) return;
-
-        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
-
-        if (gaugeHolder == null || gaugeHolder.gauge == null) return;
-
-        int monsterLevel = monster.Level;
-        battleSelectView.SetMonsterInfo(gaugeHolder.gauge, monster);
-    }
-
     public void RemoveGauge(Monster monster)
     {
         MonsterCharacter mc = FindMonsterCharacter(monster);
