@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using System.Linq;
 
 public class InventoryUI : FieldMenuBaseUI
 {
@@ -25,6 +26,8 @@ public class InventoryUI : FieldMenuBaseUI
     private ItemType? currentFilter = null;
 
     [SerializeField] private ItemSelectPopup itemSelectPopup; // 로고 오브젝트
+    [SerializeField] private GameObject warringPopup;
+    [SerializeField] private Button warringPopupExitButton;
 
     private void Start()
     {
@@ -36,6 +39,8 @@ public class InventoryUI : FieldMenuBaseUI
         consumableButton.onClick.AddListener(() => ApplyFilter(ItemType.consumable));
         equipableButton.onClick.AddListener(() => ApplyFilter(ItemType.equipment));
         gestureButton.onClick.AddListener(() => ApplyFilter(ItemType.gesture));
+
+        warringPopupExitButton.onClick.AddListener(CloseWarringPopup);
 
         Refresh();
     }
@@ -102,9 +107,29 @@ public class InventoryUI : FieldMenuBaseUI
 
         if (selectedItem.data.itemEffects.Exists(e => e.type == ItemEffectType.curHp))
         {
+            if (PlayerManager.Instance.player.ownedMonsters.All(m => m.CurHp >= m.MaxHp))
+            {
+                warringPopup.gameObject.SetActive(true);
+                Debug.LogWarning($"[사용 불가] 모든 몬스터가 최대 체력입니다.");
+                return;
+            }
             // 대상 몬스터 선택 창 띄우기
             itemSelectPopup.gameObject.SetActive(true);
             itemSelectPopup.Open(selectedItem);
+            return;
+        }
+
+        if (selectedItem.data.itemEffects.Exists(e => e.type == ItemEffectType.allMonsterCurHp))
+        {
+            if (PlayerManager.Instance.player.ownedMonsters.All(m => m.CurHp >= m.MaxHp))
+            {
+                warringPopup.gameObject.SetActive(true);
+                Debug.LogWarning($"[사용 불가] 모든 몬스터가 최대 체력입니다.");
+                return;
+            }
+            itemSelectPopup.gameObject.SetActive(true);
+            itemSelectPopup.Open(selectedItem);
+            itemSelectPopup.OnMonsterSelected(PlayerManager.Instance.player.ownedMonsters[0]);
             return;
         }
 
@@ -164,6 +189,11 @@ public class InventoryUI : FieldMenuBaseUI
     {
         currentFilter = type;
         Refresh(); // 필터 적용 후 다시 렌더링
+    }
+
+    public void CloseWarringPopup()
+    {
+        warringPopup.gameObject.SetActive(false);
     }
 
 }

@@ -15,7 +15,8 @@ public enum ItemEffectType
     attack,
     defense,
     speed,
-    criticalChance
+    criticalChance,
+    allMonsterCurHp
 }
 public enum ItemType
 {

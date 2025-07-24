@@ -251,27 +251,6 @@ public class DialogueManager : Singleton<DialogueManager>
 
     private void TriggerEvent(string eventKey)
     {
-
-        if (eventKey == "GiveItem:ItemName")
-        {
-            // text는 현재 대사의 문장 (예: "중형 전체 회복 물약을 획득했다.")
-            string extractedName = ExtractItemNameFromText(currentNode.Text);
-            ItemData item = ItemManager.Instance.GetItemByName(extractedName);
-
-            if (item != null)
-            {
-                ItemManager.Instance.AddItemToPlayer(item);
-                currentNode.Text = currentNode.Text.Replace("ItemName", item.itemName);
-                Debug.Log($"[이벤트] 아이템 지급: {item.itemName}");
-            }
-            else
-            {
-                Debug.LogError($"[이벤트] 'ItemName' 대체용 아이템 '{extractedName}'을(를) 찾을 수 없음");
-            }
-
-            return;
-        }
-
         if (eventKey.Contains(":"))
         {
             string[] split = eventKey.Split(':');
