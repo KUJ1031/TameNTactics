@@ -309,6 +309,14 @@ public class Monster
         }
     }
 
+    public void TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill)
+    {
+        foreach (var passive in PassiveSkills)
+        {
+            passive.OnAttack(actor, damage, target, skill);
+        }
+    }
+
     // 배틀 시작시 패시브 발동
     public void TriggerOnBattleStart(List<Monster> monsters)
     {
@@ -328,12 +336,16 @@ public class Monster
     }
 
     // 데미지 받을 시 패시브 발동
-    public void TriggerOnDamaged(int damage, Monster actor)
+    public int TriggerOnDamaged(int damage, Monster actor)
     {
+        int modifiedDamage = damage;
+
         foreach (var passive in PassiveSkills)
         {
-            passive.OnDamaged(this, damage, actor);
+            modifiedDamage = passive.OnDamaged(this, modifiedDamage, actor);
         }
+
+        return modifiedDamage;
     }
 
     // 도망마스터 패시브 있을 시 100 도망 가능
