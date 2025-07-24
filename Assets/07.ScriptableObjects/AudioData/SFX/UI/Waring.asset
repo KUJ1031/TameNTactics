@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Waring
   m_EditorClassIdentifier: 
   clipName: Waring
-  clip: {fileID: 0}
+  clip: {fileID: 8300000, guid: 5afa8f7477c95ed42a9553420f80578c, type: 3}
   type: 1
   volume: 1
   loop: 0

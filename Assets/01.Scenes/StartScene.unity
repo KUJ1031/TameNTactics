@@ -67471,8 +67471,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 0}
   sfxSource: {fileID: 0}
-  bgmDataList: []
-  sfxDataList: []
+  bgmDataList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  sfxDataList:
+  - {fileID: 11400000, guid: 486c833a100ed804bad31379f321be1a, type: 2}
+  - {fileID: 11400000, guid: dd9ab265a96ce6e4d8da764b68149ff6, type: 2}
+  - {fileID: 11400000, guid: 5d8987a1b05461a4bae60682ced7420b, type: 2}
+  - {fileID: 11400000, guid: bb4728fab81f050488be71bfb5c0876d, type: 2}
+  - {fileID: 11400000, guid: 03464c5b72e79bb4595dbe9c2577fa77, type: 2}
+  - {fileID: 11400000, guid: ae72e886e2b7f3f4980e3a85ac984332, type: 2}
+  - {fileID: 11400000, guid: c7036f6ac05309c42b6ad554e6c20b6c, type: 2}
+  - {fileID: 11400000, guid: 43669d4dc8db3814082f5b9c5e343fbc, type: 2}
 --- !u!1001 &1794119611
 PrefabInstance:
   m_ObjectHideFlags: 0

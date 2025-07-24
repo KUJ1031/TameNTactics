@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab89f479fdc92d246a6dabde120c50e9, type: 3}
   m_Name: Battle
   m_EditorClassIdentifier: 
-  clipName: "\uC2DC\uC791\uBC30\uACBD\uC74C"
+  clipName: Battle
   clip: {fileID: 0}
   type: 0
   volume: 1
