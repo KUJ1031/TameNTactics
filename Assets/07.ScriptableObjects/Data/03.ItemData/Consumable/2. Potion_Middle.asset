@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8eee3a0abe95048b3a1531cc959ee9, type: 3}
   m_Name: 2. Potion_Middle
   m_EditorClassIdentifier: 
+  itemId: 2
   itemName: "\uC911\uD615 \uD68C\uBCF5 \uBB3C\uC57D"
   itemImage: {fileID: 21300000, guid: 88056ea574e054e0f9b7a780d8fd5641, type: 3}
   maxStack: 99

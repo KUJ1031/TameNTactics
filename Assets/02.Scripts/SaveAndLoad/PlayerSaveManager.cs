@@ -26,6 +26,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         public string playerName;
         public int playerGetMonsterCount;
         public int playerGender;
+        public List<ItemInstance> playerEquipment = new(); // 장착 아이템 목록
         public SerializableDictionary<int, bool> playerBossClearCheck = new();
         public SerializableDictionary<int, bool> playerQuestClearCheck = new();
         public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();
@@ -58,6 +59,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             totalPlaytime = player.totalPlaytime,
             playerName = player.playerName,
             playerGender = player.playerGender,
+            playerEquipment = player.playerEquipment,
             playerGetMonsterCount = player.playerGetMonsterCount,
             playerBossClearCheck = player.playerBossClearCheck,
             playerQuestClearCheck = player.playerQuestClearCheck,
@@ -106,6 +108,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         player.totalPlaytime = saved.totalPlaytime;
         player.playerName = saved.playerName;
         player.playerGender = saved.playerGender;
+        player.playerEquipment = saved.playerEquipment;
         player.playerGetMonsterCount = saved.playerGetMonsterCount;
         player.playerBossClearCheck = saved.playerBossClearCheck;
         player.playerQuestClearCheck = saved.playerQuestClearCheck;

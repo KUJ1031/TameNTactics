@@ -1,28 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerInfoUI : FieldMenuBaseUI
 {
     [SerializeField] private Image PlayerImage;
-    [SerializeField] private Text PlayerNameText;
-    [SerializeField] private Text PlayTimeText;
-    [SerializeField] private Text BastMonsterText;
-    [SerializeField] private Text EquipItemText;
-    [SerializeField] private Text atherText;
+    [SerializeField] private TextMeshProUGUI PlayerNameText;
+    [SerializeField] private TextMeshProUGUI PlayTimeText;
+    [SerializeField] private TextMeshProUGUI BastMonsterText;
+    [SerializeField] private TextMeshProUGUI EquipItemText;
+    [SerializeField] private TextMeshProUGUI atherText;
 
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        var player = PlayerManager.Instance.player;
+        PlayerImage.sprite = PlayerManager.Instance.playerImage[player.playerGender];
+        PlayerNameText.text = player.playerName;
+        //PlayTimeText.text = $"플레이 시간: {PlayerManager.Instance.player.playTime}분";
+        //BastMonsterText.text = $"최애 몬스터: {PlayerManager.Instance.player.favoriteMonster?.monsterName ?? "없음"}";
+        EquipItemText.text = (player.playerEquipment.Count > 0 && player.playerEquipment[0]?.data != null) ? $"<color=#FF4444>{player.playerEquipment[0].data.itemName}</color> ({player.playerEquipment[0].data.description})" : "<color=#888888>없음</color>";
     }
 }
