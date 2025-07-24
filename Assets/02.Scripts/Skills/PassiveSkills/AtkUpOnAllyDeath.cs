@@ -14,5 +14,6 @@ public class AtkUpOnAllyDeath : IPassiveSkill
     
     public void OnBattleStart(Monster self, List<Monster> monsters) {}
     public void OnTurnEnd(Monster self) {}
-    public void OnDamaged(Monster self, int damage, Monster actor) {}
+    public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
+    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill) {}
 }
