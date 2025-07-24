@@ -1,0 +1,24 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SelectCaptureMotionState : BaseBattleState
+{
+    public SelectCaptureMotionState(BattleSystem system) : base(system) { }
+
+    public override void Enter()
+    {
+        // todo 어떤 모션으로 할건지 UI 띄어주기
+    }
+
+    public override void Exit()
+    {
+        // todo 모션 목록 UI 끄기
+    }
+    
+    // 잡는걸로 이동
+    public void OnCaptureTargetSelected()
+    {
+        battleSystem.ChangeState(new SelectCaptureTargetState(battleSystem));
+    }
+}
