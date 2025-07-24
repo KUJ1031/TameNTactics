@@ -56,7 +56,7 @@ public class GameTimeFlow : Singleton<GameTimeFlow>
         }
     }
 
-    private void UpdateTimeDisplay()
+    public void UpdateTimeDisplay()
     {
         float secondsPerGameHour = dayLengthInSeconds / 24f;
         float gameHours = (timer / secondsPerGameHour) % 24f;

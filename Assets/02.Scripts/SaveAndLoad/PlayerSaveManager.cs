@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System.IO;
+using System.Text;
 
 public class PlayerSaveManager : Singleton<PlayerSaveManager>
 {
@@ -20,9 +21,11 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         public int gold;
         public float playerLastGameTime;
         public Vector3 playerLastPosition;
+        public string playerLastStage;
         public int totalPlaytime;
         public string playerName;
         public int playerGetMonsterCount;
+        public int playerGender;
         public SerializableDictionary<int, bool> playerBossClearCheck = new();
         public SerializableDictionary<int, bool> playerQuestClearCheck = new();
         public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();
@@ -51,8 +54,10 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             gold = player.gold,
             playerLastGameTime = player.playerLastGameTime,
             playerLastPosition = player.playerLastPosition,
+            playerLastStage = player.playerLastStage,
             totalPlaytime = player.totalPlaytime,
             playerName = player.playerName,
+            playerGender = player.playerGender,
             playerGetMonsterCount = player.playerGetMonsterCount,
             playerBossClearCheck = player.playerBossClearCheck,
             playerQuestClearCheck = player.playerQuestClearCheck,
@@ -73,7 +78,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             return null;
         }
 
-        string json = File.ReadAllText(path);
+        string json = File.ReadAllText(path, Encoding.UTF8);
         PlayerSaveData saved = JsonUtility.FromJson<PlayerSaveData>(json);
 
         Player player = new Player();
@@ -97,8 +102,10 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         player.gold = saved.gold;
         player.playerLastGameTime = saved.playerLastGameTime;
         player.playerLastPosition = saved.playerLastPosition;
+        player.playerLastStage = saved.playerLastStage;
         player.totalPlaytime = saved.totalPlaytime;
         player.playerName = saved.playerName;
+        player.playerGender = saved.playerGender;
         player.playerGetMonsterCount = saved.playerGetMonsterCount;
         player.playerBossClearCheck = saved.playerBossClearCheck;
         player.playerQuestClearCheck = saved.playerQuestClearCheck;
