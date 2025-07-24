@@ -21,11 +21,25 @@ public class AudioManager : Singleton<AudioManager>
     private Dictionary<string, AudioData> bgmDict;
     private Dictionary<string, AudioData> sfxDict;
 
+    [SerializeField] private int sfxPoolSize = 10;
+    private List<AudioSource> sfxSources = new List<AudioSource>();
+
     protected override void Awake()
     {
         base.Awake();
         bgmDict = bgmDataList.ToDictionary(data => data.clipName, data => data);
         sfxDict = sfxDataList.ToDictionary(data => data.clipName, data => data);
+        InitializeSFXPool();
+    }
+
+    private void InitializeSFXPool()
+    {
+        for (int i = 0; i < sfxPoolSize; i++)
+        {
+            var sfxSource = gameObject.AddComponent<AudioSource>();
+            sfxSource.playOnAwake = false;
+            sfxSources.Add(sfxSource);
+        }
     }
 
     #region Play
@@ -33,10 +47,24 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (TryGetAudio(name, SoundType.SFX, out AudioData data))
         {
-            sfxSource.PlayOneShot(data.clip, data.volume * sfxVolume);
+            AudioSource source = GetAvailableSFXSource();
+            if (source != null && data.clip != null)
+            {
+                source.PlayOneShot(data.clip, data.volume * sfxVolume);
+            }
         }
     }
+    private AudioSource GetAvailableSFXSource()
+    {
+        foreach (var source in sfxSources)
+        {
+            if (!source.isPlaying)
+                return source;
+        }
 
+        // 모두 재생 중이면 첫 번째를 재사용 (필요 시 정책 수정 가능)
+        return sfxSources.Count > 0 ? sfxSources[0] : null;
+    }
     public void PlayBGM(string name)
     {
         if (TryGetAudio(name, SoundType.BGM, out AudioData data))
@@ -75,7 +103,10 @@ public class AudioManager : Singleton<AudioManager>
 
     public void StopAllSFX()
     {
-        sfxSource.Stop();
+        foreach (var source in sfxSources)
+        {
+            source.Stop();
+        }
     }
 
     public void FadeOutBGM(float duration)

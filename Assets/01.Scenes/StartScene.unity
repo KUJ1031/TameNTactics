@@ -67471,11 +67471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 0}
   sfxSource: {fileID: 0}
-  bgmDataList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  bgmDataList: []
   sfxDataList:
   - {fileID: 11400000, guid: 486c833a100ed804bad31379f321be1a, type: 2}
   - {fileID: 11400000, guid: dd9ab265a96ce6e4d8da764b68149ff6, type: 2}
