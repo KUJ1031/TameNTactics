@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8eee3a0abe95048b3a1531cc959ee9, type: 3}
   m_Name: 3. Hiding_Hood
   m_EditorClassIdentifier: 
+  itemId: 203
   itemName: "\uC740\uC2E0 \uB450\uAC74"
   itemImage: {fileID: 21300000, guid: 95a49f927de7a4732ab70827aedd4332, type: 3}
   maxStack: 1

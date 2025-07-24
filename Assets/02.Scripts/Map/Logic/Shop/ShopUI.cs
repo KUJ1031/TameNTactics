@@ -24,6 +24,11 @@ public class ShopUI : MonoBehaviour
     private List<ItemInstance> shopItems = new(); // 실제 상점에 진열할 아이템 인스턴스 리스트
     private ItemInstance selectedItem;
 
+    [SerializeField] private GameObject warringPopup;
+    [SerializeField] private TextMeshProUGUI warringPopupText;
+
+    [SerializeField] private Button warringPopupExitButton;
+
     private void Start()
     {
         buyButton.onClick.AddListener(OnBuy);
@@ -31,6 +36,7 @@ public class ShopUI : MonoBehaviour
         equipableButton.onClick.AddListener(() => LoadCategory(ShopItems_Equipable));
         gestureButton.onClick.AddListener(() => LoadCategory(ShopItems_Gesture));
 
+        warringPopupExitButton.onClick.AddListener(() => warringPopup.SetActive(false));
         // 기본 카테고리 불러오기
         LoadCategory(ShopItems_Consumable);
     }
@@ -97,6 +103,20 @@ public class ShopUI : MonoBehaviour
 
             if (existing != null)
             {
+                if (selectedItem.data.type == ItemType.equipment)
+                {
+                    // 장비 아이템은 최대 1개만 소지 가능
+                    warringPopup.SetActive(true);
+                    warringPopupText.text = $"{selectedItem.data.itemName}은(는) 이미 소지하고 있습니다.\n 장비 아이템은 1개만 소지할 수 있습니다.";
+                    return;
+                }
+                if (selectedItem.data.type == ItemType.gesture)
+                {
+                    // 제스처 아이템은 최대 1개만 소지 가능
+                    warringPopup.SetActive(true);
+                    warringPopupText.text = $"{selectedItem.data.itemName}은(는) 이미 소지하고 있습니다.\n 제스처 아이템은 1개만 소지할 수 있습니다.";
+                    return;
+                }
                 // 이미 있으면 수량만 증가
                 existing.quantity += 1;
             }
@@ -115,7 +135,8 @@ public class ShopUI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"[구매 실패] 금액이 부족합니다: {selectedItem.data.itemName}");
+            warringPopup.SetActive(true);
+            warringPopupText.text = $"골드가 부족합니다.\n 현재 골드 : {selectedItem.data.itemName}";
         }
     }
 

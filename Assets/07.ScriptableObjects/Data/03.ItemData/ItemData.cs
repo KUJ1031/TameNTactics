@@ -30,6 +30,7 @@ public class ItemData : ScriptableObject
 {
 
     [Header("기본 정보")]
+    public int itemId;          //아이템 ID
     public string itemName;     //아이템 이름
     public Sprite itemImage;    //아이템 이미지
     public int maxStack;        //최대 중복 스택

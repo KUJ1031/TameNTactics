@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8eee3a0abe95048b3a1531cc959ee9, type: 3}
   m_Name: 4. Grieve
   m_EditorClassIdentifier: 
+  itemId: 404
   itemName: "\uC2AC\uD508 \uD45C\uC815 \uC9D3\uAE30"
   itemImage: {fileID: 21300000, guid: c6c2d0f5c2be4449cb9df1eeefa67bf8, type: 3}
   maxStack: 1
