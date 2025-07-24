@@ -14,7 +14,8 @@ public static class PassiveSkillFactory
         { PassiveSkillList.DefensiveStance, () => new DefensiveStance()},
         { PassiveSkillList.IncreaseMissChance, () => new IncreaseMissChance()},
         { PassiveSkillList.StatusEffectImmunity, () => new StatusEffectImmunity()},
-        { PassiveSkillList.OneHitShield, () => new OneHitShield()}
+        { PassiveSkillList.OneHitShield, () => new OneHitShield()},
+        { PassiveSkillList.AtkUpOnAllyDeath , () => new AtkUpOnAllyDeath()}
     };
 
     public static IPassiveSkill GetPassiveSkill(PassiveSkillList list)
