@@ -9,8 +9,9 @@ public class PlayerManager : MonoBehaviour
     [Header("플레이어 데이터 및 컨트롤")]
     public Player player;                       //플레이어 데이터
     public PlayerController playerController;   // 플레이어 조작 클래스
-    public GameObject playerPrefab;             //실제 플레이어
-    public Sprite playerImage; // 플레이어 이미지
+    public List<GameObject> playerPrefabs; // 0: 남캐, 1: 여캐 등
+    private GameObject selectedPrefab;
+    public List<Sprite> playerImage; // 플레이어 이미지
 
     public List<MonsterData> testMonsterList; //테스트용 플레이어 몬스터들(추후 삭제)
 
@@ -95,10 +96,22 @@ public class PlayerManager : MonoBehaviour
     {
         player = newPlayer;
     }
+    public void SetSelectedPrefabIndex(int index)
+    {
+        if (index >= 0 && index < playerPrefabs.Count)
+        {
+            selectedPrefab = playerPrefabs[index];
+        }
+        else
+        {
+            Debug.LogWarning("잘못된 프리팹 인덱스: " + index);
+        }
+    }
 
     private void SpawnPlayerCharacter(Player loadedPlayer)
     {
-        GameObject playerInstance = Instantiate(playerPrefab);
+        SetSelectedPrefabIndex(player.playerGender);
+        GameObject playerInstance = Instantiate(selectedPrefab);
 
         playerInstance.name = "Player";
 
