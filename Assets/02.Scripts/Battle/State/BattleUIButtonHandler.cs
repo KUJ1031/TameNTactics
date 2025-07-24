@@ -17,7 +17,7 @@ public class BattleUIButtonHandler : MonoBehaviour
     public void OnCaptureButtonClick()
     {
         if (BattleSystem.Instance.CurrentState is PlayerMenuState state)
-            state.OnCaptureSelected();
+            state.OnCaptureMotionSelected();
     }
 
     public void OnRunButtonClick()
