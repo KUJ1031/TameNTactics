@@ -19,6 +19,11 @@ public class ShopUI_Sell : MonoBehaviour
 
     private ItemInstance selectedItem;
 
+    [SerializeField] private GameObject warringPopup;
+    [SerializeField] private TextMeshProUGUI warringPopupText;
+
+    [SerializeField] private Button warringPopupExitButton;
+
     private enum FilterType { All, Consumable, Equipable, Gesture }
     private FilterType currentFilter = FilterType.All;
 
@@ -29,6 +34,8 @@ public class ShopUI_Sell : MonoBehaviour
         consumableButton.onClick.AddListener(() => { currentFilter = FilterType.Consumable; Refresh(); });
         equipableButton.onClick.AddListener(() => { currentFilter = FilterType.Equipable; Refresh(); });
         gestureButton.onClick.AddListener(() => { currentFilter = FilterType.Gesture; Refresh(); });
+
+        warringPopupExitButton.onClick.AddListener(() => warringPopup.SetActive(false));
 
         Refresh(); // 인벤토리에서 불러옴
     }
@@ -92,6 +99,13 @@ public class ShopUI_Sell : MonoBehaviour
     private void OnSell()
     {
         if (selectedItem == null) return;
+        if (PlayerManager.Instance.player.playerEquipment[0] != null &&
+            selectedItem.data.itemId == PlayerManager.Instance.player.playerEquipment[0].data.itemId)
+        {
+            warringPopup.SetActive(true);
+            warringPopupText.text = "장착 중인 아이템은 판매할 수 없습니다.";
+            return;
+        }
 
         var player = PlayerManager.Instance.player;
         int sellValue = GetSellValue(selectedItem.data);

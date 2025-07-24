@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8eee3a0abe95048b3a1531cc959ee9, type: 3}
   m_Name: 1. Praise
   m_EditorClassIdentifier: 
+  itemId: 401
   itemName: "\uCE6D\uCC2C\uD558\uAE30"
   itemImage: {fileID: 21300000, guid: 9b67fd55b3fcd4cdfbd129e2d7bf26dd, type: 3}
   maxStack: 1

@@ -187,6 +187,50 @@ public class Monster
         if (CurAttack < 0) CurAttack = 0;
     }
 
+    public void AttackUp(int amount)
+    {
+        Attack += amount;
+    }
+
+    public void AttackDown(int amount)
+    {
+        Attack -= amount;
+    }
+
+    public void DefenseUp(int amount)
+    {
+        Defense += amount;
+    }
+
+    public void DefenseDown(int amount)
+    {
+        Defense -= amount;
+    }
+
+    public void SpeedUp(int amount)
+    {
+        Speed += amount;
+        if (CurSpeed < 0) CurSpeed = 0;
+    }
+
+    public void SpeedDown(int amount)
+    {
+        Speed -= amount;
+        if (CurSpeed < 0) CurSpeed = 0;
+    }
+
+    public void CriticalChanceUp(int amount)
+    {
+        CriticalChance += amount;
+        if (CriticalChance > 100) CriticalChance = 100; // 최대 100%로 제한
+    }
+
+    public void CriticalChanceDown(int amount)
+    {
+        CriticalChance -= amount;
+        if (CriticalChance < 0) CriticalChance = 0; // 최소 0%로 제한
+    }
+
     public void Heal(int amount)
     {
         CurHp += amount;

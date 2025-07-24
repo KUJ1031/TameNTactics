@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8eee3a0abe95048b3a1531cc959ee9, type: 3}
   m_Name: 2. Faith_shield
   m_EditorClassIdentifier: 
+  itemId: 202
   itemName: "\uC2E0\uB150\uC758 \uBC29\uD328"
   itemImage: {fileID: 21300000, guid: 09c989090ac9a43b0881ce143ce9b2cb, type: 3}
   maxStack: 1
