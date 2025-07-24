@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8eee3a0abe95048b3a1531cc959ee9, type: 3}
   m_Name: 2. Big_Laugh
   m_EditorClassIdentifier: 
+  itemId: 402
   itemName: "\uBC15\uC7A5\uB300\uC18C\uD558\uAE30"
   itemImage: {fileID: 21300000, guid: ff4ecdd33408b4015822168ab91a3e5d, type: 3}
   maxStack: 1

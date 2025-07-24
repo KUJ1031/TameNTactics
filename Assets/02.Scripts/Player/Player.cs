@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -32,6 +33,7 @@ public class Player
     public string playerLastStage;
     public int playerGetMonsterCount;
     public int playerGender;
+    public List<ItemInstance> playerEquipment = new(); // 장착 아이템 목록
 
     [Header("진행 정보")]
     public SerializableDictionary<int, bool> playerBossClearCheck = new();
@@ -234,6 +236,15 @@ public class Player
     public Monster FindMonsterByData(MonsterData data)
     {
         return ownedMonsters.Find(m => m.monsterData == data);
+    }
+
+    public int GetTotalEffectBonus(ItemEffectType effectType)
+    {
+        return playerEquipment
+            .Where(item => item != null && item.isEquipped)
+            .SelectMany(item => item.data.itemEffects)
+            .Where(effect => effect.type == effectType)
+            .Sum(effect => effect.value);
     }
 
     // 아이템 추가

@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,6 +6,7 @@ using UnityEngine.UI;
 public class InventorySlotUI : MonoBehaviour
 {
     [SerializeField] private Image icon;
+    [SerializeField] private Image equipImage; // 장착 이미지
     [SerializeField] private TextMeshProUGUI ItemName;
     [SerializeField] private TextMeshProUGUI quantityText;
 
@@ -32,6 +34,10 @@ public class InventorySlotUI : MonoBehaviour
         quantityText.text = item.quantity > 1 ? item.quantity.ToString() : "";
 
         GetComponent<Button>().onClick.AddListener(() => inventoryUI.SelectItem(item));
+        bool isEquipped = PlayerManager.Instance.player.playerEquipment
+            .Any(equippedItem => equippedItem != null && equippedItem.data.itemId == item.data.itemId);
+
+        equipImage.gameObject.SetActive(isEquipped);
     }
 
     public void Init(ItemInstance item, ShopUI shopUI)
@@ -45,6 +51,7 @@ public class InventorySlotUI : MonoBehaviour
         quantityText.text = item.quantity > 1 ? item.quantity.ToString() : "";
 
         GetComponent<Button>().onClick.AddListener(() => shopUI.SelectItem(item));
+        equipImage.gameObject.SetActive(false);
     }
 
     private void OnClick()

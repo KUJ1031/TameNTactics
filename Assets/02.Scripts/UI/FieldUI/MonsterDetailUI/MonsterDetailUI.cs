@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -78,6 +79,7 @@ public class MonsterDetailUI : FieldMenuBaseUI
     //몬스터 디테일 몬스터 정보 셋팅
     private void UpdateMonsterDataUI()
     {
+        player = PlayerManager.Instance.player;
         monsterImage.sprite = monster.monsterData.monsterImage;
         monsterHPText.text = $"{monster.CurHp}/{monster.MaxHp}";
         monsterHPBar.fillAmount = (float)monster.CurHp / monster.MaxHp;
@@ -90,10 +92,14 @@ public class MonsterDetailUI : FieldMenuBaseUI
         monsterTypeText.text = monster.monsterData.type.ToString();
         monsterPersonalityText.text = monster.monsterData.personality.ToString();
 
-        monsterAttackText.text = monster.Attack.ToString();
-        monsterDefenseText.text = monster.Defense.ToString();
-        monsterSpeedText.text = monster.Speed.ToString();
-        monsterCriticalText.text = $"{monster.CriticalChance}%";
+        monsterAttackText.text = player.GetTotalEffectBonus(ItemEffectType.attack) > 0 ?
+            $"{monster.Attack} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.attack)})</color>" : $"{monster.Attack}";
+        monsterDefenseText.text = player.GetTotalEffectBonus(ItemEffectType.defense) > 0 ?
+            $"{monster.Defense} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.defense)})</color>" : $"{monster.Defense}";
+        monsterSpeedText.text = player.GetTotalEffectBonus(ItemEffectType.speed) > 0 ?
+            $"{monster.Speed} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.speed)})</color>" : $"{monster.Speed}";
+        monsterCriticalText.text = player.GetTotalEffectBonus(ItemEffectType.criticalChance) > 0 ?
+            $"{monster.CriticalChance} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.criticalChance)})</color>" : $"{monster.CriticalChance}";
 
         monsterCaughtDateText.text = monster.CaughtDate.ToString();
         monsterCaughtLocationText.text = monster.CaughtLocation;

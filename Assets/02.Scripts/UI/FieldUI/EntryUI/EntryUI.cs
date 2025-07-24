@@ -80,10 +80,14 @@ public class EntryUI : FieldMenuBaseUI
         monsterTypeText.text = monster.monsterData.type.ToString();
         monsterPersonalityText.text = monster.monsterData.personality.ToString();
 
-        monsterAttackText.text = monster.Attack.ToString();
-        monsterDefenseText.text = monster.Defense.ToString();
-        monsterSpeedText.text = monster.Speed.ToString();
-        monsterCriticalText.text = $"{monster.CriticalChance}%";
+        monsterAttackText.text = player.GetTotalEffectBonus(ItemEffectType.attack) > 0 ?
+            $"{monster.Attack} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.attack)})</color>" : $"{monster.Attack}";
+        monsterDefenseText.text = player.GetTotalEffectBonus(ItemEffectType.defense) > 0 ?
+            $"{monster.Defense} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.defense)})</color>" : $"{monster.Defense}";
+        monsterSpeedText.text = player.GetTotalEffectBonus(ItemEffectType.speed) > 0 ?
+            $"{monster.Speed} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.speed)})</color>" : $"{monster.Speed}";
+        monsterCriticalText.text = player.GetTotalEffectBonus(ItemEffectType.criticalChance) > 0 ?
+            $"{monster.CriticalChance} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.criticalChance)})</color>" : $"{monster.CriticalChance}";
     }
 
     //몬스터 디테일 몬스터 스킬 셋팅
