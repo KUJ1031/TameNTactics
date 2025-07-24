@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -153,7 +153,7 @@ public class SPUM_SpriteEditManager : MonoBehaviour
         }        
     }
     //Reset all sprite added.
-
+#pragma warning disable CS0618
     public void SetPivot(SpriteRenderer _sprite)
     {
         if( _sprite.transform.localPosition.x ==0 && _sprite.transform.localPosition.y ==0) return;
@@ -218,5 +218,6 @@ public class SPUM_SpriteEditManager : MonoBehaviour
 
         _sprite.transform.localPosition = new Vector3(0,0,0);
     }
-    #endif
+#pragma warning restore CS0618
+#endif
 }
