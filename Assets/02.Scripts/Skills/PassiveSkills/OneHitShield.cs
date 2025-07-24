@@ -11,16 +11,17 @@ public class OneHitShield : IPassiveSkill
         isShielding = true;
     }
     
-    public void OnDamaged(Monster self, int damage, Monster actor)
+    public int OnDamaged(Monster self, int damage, Monster actor)
     {
         if (isShielding)
         {
-            self.TakeDamage(0);
+            return 0;
             isShielding = false;
         }
-        else self.TakeDamage(damage);
+        else return damage;
     }
     
     public void OnTurnEnd(Monster self) {}
     public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam) {}
+    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill) {}
 }

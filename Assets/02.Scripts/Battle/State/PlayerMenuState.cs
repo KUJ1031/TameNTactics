@@ -28,9 +28,9 @@ public class PlayerMenuState : BaseBattleState
         battleSystem.ChangeState(new InventoryState(battleSystem));
     }
 
-    public void OnCaptureSelected()
+    public void OnCaptureMotionSelected()
     {
-        battleSystem.ChangeState(new SelectCaptureTargetState(battleSystem));
+        battleSystem.ChangeState(new SelectCaptureMotionState(battleSystem));
     }
 
     public void OnRunSelected()
