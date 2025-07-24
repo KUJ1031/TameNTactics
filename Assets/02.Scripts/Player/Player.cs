@@ -29,7 +29,9 @@ public class Player
     public int totalPlaytime;
     public float playerLastGameTime;
     public Vector3 playerLastPosition;
+    public string playerLastStage;
     public int playerGetMonsterCount;
+    public int playerGender;
 
     [Header("진행 정보")]
     public SerializableDictionary<int, bool> playerBossClearCheck = new();

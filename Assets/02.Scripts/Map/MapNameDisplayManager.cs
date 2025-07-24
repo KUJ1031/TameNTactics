@@ -2,26 +2,15 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class MapNameDisplayManager : MonoBehaviour
+public class MapNameDisplayManager : Singleton<MapNameDisplayManager>
 {
-    public static MapNameDisplayManager Instance { get; private set; }
+    protected override bool IsDontDestroy => false; // 싱글톤 인스턴스가 파괴되지 않도록 설정
 
     public TextMeshProUGUI mapNameText;     // 작게 표시되는 상시 맵 이름
     public TextMeshProUGUI bigMapNameText;  // 크게 표시되고 페이드아웃 되는 이름
     public float displayDuration = 3f;
 
     private Coroutine hideCoroutine;
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-    }
 
     public void ShowMapName(string name)
     {
