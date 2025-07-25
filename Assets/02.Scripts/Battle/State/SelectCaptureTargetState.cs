@@ -55,6 +55,7 @@ public class SelectCaptureTargetState : BaseBattleState
             }
             yield return null;
         }
+        UIManager.Instance.battleUIManager.BattleSelectView.HideCancelButton();
         UIManager.Instance.battleUIManager.DisableHoverSelect();
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 포섭을 시도하세요!");

@@ -98,24 +98,27 @@ public class ShopUI_Sell : MonoBehaviour
 
     private void OnSell()
     {
+        var equipment = PlayerManager.Instance.player.playerEquipment;
+
         if (selectedItem == null) return;
-        if (PlayerManager.Instance.player.playerEquipment[0] != null &&
-            selectedItem.data.itemId == PlayerManager.Instance.player.playerEquipment[0].data.itemId)
+        if (equipment.Count > 0 && equipment[0] != null)
         {
-            warringPopup.SetActive(true);
-            warringPopupText.text = "장착 중인 아이템은 판매할 수 없습니다.";
-            return;
+            if (selectedItem.data.itemId == equipment[0].data.itemId)
+            {
+                warringPopup.SetActive(true);
+                warringPopupText.text = "장착 중인 아이템은 판매할 수 없습니다.";
+                return;
+            }
+
         }
 
         var player = PlayerManager.Instance.player;
         int sellValue = GetSellValue(selectedItem.data);
         player.gold += sellValue;
 
-        selectedItem.quantity--;
-
-        if (selectedItem.quantity <= 0)
+        if (selectedItem.quantity >= 0)
         {
-            player.items.Remove(selectedItem);
+            player.RemoveItem(selectedItem, 1);
         }
 
         Debug.Log($"[판매] {selectedItem.data.itemName} → {sellValue}G");

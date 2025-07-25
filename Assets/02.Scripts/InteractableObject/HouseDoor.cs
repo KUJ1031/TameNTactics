@@ -20,7 +20,6 @@ public class HouseDoor : MonoBehaviour
             if (fadeCoroutine != null)
                 StopCoroutine(fadeCoroutine);
             fadeCoroutine = StartCoroutine(FadeGroups(1f, 0f)); // indoor fade in, outdoor fade out
-            Debug.Log("어서오세요~ 실내로 입장하셨습니다!");
         }
     }
 
@@ -32,7 +31,6 @@ public class HouseDoor : MonoBehaviour
             if (fadeCoroutine != null)
                 StopCoroutine(fadeCoroutine);
             fadeCoroutine = StartCoroutine(FadeGroups(0f, 1f)); // indoor fade out, outdoor fade in
-            Debug.Log("나가셨어요~ 바깥바람 쐬고 오시게나!");
         }
     }
 

@@ -13,6 +13,7 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private BattleSelectView battleSelectView;
     [SerializeField] private BattleInfoView battleInfoView;
     [SerializeField] private SkillView skillView;
+    [SerializeField] private BattleInventoryUI inventoryView;
     [SerializeField] private MenuView menuView;
     [SerializeField] private EmbraceView embraceView;
 
@@ -20,6 +21,8 @@ public class BattleUIManager : MonoBehaviour
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
     public BattleInfoView BattleInfoView { get { return battleInfoView; } }
     public SkillView SkillView { get { return skillView; } }
+
+    public BattleInventoryUI InventoryView { get { return inventoryView; } }
     public bool CanHoverSelect { get; private set; } = false;
     public List<Monster> CurrentHoverTarget { get; private set; }
 
@@ -62,6 +65,12 @@ public class BattleUIManager : MonoBehaviour
     {
         CanHoverSelect = true;
         CurrentHoverTarget = monsters;
+    }
+
+    public void DisableHoverSelect(List<Monster> monsters)
+    {
+        CanHoverSelect = false;
+        CurrentHoverTarget = null;
     }
 
     public void DisableHoverSelect()

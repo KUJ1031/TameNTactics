@@ -206,6 +206,8 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
+
+
     // 속도 비교해서 누가 먼저 공격하는지 정함
     private IEnumerator CompareSpeedAndFight()
     {
