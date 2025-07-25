@@ -8,6 +8,7 @@ public class InventoryState : BaseBattleState
         var inventoryView = UIManager.Instance.battleUIManager.InventoryView;
         inventoryView.ShowInventory();
         inventoryView.OnItemUseConfirmed += OnSelectedItem;
+        inventoryView.OnInventoryCancelled += OnCancelInventory;
 
         UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
         UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
@@ -34,6 +35,7 @@ public class InventoryState : BaseBattleState
     public override void Exit()
     {
         UIManager.Instance.battleUIManager.InventoryView.OnItemUseConfirmed -= OnSelectedItem;
+        UIManager.Instance.battleUIManager.InventoryView.OnInventoryCancelled -= OnCancelInventory;
         UIManager.Instance.battleUIManager.InventoryView.HideInventory();
     }
 }

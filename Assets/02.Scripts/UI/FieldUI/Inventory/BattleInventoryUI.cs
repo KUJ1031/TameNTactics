@@ -22,13 +22,17 @@ public class BattleInventoryUI : MonoBehaviour
 
     // 외부에서 아이템 사용 시 콜백 받는 델리게이트
     public System.Action<ItemInstance> OnItemUseConfirmed;
+    public System.Action OnInventoryCancelled;
 
     private void Start()
     {
         useItemButton.onClick.AddListener(() => UseItem());
-        closeButton.onClick.AddListener(() => HideInventory());
-
-        RefreshInventory();
+        closeButton.onClick.AddListener(() =>
+        {
+            HideInventory();
+            HideitemDetailInfoPanel();
+            OnInventoryCancelled?.Invoke(); // ← 콜백 실행
+        });
     }
 
     private void OnEnable()
