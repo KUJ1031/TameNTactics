@@ -8,7 +8,7 @@ public class SelectCaptureTargetState : BaseBattleState
     public override void Enter()
     {
         Debug.Log("포섭하기 상태로 변경");
-        UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+        UIManager.Instance.battleUIManager.EmbraceView.HideBehaviorPanel();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("포섭하고 싶은 몬스터를 선택하세요.");
         UIManager.Instance.battleUIManager.EnableHoverSelect(BattleManager.Instance.BattleEnemyTeam);
         battleSystem.StartCoroutine(WaitForMonsterSelection());

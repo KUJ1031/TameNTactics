@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -24,7 +26,8 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
     [SerializeField] private DamagePopup damagePopupPrefab;
-    [SerializeField] private GameObject PossibleTargetPrefab;
+    [SerializeField] private GameObject possibleTargetPrefab;
+    [SerializeField] private GameObject behaviorButtonPrefab;
 
     [Header("포섭하기 미니게임")]
     [SerializeField] private GameObject miniGamePrefab;
@@ -282,7 +285,7 @@ public class BattleUIManager : MonoBehaviour
     public void ShowPossibleTargets(MonsterCharacter possibleTarget)
     {
         Vector3 spawnPos = possibleTarget.transform.position + Vector3.up * 1.8f;
-        GameObject indicator = Instantiate(PossibleTargetPrefab, spawnPos, Quaternion.identity);
+        GameObject indicator = Instantiate(possibleTargetPrefab, spawnPos, Quaternion.identity);
 
         indicator.transform.SetParent(possibleTarget.transform);
         IndicatorList.Add(indicator);
@@ -296,5 +299,24 @@ public class BattleUIManager : MonoBehaviour
         }
 
         IndicatorList.Clear();
+    }
+
+    public void ShowBehaviorMenu(Player player, Action onGestureSelected)
+    {
+        player.UpdateCategorizedItemLists();
+
+        foreach (var item in player.gestureItems)
+        {
+            Debug.Log($"item name : {item.data.itemName}");
+            GameObject behaviorButton = Instantiate(behaviorButtonPrefab, embraceView.BehaviorPanel.transform);
+            behaviorButton.GetComponentInChildren<TextMeshProUGUI>().text = item.data.itemName;
+
+            Button button = behaviorButton.GetComponent<Button>();
+            var capturedItem = item;
+
+            button.onClick.AddListener(() => onGestureSelected?.Invoke());
+        }
+
+        embraceView.ShowBehaviorPanel();
     }
 }

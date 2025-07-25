@@ -9,13 +9,15 @@ public class SelectCaptureMotionState : BaseBattleState
     public override void Enter()
     {
         // todo 어떤 모션으로 할건지 UI 띄어주기
+        UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+        UIManager.Instance.battleUIManager.ShowBehaviorMenu(PlayerManager.Instance.player, OnCaptureTargetSelected);
     }
 
     public override void Exit()
     {
         // todo 모션 목록 UI 끄기
     }
-    
+
     // 잡는걸로 이동
     public void OnCaptureTargetSelected()
     {
