@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StartScene
   m_EditorClassIdentifier: 
   clipName: StartScene
-  clip: {fileID: 0}
+  clip: {fileID: 8300000, guid: 8fab401eac256497392573ff7015c6ce, type: 3}
   type: 0
   volume: 1
   loop: 1

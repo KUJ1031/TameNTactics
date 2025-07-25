@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Village
   m_EditorClassIdentifier: 
   clipName: Village
-  clip: {fileID: 0}
+  clip: {fileID: 8300000, guid: 16ea00101de09430b82de9f8d60e7de7, type: 3}
   type: 0
   volume: 1
   loop: 1

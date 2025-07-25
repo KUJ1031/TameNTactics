@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Castle
   m_EditorClassIdentifier: 
   clipName: Castle
-  clip: {fileID: 0}
+  clip: {fileID: 8300000, guid: 0f256a90dbb5e49e2be30d380e2f9691, type: 3}
   type: 0
   volume: 1
   loop: 1

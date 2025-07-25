@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager>
 {
@@ -31,6 +32,8 @@ public class AudioManager : Singleton<AudioManager>
         sfxDict = sfxDataList.ToDictionary(data => data.clipName, data => data);
         InitializeSFXPool();
     }
+ 
+
 
     private void InitializeSFXPool()
     {
@@ -235,4 +238,37 @@ public class AudioManager : Singleton<AudioManager>
         return false;
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+
+        //if (bgmSource.isPlaying)
+        //{
+        // FadeOutBGM(1f);
+        //}
+
+        switch (scene.name)
+        {
+            case "StartScene":
+                FadeInBGM("StartScene", 1f);
+                break;
+            case "MainMapScene":
+                FadeInBGM("Village", 1f);
+                break;
+            case "BattleScene":
+                FadeInBGM("Battle", 1f);
+                break;
+            default:
+                StopBGM();
+                break;
+        }
+    }
 }

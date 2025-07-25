@@ -54924,6 +54924,7 @@ MonoBehaviour:
     playerLastStage: 
     playerGetMonsterCount: 0
     playerGender: 0
+    playerEquipment: []
     playerBossClearCheck:
       pairs: []
     playerQuestClearCheck:
@@ -67471,7 +67472,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 0}
   sfxSource: {fileID: 0}
-  bgmDataList: []
+  bgmDataList:
+  - {fileID: 11400000, guid: 8e11e6ecef55836428bd9a9f1d8095ac, type: 2}
+  - {fileID: 11400000, guid: 9454927ca63fed842b673ace6db27f64, type: 2}
+  - {fileID: 11400000, guid: be2fb6b92a9c5ea40b07072412d2a86f, type: 2}
+  - {fileID: 11400000, guid: 232baa60466b1a5469abd489560fb6b2, type: 2}
+  - {fileID: 11400000, guid: d89e624206b142f4b911cb22fc36d83e, type: 2}
   sfxDataList:
   - {fileID: 11400000, guid: 486c833a100ed804bad31379f321be1a, type: 2}
   - {fileID: 11400000, guid: dd9ab265a96ce6e4d8da764b68149ff6, type: 2}
@@ -67481,6 +67487,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ae72e886e2b7f3f4980e3a85ac984332, type: 2}
   - {fileID: 11400000, guid: c7036f6ac05309c42b6ad554e6c20b6c, type: 2}
   - {fileID: 11400000, guid: 43669d4dc8db3814082f5b9c5e343fbc, type: 2}
+  sfxPoolSize: 10
 --- !u!1001 &1794119611
 PrefabInstance:
   m_ObjectHideFlags: 0
