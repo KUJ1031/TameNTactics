@@ -23,13 +23,13 @@ public class BreathOfDeath : ISkillEffect
             if (Random.value < 0.05f && target.CurHp > 0)
             {
                 yield return new WaitForSeconds(1f);
-                target.TakeDamage(target.CurHp);
+                BattleManager.Instance.DealDamage(target, target.CurHp, caster, this.skillData, false);
             }
 
             else
             {
                 var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-                BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData);
+                BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
             }
         }
 
