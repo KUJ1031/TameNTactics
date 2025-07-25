@@ -14,4 +14,9 @@ public class ItemInstance
         this.quantity = quantity;
         this.isEquipped = false;
     }
+
+    public ItemData GetItemToWantType(ItemType itemType)
+    {
+        return data.type == itemType ? data : null;
+    }
 }

@@ -8,6 +8,9 @@ public class EmbraceView : MonoBehaviour
     [SerializeField] private GameObject successMessage;
     [SerializeField] private GameObject failMessage;
     [SerializeField] private TextMeshProUGUI guideText;
+    [SerializeField] private GameObject behaviorPanel;
+
+    public GameObject BehaviorPanel { get { return behaviorPanel; } }
 
     private Coroutine currentCoroutine;
 
@@ -116,5 +119,21 @@ public class EmbraceView : MonoBehaviour
 
         if (guideText != null)
             guideText.gameObject.SetActive(false);
+    }
+
+    public void ShowBehaviorPanel()
+    {
+        if (behaviorPanel != null && !behaviorPanel.activeSelf)
+        {
+            behaviorPanel.SetActive(true);
+        }
+    }
+
+    public void HideBehaviorPanel()
+    {
+        if (behaviorPanel != null && behaviorPanel.activeSelf)
+        {
+            behaviorPanel.SetActive(false);
+        }
     }
 }
