@@ -18,9 +18,14 @@ public class BattleInventoryUI : MonoBehaviour
     [SerializeField] private Transform battleInventoryParents;
     [SerializeField] private BattleInventorySlotUI battleInventoryslotPrefab;
 
+    public ItemInstance selectedItem; // 선택된 아이템 인스턴스
+
+    // 외부에서 아이템 사용 시 콜백 받는 델리게이트
+    public System.Action<ItemInstance> OnItemUseConfirmed;
 
     private void Start()
     {
+        useItemButton.onClick.AddListener(() => UseItem());
         closeButton.onClick.AddListener(() => HideInventory());
 
         RefreshInventory();
@@ -53,18 +58,28 @@ public class BattleInventoryUI : MonoBehaviour
         itemDetailImage.sprite = item.data.itemImage; // Assuming itemIcon is a SpriteRenderer or Image component
         itemDetailName.text = item.data.itemName; // Assuming itemName is a TextMeshProUGUI component
         itemDetailDescription.text = item.data.description; // Assuming itemDescription is a TextMeshProUGUI component
-        ShowInventory();
+
+        selectedItem = item; // 선택된 아이템 인스턴스 저장
+        if (selectedItem.data.itemEffects != null && item.data.itemEffects.Count > 0)
+        {
+            Debug.Log($"아이템 회복량: {item.data.itemEffects[0].value}");
+        }
+        ShowitemDetailInfoPanel();
     }
 
-    public void ShowInventory()
+    public void UseItem()
     {
-        battleInventoryUIPanel.SetActive(true);
-        // Additional logic to populate the inventory slots can be added here
+        if (selectedItem == null) return;
+
+        OnItemUseConfirmed?.Invoke(selectedItem);
+
+        RefreshInventory();
+        HideInventory();
+        HideitemDetailInfoPanel();
     }
 
-    public void HideInventory()
-    {
-        battleInventoryUIPanel.SetActive(false);
-        // Additional logic to clear the inventory slots can be added here
-    }
+    public void ShowInventory() => battleInventoryUIPanel.SetActive(true);
+    public void HideInventory() => battleInventoryUIPanel.SetActive(false);
+    public void ShowitemDetailInfoPanel() => itemDetailInfoPanel.SetActive(true);
+    public void HideitemDetailInfoPanel() => itemDetailInfoPanel.SetActive(false);
 }
