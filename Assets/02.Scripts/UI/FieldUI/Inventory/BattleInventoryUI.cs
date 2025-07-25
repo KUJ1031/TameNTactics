@@ -30,6 +30,12 @@ public class BattleInventoryUI : MonoBehaviour
 
         RefreshInventory();
     }
+
+    private void OnEnable()
+    {
+        // 인벤토리 UI가 활성화될 때마다 인벤토리를 새로 고침
+        RefreshInventory();
+    }
     public void RefreshInventory()
     {
         PlayerManager.Instance.player.UpdateCategorizedItemLists();

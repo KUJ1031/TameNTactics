@@ -67,6 +67,12 @@ public class BattleUIManager : MonoBehaviour
         CurrentHoverTarget = monsters;
     }
 
+    public void DisableHoverSelect(List<Monster> monsters)
+    {
+        CanHoverSelect = false;
+        CurrentHoverTarget = null;
+    }
+
     public void DisableHoverSelect()
     {
         CanHoverSelect = false;

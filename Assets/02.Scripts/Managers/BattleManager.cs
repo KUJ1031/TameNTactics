@@ -205,22 +205,6 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    public void UseItemOnMonster(ItemInstance item, Monster target)
-    {
-        if (target == null || item == null) return;
-
-        foreach (var effect in item.data.itemEffects)
-        {
-            if (effect.type == ItemEffectType.curHp)
-                target.Heal_Potion(effect.value);
-            else
-                Debug.LogWarning($"지원하지 않는 아이템 효과: {effect.type}");
-        }
-        PlayerManager.Instance.player.RemoveItem(item, 1);
-
-        UIManager.Instance.battleUIManager.InventoryView.RefreshInventory();
-    }
-
 
 
     // 속도 비교해서 누가 먼저 공격하는지 정함
