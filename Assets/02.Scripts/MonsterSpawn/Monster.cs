@@ -187,6 +187,17 @@ public class Monster
         if (CurAttack < 0) CurAttack = 0;
     }
 
+    public void BattleDefenseUp(int amount)
+    {
+        CurDefense += amount;
+    }
+    
+    public void BattleDefenseDown(int amount)
+    {
+        CurDefense -= amount;
+        if (CurDefense < 0) CurDefense = 0;
+    }
+
     public void AttackUp(int amount)
     {
         Attack += amount;
@@ -229,6 +240,12 @@ public class Monster
     {
         CriticalChance -= amount;
         if (CriticalChance < 0) CriticalChance = 0; // 최소 0%로 제한
+    }
+
+    public void BattleCritChanceUp(int amount)
+    {
+        CurCriticalChance += amount;
+        if (CriticalChance > 100) CriticalChance = 100;
     }
 
     public void Heal(int amount)
@@ -352,7 +369,7 @@ public class Monster
             }
         }
     }
-
+    
     public void TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill)
     {
         foreach (var passive in PassiveSkills)

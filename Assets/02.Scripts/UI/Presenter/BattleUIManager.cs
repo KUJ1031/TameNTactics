@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,6 +13,7 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private BattleSelectView battleSelectView;
     [SerializeField] private BattleInfoView battleInfoView;
     [SerializeField] private SkillView skillView;
+    [SerializeField] private BattleInventoryUI inventoryView;
     [SerializeField] private MenuView menuView;
     [SerializeField] private EmbraceView embraceView;
 
@@ -18,13 +21,16 @@ public class BattleUIManager : MonoBehaviour
     public BattleSelectView BattleSelectView { get { return battleSelectView; } }
     public BattleInfoView BattleInfoView { get { return battleInfoView; } }
     public SkillView SkillView { get { return skillView; } }
+
+    public BattleInventoryUI InventoryView { get { return inventoryView; } }
     public bool CanHoverSelect { get; private set; } = false;
     public List<Monster> CurrentHoverTarget { get; private set; }
 
     [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
 
     [SerializeField] private DamagePopup damagePopupPrefab;
-    [SerializeField] private GameObject PossibleTargetPrefab;
+    [SerializeField] private GameObject possibleTargetPrefab;
+    [SerializeField] private GameObject behaviorButtonPrefab;
 
     [Header("포섭하기 미니게임")]
     [SerializeField] private GameObject miniGamePrefab;
@@ -59,6 +65,12 @@ public class BattleUIManager : MonoBehaviour
     {
         CanHoverSelect = true;
         CurrentHoverTarget = monsters;
+    }
+
+    public void DisableHoverSelect(List<Monster> monsters)
+    {
+        CanHoverSelect = false;
+        CurrentHoverTarget = null;
     }
 
     public void DisableHoverSelect()
@@ -282,7 +294,7 @@ public class BattleUIManager : MonoBehaviour
     public void ShowPossibleTargets(MonsterCharacter possibleTarget)
     {
         Vector3 spawnPos = possibleTarget.transform.position + Vector3.up * 1.8f;
-        GameObject indicator = Instantiate(PossibleTargetPrefab, spawnPos, Quaternion.identity);
+        GameObject indicator = Instantiate(possibleTargetPrefab, spawnPos, Quaternion.identity);
 
         indicator.transform.SetParent(possibleTarget.transform);
         IndicatorList.Add(indicator);
@@ -296,5 +308,24 @@ public class BattleUIManager : MonoBehaviour
         }
 
         IndicatorList.Clear();
+    }
+
+    public void ShowBehaviorMenu(Player player, Action onGestureSelected)
+    {
+        player.UpdateCategorizedItemLists();
+
+        foreach (var item in player.gestureItems)
+        {
+            Debug.Log($"item name : {item.data.itemName}");
+            GameObject behaviorButton = Instantiate(behaviorButtonPrefab, embraceView.BehaviorPanel.transform);
+            behaviorButton.GetComponentInChildren<TextMeshProUGUI>().text = item.data.itemName;
+
+            Button button = behaviorButton.GetComponent<Button>();
+            var capturedItem = item;
+
+            button.onClick.AddListener(() => onGestureSelected?.Invoke());
+        }
+
+        embraceView.ShowBehaviorPanel();
     }
 }

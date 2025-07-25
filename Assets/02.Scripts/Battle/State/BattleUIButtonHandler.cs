@@ -61,16 +61,4 @@ public class BattleUIButtonHandler : MonoBehaviour
         if (BattleSystem.Instance.CurrentState is SelectTargetState state)
             state.OnCancelSelectTarget();
     }
-
-    public void OnItemUsed()
-    {
-        if (BattleSystem.Instance.CurrentState is InventoryState state)
-            state.OnSelectedItem();
-    }
-
-    public void OnCancelInventory()
-    {
-        if (BattleSystem.Instance.CurrentState is InventoryState state)
-            state.OnCancleInventory();
-    }
 }

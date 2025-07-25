@@ -23,6 +23,9 @@ public class Player
 
     [Header("인벤토리/골드")]
     public List<ItemInstance> items = new List<ItemInstance>();
+    [NonSerialized] public List<ItemInstance> consumableItems = new List<ItemInstance>(); // 소모 아이템 인스턴스
+    [NonSerialized] public List<ItemInstance> equipableItems = new List<ItemInstance>(); // 인벤토리 아이템 인스턴스
+    [NonSerialized] public List<ItemInstance> gestureItems = new List<ItemInstance>(); // 제스쳐 아이템 인스턴스
     public int gold;
 
     [Header("기본 정보")]
@@ -247,16 +250,63 @@ public class Player
             .Sum(effect => effect.value);
     }
 
-    // 아이템 추가
-    public void AddItem(ItemInstance item)
+    public void UpdateCategorizedItemLists()
     {
-        items.Add(item);
+        equipableItems.Clear();
+        consumableItems.Clear();
+        gestureItems.Clear();
+
+        // itemID 기준으로 정렬
+        var sortedItems = items.OrderBy(item => item.data.itemId);
+
+        foreach (var item in sortedItems)
+        {
+            switch (item.data.type)
+            {
+                case ItemType.equipment:
+                    equipableItems.Add(item);
+                    break;
+                case ItemType.consumable:
+                    consumableItems.Add(item);
+                    break;
+                case ItemType.gesture:
+                    gestureItems.Add(item);
+                    break;
+                default:
+                    Debug.LogWarning($"[ItemManager] 알 수 없는 타입: {item.data.itemName} / {item.data.type}");
+                    break;
+            }
+        }
     }
 
-    // 아이템 제거
-    public void RemoveItem(ItemInstance item)
+
+    // 아이템 추가
+    public void AddItem(ItemData item, int quantity = 1)
     {
-        items.Remove(item);
+        var existing = items.Find(i => i.data.itemName == item.itemName);
+
+        if (existing != null)
+            existing.quantity += quantity;
+        else
+            items.Add((new ItemInstance(item, quantity)));
+
+        // 자동 분류 갱신
+        UpdateCategorizedItemLists();
+
+    }
+
+
+    // 아이템 제거
+    public void RemoveItem(ItemInstance item, int quantity)
+    {
+        if (!items.Contains(item)) return;
+
+        item.quantity -= quantity;
+
+        if (item.quantity <= 0)
+            items.Remove(item);
+
+        UpdateCategorizedItemLists();
     }
 
     // 골드 추가
