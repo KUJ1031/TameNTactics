@@ -19,7 +19,11 @@ public static class PassiveSkillFactory
         { PassiveSkillList.TypeHitRecovery, () => new StatusEffectImmunity()},
         { PassiveSkillList.EnemyAtkDownTwoTurns, () => new EnemyAtkDownTwoTurns()},
         { PassiveSkillList.UltGaugeChancePerTurn, () => new UltGaugeChancePerTurn()},
-        { PassiveSkillList.BonusAttack, () => new BonusAttack()}
+        { PassiveSkillList.BonusAttack, () => new BonusAttack()},
+        { PassiveSkillList.PowerBoostPerUlt, () => new PowerBoostPerUlt()},
+        { PassiveSkillList.HealOnKill, () => new HealOnKill()},
+        { PassiveSkillList.AliveTeamGuard, () => new AliveTeamGuard()},
+        { PassiveSkillList.CritUpOnCritHit, () => new CritUpOnCritHit()}
     };
 
     public static IPassiveSkill GetPassiveSkill(PassiveSkillList list)

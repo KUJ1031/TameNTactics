@@ -102,10 +102,11 @@ public class BattleManager : Singleton<BattleManager>
     }
 
     // 데미지 넣기 + 데미지 후 패시브 발동
-    public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData)
+    public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData, bool isCrit)
     {
         int finalDamage = target.TriggerOnDamaged(damage, attacker);
         target.TakeDamage(finalDamage);
+        NotifyReceivedCrit(target, isCrit);
         attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
         
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, finalDamage, skillData);
@@ -291,6 +292,7 @@ public class BattleManager : Singleton<BattleManager>
             {
                 effect = UltimateSkillFactory.GetUltimateSkill(skill);
                 caster.InitializeUltimateCost();
+                NotifyUltUsed(caster, BattleEntryTeam.Contains(caster) ? BattleEntryTeam : BattleEnemyTeam);
             }
             else
             {
@@ -576,5 +578,30 @@ public class BattleManager : Singleton<BattleManager>
     {
         DeadEnemyMonsters.Clear();
         DeadEntryMonsters.Clear();
+    }
+    
+    private void NotifyUltUsed(Monster ultimateUser, List<Monster> team)
+    {
+        foreach (var monster in team)
+        {
+            foreach (var passive in monster.PassiveSkills)
+            {
+                if (passive is PowerBoostPerUlt powerBoostPerUlt)
+                {
+                    powerBoostPerUlt.OnUseUlt(monster, ultimateUser, team);
+                }
+            }
+        }
+    }
+
+    private void NotifyReceivedCrit(Monster self, bool isCritical)
+    {
+        foreach (var passive in self.PassiveSkills)
+        {
+            if (passive is CritUpOnCritHit critUpOnCritHit)
+            {
+                critUpOnCritHit.OnCritHit(self, isCritical);
+            }
+        }
     }
 }

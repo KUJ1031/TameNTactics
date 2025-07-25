@@ -22,7 +22,7 @@ public class SteelSlash : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData);
+            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
         }
 
         if (caster.Level >= 10)
