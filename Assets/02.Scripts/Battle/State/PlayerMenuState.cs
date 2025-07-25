@@ -8,6 +8,7 @@ public class PlayerMenuState : BaseBattleState
     {
         Debug.Log("플레이어 메뉴 상태로 진입했습니다. 행동을 선택하세요.");
         MonsterSelecter.isClicked = false;
+        UIManager.Instance.battleUIManager.BattleSelectView.HideCancelButton();
         UIManager.Instance.battleUIManager.DisableHoverSelect();
         UIManager.Instance.battleUIManager.IntoBattleMenuSelect();
     }

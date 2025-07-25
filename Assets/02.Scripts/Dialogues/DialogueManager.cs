@@ -269,7 +269,7 @@ public class DialogueManager : Singleton<DialogueManager>
                     ItemData item = ItemManager.Instance.GetItemByName(arg);
                     if (item != null)
                     {
-                        ItemManager.Instance.AddItemToPlayer(item);
+                        PlayerManager.Instance.player.AddItem(item);
                         Debug.Log($"[이벤트] 아이템 지급: {item.itemName}");
                         Destroy(ItemManager.Instance.item); // 아이템 오브젝트 제거
                     }

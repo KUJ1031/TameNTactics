@@ -26,5 +26,9 @@ public class MonsterSelecter : MonoBehaviour
             isClicked = true;
             enemyState.OnSelectTargetMonster(monster);
         }
+        if (BattleSystem.Instance.CurrentState is SelectItemUseState itemUseState)
+        {
+            itemUseState.OnTargetSelected(monster);
+        }
     }
 }

@@ -281,15 +281,32 @@ public class Player
 
 
     // 아이템 추가
-    public void AddItem(ItemInstance item)
+    public void AddItem(ItemData item, int quantity = 1)
     {
-        items.Add(item);
+        var existing = items.Find(i => i.data.itemName == item.itemName);
+
+        if (existing != null)
+            existing.quantity += quantity;
+        else
+            items.Add((new ItemInstance(item, quantity)));
+
+        // 자동 분류 갱신
+        UpdateCategorizedItemLists();
+
     }
 
+
     // 아이템 제거
-    public void RemoveItem(ItemInstance item)
+    public void RemoveItem(ItemInstance item, int quantity)
     {
-        items.Remove(item);
+        if (!items.Contains(item)) return;
+
+        item.quantity -= quantity;
+
+        if (item.quantity <= 0)
+            items.Remove(item);
+
+        UpdateCategorizedItemLists();
     }
 
     // 골드 추가

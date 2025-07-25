@@ -117,15 +117,8 @@ public class ShopUI : MonoBehaviour
                     warringPopupText.text = $"{selectedItem.data.itemName}은(는) 이미 소지하고 있습니다.\n 제스처 아이템은 1개만 소지할 수 있습니다.";
                     return;
                 }
-                // 이미 있으면 수량만 증가
-                existing.quantity += 1;
             }
-            else
-            {
-                // 없으면 새 인스턴스 추가
-                var newInstance = new ItemInstance(selectedItem.data, 1);
-                player.items.Add(newInstance);
-            }
+            player.AddItem(selectedItem.data, 1);
 
             Debug.Log($"[구매] {selectedItem.data.itemName}");
 
