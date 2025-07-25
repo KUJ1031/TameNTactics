@@ -8,6 +8,7 @@ public class BattleSelectView : MonoBehaviour
     public Button attackInventoryButton;
     public Button embraceButton;
     public Button runButton;
+    public Button cancelButton;
 
     [SerializeField] private GameObject selectPanel;
     [SerializeField] private GameObject skillPanel;
@@ -21,6 +22,23 @@ public class BattleSelectView : MonoBehaviour
     [SerializeField] private MonsterTypeIconDB monsterTypeIconDB;
 
     public Canvas GaugeCanvas { get { return gaugeCanvas; } }
+
+    public void ShowCancelButton()
+    {
+        cancelButton.gameObject.SetActive(true);
+
+        cancelButton.onClick.AddListener(() => BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance)));
+    }
+
+    public void HideCancelButton()
+    {
+        cancelButton.gameObject.SetActive(false);
+    }
+
+    public void ShowSelectPanel()
+    {
+        selectPanel.SetActive(true);
+    }
 
     public void HideSelectPanel()
     {
@@ -38,7 +56,7 @@ public class BattleSelectView : MonoBehaviour
 
     public void HideBeHaviorPanel()
     {
-        if (behaviorPanel != null)
+        if (behaviorPanel.activeSelf == true)
         {
             behaviorPanel.SetActive(false);
         }
