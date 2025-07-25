@@ -16,7 +16,10 @@ public static class PassiveSkillFactory
         { PassiveSkillList.StatusEffectImmunity, () => new StatusEffectImmunity()},
         { PassiveSkillList.OneHitShield, () => new OneHitShield()},
         { PassiveSkillList.AtkUpOnAllyDeath , () => new AtkUpOnAllyDeath()},
-        { PassiveSkillList.TypeHitRecovery, () => new StatusEffectImmunity()}
+        { PassiveSkillList.TypeHitRecovery, () => new StatusEffectImmunity()},
+        { PassiveSkillList.EnemyAtkDownTwoTurns, () => new EnemyAtkDownTwoTurns()},
+        { PassiveSkillList.UltGaugeChancePerTurn, () => new UltGaugeChancePerTurn()},
+        { PassiveSkillList.BonusAttack, () => new BonusAttack()}
     };
 
     public static IPassiveSkill GetPassiveSkill(PassiveSkillList list)

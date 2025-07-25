@@ -105,8 +105,8 @@ public class BattleManager : Singleton<BattleManager>
     public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData)
     {
         int finalDamage = target.TriggerOnDamaged(damage, attacker);
-        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
         target.TakeDamage(finalDamage);
+        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
         
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, finalDamage, skillData);
     }

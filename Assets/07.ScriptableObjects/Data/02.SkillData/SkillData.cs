@@ -21,6 +21,9 @@ public enum PassiveSkillList
     OneHitShield, // 공격을 한번 막아주는 실드(상태이상은 못막음)
     AtkUpOnAllyDeath, // 아군 쓰러질때마다 공격력 20% 상승
     TypeHitRecovery, // 유리한 상성 공격시 데미지의 20% 체력 회복
+    EnemyAtkDownTwoTurns, // 게임 시작시 2턴동안 상대 공격력 10% 감소
+    UltGaugeChancePerTurn, // 매 턴 끝날때 20% 확률로 궁극기 게이지 1개 증가
+    BonusAttack, // 10% 확률로 추가 공격(데미지의 20%)
 }
 
 public enum NormalSkillList
