@@ -42,10 +42,12 @@ public class CameraZoomTrigger : MonoBehaviour
 
     private void StartZoom(float targetSize)
     {
-        if (virtualCamera == null) return;
+        if (virtualCamera == null || !gameObject.activeInHierarchy)
+            return;
 
         if (zoomCoroutine != null)
             StopCoroutine(zoomCoroutine);
+
         zoomCoroutine = StartCoroutine(ZoomTo(targetSize));
     }
 
