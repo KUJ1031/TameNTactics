@@ -61,6 +61,7 @@ public class SelectItemUseState : BaseBattleState
 
     public void OnCancel()
     {
+        Debug.Log("OnCancel 호출");
         UIManager.Instance.battleUIManager.InventoryView.HideInventory();
         UIManager.Instance.battleUIManager.HidePossibleTargets();
         battleSystem.ChangeState(new PlayerMenuState(battleSystem));
