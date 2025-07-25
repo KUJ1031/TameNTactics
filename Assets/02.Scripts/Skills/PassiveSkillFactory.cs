@@ -23,7 +23,8 @@ public static class PassiveSkillFactory
         { PassiveSkillList.PowerBoostPerUlt, () => new PowerBoostPerUlt()},
         { PassiveSkillList.HealOnKill, () => new HealOnKill()},
         { PassiveSkillList.AliveTeamGuard, () => new AliveTeamGuard()},
-        { PassiveSkillList.CritUpOnCritHit, () => new CritUpOnCritHit()}
+        { PassiveSkillList.CritUpOnCritHit, () => new CritUpOnCritHit()},
+        { PassiveSkillList.InterceptDamage, () => new InterceptDamage()}
     };
 
     public static IPassiveSkill GetPassiveSkill(PassiveSkillList list)

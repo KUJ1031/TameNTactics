@@ -28,6 +28,7 @@ public enum PassiveSkillList
     HealOnKill, // 적 처치시 최대체력의 20% 체력 회복
     AliveTeamGuard, // 본인이 살아있는 동안 팀 전체 방어력 10% 상승
     CritUpOnCritHit, // 치명타로 맞을시 치명타 확률 10% 상승
+    InterceptDamage, // 같은팀의 최대체력의 70% 이상의 데미지를 받을 시 공격을 대신 받음
 }
 
 public enum NormalSkillList

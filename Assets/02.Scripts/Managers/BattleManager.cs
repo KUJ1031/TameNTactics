@@ -105,10 +105,24 @@ public class BattleManager : Singleton<BattleManager>
     public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData, bool isCrit)
     {
         int finalDamage = target.TriggerOnDamaged(damage, attacker);
+        var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
+
+        foreach (var monster in team)
+        {
+            foreach (var passive in monster.PassiveSkills)
+            {
+                if (passive is InterceptDamage)
+                {
+                    InterceptDamage(target, skillData, finalDamage);
+                    attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
+                    BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
+                    return;
+                }
+            }
+        }
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
         attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
-        
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, finalDamage, skillData);
     }
 
@@ -603,6 +617,22 @@ public class BattleManager : Singleton<BattleManager>
             if (passive is CritUpOnCritHit critUpOnCritHit)
             {
                 critUpOnCritHit.OnCritHit(self, isCritical);
+            }
+        }
+    }
+
+    private void InterceptDamage(Monster target, SkillData skillData, int damage)
+    {
+        var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
+
+        foreach (var monster in team)
+        {
+            foreach (var passive in monster.PassiveSkills)
+            {
+                if (passive is InterceptDamage interceptDamage)
+                {
+                    interceptDamage.OnDamagedAlly(monster, target, skillData, damage);
+                }
             }
         }
     }
