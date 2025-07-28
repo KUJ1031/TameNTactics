@@ -32,7 +32,7 @@ public class AudioManager : Singleton<AudioManager>
         sfxDict = sfxDataList.ToDictionary(data => data.clipName, data => data);
         InitializeSFXPool();
     }
- 
+
 
 
     private void InitializeSFXPool()
@@ -155,6 +155,7 @@ public class AudioManager : Singleton<AudioManager>
     #region Coroutines
     private IEnumerator FadeInRoutine(AudioData data, float duration)
     {
+        Debug.Log(data.name);
         bgmSource.clip = data.clip;
         bgmSource.loop = data.loop;
         bgmSource.volume = 0f;
@@ -258,13 +259,35 @@ public class AudioManager : Singleton<AudioManager>
         switch (scene.name)
         {
             case "StartScene":
-                FadeInBGM("StartScene", 1f);
+                FadeInBGM("StartScene", 10f);
                 break;
             case "MainMapScene":
-                FadeInBGM("Village", 1f);
+                string stage = PlayerManager.Instance.player.playerLastStage;
+
+                switch (stage)
+                {
+                    case "시작의 땅":
+                        FadeInBGM("Village", 5f);
+                        break;
+                    case "위험한 쉼터":
+                        FadeInBGM("Village", 5f);
+                        break;
+                    case "한적한 마을":
+                        FadeInBGM("Village", 5f);
+                        break;
+                    case "초보 사냥터":
+                        FadeInBGM("Village", 5f);
+                        break;
+                    case "잊혀진 공간":
+                        FadeInBGM("Village", 5f);
+                        break;
+                    case "미지의 숲":
+                        FadeInBGM("Village", 5f);
+                        break;
+                }
                 break;
             case "BattleScene":
-                FadeInBGM("Battle", 1f);
+                FadeInBGM("Battle", 3f);
                 break;
             default:
                 StopBGM();
