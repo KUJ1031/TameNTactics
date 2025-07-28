@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
+  m_Name: 19. Magdara
+  m_EditorClassIdentifier: 
+  monsterName: Magdara
+  monsterNumber: 19
+  monsterImage: {fileID: 751461588, guid: 31de54b363794994a8cc1c1a21fba5b1, type: 3}
+  encounterCount: 0
+  captureCount: 114
+  type: 3
+  personality: 1
+  maxHp: 110
+  attack: 14
+  defense: 13
+  speed: 8
+  criticalChance: 4
+  maxExp: 20
+  MaxUltimateCost: 10
+  expReward: 5
+  goldReward: 100
+  skills:
+  - {fileID: 11400000, guid: 6fe94066213bed948bf0a220bcdfbeaa, type: 2}
+  - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
+  - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
+  spawnArea: 
+  spawnTime: 0
+  captureRate: 0
+  description: 
