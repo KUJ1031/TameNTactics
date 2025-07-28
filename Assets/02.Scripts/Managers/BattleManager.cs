@@ -178,10 +178,20 @@ public class BattleManager : Singleton<BattleManager>
 
             case TargetScope.EnemyTeam:
                 possibleTargets = aliveEnemy;
+                
+                if (aliveEnemy.Count == 1)
+                {
+                    selectedTargets.Add(aliveEnemy[0]);
+                    StartCoroutine(CompareSpeedAndFight());
+                    return;
+                }
+                
+                BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
 
             case TargetScope.PlayerTeam:
                 possibleTargets = alivePlayer;
+                BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
 
             default:
@@ -308,7 +318,6 @@ public class BattleManager : Singleton<BattleManager>
             {
                 effect = UltimateSkillFactory.GetUltimateSkill(skill);
                 caster.InitializeUltimateCost();
-                caster.TriggerOnUseUlt();
                 NotifyUltUsed(caster, BattleEntryTeam.Contains(caster) ? BattleEntryTeam : BattleEnemyTeam);
             }
             else
@@ -606,6 +615,10 @@ public class BattleManager : Singleton<BattleManager>
                 if (passive is PowerBoostPerUlt powerBoostPerUlt)
                 {
                     powerBoostPerUlt.OnUseUlt(monster, ultimateUser, team);
+                }
+                else if (passive is CleanseSelfOnUlt cleanseSelfOnUlt)
+                {
+                    cleanseSelfOnUlt.OnUseUlt(ultimateUser);
                 }
             }
         }

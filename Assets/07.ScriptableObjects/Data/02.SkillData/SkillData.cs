@@ -40,11 +40,12 @@ public enum PassiveSkillList
 public enum NormalSkillList
 {
     None,
-    FlareStrike,
-    ToxicBite,
-    WaterSlash,
-    SteelSlash,
-    GroundSmash
+    FlareStrike, // 기본 공격 해금시 화상 데미지
+    ToxicBite, // 기본 공격 해금시 독 데미지
+    WaterSlash, // 기본 공격 해금시 데미지의 10% 회복
+    SteelSlash, // 기본 공격 해금시 현재 스피드의 10% 스피드 상승
+    GroundSmash, //  기본 공격 해금시 마비
+    DoubleTargetHit, // 선택한 2마리에게 데미지의 50%씩 데미지를 입힘 해금시 데미지 70%로 변경
 }
 
 public enum UltimateSkillList
