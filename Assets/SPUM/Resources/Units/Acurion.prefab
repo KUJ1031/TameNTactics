@@ -5941,7 +5941,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8678589690759681974}
@@ -6046,7 +6046,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703ae52b3f7986e4c9af0d0c29b49a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 838953812, guid: 19269f745e85d444f852ebe63ca656ee, type: 3}
 --- !u!114 &653704014134590263
 MonoBehaviour:
   m_ObjectHideFlags: 0
