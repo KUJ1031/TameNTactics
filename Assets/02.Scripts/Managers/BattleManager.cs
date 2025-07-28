@@ -105,10 +105,24 @@ public class BattleManager : Singleton<BattleManager>
     public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData, bool isCrit)
     {
         int finalDamage = target.TriggerOnDamaged(damage, attacker);
+        var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
+
+        foreach (var monster in team)
+        {
+            foreach (var passive in monster.PassiveSkills)
+            {
+                if (passive is InterceptDamage)
+                {
+                    InterceptDamage(target, skillData, finalDamage);
+                    attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
+                    BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
+                    return;
+                }
+            }
+        }
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
         attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
-        
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, finalDamage, skillData);
     }
 
@@ -294,6 +308,7 @@ public class BattleManager : Singleton<BattleManager>
             {
                 effect = UltimateSkillFactory.GetUltimateSkill(skill);
                 caster.InitializeUltimateCost();
+                caster.TriggerOnUseUlt();
                 NotifyUltUsed(caster, BattleEntryTeam.Contains(caster) ? BattleEntryTeam : BattleEnemyTeam);
             }
             else
@@ -370,7 +385,7 @@ public class BattleManager : Singleton<BattleManager>
         int getBenchExp = Mathf.RoundToInt(totalExp * 0.7f);
         int totalGold = BattleEnemyTeam.Sum(e => e.GoldReward);
 
-        PlayerManager.Instance.player.gold += totalGold;
+        PlayerManager.Instance.player.AddGold(totalGold);
 
         foreach (var monster in BattleEntryTeam.Where(m => m.CurHp > 0))
             monster.AddExp(totalExp);
@@ -603,6 +618,22 @@ public class BattleManager : Singleton<BattleManager>
             if (passive is CritUpOnCritHit critUpOnCritHit)
             {
                 critUpOnCritHit.OnCritHit(self, isCritical);
+            }
+        }
+    }
+
+    private void InterceptDamage(Monster target, SkillData skillData, int damage)
+    {
+        var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
+
+        foreach (var monster in team)
+        {
+            foreach (var passive in monster.PassiveSkills)
+            {
+                if (passive is InterceptDamage interceptDamage)
+                {
+                    interceptDamage.OnDamagedAlly(monster, target, skillData, damage);
+                }
             }
         }
     }
