@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab89f479fdc92d246a6dabde120c50e9, type: 3}
   m_Name: Village
   m_EditorClassIdentifier: 
-  clipName: "\uC2DC\uC791\uBC30\uACBD\uC74C"
-  clip: {fileID: 0}
+  clipName: Village
+  clip: {fileID: 8300000, guid: 16ea00101de09430b82de9f8d60e7de7, type: 3}
   type: 0
   volume: 1
   loop: 1

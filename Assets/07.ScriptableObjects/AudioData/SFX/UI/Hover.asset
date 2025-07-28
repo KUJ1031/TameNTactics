@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hover
   m_EditorClassIdentifier: 
   clipName: Hover
-  clip: {fileID: 8300000, guid: 7a0df4193038a43238a44df90cdb5f2d, type: 3}
+  clip: {fileID: 8300000, guid: 59f33961595914d05ad08d20d14a8ef1, type: 3}
   type: 1
-  volume: 1
+  volume: 0.2
   loop: 0

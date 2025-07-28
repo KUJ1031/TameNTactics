@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 69197920156323201}
   - component: {fileID: 4180095557323872966}
   - component: {fileID: 835670318596718669}
+  - component: {fileID: 1322921254953746884}
   m_Layer: 5
   m_Name: OwnedMonsterSlot
   m_TagString: Untagged
@@ -336,3 +337,17 @@ MonoBehaviour:
   m_EffectColor: {r: 0.90588236, g: 0.29803923, b: 0.23529412, a: 1}
   m_EffectDistance: {x: 5, y: 5}
   m_UseGraphicAlpha: 1
+--- !u!114 &1322921254953746884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6857077090263320227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8521a2c52f9c8459d90fd47b53d138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSoundName: Hover
+  clickSoundName: Click
