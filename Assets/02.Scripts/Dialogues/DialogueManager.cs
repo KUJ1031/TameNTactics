@@ -28,6 +28,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
     private Dictionary<string, Sprite> speakerSprites = new(); // 이름 → 스프라이트
 
+    public bool IsLoaded { get; private set; } = false;
+
 
     void Start()
     {
@@ -41,6 +43,9 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             dialogueTrees = DialogueCSVParser.ParseByTreeID(handle.Result);
             Debug.Log("모든 NPC 대사 로드 완료");
+
+            IsLoaded = true; // ✅ 여기서 로드 완료 플래그 true
+
         }
         else
         {
