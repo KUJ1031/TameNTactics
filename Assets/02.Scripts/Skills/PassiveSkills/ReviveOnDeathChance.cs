@@ -2,25 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CritUpOnCritHit : IPassiveSkill
+public class ReviveOnDeathChance : IPassiveSkill
 {
-    private int curStack = 0;
-    private int maxStack = 3;
-
-    public void OnBattleStart(Monster self, List<Monster> monsters)
+    public void OnDeath(Monster self)
     {
-        curStack = 0;
-    }
-    
-    public void OnCritHit(Monster target, bool isCritical)
-    {
-        if (isCritical && curStack < maxStack)
+        if (Random.value < 0.5)
         {
-            target.BattleCritChanceUp(30);
-            curStack++;
+            int amount = Mathf.RoundToInt(self.MaxHp * 0.3f);
+            self.Heal(amount);
         }
     }
     
+    public void OnBattleStart(Monster self, List<Monster> monsters) {}
     public void OnTurnEnd(Monster self) {}
     public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
     public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam) {}

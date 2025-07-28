@@ -27,8 +27,14 @@ public enum PassiveSkillList
     PowerBoostPerUlt, // 같은팀(본인 포함) 궁극기를 사용하면 공격력 10% 증가
     HealOnKill, // 적 처치시 최대체력의 20% 체력 회복
     AliveTeamGuard, // 본인이 살아있는 동안 팀 전체 방어력 10% 상승
-    CritUpOnCritHit, // 치명타로 맞을시 치명타 확률 10% 상승
+    CritUpOnCritHit, // 치명타로 맞을시 치명타 확률 30% 상승 (최대 3스택)
     InterceptDamage, // 같은팀의 최대체력의 70% 이상의 데미지를 받을 시 공격을 대신 받음
+    AtkUpOnDamaged, // 피격시 공격력 5% 상승(최대 3스택)
+    HitCritBoost, // 피격시 치명타확률 15% 상승(최대 3스택)
+    ReviveOnDeathChance, // 쓰러젔을때 50% 확률로 최대체력의 30%로 부활
+    CritUpOnTurnEnd, // 매 턴 끝날때 치명타확률 5% 상승 (최대 80%)
+    PoisonEnemiesOnDeath, // 쓰러졌을때 상대 몬스터 전체에게 3턴 중독 부여
+    CleanseSelfOnUlt // 궁극기 사용시 모든 상태이상 제거
 }
 
 public enum NormalSkillList

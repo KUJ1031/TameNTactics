@@ -308,6 +308,7 @@ public class BattleManager : Singleton<BattleManager>
             {
                 effect = UltimateSkillFactory.GetUltimateSkill(skill);
                 caster.InitializeUltimateCost();
+                caster.TriggerOnUseUlt();
                 NotifyUltUsed(caster, BattleEntryTeam.Contains(caster) ? BattleEntryTeam : BattleEnemyTeam);
             }
             else
@@ -384,7 +385,7 @@ public class BattleManager : Singleton<BattleManager>
         int getBenchExp = Mathf.RoundToInt(totalExp * 0.7f);
         int totalGold = BattleEnemyTeam.Sum(e => e.GoldReward);
 
-        PlayerManager.Instance.player.gold += totalGold;
+        PlayerManager.Instance.player.AddGold(totalGold);
 
         foreach (var monster in BattleEntryTeam.Where(m => m.CurHp > 0))
             monster.AddExp(totalExp);
