@@ -325,7 +325,7 @@ public class AudioManager : Singleton<AudioManager>
                 break;
             case "BattleScene":
                 nextBGMName = "Battle";
-                fadeInDuration = 3f;
+                fadeInDuration = 0.5f;
                 break;
             default:
                 StopBGM();
