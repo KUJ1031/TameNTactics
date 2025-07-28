@@ -25,6 +25,8 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private int sfxPoolSize = 10;
     private List<AudioSource> sfxSources = new List<AudioSource>();
 
+    private string currentPlayingBGMName;
+
     protected override void Awake()
     {
         base.Awake();
@@ -33,8 +35,7 @@ public class AudioManager : Singleton<AudioManager>
         InitializeSFXPool();
     }
 
-
-
+    //SFX사운드풀링
     private void InitializeSFXPool()
     {
         for (int i = 0; i < sfxPoolSize; i++)
@@ -64,36 +65,59 @@ public class AudioManager : Singleton<AudioManager>
             if (!source.isPlaying)
                 return source;
         }
-
-        // 모두 재생 중이면 첫 번째를 재사용 (필요 시 정책 수정 가능)
         return sfxSources.Count > 0 ? sfxSources[0] : null;
     }
+
     public void PlayBGM(string name)
     {
+        if (currentPlayingBGMName == name && bgmSource.isPlaying)
+        {
+            return;
+        }
+
         if (TryGetAudio(name, SoundType.BGM, out AudioData data))
         {
             bgmSource.clip = data.clip;
             bgmSource.loop = data.loop;
             bgmSource.volume = data.volume * bgmVolume;
             bgmSource.Play();
+            currentPlayingBGMName = name;
         }
     }
 
     public void FadeInBGM(string name, float duration)
     {
+
+        if (currentPlayingBGMName == name && bgmSource.isPlaying)
+        {
+            return;
+        }
+
         if (TryGetAudio(name, SoundType.BGM, out AudioData data))
         {
             if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
             fadeCoroutine = StartCoroutine(FadeInRoutine(data, duration));
+            currentPlayingBGMName = name;
         }
     }
 
+    /// <summary>
+    /// 다음 BGM과 duration의 시간동안 페이드 인 아웃으로 연결합니다.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="duration"></param>
     public void CrossFadeBGM(string name, float duration)
     {
+        if (currentPlayingBGMName == name)
+        {
+            return;
+        }
+
         if (TryGetAudio(name, SoundType.BGM, out AudioData nextData))
         {
             if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
             fadeCoroutine = StartCoroutine(CrossFadeRoutine(nextData, duration));
+            currentPlayingBGMName = name;
         }
     }
     #endregion
@@ -102,6 +126,7 @@ public class AudioManager : Singleton<AudioManager>
     public void StopBGM()
     {
         bgmSource.Stop();
+        currentPlayingBGMName = null;
     }
 
     public void StopAllSFX()
@@ -148,14 +173,16 @@ public class AudioManager : Singleton<AudioManager>
 
     public void MuteSFX(bool mute)
     {
-        sfxSource.mute = mute;
+        foreach (var source in sfxSources)
+        {
+            source.mute = mute;
+        }
     }
     #endregion
 
     #region Coroutines
     private IEnumerator FadeInRoutine(AudioData data, float duration)
     {
-        Debug.Log(data.name);
         bgmSource.clip = data.clip;
         bgmSource.loop = data.loop;
         bgmSource.volume = 0f;
@@ -188,6 +215,7 @@ public class AudioManager : Singleton<AudioManager>
 
         bgmSource.Stop();
         bgmSource.volume = startVolume;
+        currentPlayingBGMName = null;
     }
 
     private IEnumerator CrossFadeRoutine(AudioData nextData, float duration)
@@ -195,16 +223,25 @@ public class AudioManager : Singleton<AudioManager>
         float startVolume = bgmSource.volume;
         float time = 0f;
 
-        while (time < duration)
+        if (bgmSource.isPlaying)
         {
-            bgmSource.volume = Mathf.Lerp(startVolume, 0f, time / duration);
-            time += Time.unscaledDeltaTime;
-            yield return null;
+            while (time < duration)
+            {
+                bgmSource.volume = Mathf.Lerp(startVolume, 0f, time / duration);
+                time += Time.unscaledDeltaTime;
+                yield return null;
+            }
+            bgmSource.Stop(); // 페이드 아웃 완료 후 정지
+        }
+        else // 현재 BGM이 재생 중이 아니면 바로 다음 BGM으로
+        {
+            yield return null; // 한 프레임 대기
         }
 
+        // 두 번째 부분: 새 BGM 페이드 인
         bgmSource.clip = nextData.clip;
         bgmSource.loop = nextData.loop;
-        bgmSource.volume = 0f;
+        bgmSource.volume = 0f; // 0에서 시작
         bgmSource.Play();
 
         float targetVolume = nextData.volume * bgmVolume;
@@ -221,7 +258,13 @@ public class AudioManager : Singleton<AudioManager>
     }
     #endregion
 
-
+    /// <summary>
+    /// 이름으로 오디오데이터를 가지고옵니다.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="type"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
     private bool TryGetAudio(string name, SoundType type, out AudioData data)
     {
         switch (type)
@@ -232,13 +275,13 @@ public class AudioManager : Singleton<AudioManager>
             case SoundType.BGM:
                 if (bgmDict.TryGetValue(name, out data)) return true;
                 break;
-
         }
         Debug.LogWarning($"[AudioManager] Audio not found: {name} ({type})");
         data = null;
         return false;
     }
 
+    #region OnSceneLoaded
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -250,48 +293,60 @@ public class AudioManager : Singleton<AudioManager>
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-
-        //if (bgmSource.isPlaying)
-        //{
-        // FadeOutBGM(1f);
-        //}
+        string nextBGMName = null;
+        float fadeInDuration = 5f; // 기본 페이드 인 시간
 
         switch (scene.name)
         {
             case "StartScene":
-                FadeInBGM("StartScene", 10f);
+                nextBGMName = "StartScene";
+                fadeInDuration = 10f;
                 break;
             case "MainMapScene":
                 string stage = PlayerManager.Instance.player.playerLastStage;
-
                 switch (stage)
                 {
                     case "시작의 땅":
-                        FadeInBGM("Village", 5f);
-                        break;
+                    case "초보 사냥터":
                     case "위험한 쉼터":
-                        FadeInBGM("Village", 5f);
+                    case "잊혀진 공간":
+                        nextBGMName = "Forest";
+                        break;
+                    case "불길한 다리":
+                    case "파멸의 성 입구":
+                    case "파멸의 성":
+                    case "결전의 장소":
+                        nextBGMName = "Castle";
                         break;
                     case "한적한 마을":
-                        FadeInBGM("Village", 5f);
-                        break;
-                    case "초보 사냥터":
-                        FadeInBGM("Village", 5f);
-                        break;
-                    case "잊혀진 공간":
-                        FadeInBGM("Village", 5f);
-                        break;
-                    case "미지의 숲":
-                        FadeInBGM("Village", 5f);
+                        nextBGMName = "Village";
                         break;
                 }
                 break;
             case "BattleScene":
-                FadeInBGM("Battle", 3f);
+                nextBGMName = "Battle";
+                fadeInDuration = 3f;
                 break;
             default:
                 StopBGM();
                 break;
         }
+
+        if (!string.IsNullOrEmpty(nextBGMName) && currentPlayingBGMName != nextBGMName)
+        {
+            if (bgmSource.isPlaying)
+            {
+                CrossFadeBGM(nextBGMName, fadeInDuration);
+            }
+            else
+            {
+                FadeInBGM(nextBGMName, fadeInDuration);
+            }
+        }
+        else if (string.IsNullOrEmpty(nextBGMName))
+        {
+            StopBGM();
+        }
     }
+    #endregion
 }
