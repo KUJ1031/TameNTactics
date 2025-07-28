@@ -54333,7 +54333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAreaMin: {x: 0, y: 3}
   moveAreaMax: {x: 24, y: -29}
-  moveSpeed: 1
+  moveSpeed: 3
   waitTime: 1
 --- !u!114 &982160645
 MonoBehaviour:

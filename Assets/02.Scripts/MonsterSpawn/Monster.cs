@@ -435,17 +435,6 @@ public class Monster
         return modifiedDamage;
     }
 
-    public void TriggerOnUseUlt()
-    {
-        foreach (var passive in PassiveSkills)
-        {
-            if (passive is CleanseSelfOnUlt cleanseSelfOnUlt)
-            {
-                cleanseSelfOnUlt.OnUseUlt(this);
-            }
-        }
-    }
-
     // 도망마스터 패시브 있을 시 100 도망 가능
     public bool TryRunAwayWithPassive(out bool isGuaranteed)
     {

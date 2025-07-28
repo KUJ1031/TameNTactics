@@ -45,11 +45,17 @@ public class SelectSkillState : BaseBattleState
         }
     }
 
+    public override void Exit()
+    {
+        UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+        UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+        UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
+    }
+
     public void OnSelectedSkill(SkillData skill)
     {
         BattleManager.Instance.SelectSkill(skill);
         Debug.Log($"선택한 스킬: {skill.name}");
-        battleSystem.ChangeState(new SelectTargetState(battleSystem));
     }
 
     public void OnCancelSkill()

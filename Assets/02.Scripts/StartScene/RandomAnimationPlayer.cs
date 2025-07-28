@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RandomAnimationPlayer : MonoBehaviour
 {
@@ -23,8 +24,11 @@ public class RandomAnimationPlayer : MonoBehaviour
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().name == "BattleScene")
+            return;
+
         rb = GetComponent<Rigidbody2D>();
-        spumPrefab = GetComponent<SPUM_Prefabs>();
+        spumPrefab = GetComponentInChildren<SPUM_Prefabs>();
 
         if (spumPrefab._anim != null)
         {
@@ -41,6 +45,9 @@ public class RandomAnimationPlayer : MonoBehaviour
 
     void Update()
     {
+        if (SceneManager.GetActiveScene().name == "BattleScene")
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -81,6 +88,9 @@ public class RandomAnimationPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (SceneManager.GetActiveScene().name == "BattleScene")
+            return;
+
         if (isPlayingSpecialAnimation)
         {
             rb.velocity = Vector2.zero;
