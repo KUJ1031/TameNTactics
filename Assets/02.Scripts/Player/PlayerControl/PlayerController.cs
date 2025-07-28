@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     internal bool isInputBlocked = false;
     public bool isSliding { get; set; } = false;
     public Vector2 slideDirection { get; set; } = Vector2.zero;
-    public Vector2 lastMoveInput { get; private set; } = Vector2.zero;
+    public Vector2 lastMoveInput = Vector2.zero;
 
     private Animator animator;
     private Vector3 originalScale;
@@ -117,5 +117,17 @@ public class PlayerController : MonoBehaviour
         Vector3 scale = originalScale;
         scale.x = Mathf.Abs(originalScale.x) * (moveX > 0 ? -1 : 1);
         transform.localScale = scale;
+    }
+
+    public void BlockInput(bool shouldBlock)
+    {
+        isInputBlocked = shouldBlock;
+
+        if (shouldBlock)
+        {
+            rb.velocity = Vector2.zero;                    // 이동 멈추기
+            lastMoveInput = Vector2.zero;                  // 입력 초기화
+            animator.SetBool("1_Move", false);             // 애니메이션 멈춤
+        }
     }
 }

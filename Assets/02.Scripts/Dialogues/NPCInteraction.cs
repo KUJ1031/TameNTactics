@@ -45,6 +45,7 @@ public class NPCInteraction : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             isPlayerTouching = true;
+            playerController.BlockInput(true);
             playerController = collision.gameObject.GetComponent<PlayerController>();
         }
     }
@@ -62,6 +63,7 @@ public class NPCInteraction : MonoBehaviour
             if (playerController != null)
             {
                 playerController.isInputBlocked = false;
+                playerController.BlockInput(false);
                 playerController = null;
             }
         }
@@ -112,6 +114,7 @@ public class NPCInteraction : MonoBehaviour
         if (playerController != null)
         {
             playerController.isInputBlocked = true;
+            playerController.lastMoveInput = Vector2.zero;
             DialogueManager.Instance.isCommunicationEneded = false; // 대화 중 상태 유지
         }
     }
