@@ -6,7 +6,7 @@ public class SpawnBattleAllMonsters : MonoBehaviour
     private List<Monster> playerTeam;   //플레이어 몬스터 리스트
     private List<Monster> enemyTeam;    //적 몬스터 리스트
 
-    public GameObject monsterPrefab;    //몬스터 기본 프리팹
+    //public GameObject monsterPrefab;    //몬스터 기본 프리팹
 
     public Transform allySpawner;       //아군 생성 위치
     public Transform enemySpawner;      //적군 생성 위치
@@ -41,10 +41,13 @@ public class SpawnBattleAllMonsters : MonoBehaviour
             string spawnPointName = "SpawnPoint_" + (i + 1);
             Transform spawnPointTransform = Spawner.Find(spawnPointName);
 
+            string prefabPath = $"Units/{monsterList[i].monsterData.monsterName}";
+            GameObject loadedPrefab = Resources.Load<GameObject>(prefabPath);
+
             if (monsterList[i].CurHp > 0)
             {
                 //스폰 위치에 객체 생성
-                GameObject enemyMonster = Instantiate(monsterPrefab, spawnPointTransform);
+                GameObject enemyMonster = Instantiate(loadedPrefab, spawnPointTransform);
 
                 //객체 값 수정
                 var monsterChar = enemyMonster.GetComponent<MonsterCharacter>();
@@ -52,15 +55,6 @@ public class SpawnBattleAllMonsters : MonoBehaviour
 
                 var clickable = enemyMonster.GetComponent<MonsterSelecter>();
                 clickable?.Initialize(monsterChar.monster); // Monster 데이터 넘기기
-
-                //스킬 보여주기
-                //Debug.Log($"[SpawnBattleAllMonsters] {monsterChar.monster.monsterName} 스킬 개수: {monsterChar.monster.skills.Count}");
-                //Debug.Log($"[SpawnBattleAllMonsters] 몬스터 현재체력 : {monsterChar.monster.CurHp} 최대 체력: {monsterChar.monster.CurMaxHp}");
-
-                //foreach (var skill in monsterChar.monster.skills)
-                //{
-                //    Debug.Log($"[SpawnBattleAllMonsters] {monsterChar.monster.monsterName} 스킬: {skill.skillName}");
-                //}
 
                 monsterChar.monster.HpChange += UIManager.Instance.battleUIManager.UpdateHpGauge;
                 monsterChar.monster.ultimateCostChange += UIManager.Instance.battleUIManager.UpdateUltimateGauge;
