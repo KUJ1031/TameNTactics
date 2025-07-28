@@ -9,7 +9,8 @@ public static class NormalSkillFactory
         { NormalSkillList.ToxicBite, data => new ToxicBite(data) },
         { NormalSkillList.WaterSlash, data => new WaterSlash(data) },
         { NormalSkillList.SteelSlash, data => new SteelSlash(data) },
-        { NormalSkillList.GroundSmash, data => new GroundSmash(data) }
+        { NormalSkillList.GroundSmash, data => new GroundSmash(data) },
+        { NormalSkillList.DoubleTargetHit, data => new DoubleTargetHit(data)}
     };
 
     public static ISkillEffect GetNormalSkill(SkillData data)
