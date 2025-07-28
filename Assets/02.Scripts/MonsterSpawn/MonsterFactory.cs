@@ -7,7 +7,7 @@ public class MonsterFactory : MonoBehaviour
 {
     [Header("몬스터 프리팹 목록")]
     [SerializeField] private List<MonsterData> monsterDataList;  //스폰 몬스터
-    //[SerializeField] private GameObject monsterPrefab;  //몬스터 기본 프리팹
+    [SerializeField] private GameObject monsterPrefab;  //몬스터 기본 프리팹
 
     [Header("몬스터 레벨 범위")]
     [SerializeField] private int minLevel;  //스폰 몬스터 레벨 최소값
@@ -44,74 +44,41 @@ public class MonsterFactory : MonoBehaviour
         {
             foreach (MonsterData monsterData in monsterDataList)
             {
-                ////스폰위치 생성(실패시 Vector3.zero 반환)
-                //Vector3 spawnPos = GetRandomPositionInFactory();
-
-                //if (spawnPos != Vector3.zero)
-                //{
-                //    //위치에 몬스터 생성
-                //    GameObject monsterGO = Instantiate(monsterPrefab, spawnPos, Quaternion.identity,transform);
-                //    usedPositions.Add(spawnPos);
-
-                //    //만들어진 기본몬스터의 데이터를 monsterList안의 값으로 변경
-                //    MonsterCharacter newMonster = monsterGO.GetComponent<MonsterCharacter>();
-                //    if (monsterData != null)
-                //    {   
-                //        //새 Monster 데이터 생성
-                //        Monster m = new Monster();
-                //        int randomLevel = Random.Range(minLevel, maxLevel + 1);
-
-                //        //생성된 Monster에 데이터,레벨 적용
-                //        m.SetMonsterData(monsterData);
-                //        m.SetLevel(randomLevel);
-
-                //        //만들어진 몬스터에 Monster데이터 추가
-                //        newMonster.Init(m);
-                //    }
-
-                //    // 이동 영역 설정
-                //    MonsterMover mover = monsterGO.GetComponent<MonsterMover>();
-                //    if (mover != null)
-                //    {
-                //        mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
-                //    }
-
-                //    //Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {newMonster.monster.Level}");
-                //}
-                //else { Debug.Log("몬스터 생성 실패 : Vector3.zero"); }
-
+                //스폰위치 생성(실패시 Vector3.zero 반환)
                 Vector3 spawnPos = GetRandomPositionInFactory();
-                if (spawnPos == Vector3.zero) continue;
 
-                string prefabPath = $"Units/{monsterData.monsterName}";
-                GameObject loadedPrefab = Resources.Load<GameObject>(prefabPath);
-
-                if (loadedPrefab == null)
+                if (spawnPos != Vector3.zero)
                 {
-                    Debug.LogWarning($"프리팹 로드 실패 : 해당 프리팹 -> {prefabPath}");
-                    continue;
+                    //위치에 몬스터 생성
+                    GameObject monsterGO = Instantiate(monsterPrefab, spawnPos, Quaternion.identity,transform);
+                    usedPositions.Add(spawnPos);
+
+                    //만들어진 기본몬스터의 데이터를 monsterList안의 값으로 변경
+                    MonsterCharacter newMonster = monsterGO.GetComponent<MonsterCharacter>();
+                    if (monsterData != null)
+                    {   
+                        //새 Monster 데이터 생성
+                        Monster m = new Monster();
+                        int randomLevel = Random.Range(minLevel, maxLevel + 1);
+
+                        //생성된 Monster에 데이터,레벨 적용
+                        m.SetMonsterData(monsterData);
+                        m.SetLevel(randomLevel);
+                        
+                        //만들어진 몬스터에 Monster데이터 추가
+                        newMonster.Init(m);
+                    }
+
+                    // 이동 영역 설정
+                    MonsterMover mover = monsterGO.GetComponent<MonsterMover>();
+                    if (mover != null)
+                    {
+                        mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
+                    }
+
+                    //Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {newMonster.monster.Level}");
                 }
-
-                GameObject monsterGo = Instantiate(loadedPrefab, spawnPos, Quaternion.identity, transform);
-                usedPositions.Add(spawnPos);
-
-                MonsterCharacter newMonster = monsterGo.GetComponent<MonsterCharacter>();
-                if (newMonster != null)
-                {
-                    Monster m = new Monster();
-                    int randomLevel = Random.Range(minLevel, maxLevel + 1);
-
-                    m.SetMonsterData(monsterData);
-                    m.SetLevel(randomLevel);
-
-                    newMonster.Init(m);
-                }
-
-                MonsterMover mover = monsterGo.GetComponent<MonsterMover>();
-                if (mover != null)
-                {
-                    mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
-                }
+                else { Debug.Log("몬스터 생성 실패 : Vector3.zero"); }
             }
         }
     }
