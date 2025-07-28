@@ -95,7 +95,6 @@ public class SelectCaptureTargetState : BaseBattleState
             UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
             UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
             battleSystem.StartCoroutine(EnemyAttackAfterDelay(2.0f));
-            //BattleManager.Instance.EnemyAttackAfterPlayerTurn();
         }
         battleSystem.StartCoroutine(Delay(2.0f));
         targetMonster = null;
@@ -114,21 +113,7 @@ public class SelectCaptureTargetState : BaseBattleState
 
     public override void Execute()
     {
-        // todo 선택된(방향키나 마우스 올려놓기) 몬스터가 체력이 0이 아니라면
-        // 적 몬스터(잡을수있는)를 강조효과 UI 띄우기
-        //Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 
-        //if (hit.collider != null)
-        //{
-        //    if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
-        //    {
-        //        if (BattleManager.Instance.BattleEntryTeam.Contains(monsterCharacter.monster))
-        //        {
-        //            UIManager.Instance.battleUIManager.BattleSelectView.MoveSelectMonster(monsterCharacter.transform);
-        //        }
-        //    }
-        //}
     }
 
     public void OnCancelSelectCaptureTarget()
