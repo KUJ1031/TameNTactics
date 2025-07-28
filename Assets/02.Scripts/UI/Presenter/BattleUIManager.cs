@@ -39,6 +39,7 @@ public class BattleUIManager : MonoBehaviour
 
     private List<GameObject> IndicatorList = new();
     private List<MonsterCharacter> allMonsterCharacters = new();
+    private List<GameObject> behaviorButtons = new();
 
     private void Update()
     {
@@ -314,16 +315,20 @@ public class BattleUIManager : MonoBehaviour
     {
         player.UpdateCategorizedItemLists();
 
-        foreach (var item in player.gestureItems)
+        if (behaviorButtons.Count == 0)
         {
-            Debug.Log($"item name : {item.data.itemName}");
-            GameObject behaviorButton = Instantiate(behaviorButtonPrefab, embraceView.BehaviorPanel.transform);
-            behaviorButton.GetComponentInChildren<TextMeshProUGUI>().text = item.data.itemName;
+            foreach (var item in player.gestureItems)
+            {
+                GameObject behaviorButton = Instantiate(behaviorButtonPrefab, embraceView.BehaviorPanel.transform);
+                behaviorButton.GetComponentInChildren<TextMeshProUGUI>().text = item.data.itemName;
 
-            Button button = behaviorButton.GetComponent<Button>();
-            var capturedItem = item;
+                Button button = behaviorButton.GetComponent<Button>();
+                var capturedItem = item;
 
-            button.onClick.AddListener(() => onGestureSelected?.Invoke());
+                behaviorButtons.Add(behaviorButton);
+
+                button.onClick.AddListener(() => onGestureSelected?.Invoke());
+            }
         }
 
         embraceView.ShowBehaviorPanel();
