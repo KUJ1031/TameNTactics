@@ -56,9 +56,9 @@ public class BattleUIButtonHandler : MonoBehaviour
     //         state.OnSelectTargetMonster(target);
     // }
 
-    public void OnCancelTargetSelection()
-    {
-        if (BattleSystem.Instance.CurrentState is SelectTargetState state)
-            state.OnCancelSelectTarget();
-    }
+    // public void OnCancelTargetSelection()
+    // {
+    //     if (BattleSystem.Instance.CurrentState is SelectTargetState state)
+    //         state.OnCancelSelectTarget();
+    // }
 }
