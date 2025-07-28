@@ -247,6 +247,17 @@ public class Monster
         CurCriticalChance += amount;
         if (CriticalChance > 100) CriticalChance = 100;
     }
+    
+    public void BattleCritChanceUpWithLimit(int amount, int maxLimit)
+    {
+        CurCriticalChance += amount;
+
+        if (CurCriticalChance > maxLimit)
+        {
+            CurCriticalChance = maxLimit;
+        }
+    }
+
 
     public void Heal(int amount)
     {
@@ -294,6 +305,17 @@ public class Monster
 
         if (CurHp <= 0)
         {
+            foreach (var passive in PassiveSkills)
+            {
+                if (passive is ReviveOnDeathChance reviveOnDeathChance)
+                {
+                    reviveOnDeathChance.OnDeath(this);
+                }
+                else if (passive is PoisonEnemiesOnDeath poisonEnemiesOnDeath)
+                {
+                    poisonEnemiesOnDeath.OnDeath(BattleManager.Instance.BattleEnemyTeam);
+                }
+            }
             EventBus.OnMonsterDead?.Invoke(this);
         }
         else
@@ -322,7 +344,11 @@ public class Monster
         
         foreach (var existing in ActiveStatusEffects)
         {
-            if (existing.Type == effect.Type) return;
+            if (existing.Type == effect.Type)
+            {
+                existing.duration += effect.duration;
+                return;
+            }
         }
 
         ActiveStatusEffects.Add(effect);
@@ -407,6 +433,17 @@ public class Monster
         }
 
         return modifiedDamage;
+    }
+
+    public void TriggerOnUseUlt()
+    {
+        foreach (var passive in PassiveSkills)
+        {
+            if (passive is CleanseSelfOnUlt cleanseSelfOnUlt)
+            {
+                cleanseSelfOnUlt.OnUseUlt(this);
+            }
+        }
     }
 
     // 도망마스터 패시브 있을 시 100 도망 가능
@@ -505,5 +542,6 @@ public class Monster
         InitializeUltimateCost();
         InitializePassiveSkills();
         InitializeBattleStats();
+        RemoveStatusEffects();
     }
 }
