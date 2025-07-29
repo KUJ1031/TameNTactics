@@ -19,7 +19,7 @@ public static class SkillEffectController
 
     private static Vector3 GetEffectPosition(TargetScope scope, MonsterCharacter caster, MonsterCharacter target)
     {
-        if (scope == TargetScope.Self) return caster.transform.position + Vector3.up * 1f;
-        else return target.transform.position + Vector3.up * 1f;
+        if (scope == TargetScope.Self) return caster.transform.position + Vector3.up * 0.5f;
+        else return target.transform.position + Vector3.up * 0.5f;
     }
 }

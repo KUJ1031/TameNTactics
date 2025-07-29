@@ -111,11 +111,6 @@ public class SelectCaptureTargetState : BaseBattleState
         BattleManager.Instance.EnemyAttackAfterPlayerTurn();
     }
 
-    public override void Execute()
-    {
-
-    }
-
     public void OnCancelSelectCaptureTarget()
     {
         battleSystem.ChangeState(new PlayerMenuState(battleSystem));
