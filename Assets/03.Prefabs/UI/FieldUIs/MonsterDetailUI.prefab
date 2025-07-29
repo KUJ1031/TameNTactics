@@ -1019,6 +1019,7 @@ GameObject:
   - component: {fileID: 5237709070479399945}
   - component: {fileID: 4489878324161795043}
   - component: {fileID: 7799925512014175031}
+  - component: {fileID: 5168051255393204286}
   m_Layer: 5
   m_Name: In Entry
   m_TagString: Untagged
@@ -1128,6 +1129,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5168051255393204286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 687339584903912242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8521a2c52f9c8459d90fd47b53d138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSoundName: Click
 --- !u!1 &738608355673948825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,6 +1230,7 @@ GameObject:
   - component: {fileID: 876315277239085844}
   - component: {fileID: 1641277297050909885}
   - component: {fileID: 4228359635796731685}
+  - component: {fileID: 393867401185303832}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -1345,6 +1360,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &393867401185303832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740284750957553378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8521a2c52f9c8459d90fd47b53d138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSoundName: Click
 --- !u!1 &749929863186396482
 GameObject:
   m_ObjectHideFlags: 0
@@ -10955,6 +10983,7 @@ GameObject:
   - component: {fileID: 623906462633900567}
   - component: {fileID: 7760013149747794928}
   - component: {fileID: 2813480355299419662}
+  - component: {fileID: 401918733884199426}
   m_Layer: 5
   m_Name: Out Entry
   m_TagString: Untagged
@@ -11064,6 +11093,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &401918733884199426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812404163282964226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8521a2c52f9c8459d90fd47b53d138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSoundName: Click
 --- !u!1 &8213673540152884367
 GameObject:
   m_ObjectHideFlags: 0
