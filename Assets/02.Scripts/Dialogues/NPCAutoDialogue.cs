@@ -11,7 +11,28 @@ public class NPCAutoDialogue : MonoBehaviour
     [SerializeField] private bool canRepeat = false; // 대화 중복 실행 여부
     private bool hasTriggered = false; // 중복 실행 방지
 
+    
     private void OnTriggerEnter2D(Collider2D other)
+    {
+        if ((!hasTriggered || canRepeat) && other.CompareTag("Player"))
+        {
+            if (!DialogueManager.Instance.IsLoaded)
+                return;
+
+            hasTriggered = true;
+
+            DialogueManager.Instance.StartDialogue(npcName, npcSprite, startID);
+
+            var playerController = other.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.isInputBlocked = true;
+                playerController.BlockInput(true);
+                DialogueManager.Instance.isCommunicationEneded = false;
+            }
+        }
+    }
+    private void OnTriggerStay2D(Collider2D other)
     {
         if ((!hasTriggered || canRepeat) && other.CompareTag("Player"))
         {
@@ -36,26 +57,17 @@ public class NPCAutoDialogue : MonoBehaviour
     {
         if (hasTriggered && DialogueManager.Instance.isCommunicationEneded)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            var playerController = player.GetComponent<PlayerController>();
-            if (player != null)
+            var playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            if (playerController != null && playerController.isInputBlocked)
             {
-                
-                if (playerController != null)
-                {
-                    playerController.isInputBlocked = false;
-                }
+                playerController.BlockInput(false);
+                // 카메라 복구 등 기타 처리
             }
 
-            // 대화가 끝났을 때 중복 실행 가능하면 hasTriggered 초기화
             if (canRepeat)
             {
-                playerController.BlockInput(true);
                 hasTriggered = false;
             }
-
-            // 만약 대화 종료 상태 플래그를 여기서 초기화한다면
-            // DialogueManager.Instance.isCommunicationEneded = false;
         }
     }
 

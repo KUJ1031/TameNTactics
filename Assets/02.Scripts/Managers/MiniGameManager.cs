@@ -44,7 +44,7 @@ public class MiniGameManager : Singleton<MiniGameManager>
                     resultCallback?.Invoke(result, returnMonster);
                     resultCallback = null;
                     isCatting = false;
-                    StartCoroutine(CloseAfterDelay(2f));
+                   // StartCoroutine(CloseAfterDelay(2f));
                 });
             }
         }

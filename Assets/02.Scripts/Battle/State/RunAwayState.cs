@@ -8,19 +8,28 @@ public class RunAwayState : BaseBattleState
 
     public override void Enter()
     {
-        if (BattleManager.Instance.TryRunAway())
+        if (!BattleTutorialManager.Instance.isBattleEscapeTutorialEnded)
         {
-            // todo 도망 성공 UI 띄우고 배틀 종료
-            Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
-            UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
-            SceneManager.LoadScene("MainMapScene");
+            BattleTutorialManager.Instance.RunAwayTry();
+            BattleTutorialManager.Instance.EndEscapeTutorial();
+            BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
         }
         else
         {
-            Debug.Log("도망가기 실패!");
-            BattleDialogueManager.Instance.UseRunFailDialogue();
-            BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-            BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
+            if (BattleManager.Instance.TryRunAway())
+            {
+                // todo 도망 성공 UI 띄우고 배틀 종료
+                Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                SceneManager.LoadScene("MainMapScene");
+            }
+            else
+            {
+                Debug.Log("도망가기 실패!");
+                BattleDialogueManager.Instance.UseRunFailDialogue();
+                BattleManager.Instance.EnemyAttackAfterPlayerTurn();
+                BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
+            }
         }
     }
 }

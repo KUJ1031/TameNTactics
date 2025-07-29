@@ -168,4 +168,22 @@ public class MonsterFactory : MonoBehaviour
 
         return selectedTeam;
     }
+
+    public List<Monster> GetFixedEnemyTeam(List<Monster> baseMonsters)
+    {
+        List<Monster> selectedTeam = new List<Monster>();
+
+        foreach (Monster original in baseMonsters)
+        {
+            // 새로운 Monster 인스턴스로 복사
+            Monster m = new Monster();
+            m.SetMonsterData(original.monsterData);
+
+            selectedTeam.Add(m);
+        }
+
+        return selectedTeam;
+    }
+
+
 }

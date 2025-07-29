@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
@@ -30,6 +31,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public bool IsLoaded { get; private set; } = false;
 
+    public event Action OnDialogueLoaded;
+
 
     void Start()
     {
@@ -43,6 +46,7 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             dialogueTrees = DialogueCSVParser.ParseByTreeID(handle.Result);
             Debug.Log("모든 NPC 대사 로드 완료");
+            OnDialogueLoaded?.Invoke(); // 이 타이밍에 알림
 
             IsLoaded = true; // ✅ 여기서 로드 완료 플래그 true
 
@@ -254,6 +258,23 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
 
+    public void SetDialogueUI(bool active)
+    {
+        if (active)
+        {
+            if (dialogueUI == null)
+            {
+                Debug.LogError("DialogueUI가 설정되지 않았습니다.");
+                return;
+            }
+            dialogueUI.gameObject.SetActive(true);
+        }
+        else
+        {
+            dialogueUI?.gameObject.SetActive(false);
+        }
+    }
+
     private void TriggerEvent(string eventKey)
     {
         if (eventKey.Contains(":"))
@@ -289,7 +310,23 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         switch (eventKey)
         {
+            case "TakeMoveCamStartZone":
+                Debug.Log("[이벤트] 메인 맵 스타트로 이동");
+                Transform playerTransform = PlayerManager.Instance.playerController.transform;
+                PlayerManager.Instance.playerController.isInputBlocked = true;
+                playerTransform.position -= new Vector3(20f, 0f, 0f);
+                CameraController.Instance.SwitchTo("StartCam", true); // 타겟 클리어
+                break;
 
+            case "TakeMoveCamTutorialZone":
+                Debug.Log("[이벤트] 카메라 이동 튜토리얼 존으로 이동");
+                CameraController.Instance.SwitchTo("TutorialZoneCam", true); // 타겟 클리어
+                break;
+            case "TakeMoveCamPlayer":
+                Debug.Log("[이벤트] 카메라 플레이어 시점으로 이동");
+                CameraController.Instance.SwitchTo("PlayerCamera"); // 기존 타겟 유지
+                CameraController.Instance.SetTarget(PlayerManager.Instance.playerController.transform);
+                break;
             case "Shop_Buy":
                 ShopManager.Instance.OpenShopUI();
                 break;
@@ -377,19 +414,38 @@ public class DialogueManager : Singleton<DialogueManager>
             case "UnlockSecretPassage":
                 Debug.Log("[이벤트] 숨겨진 통로 열림");
                 break;
+            case "GameStart":
+                Debug.Log("[이벤트] 게임 시작");
+                PlayerManager.Instance.playerController.AutoMove(Vector2.right, 3f, 8f); // 오른쪽으로 2초간 이동
+                break;
+            case "HideDialogue":
+                Debug.Log("[이벤트] 대화 UI 숨김");
+                SetDialogueUI(false);
+                break;
+            case "ShowDialogue":
+                Debug.Log("[이벤트] 대화 UI 표시");
+                SetDialogueUI(true);
+                break;
+            case "Kairen":
+                Debug.Log("[이벤트] 카이렌 합류");
+                break;
+            case "AddEntry_Kairen":
+                Debug.Log("[이벤트] 카이렌을 엔트리 몬스터로 추가");
+                BattleTutorialManager.Instance.InitAttackSelected();
+                break;
+            case "End_RunawayGuide":
+                Debug.Log("도망가기 가이드 종료");
+                BattleTutorialManager.Instance.InitEmbraceSelected();
+                BattleTutorialManager.Instance.isBattleEmbraceTutorialStarded = true;
+                break;
+            case "End_Tutorial":
+                Debug.Log("포섭하기 가이드 종료");
+                BattleTutorialManager.Instance.EndTutorial();
+                break;
+
             default:
                 Debug.LogWarning($"[이벤트] 알 수 없는 이벤트 키: {eventKey}");
                 break;
         }
     }
-    private string ExtractItemNameFromText(string text)
-    {
-        // 예: "중형 전체 회복 물약을 획득했다." → "중형 전체 회복 물약"
-        if (text.Contains("을 획득했다.") || text.Contains("를 획득했다."))
-        {
-            return text.Replace("을 획득했다.", "").Replace("를 획득했다.", "").Trim();
-        }
-        return text.Trim(); // fallback
-    }
-
 }

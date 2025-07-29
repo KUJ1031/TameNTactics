@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -182,7 +182,6 @@ public class SPUM_Prefabs : MonoBehaviour
                 {
                     bool isTrigger = parameter.name.ToUpper().Contains(StateStr.ToUpper());
                     if(isTrigger){
-                         Debug.Log($"Parameter: {parameter.name}, Type: {parameter.type}");
                         animator.SetTrigger(parameter.name);
                     }
                 }

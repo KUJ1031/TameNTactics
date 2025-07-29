@@ -8,6 +8,7 @@ public class SelectCaptureTargetState : BaseBattleState
     public override void Enter()
     {
         Debug.Log("포섭하기 상태로 변경");
+        BattleTutorialManager.Instance.InitEnemySelected_Embrace();
         UIManager.Instance.battleUIManager.EmbraceView.HideBehaviorPanel();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("포섭하고 싶은 몬스터를 선택하세요.");
         UIManager.Instance.battleUIManager.EnableHoverSelect(BattleManager.Instance.BattleEnemyTeam);
@@ -66,6 +67,7 @@ public class SelectCaptureTargetState : BaseBattleState
     private void StartEmbraceMiniGame(Monster targetMonster)
     {
         // UI 초기화
+        BattleTutorialManager.Instance.InitMinigame();
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
         MiniGameManager.Instance.StartMiniGame(targetMonster, CheckEmbraceResult);
     }
@@ -75,10 +77,14 @@ public class SelectCaptureTargetState : BaseBattleState
         if (isSuccess)
         {
             Debug.Log("포섭 성공!");
+            BattleTutorialManager.Instance.isBattleEmbraceTutorialEnded = true;
             UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
             BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
             UIManager.Instance.battleUIManager.RemoveGauge(targetMonster);
             UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
+
+            if (BattleTutorialManager.Instance.isBattleEmbraceTutorialEnded)
+                BattleTutorialManager.Instance.EndEmbraceTutorial();
 
             if (BattleManager.Instance.BattleEnemyTeam.Count <= 0)
             {
@@ -91,6 +97,13 @@ public class SelectCaptureTargetState : BaseBattleState
         }
         else
         {
+            if (!BattleTutorialManager.Instance.isBattleEmbraceTutorialEnded)
+            {
+                battleSystem.ChangeState(new PlayerMenuState(battleSystem));
+                Debug.Log("포섭 미니게임 실패, 다시 메뉴로 돌아갑니다.");
+                return;
+            }
+                
             Debug.Log("포섭 실패...!");
             UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
             UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);

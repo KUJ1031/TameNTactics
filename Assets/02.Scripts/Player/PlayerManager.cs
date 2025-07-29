@@ -64,6 +64,8 @@ public class PlayerManager : MonoBehaviour
                         Monster m2 = new Monster();
                         m2.SetMonsterData(testMonsterList[i]);
                         player.AddOwnedMonster(m2);
+                        player.AddItem(ItemManager.Instance.allItems[1], 1);
+                        player.AddItem(ItemManager.Instance.allItems[2], 1);
                         player.TryAddEntryMonster(m, (_, success) =>
                         {
                             if (success != null)

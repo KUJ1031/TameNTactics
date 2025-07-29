@@ -9,6 +9,7 @@ public class SelectPlayerMonsterState : BaseBattleState
     public override void Enter()
     {
         Debug.Log("플레이어 몬스터 선택 상태로 진입했습니다. 몬스터를 선택하세요.");
+        BattleTutorialManager.Instance.InitMonsterelected_Attack();
         BattleManager.Instance.PossibleActMonster();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("공격할 몬스터를 선택하세요.");
         UIManager.Instance.battleUIManager.BattleSelectView.ShowCancelButton();

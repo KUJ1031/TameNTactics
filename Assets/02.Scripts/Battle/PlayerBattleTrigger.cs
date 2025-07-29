@@ -66,10 +66,10 @@ public class PlayerBattleTrigger : MonoBehaviour
     private IEnumerator DisableTriggerCoroutine(float time)
     {
         BoxCollider2D collider = GetComponentInChildren<BoxCollider2D>();
-        collider.enabled = false;
+      //  collider.enabled = false;
 
         yield return new WaitForSeconds(time);
 
-        collider.enabled = true;
+      //  collider.enabled = true;
     }
 }
