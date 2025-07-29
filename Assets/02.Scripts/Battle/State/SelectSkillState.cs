@@ -25,14 +25,14 @@ public class SelectSkillState : BaseBattleState
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-            
+
             if (hit.collider != null && BattleManager.Instance.BattleEntryTeam
                     .Contains(BattleManager.Instance.selectedPlayerMonster))
             {
                 if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
                 {
                     Monster clickedMonster = monsterCharacter.monster;
-        
+
                     if (BattleManager.Instance.possibleActPlayerMonsters.Contains(clickedMonster) &&
                         clickedMonster != BattleManager.Instance.selectedPlayerMonster)
                     {
@@ -57,6 +57,7 @@ public class SelectSkillState : BaseBattleState
     {
         BattleManager.Instance.SelectSkill(skill);
         Debug.Log($"선택한 스킬: {skill.name}");
+        UIManager.Instance.battleUIManager.BattleSelectView.HideCancelButton();
     }
 
     public void OnCancelSkill()

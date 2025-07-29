@@ -26,9 +26,13 @@ public class RunAwayState : BaseBattleState
             else
             {
                 Debug.Log("도망가기 실패!");
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
                 BattleDialogueManager.Instance.UseRunFailDialogue();
                 BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-                BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
+                if (BattleManager.Instance.isCoroutineOver == true)
+               {
+                   BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
+               }
             }
         }
     }

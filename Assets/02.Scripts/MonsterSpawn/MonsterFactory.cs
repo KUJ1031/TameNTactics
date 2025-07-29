@@ -44,42 +44,6 @@ public class MonsterFactory : MonoBehaviour
         {
             foreach (MonsterData monsterData in monsterDataList)
             {
-                ////스폰위치 생성(실패시 Vector3.zero 반환)
-                //Vector3 spawnPos = GetRandomPositionInFactory();
-
-                //if (spawnPos != Vector3.zero)
-                //{
-                //    //위치에 몬스터 생성
-                //    GameObject monsterGO = Instantiate(monsterPrefab, spawnPos, Quaternion.identity,transform);
-                //    usedPositions.Add(spawnPos);
-
-                //    //만들어진 기본몬스터의 데이터를 monsterList안의 값으로 변경
-                //    MonsterCharacter newMonster = monsterGO.GetComponent<MonsterCharacter>();
-                //    if (monsterData != null)
-                //    {   
-                //        //새 Monster 데이터 생성
-                //        Monster m = new Monster();
-                //        int randomLevel = Random.Range(minLevel, maxLevel + 1);
-
-                //        //생성된 Monster에 데이터,레벨 적용
-                //        m.SetMonsterData(monsterData);
-                //        m.SetLevel(randomLevel);
-
-                //        //만들어진 몬스터에 Monster데이터 추가
-                //        newMonster.Init(m);
-                //    }
-
-                //    // 이동 영역 설정
-                //    MonsterMover mover = monsterGO.GetComponent<MonsterMover>();
-                //    if (mover != null)
-                //    {
-                //        mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
-                //    }
-
-                //    //Debug.Log($"{monsterGO.name} 생성 완료 @ {spawnPos}, 레벨: {newMonster.monster.Level}");
-                //}
-                //else { Debug.Log("몬스터 생성 실패 : Vector3.zero"); }
-
                 Vector3 spawnPos = GetRandomPositionInFactory();
                 if (spawnPos == Vector3.zero) continue;
 
