@@ -2,31 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundSmash : ISkillEffect
+public class SingleAttackChanceCrit : ISkillEffect
 {
     private SkillData skillData;
-
-    public GroundSmash(SkillData data)
+    
+    public SingleAttackChanceCrit(SkillData data)
     {
         skillData = data;
     }
-
-    // 20% 확률로 마비
+    
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
 
-        var targetCopy = new List<Monster>(targets);
-
-        foreach (var target in targetCopy)
+        foreach (var target in targets)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
 
-            if (Random.value < 0.2f & caster.Level >= 10)
+            if (caster.Level >= 10 && !result.isCritical && Random.value < 0.5f)
             {
-                target.ApplyStatus(new Paralysis(2));
+                result.isCritical = true;
             }
+
+            BattleManager.Instance.DealDamage(target, result.damage, caster, skillData, result.isCritical);
         }
     }
 }
