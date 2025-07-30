@@ -428,8 +428,13 @@ public class DialogueManager : Singleton<DialogueManager>
                 Debug.Log("[이벤트] 대화 UI 표시");
                 SetDialogueUI(true);
                 break;
-            case "Kairen":
-                Debug.Log("[이벤트] 카이렌 합류");
+            case "HideNpcSprite":
+                Debug.Log("[이벤트] NPC 스프라이트 숨김");
+                dialogueUI.npcImage.gameObject.SetActive(false);
+                break;
+            case "ShowNpcSprite":
+                Debug.Log("[이벤트] NPC 스프라이트 표시");
+                dialogueUI.npcImage.gameObject.SetActive(true);
                 break;
             case "AddEntry_Kairen":
                 Debug.Log("[이벤트] 카이렌을 엔트리 몬스터로 추가");
