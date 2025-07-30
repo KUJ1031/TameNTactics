@@ -665,7 +665,9 @@ MonoBehaviour:
   gestureButton: {fileID: 6086448440528868297}
   itemSelectPopup: {fileID: 3106312604846853796}
   warringPopup: {fileID: 0}
+  warringPopupText: {fileID: 0}
   warringPopupExitButton: {fileID: 0}
+  closeMenuButton: {fileID: 4591876508370976375}
 --- !u!1 &872656451444390924
 GameObject:
   m_ObjectHideFlags: 0
