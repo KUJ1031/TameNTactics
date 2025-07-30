@@ -27,10 +27,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
             PlayerManager.Instance.playerController.isInputBlocked = false;
             if (!isBattleAttackTutorialEnded)
             {
-                DialogueManager.Instance.OnDialogueLoaded += () =>
-                {
-                    DialogueManager.Instance.StartDialogue("카이렌", npcSprite, 6000);
-                };
+                StartCoroutine(WaitUntilDialogueLoadedAndStart());
             }
             else if (!isBattleInventoryTutorialEnded)
             {
@@ -45,6 +42,12 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
                 Debug.Log("배틀 튜토리얼이 이미 완료되었습니다.");
             }
         }
+    }
+
+    private IEnumerator WaitUntilDialogueLoadedAndStart()
+    {
+        yield return new WaitUntil(() => DialogueManager.Instance.IsLoaded);
+        DialogueManager.Instance.StartDialogue("카이렌", npcSprite, 6000);
     }
 
     public void AddMemberKairen()

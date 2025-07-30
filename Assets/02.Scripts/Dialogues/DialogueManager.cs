@@ -9,6 +9,9 @@ using System;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
+
+    protected override bool IsDontDestroy => true;
+
     [Header("어드레서블")]
     public string csvAddress = "dialogue"; // 어드레서블 이름 (e.g. Assets/AddressableAssetsData/Dialogs/dialogue.csv)
 
@@ -34,6 +37,11 @@ public class DialogueManager : Singleton<DialogueManager>
     public event Action OnDialogueLoaded;
     public event Action OnDialogueEnded;
 
+    protected override void Awake()
+    {
+        if (dialogueUI == null)
+            dialogueUI = FindObjectOfType<DialogueUI>();
+    }
 
     void Start()
     {
@@ -47,9 +55,10 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             dialogueTrees = DialogueCSVParser.ParseByTreeID(handle.Result);
             Debug.Log("모든 NPC 대사 로드 완료");
-            OnDialogueLoaded?.Invoke(); // 이 타이밍에 알림
+            
 
             IsLoaded = true; // 여기서 로드 완료 플래그 true
+            OnDialogueLoaded?.Invoke(); // 이 타이밍에 알림
 
         }
         else
@@ -316,7 +325,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 Debug.Log("[이벤트] 메인 맵 스타트로 이동");
                 Transform playerTransform = PlayerManager.Instance.playerController.transform;
                 PlayerManager.Instance.playerController.isInputBlocked = true;
-                playerTransform.position -= new Vector3(20f, 0f, 0f);
+                playerTransform.position -= new Vector3(11f, 0f, 0f);
                 CameraController.Instance.SwitchTo("StartCam", true); // 타겟 클리어
                 break;
 
@@ -418,7 +427,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 break;
             case "GameStart":
                 Debug.Log("[이벤트] 게임 시작");
-                PlayerManager.Instance.playerController.AutoMove(Vector2.right, 3f, 8f); // 오른쪽으로 2초간 이동
+                PlayerManager.Instance.playerController.AutoMove(Vector2.right, 1.5f, 8f); // 오른쪽으로 2초간 이동
                 break;
             case "HideDialogue":
                 Debug.Log("[이벤트] 대화 UI 숨김");

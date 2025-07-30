@@ -27,21 +27,31 @@ public class NPCAutoDialogue : MonoBehaviour
         if ((!hasTriggered || canRepeat) && other.CompareTag("Player"))
         {
             if (!DialogueManager.Instance.IsLoaded)
-                return;
-
-            hasTriggered = true;
-
-            DialogueManager.Instance.StartDialogue(npcName, npcSprite, startID);
-
-            var playerController = other.GetComponent<PlayerController>();
-            if (playerController != null)
             {
-                playerController.isInputBlocked = true;
-              //  playerController.BlockInput(true);
-                DialogueManager.Instance.isCommunicationEneded = false;
+                // 아직 로드 안 됐으면, 로드 완료 후 다시 시도
+                DialogueManager.Instance.OnDialogueLoaded += () => TryStartDialogue(other);
+                return;
             }
+
+            TryStartDialogue(other);
         }
     }
+
+    private void TryStartDialogue(Collider2D other)
+    {
+        if (hasTriggered && !canRepeat) return;
+
+        hasTriggered = true;
+        DialogueManager.Instance.StartDialogue(npcName, npcSprite, startID);
+
+        var playerController = other.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.isInputBlocked = true;
+            DialogueManager.Instance.isCommunicationEneded = false;
+        }
+    }
+
     //private void OnTriggerStay2D(Collider2D other)
     //{
     //    if ((!hasTriggered || canRepeat) && other.CompareTag("Player"))
