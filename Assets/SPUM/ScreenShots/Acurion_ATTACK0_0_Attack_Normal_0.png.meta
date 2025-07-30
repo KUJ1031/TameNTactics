@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -134,7 +134,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Acurion_ATTACK0_0_Attack_Normal_0_0
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 1840
+        width: 124
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 32}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 542b46ad46887cf4387bbbc2684213d8
+      internalID: -980964804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -145,7 +166,54 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Acurion_ATTACK0_0_Attack_Normal_0_0: -980964804
+      Acurion_ATTACK0_0_Attack_Normal_0_1: 931699370
+      Acurion_ATTACK0_0_Attack_Normal_0_10: -1408165383
+      Acurion_ATTACK0_0_Attack_Normal_0_11: -1168481202
+      Acurion_ATTACK0_0_Attack_Normal_0_12: -1616775815
+      Acurion_ATTACK0_0_Attack_Normal_0_13: -913817855
+      Acurion_ATTACK0_0_Attack_Normal_0_14: 323958694
+      Acurion_ATTACK0_0_Attack_Normal_0_15: 653529001
+      Acurion_ATTACK0_0_Attack_Normal_0_16: 59754323
+      Acurion_ATTACK0_0_Attack_Normal_0_17: -692326242
+      Acurion_ATTACK0_0_Attack_Normal_0_18: -1810709713
+      Acurion_ATTACK0_0_Attack_Normal_0_19: -1848858738
+      Acurion_ATTACK0_0_Attack_Normal_0_2: 559760273
+      Acurion_ATTACK0_0_Attack_Normal_0_20: -1876328472
+      Acurion_ATTACK0_0_Attack_Normal_0_21: -881645314
+      Acurion_ATTACK0_0_Attack_Normal_0_22: -1279923481
+      Acurion_ATTACK0_0_Attack_Normal_0_23: 535294838
+      Acurion_ATTACK0_0_Attack_Normal_0_24: 717499785
+      Acurion_ATTACK0_0_Attack_Normal_0_25: -279865618
+      Acurion_ATTACK0_0_Attack_Normal_0_26: 506483666
+      Acurion_ATTACK0_0_Attack_Normal_0_27: 1931922193
+      Acurion_ATTACK0_0_Attack_Normal_0_28: -71434703
+      Acurion_ATTACK0_0_Attack_Normal_0_29: 935823701
+      Acurion_ATTACK0_0_Attack_Normal_0_3: -301354216
+      Acurion_ATTACK0_0_Attack_Normal_0_30: 1802350565
+      Acurion_ATTACK0_0_Attack_Normal_0_31: 1413522650
+      Acurion_ATTACK0_0_Attack_Normal_0_32: -116402052
+      Acurion_ATTACK0_0_Attack_Normal_0_33: -1815377512
+      Acurion_ATTACK0_0_Attack_Normal_0_34: 368313196
+      Acurion_ATTACK0_0_Attack_Normal_0_35: -421487833
+      Acurion_ATTACK0_0_Attack_Normal_0_36: -1411176089
+      Acurion_ATTACK0_0_Attack_Normal_0_37: 2138009076
+      Acurion_ATTACK0_0_Attack_Normal_0_38: 46315250
+      Acurion_ATTACK0_0_Attack_Normal_0_39: -91081388
+      Acurion_ATTACK0_0_Attack_Normal_0_4: -86967851
+      Acurion_ATTACK0_0_Attack_Normal_0_40: -1133720802
+      Acurion_ATTACK0_0_Attack_Normal_0_41: -1539217917
+      Acurion_ATTACK0_0_Attack_Normal_0_42: 37701856
+      Acurion_ATTACK0_0_Attack_Normal_0_43: 789842826
+      Acurion_ATTACK0_0_Attack_Normal_0_44: 56932808
+      Acurion_ATTACK0_0_Attack_Normal_0_45: -619088234
+      Acurion_ATTACK0_0_Attack_Normal_0_46: 1177401234
+      Acurion_ATTACK0_0_Attack_Normal_0_5: -420080009
+      Acurion_ATTACK0_0_Attack_Normal_0_6: 1775130671
+      Acurion_ATTACK0_0_Attack_Normal_0_7: 1809974150
+      Acurion_ATTACK0_0_Attack_Normal_0_8: 1247653207
+      Acurion_ATTACK0_0_Attack_Normal_0_9: 1275367252
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
