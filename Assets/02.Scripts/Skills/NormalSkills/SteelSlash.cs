@@ -30,7 +30,5 @@ public class SteelSlash : ISkillEffect
             int speedDelta = Mathf.RoundToInt(caster.Speed * 0.1f);
             caster.SpeedUpEffect(speedDelta);
         }
-
-        yield break;
     }
 }

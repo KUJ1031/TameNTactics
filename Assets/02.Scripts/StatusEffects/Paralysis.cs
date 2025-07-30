@@ -15,7 +15,6 @@ public class Paralysis : StatusEffect
         
         if (!isApplied)
         {
-            appliedAmount = Mathf.RoundToInt(target.Speed * 0.1f);
             target.SpeedDownEffect(appliedAmount);
             isApplied = true;
         }

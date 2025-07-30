@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Burn : StatusEffect
 {
-    private int damagePerTurn;
-
     public Burn(int duration) : base(StatusEffectType.Burn, duration){}
 
     // 화상, 턴이 시작될때 정해진 턴 만큼 최대체력의 10%만큼의 수치로 데미지 받음

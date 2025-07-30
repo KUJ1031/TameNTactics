@@ -28,7 +28,5 @@ public class ToxicBite : ISkillEffect
                 target.ApplyStatus(new Poison(2));
             }
         }
-
-        yield break;
     }
 }

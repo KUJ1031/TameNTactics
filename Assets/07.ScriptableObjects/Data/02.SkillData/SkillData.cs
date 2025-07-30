@@ -59,6 +59,7 @@ public enum NormalSkillList
     SingleAttackChanceCrit, // 기본 공격 해금시 50% 확률로 치명타 적용
     EnemyTeamAttackChanceSpdDown, // 전체 공격 해금시 15% 확률로 적 스피드 10% 감소
     EnemyTeamAttackChanceAtkUp, // 전체 공격 해금시 10% 확률로 공격자 공격력 10% 상승
+
 }
 
 public enum UltimateSkillList

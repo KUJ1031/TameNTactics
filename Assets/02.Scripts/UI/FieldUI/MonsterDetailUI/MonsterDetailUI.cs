@@ -89,8 +89,8 @@ public class MonsterDetailUI : FieldMenuBaseUI
         monsterExpBar.fillAmount = (float)monster.CurExp / monster.MaxExp;
 
         monsterNameText.text = monster.monsterName;
-        monsterTypeText.text = monster.monsterData.type.ToString();
-        monsterPersonalityText.text = monster.monsterData.personality.ToString();
+        monsterTypeText.text = monster.monsterData.type.ToKorean();
+        monsterPersonalityText.text = monster.monsterData.personality.ToKorean();
 
         monsterAttackText.text = player.GetTotalEffectBonus(ItemEffectType.attack) > 0 ?
             $"{monster.Attack} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.attack)})</color>" : $"{monster.Attack}";
