@@ -16,7 +16,7 @@ public class DoubleTargetHit : ISkillEffect
         if (skillData == null || targets == null || targets.Count == 0) 
             yield break;
         
-        float damageMultiplier = (caster.Level >= 10) ? 0.7f : 0.5f;
+        float damageMultiplier = (caster.Level >= 10) ? 1.3f : 1f;
         
         foreach (var target in targets)
         {
