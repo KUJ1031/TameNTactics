@@ -640,6 +640,7 @@ MonoBehaviour:
   BastMonsterText: {fileID: 0}
   EquipItemText: {fileID: 0}
   atherText: {fileID: 0}
+  closeMenuButton: {fileID: 1380336800933961724}
 --- !u!1 &3049074704692277375
 GameObject:
   m_ObjectHideFlags: 0
