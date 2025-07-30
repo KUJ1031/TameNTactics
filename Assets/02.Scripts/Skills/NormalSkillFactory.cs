@@ -10,7 +10,17 @@ public static class NormalSkillFactory
         { NormalSkillList.WaterSlash, data => new WaterSlash(data) },
         { NormalSkillList.SteelSlash, data => new SteelSlash(data) },
         { NormalSkillList.GroundSmash, data => new GroundSmash(data) },
-        { NormalSkillList.DoubleTargetHit, data => new DoubleTargetHit(data)}
+        { NormalSkillList.DoubleTargetHit, data => new DoubleTargetHit(data)},
+        { NormalSkillList.SingleAttackChanceStun, data => new SingleAttackChanceStun(data)},
+        { NormalSkillList.SingleAttackChanceSleep, data => new SingleAttackChanceSleep(data)},
+        { NormalSkillList.SingleAttackChanceAtkUp, data => new SingleAttackChanceAtkUp(data)},
+        { NormalSkillList.SingleAttackChanceDefUp, data => new SingleAttackChanceDefUp(data)},
+        { NormalSkillList.SingleAttackChanceCriChanceUp, data => new SingleAttackChanceCriChanceUp(data)},
+        { NormalSkillList.SingleAttackChanceHpUp, data => new SingleAttackChanceHpUp(data)},
+        { NormalSkillList.SingleAttackRandomDebuff, data => new SingleAttackRandomDebuff(data)},
+        { NormalSkillList.SingleAttackTargetAtkDown, data => new SingleAttackTargetAtkDown(data)},
+        { NormalSkillList.SingleAttackTargetDefDown, data => new SingleAttackTargetDefDown(data)},
+        { NormalSkillList.SingleAttackHealLowestAlly, data => new SingleAttackHealLowestAlly(data)}
     };
 
     public static ISkillEffect GetNormalSkill(SkillData data)
