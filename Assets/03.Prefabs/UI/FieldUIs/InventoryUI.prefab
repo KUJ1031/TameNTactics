@@ -667,6 +667,7 @@ MonoBehaviour:
   warringPopup: {fileID: 0}
   warringPopupText: {fileID: 0}
   warringPopupExitButton: {fileID: 0}
+  closeMenuButton: {fileID: 4591876508370976375}
 --- !u!1 &872656451444390924
 GameObject:
   m_ObjectHideFlags: 0
