@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -22,28 +23,31 @@ public class MiniGameManager : Singleton<MiniGameManager>
 
     private string keySettingName = "Player.Minigame.0";
 
-    private bool isCatting = false;
+    private bool isCatching = false;
+
+    private Dictionary<(string, Personality), float> personalityRule;
     private void Start()
     {
         gameObject.SetActive(false);
+        DataComparer();
     }
 
     private void Update()
     {
-        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path) && isCatting == false)
+        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path) && isCatching == false)
         {
             string InputControlPath = path;
             var control = InputSystem.FindControl(path);
             if (control is ButtonControl button && button.wasPressedThisFrame)
             {
-                isCatting = true;
+                isCatching = true;
                 CameraController.Instance.Kick(onComplete: () =>
                 {
                     rotatePoint.SetRotateSpeed(0);
                     bool result = rotatePoint.isInSuccessZone;
                     resultCallback?.Invoke(result, returnMonster);
                     resultCallback = null;
-                    isCatting = false;
+                    isCatching = false;
                     StartCoroutine(CloseAfterDelay(2f));
                 });
             }
@@ -67,11 +71,11 @@ public class MiniGameManager : Singleton<MiniGameManager>
 
 
     /// <summary>
-    /// 미니게임을 생성합니다. 몬스터를 받고 성공여부와 사용된 몬스터를 반환합니다.
+    /// 미니게임을 생성합니다. 제스처와 몬스터를 받고 성공여부와 사용된 몬스터를 반환합니다.
     /// </summary>
     /// <param name="percent"></param>
     /// <param name="speed"></param>
-    public void StartMiniGame(Monster targetMonster, Action<bool, Monster> callback)
+    public void StartMiniGame(ItemData gesture, Monster targetMonster, Action<bool, Monster> callback)
     {
         transform.gameObject.SetActive(true);
         ranges.Clear();
@@ -84,7 +88,9 @@ public class MiniGameManager : Singleton<MiniGameManager>
         hpPercent = (float)targetMonster.CurHp / targetMonster.CurMaxHp;
         speed = 1 - (hpPercent * 0.9f);
 
-        range = 30;//추후 제스쳐 확인 후 범위 수정 추가
+        range = 30;
+        //range = GetRange(gesture.itemName, targetMonster.personality);
+        
         //Debug.Log("몬스터 체력퍼 : " + hpPercent + "속도 : " + speed);
         SetSuccessRanges(range);
         rotatePoint.SetRotateSpeed(speed);
@@ -95,5 +101,62 @@ public class MiniGameManager : Singleton<MiniGameManager>
         resultCallback = callback;
     }
 
+    public float GetRange(string a, Personality b)
+    {
+        if (personalityRule.TryGetValue((a, b), out float result))
+        {
+            return result;
+        }
+        return 30f; // 일치하는 규칙이 없을 경우 반환할 값
+    }
 
+    private void DataComparer()
+    {
+        personalityRule = new Dictionary<(string A, Personality B), float>
+        {
+             //Persuading
+            { ("Persuading", Personality.Thorough), 50f },
+            { ("Persuading", Personality.Decisive), 50f },
+            { ("Persuading", Personality.Responsible), 50f },
+
+            { ("Persuading", Personality.Bold), 10f },
+            { ("Persuading", Personality.Energetic), 10f },
+            { ("Persuading", Personality.Proactive), 10f },
+
+            //Scolding
+            { ("Scolding", Personality.Bold), 50f },
+            { ("Scolding", Personality.Passionate), 50f },
+
+            { ("Scolding", Personality.Devoted), 10f },
+            { ("Scolding", Personality.Decisive), 10f },
+             
+            //Boasting
+            { ("Boasting", Personality.Proactive), 50f },
+
+            { ("Boasting", Personality.Thorough), 10f },
+            { ("Boasting", Personality.Emotional), 10f },
+            { ("Boasting", Personality.Altruistic), 10f },
+             
+            //Ignoring
+            { ("Ignoring", Personality.Cautious), 50f },
+            { ("Ignoring", Personality.Cynical), 50f },
+
+            { ("Ignoring", Personality.Passionate), 10f },
+            { ("Ignoring", Personality.Sociable), 10f },
+            
+            //Complimenting
+            { ("Complimenting", Personality.Devoted), 50f },
+            { ("Complimenting", Personality.Emotional), 50f },
+            { ("Complimenting", Personality.Altruistic), 50f },
+
+            { ("Complimenting", Personality.Cynical), 10f },
+
+            //Joking
+            { ("Joking", Personality.Energetic), 50f },
+            { ("Joking", Personality.Sociable), 50f },
+
+            { ("Joking", Personality.Cautious), 10f },
+            { ("Joking", Personality.Responsible), 10f },
+        };
+    }
 }
