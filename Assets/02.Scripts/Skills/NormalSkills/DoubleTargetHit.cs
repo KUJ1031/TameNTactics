@@ -25,7 +25,5 @@ public class DoubleTargetHit : ISkillEffect
             
             BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
         }
-
-        yield break;
     }
 }

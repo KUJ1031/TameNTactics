@@ -11,9 +11,10 @@ public class Paralysis : StatusEffect
     // 마비, 턴이 시작될때 정해진 턴 수 만큼 스피드 10%감소
     public override void OnTurnStart(Monster target)
     {
+        appliedAmount = Mathf.RoundToInt(target.Speed * 0.1f);
+        
         if (!isApplied)
         {
-            appliedAmount = Mathf.RoundToInt(target.Speed * 0.1f);
             target.SpeedDownEffect(appliedAmount);
             isApplied = true;
         }
@@ -23,6 +24,7 @@ public class Paralysis : StatusEffect
         if (duration == 0)
         {
             target.RecoverUpSpeed(appliedAmount);
+            isApplied = false;
         }
     }
 }

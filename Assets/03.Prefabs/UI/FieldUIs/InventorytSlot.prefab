@@ -418,6 +418,7 @@ GameObject:
   - component: {fileID: 6805029225308131468}
   - component: {fileID: 8725168069352990947}
   - component: {fileID: 5755944387024122220}
+  - component: {fileID: -6990270026895035129}
   m_Layer: 5
   m_Name: InventorytSlot
   m_TagString: Untagged
@@ -547,6 +548,19 @@ MonoBehaviour:
   equipImage: {fileID: 8492863531006172453}
   ItemName: {fileID: 663198374874760843}
   quantityText: {fileID: 2211044978324845115}
+--- !u!114 &-6990270026895035129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6048038639146768139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8521a2c52f9c8459d90fd47b53d138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSoundName: Click
 --- !u!1 &6408371948833643033
 GameObject:
   m_ObjectHideFlags: 0

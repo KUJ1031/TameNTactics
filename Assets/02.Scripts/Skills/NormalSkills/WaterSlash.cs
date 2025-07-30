@@ -30,7 +30,5 @@ public class WaterSlash : ISkillEffect
                 caster.Heal(healAmount);
             }
         }
-
-        yield break;
     }
 }

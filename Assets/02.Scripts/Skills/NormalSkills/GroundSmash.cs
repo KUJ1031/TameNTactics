@@ -29,7 +29,5 @@ public class GroundSmash : ISkillEffect
                 target.ApplyStatus(new Paralysis(2));
             }
         }
-
-        yield break;
     }
 }

@@ -15,8 +15,8 @@ MonoBehaviour:
   monsterName: Kairen
   monsterNumber: 1
   monsterImage: {fileID: -1810975462, guid: 840a42f838b70a64996afde2d4cc978e, type: 3}
-  encounterCount: 0
-  captureCount: 114
+  encounterCount: 1
+  captureCount: 1
   type: 0
   personality: 0
   maxHp: 80
@@ -32,7 +32,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6fe94066213bed948bf0a220bcdfbeaa, type: 2}
   - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
   - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
-  spawnArea: 
-  spawnTime: 0
+  spawnArea: 0
+  spawnTime: 19
   captureRate: 0
   description: 
+  damageSound: {fileID: 0}

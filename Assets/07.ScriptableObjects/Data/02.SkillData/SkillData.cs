@@ -46,6 +46,16 @@ public enum NormalSkillList
     SteelSlash, // 기본 공격 해금시 현재 스피드의 10% 스피드 상승
     GroundSmash, //  기본 공격 해금시 마비
     DoubleTargetHit, // 선택한 2마리에게 데미지의 50%씩 데미지를 입힘 해금시 데미지 70%로 변경
+    SingleAttackChanceStun, // 기본 공격 해금시 일정 확률로 스턴
+    SingleAttackChanceSleep, // 기본 공격 해금시 일정 확률로 수면
+    SingleAttackChanceAtkUp, // 기본 공격 해금시 일정 확률로 공격력 10% 상승
+    SingleAttackChanceDefUp, // 기본 공격 해금시 일정 확률로 방어력 10% 상승
+    SingleAttackChanceCriChanceUp, // 기본 공격 해금시 치명타 확률 5% 상승
+    SingleAttackChanceHpUp, // 기본 공격 해금시 일정 확률로 최대체력의 10% 상승
+    SingleAttackRandomDebuff, // 기본 공격 해금시 일정 확률로 랜덤 상태이상 부여 2턴
+    SingleAttackTargetAtkDown, // 기본 공격 해금시 일정 확률로 상대 공격력 10% 감소
+    SingleAttackTargetDefDown, // 기본 공격 해금시 일정 확률로 상대 방어력 10% 감소
+    SingleAttackHealLowestAlly, // 기본 공격 해금시 일정 확률로 우리팀중 체력이 가장 낮은 몬스터 최대체력의 10% 회복
 }
 
 public enum UltimateSkillList
