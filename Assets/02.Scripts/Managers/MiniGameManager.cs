@@ -44,7 +44,8 @@ public class MiniGameManager : Singleton<MiniGameManager>
                     resultCallback?.Invoke(result, returnMonster);
                     resultCallback = null;
                     isCatting = false;
-                   // StartCoroutine(CloseAfterDelay(2f));
+                    if (PlayerManager.Instance.player.playerTutorialCheck)
+                        StartCoroutine(CloseAfterDelay(2f));
                 });
             }
         }
@@ -95,5 +96,26 @@ public class MiniGameManager : Singleton<MiniGameManager>
         resultCallback = callback;
     }
 
+    /// <summary>
+    /// 튜토리얼용 미니게임입니다. 속도가 지정되어 있습니다.
+    /// </summary>
+    /// <param name="percent"></param>
+    /// <param name="speed"></param>
+    public void StartMiniGame(Monster targetMonster, Action<bool, Monster> callback, float customSpeed)
+    {
+        transform.gameObject.SetActive(true);
+        ranges.Clear();
+
+        float range;
+
+        range = 75;
+        SetSuccessRanges(range);
+        rotatePoint.SetRotateSpeed(customSpeed);
+        rotatePoint.SetRanges(ranges);
+        spawner.SpawnRanges(ranges);
+
+        returnMonster = targetMonster;
+        resultCallback = callback;
+    }
 
 }

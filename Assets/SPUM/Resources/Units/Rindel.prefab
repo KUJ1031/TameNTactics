@@ -7799,7 +7799,6 @@ GameObject:
   - component: {fileID: 7918197909539679367}
   - component: {fileID: 270631330151396219}
   - component: {fileID: 4570588916114756441}
-  - component: {fileID: 4565791414886172578}
   - component: {fileID: 4188279867348176664}
   m_Layer: 0
   m_Name: Rindel
@@ -7944,22 +7943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4565791414886172578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9017150752890829550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.3
-  stopDuration: 3
 --- !u!114 &4188279867348176664
 MonoBehaviour:
   m_ObjectHideFlags: 0

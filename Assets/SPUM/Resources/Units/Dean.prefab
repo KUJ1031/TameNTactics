@@ -778,7 +778,6 @@ GameObject:
   - component: {fileID: 4781613191515896509}
   - component: {fileID: 7913147393196497953}
   - component: {fileID: 9012722097007388275}
-  - component: {fileID: 1110316084649172800}
   - component: {fileID: 4931161687547225197}
   m_Layer: 0
   m_Name: Dean
@@ -923,22 +922,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1110316084649172800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2174758691482029185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.3
-  stopDuration: 3
 --- !u!114 &4931161687547225197
 MonoBehaviour:
   m_ObjectHideFlags: 0

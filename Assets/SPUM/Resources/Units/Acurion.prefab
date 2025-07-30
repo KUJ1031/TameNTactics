@@ -5923,7 +5923,6 @@ GameObject:
   - component: {fileID: 653704014134590263}
   - component: {fileID: 3534871867803215549}
   - component: {fileID: 3207703036362747598}
-  - component: {fileID: 2007500640891240631}
   m_Layer: 0
   m_Name: Acurion
   m_TagString: Untagged
@@ -6082,22 +6081,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2007500640891240631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4161918060707613311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.65
-  stopDuration: 3
 --- !u!1 &4624962124156117400
 GameObject:
   m_ObjectHideFlags: 0

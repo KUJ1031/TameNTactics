@@ -18,6 +18,8 @@ public class TutorialView : MonoBehaviour
     [SerializeField] private GameObject emphasize_minigamePanel; // 미니게임 패널 (추가 필요시)
     [SerializeField] private GameObject emphasize_runAwayPanel;
 
+    public Guide guide; // 가이드 패널 (추가 필요시)
+
     public void ShowTutorialPanel()
     {
         emphasize_tutorialPanel.SetActive(true);
@@ -140,4 +142,54 @@ public class TutorialView : MonoBehaviour
     {
         emphasize_runAwayPanel.SetActive(false);
     }
+
+    public void ShowGuideAttackPanel()
+    {
+        if (guide != null)
+        {
+            guide.StartGuide(GuideType.Attack);
+        }
+        else
+        {
+            Debug.LogWarning("Guide 컴포넌트가 할당되지 않았습니다.");
+        }
+    }
+
+    public void ShowGuideInventoryPanel()
+    {
+        if (guide != null)
+        {
+            guide.StartGuide(GuideType.Inventory);
+        }
+        else
+        {
+            Debug.LogWarning("Guide 컴포넌트가 할당되지 않았습니다.");
+        }
+    }
+
+    public void ShowGuideEmbracePanel()
+    {
+        if (guide != null)
+        {
+            guide.StartGuide(GuideType.Embrace);
+        }
+        else
+        {
+            Debug.LogWarning("Guide 컴포넌트가 할당되지 않았습니다.");
+        }
+    }
+
+    public void ShowGuideEscapePanel()
+    {
+        if (guide != null)
+        {
+            guide.StartGuide(GuideType.Escape);
+        }
+        else
+        {
+            Debug.LogWarning("Guide 컴포넌트가 할당되지 않았습니다.");
+        }
+    }
+
+
 }

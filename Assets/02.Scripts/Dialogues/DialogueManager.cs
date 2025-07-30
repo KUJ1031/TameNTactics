@@ -32,6 +32,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public bool IsLoaded { get; private set; } = false;
 
     public event Action OnDialogueLoaded;
+    public event Action OnDialogueEnded;
 
 
     void Start()
@@ -48,7 +49,7 @@ public class DialogueManager : Singleton<DialogueManager>
             Debug.Log("모든 NPC 대사 로드 완료");
             OnDialogueLoaded?.Invoke(); // 이 타이밍에 알림
 
-            IsLoaded = true; // ✅ 여기서 로드 완료 플래그 true
+            IsLoaded = true; // 여기서 로드 완료 플래그 true
 
         }
         else
@@ -128,6 +129,7 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             dialogueUI.Hide();
             isCommunicationEneded = true; // 대화 종료 상태로 설정
+            OnDialogueEnded?.Invoke();
 
             if (!string.IsNullOrEmpty(currentNode.LateEventKey))
             {
@@ -431,15 +433,33 @@ public class DialogueManager : Singleton<DialogueManager>
                 break;
             case "AddEntry_Kairen":
                 Debug.Log("[이벤트] 카이렌을 엔트리 몬스터로 추가");
+                Monster kairen = new Monster();
+                kairen.SetMonsterData(BattleTutorialManager.Instance.reaward_Kairen);
+                PlayerManager.Instance.player.AddOwnedMonster(kairen);
+                PlayerManager.Instance.player.TryAddEntryMonster(kairen, (_, success) =>
+                {
+                    if (success != null)
+                    {
+                        PlayerManager.Instance.player.AddBattleEntry(kairen);
+                    }
+                    });
+                BattleTutorialManager.Instance.AddMemberKairen();
+                BattleManager.Instance.BattleEntryTeam.Add(kairen);
+                BattleManager.Instance.StartBattle();
                 BattleTutorialManager.Instance.InitAttackSelected();
                 break;
+            case "Inventory_Kairen":
+                Debug.Log("[이벤트] 인벤토리 열기");
+                BattleTutorialManager.Instance.InitInventorySelected();
+                break;
+
             case "End_RunawayGuide":
                 Debug.Log("도망가기 가이드 종료");
                 BattleTutorialManager.Instance.InitEmbraceSelected();
                 BattleTutorialManager.Instance.isBattleEmbraceTutorialStarded = true;
                 break;
             case "End_Tutorial":
-                Debug.Log("포섭하기 가이드 종료");
+                Debug.Log("튜토리얼 종료");
                 BattleTutorialManager.Instance.EndTutorial();
                 break;
 

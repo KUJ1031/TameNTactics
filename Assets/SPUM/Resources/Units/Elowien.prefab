@@ -5252,7 +5252,6 @@ GameObject:
   - component: {fileID: 4691990134175662544}
   - component: {fileID: 2390976375501445125}
   - component: {fileID: 6001670136127299464}
-  - component: {fileID: 1778427324016988250}
   - component: {fileID: 581181513032697684}
   m_Layer: 0
   m_Name: Elowien
@@ -5397,22 +5396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1778427324016988250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4050818601839780002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.3
-  stopDuration: 3
 --- !u!114 &581181513032697684
 MonoBehaviour:
   m_ObjectHideFlags: 0

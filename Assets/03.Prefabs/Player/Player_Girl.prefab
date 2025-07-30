@@ -353,6 +353,7 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  lastMoveInput: {x: 0, y: 0}
 --- !u!114 &-7125662418686591930
 MonoBehaviour:
   m_ObjectHideFlags: 0

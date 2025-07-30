@@ -15,10 +15,10 @@ MonoBehaviour:
   monsterName: Riena
   monsterNumber: 8
   monsterImage: {fileID: 1648354300, guid: 4eba8fc4e9a9285469ce30e6c0d99c36, type: 3}
-  encounterCount: 0
+  encounterCount: 1
   captureCount: 114
   type: 1
-  personality: 1
+  personality: 0
   maxHp: 85
   attack: 12
   defense: 10

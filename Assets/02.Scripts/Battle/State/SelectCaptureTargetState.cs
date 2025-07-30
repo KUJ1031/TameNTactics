@@ -69,7 +69,8 @@ public class SelectCaptureTargetState : BaseBattleState
         // UI 초기화
         BattleTutorialManager.Instance.InitMinigame();
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
-        MiniGameManager.Instance.StartMiniGame(targetMonster, CheckEmbraceResult);
+        if (PlayerManager.Instance.player.playerTutorialCheck) MiniGameManager.Instance.StartMiniGame(targetMonster, CheckEmbraceResult);
+        else MiniGameManager.Instance.StartMiniGame(targetMonster, CheckEmbraceResult, 0.9f);
     }
 
     private void CheckEmbraceResult(bool isSuccess, Monster targetMonster)
@@ -100,6 +101,7 @@ public class SelectCaptureTargetState : BaseBattleState
             if (!BattleTutorialManager.Instance.isBattleEmbraceTutorialEnded)
             {
                 battleSystem.ChangeState(new PlayerMenuState(battleSystem));
+                BattleTutorialManager.Instance.MinigameFailed();
                 Debug.Log("포섭 미니게임 실패, 다시 메뉴로 돌아갑니다.");
                 return;
             }

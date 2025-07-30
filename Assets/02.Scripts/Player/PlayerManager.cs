@@ -54,32 +54,12 @@ public class PlayerManager : MonoBehaviour
 
                 if (loadedPlayer == null)
                 {
-                    // 테스트 코드
-                    Debug.Log("저장된 데이터가 없으므로 테스트 몬스터 생성");
-                    for (int i = 0; i < testMonsterList.Count; i++)
-                    {
-                        Monster m = new Monster();
-                        m.SetMonsterData(testMonsterList[i]);
-                        player.AddOwnedMonster(m);
-                        Monster m2 = new Monster();
-                        m2.SetMonsterData(testMonsterList[i]);
-                        player.AddOwnedMonster(m2);
-                        player.AddItem(ItemManager.Instance.allItems[1], 1);
-                        player.AddItem(ItemManager.Instance.allItems[2], 1);
-                        player.TryAddEntryMonster(m, (_, success) =>
-                        {
-                            if (success != null)
-                            {
-                                player.AddBattleEntry(m);
-                            }
-                            else { Debug.Log("엔트리에 몬스터 등록 실패"); }
-                        });
-                    }
-                    // 플레이어 키 셋팅
+                    player.AddItem(ItemManager.Instance.allItems[1], 1);
+                    player.AddItem(ItemManager.Instance.allItems[2], 1);
                     KeyRebinderManager.Instance.SaveCurrentBindingsToPlayer(player);
                 }
-            }
 
+            }
         }
     }
 

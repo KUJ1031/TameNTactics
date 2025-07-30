@@ -22,9 +22,20 @@ public class EndBattleState : BaseBattleState
             UIManager.Instance.battleUIManager.BattleEndMessage(false);
         }
 
-        battleSystem.StartCoroutine(EndBattleCoroutine());
+        if (PlayerManager.Instance.player.playerTutorialCheck)
+        {
+            battleSystem.StartCoroutine(EndBattleCoroutine());
+        }
     }
 
+    public override void Execute()
+    {
+        if (PlayerManager.Instance.player.playerTutorialCheck)
+        {
+            battleSystem.StartCoroutine(EndBattleCoroutine());
+            Debug.Log("배틀 종료 상태로 진입했습니다. 2초 후 메인 맵으로 이동합니다.");
+        }
+    }
     private IEnumerator EndBattleCoroutine()
     {
         yield return new WaitForSeconds(2f);
