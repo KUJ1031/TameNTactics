@@ -57,7 +57,7 @@ public class MonsterMover : MonoBehaviour
         isPlayerInSight = distance < sightRadius && inFactory;
 
         // 도망 성격일 경우 도망 타겟 설정
-        if (monsterData.personality == Personality.Timid)
+        if (monsterData.personality == Personality.Decisive)
         {
             if (isPlayerInSight && !isEscaping)
             {
@@ -78,21 +78,21 @@ public class MonsterMover : MonoBehaviour
 
         switch (monsterData.personality)
         {
-            case Personality.Aggressive:
+            case Personality.Energetic:
                 if (isPlayerInSight)
                     MoveToward(player.position, chaseSpeed); // 추격
                 else
                     Patrol(); // 순찰
                 break;
 
-            case Personality.Timid:
+            case Personality.Thorough:
                 if (isEscaping)
                     MoveToward(escapeTarget, chaseSpeed); // 도망
                 else
                     Patrol(); // 순찰
                 break;
 
-            case Personality.Normal:
+            case Personality.Sociable:
                 Patrol(); // 평범한 몬스터는 무조건 순찰
                 break;
         }
