@@ -24,7 +24,6 @@ public class SingleAttackChanceAtkUp : ISkillEffect
 
             if (Random.value < 0.5f && caster.Level >= 10)
             {
-                yield return new WaitForSeconds(1f);
                 int amount = Mathf.RoundToInt(caster.CurAttack * 0.1f);
                 caster.PowerUp(amount);
             }

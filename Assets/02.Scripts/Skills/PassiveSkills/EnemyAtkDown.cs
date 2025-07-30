@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAtkDownTwoTurns : IPassiveSkill
+public class EnemyAtkDown : IPassiveSkill
 {
     public void OnBattleStart(Monster self, List<Monster> targets)
     {
         foreach (var target in targets)
         {
-            target.ApplyStatus(new AttackDown(2));
+            int amount = Mathf.RoundToInt(target.CurAttack * 0.05f);
+            target.PowerDown(amount);
         }
     }
 

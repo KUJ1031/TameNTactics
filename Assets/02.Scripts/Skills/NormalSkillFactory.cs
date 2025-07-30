@@ -20,7 +20,10 @@ public static class NormalSkillFactory
         { NormalSkillList.SingleAttackRandomDebuff, data => new SingleAttackRandomDebuff(data)},
         { NormalSkillList.SingleAttackTargetAtkDown, data => new SingleAttackTargetAtkDown(data)},
         { NormalSkillList.SingleAttackTargetDefDown, data => new SingleAttackTargetDefDown(data)},
-        { NormalSkillList.SingleAttackHealLowestAlly, data => new SingleAttackHealLowestAlly(data)}
+        { NormalSkillList.SingleAttackHealLowestAlly, data => new SingleAttackHealLowestAlly(data)},
+        { NormalSkillList.SingleAttackChanceCrit, data => new SingleAttackChanceCrit(data)},
+        { NormalSkillList.EnemyTeamAttackChanceSpdDown, data => new EnemyTeamAttackChanceSpdDown(data)},
+        { NormalSkillList.EnemyTeamAttackChanceAtkUp, data => new EnemyTeamAttackChanceAtkUp(data)}
     };
 
     public static ISkillEffect GetNormalSkill(SkillData data)

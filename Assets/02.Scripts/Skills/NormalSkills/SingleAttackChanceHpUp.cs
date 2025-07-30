@@ -24,7 +24,6 @@ public class SingleAttackChanceHpUp : ISkillEffect
 
             if (Random.value < 0.5f && caster.Level >= 10)
             {
-                yield return new WaitForSeconds(1f);
                 int amount = Mathf.RoundToInt(caster.CurMaxHp * 0.1f);
                 caster.BattleMaxHpUp(amount);
             }

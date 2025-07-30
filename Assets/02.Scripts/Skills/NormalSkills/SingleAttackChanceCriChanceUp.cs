@@ -24,7 +24,6 @@ public class SingleAttackChanceCriChanceUp : ISkillEffect
 
             if (caster.Level >= 10)
             {
-                yield return new WaitForSeconds(1f);
                 caster.BattleCritChanceUp(5);
             }
         }

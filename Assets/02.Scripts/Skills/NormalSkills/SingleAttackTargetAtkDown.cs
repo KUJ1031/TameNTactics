@@ -24,8 +24,8 @@ public class SingleAttackTargetAtkDown : ISkillEffect
 
             if (Random.value < 0.2f && caster.Level >= 10)
             {
-                yield return new WaitForSeconds(1f);
-                target.ApplyStatus(new AttackDown(2));
+                int amount = Mathf.RoundToInt(target.CurAttack * 0.1f);
+                target.PowerDown(amount);
             }
         }
     }

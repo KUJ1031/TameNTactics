@@ -27,7 +27,6 @@ public class SteelSlash : ISkillEffect
 
         if (caster.Level >= 10)
         {
-            yield return new WaitForSeconds(1f);
             int speedDelta = Mathf.RoundToInt(caster.Speed * 0.1f);
             caster.SpeedUpEffect(speedDelta);
         }
