@@ -37,6 +37,21 @@ public class MonsterFactory : MonoBehaviour
         SpawnAllMonsters();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player") && !PlayerManager.Instance.player.playerTutorialCheck)
+        {
+            var playerController = collision.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                Debug.Log("Player entered the exhibit area.");
+               
+                playerController.isInputBlocked = true;
+            }
+        }
+
+    }
+
     //몬스터 스폰
     public void SpawnAllMonsters()
     {
@@ -125,6 +140,23 @@ public class MonsterFactory : MonoBehaviour
             selectedTeam.Add(m);
         }
 
+        //레벨설정
+        foreach (Monster m in selectedTeam)
+        {
+            m.SetLevel(Random.Range(minLevel, maxLevel + 1));
+        }
+
+        return selectedTeam;
+    }
+    public List<Monster> GetFixedEnemyTeam(Monster monster)
+    {
+        List<Monster> selectedTeam = new List<Monster>();
+
+        //충돌한 몬스터 포함
+        if (monster != null)
+        {
+            selectedTeam.Add(monster);
+        }
         //레벨설정
         foreach (Monster m in selectedTeam)
         {

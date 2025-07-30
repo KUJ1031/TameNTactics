@@ -8,22 +8,31 @@ public class RunAwayState : BaseBattleState
 
     public override void Enter()
     {
-        if (BattleManager.Instance.TryRunAway())
+        if (!PlayerManager.Instance.player.playerTutorialCheck)
         {
-            // todo 도망 성공 UI 띄우고 배틀 종료
-            Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
-            UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
-            SceneManager.LoadScene("MainMapScene");
+            BattleTutorialManager.Instance.RunAwayTry();
+            BattleTutorialManager.Instance.EndEscapeTutorial();
+            BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
         }
         else
         {
-            Debug.Log("도망가기 실패!");
-            UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
-            BattleDialogueManager.Instance.UseRunFailDialogue();
-            BattleManager.Instance.EnemyAttackAfterPlayerTurn();
-            if (BattleManager.Instance.isCoroutineOver == true)
+            if (BattleManager.Instance.TryRunAway())
             {
-                BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
+                // todo 도망 성공 UI 띄우고 배틀 종료
+                Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                SceneManager.LoadScene("MainMapScene");
+            }
+            else
+            {
+                Debug.Log("도망가기 실패!");
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                BattleDialogueManager.Instance.UseRunFailDialogue();
+                BattleManager.Instance.EnemyAttackAfterPlayerTurn();
+                if (BattleManager.Instance.isCoroutineOver == true)
+               {
+                   BattleSystem.Instance.ChangeState(new PlayerMenuState(battleSystem));
+               }
             }
         }
     }

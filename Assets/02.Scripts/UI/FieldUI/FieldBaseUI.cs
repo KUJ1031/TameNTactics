@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class FieldBaseUI : MonoBehaviour
 {
     [SerializeField] private Button menuButton;
+    [SerializeField] private Button guideButton;
     [SerializeField] private GameObject entrySlotPrefab; // 추가될 EntrySlot 프리팹
     [SerializeField] private Transform entrySlotParent; // EntrySlot을 배치할 부모 오브젝트
 
@@ -14,12 +15,18 @@ public class FieldBaseUI : MonoBehaviour
     void Start()
     {
         menuButton.onClick.AddListener(() => SetFieldBaseUI());
+        guideButton.onClick.AddListener(() => SetGuideUI());
         RefreshEntrySlots();
     }
 
     public void SetFieldBaseUI() 
     {
         FieldUIManager.Instance.OpenUI<PlayerInfoUI>();
+    }
+
+    public void SetGuideUI()
+    {
+        FieldUIManager.Instance.OpenPlayerGuideUI();
     }
 
 

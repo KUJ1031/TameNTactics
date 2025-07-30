@@ -10,6 +10,7 @@ public class SelectTargetState : BaseBattleState
     public override void Enter()
     {
         Debug.Log("타겟 선택 상태로 진입했습니다. 공격할 몬스터를 선택하세요.");
+        BattleTutorialManager.Instance.InitEnemySelected_Attack();
         ShowPossibleTargets();
         UIManager.Instance.battleUIManager.EnableHoverSelect(BattleManager.Instance.possibleTargets);
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("공격할 상대 몬스터를 선택하세요.");
@@ -30,6 +31,7 @@ public class SelectTargetState : BaseBattleState
         }
         //UIManager.Instance.battleUIManager.OffSelectMonsterUI();
         BattleManager.Instance.SelectTargetMonster(monster);
+        BattleTutorialManager.Instance.EndAttackTutorial();
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
     }
 

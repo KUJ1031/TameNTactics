@@ -6946,7 +6946,6 @@ GameObject:
   - component: {fileID: 2686177151705108622}
   - component: {fileID: 4039204335605852468}
   - component: {fileID: 6009480963918098138}
-  - component: {fileID: 1414067442615915798}
   - component: {fileID: 3004153338912106457}
   m_Layer: 0
   m_Name: Laseia
@@ -7091,22 +7090,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1414067442615915798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7842960403209911710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.3
-  stopDuration: 3
 --- !u!114 &3004153338912106457
 MonoBehaviour:
   m_ObjectHideFlags: 0

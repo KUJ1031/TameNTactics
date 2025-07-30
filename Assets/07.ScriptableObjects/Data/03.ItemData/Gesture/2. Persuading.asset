@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd8eee3a0abe95048b3a1531cc959ee9, type: 3}
-  m_Name: 3. Angry
+  m_Name: 2. Persuading
   m_EditorClassIdentifier: 
-  itemId: 403
-  itemName: "\uD654\uB0B4\uAE30"
-  itemImage: {fileID: 21300000, guid: d75b3d19f9d6b41b599cc3b9728b38ec, type: 3}
+  itemId: 402
+  itemName: "\uC124\uB4DD\uD558\uAE30"
+  itemImage: {fileID: 21300000, guid: 3df3af5b3aba64c0aa071b66564456f4, type: 3}
   maxStack: 1
   type: 2
-  description: "\uD654\uB97C \uB0B4\uC5B4 \uC0C1\uB300\uB97C \uC8FC\uB205\uB4E4\uAC8C
-    \uD55C\uB2E4."
+  description: "\uC9C4\uC2EC\uC73C\uB85C \uC0C1\uB300\uC5D0\uAC8C \uD638\uC18C\uD558\uC5EC
+    \uC124\uB4DD\uD55C\uB2E4."
   goldValue: 0
   itemEffects: []

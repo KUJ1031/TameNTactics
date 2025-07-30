@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnBattleAllMonsters : MonoBehaviour
@@ -28,13 +29,17 @@ public class SpawnBattleAllMonsters : MonoBehaviour
 
         BattleManager.Instance.FindSpawnMonsters();
         BattleManager.Instance.StartBattle();
-        UIManager.Instance.battleUIManager.SettingMonsterInfo(allySpawner, enemySpawner);
-        UIManager.Instance.battleUIManager.SettingMonsterPassive(playerTeam);
-        UIManager.Instance.battleUIManager.SettingMonsterSelecter(allySpawner, enemySpawner);
+
+        if (PlayerManager.Instance.player.playerTutorialCheck)
+        {
+            UIManager.Instance.battleUIManager.SettingMonsterInfo(allySpawner, enemySpawner);
+            UIManager.Instance.battleUIManager.SettingMonsterPassive(playerTeam);
+            UIManager.Instance.battleUIManager.SettingMonsterSelecter(allySpawner, enemySpawner);
+        }
     }
 
     //위치에 몬스터 생성
-    private void CreateMonster(List<Monster> monsterList, Transform Spawner)
+    public void CreateMonster(List<Monster> monsterList, Transform Spawner)
     {
         for (int i = 0; i < monsterList.Count; i++)
         {

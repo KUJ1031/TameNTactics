@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd8eee3a0abe95048b3a1531cc959ee9, type: 3}
-  m_Name: 4. Grieve
+  m_Name: 5.  Ignoring
   m_EditorClassIdentifier: 
-  itemId: 404
-  itemName: "\uC2AC\uD508 \uD45C\uC815 \uC9D3\uAE30"
-  itemImage: {fileID: 21300000, guid: c6c2d0f5c2be4449cb9df1eeefa67bf8, type: 3}
+  itemId: 405
+  itemName: "\uBB34\uC2DC\uD558\uAE30"
+  itemImage: {fileID: 21300000, guid: 71e21c9619ce14beba3b3128429314ca, type: 3}
   maxStack: 1
   type: 2
-  description: "\uC2AC\uD508 \uD45C\uC815\uC744 \uC9C0\uC5B4 \uC0C1\uB300\uC758 \uB3D9\uC815\uC2EC\uC744
-    \uC720\uBC1C\uD55C\uB2E4."
+  description: "\uB300\uB193\uACE0 \uC0C1\uB300\uB97C \uBB34\uC2DC\uD558\uC5EC \uC0C1\uB300\uB97C
+    \uD654\uB098\uAC8C \uD55C\uB2E4."
   goldValue: 0
   itemEffects: []

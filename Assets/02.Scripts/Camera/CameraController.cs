@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,9 @@ public class CameraController : Singleton<CameraController>
 {
     public CinemachineVirtualCamera CurrentVCam { get; private set; }
     private CinemachineBasicMultiChannelPerlin perlin;
+
+    private List<CinemachineVirtualCamera> allCameras = new();
+    private Dictionary<string, CinemachineVirtualCamera> cameraDict = new();
 
     private float shakeTime;
     private float totalShakeTime;
@@ -21,6 +25,12 @@ public class CameraController : Singleton<CameraController>
     private Coroutine rotationCoroutine;
 
     protected override bool IsDontDestroy => true;
+
+    private void Awake()
+    {
+        base.Awake(); // Singleton Awake
+        CacheAllVirtualCameras();
+    }
 
     private void Update()
     {
@@ -37,6 +47,7 @@ public class CameraController : Singleton<CameraController>
                 ShakeStop();
             }
         }
+        RefreshCameraList();
     }
 
     private void OnEnable()
@@ -240,4 +251,94 @@ public class CameraController : Singleton<CameraController>
         yield return new WaitForSeconds(0.01f);
         onComplete?.Invoke();
     }
+
+    public void RefreshCameraList()
+    {
+        allCameras.Clear();
+        cameraDict.Clear();
+
+        var foundCams = FindObjectsOfType<CinemachineVirtualCamera>(true);
+        foreach (var cam in foundCams)
+        {
+            allCameras.Add(cam);
+            cameraDict[cam.name] = cam;
+        }
+    }
+
+
+    private void CacheAllVirtualCameras()
+    {
+        allCameras.Clear();
+        cameraDict.Clear();
+
+        var cams = GetComponentsInChildren<CinemachineVirtualCamera>(true); // 폴더 안에 있는 카메라도 포함
+        foreach (var cam in cams)
+        {
+            allCameras.Add(cam);
+            cameraDict[cam.name] = cam;
+        }
+    }
+
+    /// <summary>
+    /// 이름으로 카메라 전환
+    /// </summary>
+    public void SwitchTo(string cameraName, bool forceClearTarget = false)
+    {
+        if (cameraDict.TryGetValue(cameraName, out var cam))
+        {
+            SwitchTo(cam, forceClearTarget);
+        }
+        else
+        {
+            Debug.LogWarning($"카메라 이름 '{cameraName}'을 찾을 수 없습니다.");
+        }
+    }
+
+
+    /// <summary>
+    /// 인덱스로 카메라 전환
+    /// </summary>
+    public void SwitchTo(int index)
+    {
+        if (index >= 0 && index < allCameras.Count)
+        {
+            SwitchTo(allCameras[index]);
+        }
+        else
+        {
+            Debug.LogWarning($"카메라 인덱스 {index}가 범위를 벗어났습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 실제 카메라 전환 처리
+    /// </summary>
+    private void SwitchTo(CinemachineVirtualCamera targetCam, bool forceClearTarget = false)
+    {
+        if (targetCam == null) return;
+
+        Transform currentTarget = CurrentVCam?.Follow;
+
+        foreach (var cam in allCameras)
+            cam.Priority = 0;
+
+        targetCam.Priority = 10;
+        CurrentVCam = targetCam;
+
+        if (forceClearTarget)
+        {
+            CurrentVCam.Follow = null;
+            CurrentVCam.LookAt = null;
+        }
+        else if (currentTarget != null)
+        {
+            CurrentVCam.Follow = currentTarget;
+            CurrentVCam.LookAt = currentTarget;
+        }
+
+        perlin = CurrentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        originalOrthoSize = CurrentVCam.m_Lens.OrthographicSize;
+    }
+
+
 }

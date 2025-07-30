@@ -5,6 +5,7 @@ public class InventoryState : BaseBattleState
 
     public override void Enter()
     {
+        BattleTutorialManager.Instance.InitItemSelected();
         var inventoryView = UIManager.Instance.battleUIManager.InventoryView;
         inventoryView.ShowInventory();
         inventoryView.OnItemUseConfirmed += OnSelectedItem;
