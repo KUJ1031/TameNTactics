@@ -57,7 +57,7 @@ public class FieldUIManager : MonoBehaviour
     //Confirm 팝업
     public void OpenConfirmPopup(PopupType type, string message, Action<bool> onConfirmed)
     {
-        PopupUIManager.Instance.ShowPanel<ConfirmPopup>("ConfirmPopup", popup =>
+        PopupUIManager.Instance.ShowPanel<ConfirmPopup>("SimplePopup", popup =>
         {
             popup.Open(type,message, onConfirmed);
         });
