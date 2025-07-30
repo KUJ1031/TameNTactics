@@ -320,7 +320,10 @@ public class BattleManager : Singleton<BattleManager>
             Vector2 originalPos = casterChar.transform.position;
             Vector2 attackPos = AttackPosition.transform.position;
 
-            yield return StartCoroutine(MoveToPosition(casterChar, attackPos, 0.3f));
+            casterChar.PlayAttack();
+
+            yield return StartCoroutine(MoveToPosition(casterChar, attackPos, 0.3f, false));
+            casterChar.PlayIdle();
 
             ISkillEffect effect = null;
 
@@ -341,7 +344,7 @@ public class BattleManager : Singleton<BattleManager>
                 SkillEffectController.PlayEffect(skill, casterChar, targetChars);
             }
 
-            yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f));
+            yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f, true));
         }
 
         CheckDeadMonster();
@@ -563,7 +566,7 @@ public class BattleManager : Singleton<BattleManager>
     }
 
     // 몬스터 공격 시 화면 중앙/원래 위치로 이동
-    private IEnumerator MoveToPosition(MonsterCharacter character, Vector2 targetPos, float duration)
+    private IEnumerator MoveToPosition(MonsterCharacter character, Vector2 targetPos, float duration, bool setIdle = false)
     {
         Vector2 startPos = character.transform.position;
         float elapsed = 0f;
@@ -582,6 +585,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             character.transform.position = Vector3.Lerp(startPos, targetPos, elapsed / duration);
             elapsed += Time.deltaTime;
+            character.PlayMove();
 
             //// gauge 위치 갱신
             //if (gaugeRect != null && parentCanvas != null)
@@ -599,6 +603,8 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         character.transform.position = targetPos;
+
+        if (setIdle) character.PlayIdle();
 
         yield return new WaitForSeconds(duration);
     }
