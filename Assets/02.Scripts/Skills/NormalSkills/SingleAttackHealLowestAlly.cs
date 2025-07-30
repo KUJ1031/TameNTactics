@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class ToxicBite : ISkillEffect
+public class SingleAttackHealLowestAlly : ISkillEffect
 {
     private SkillData skillData;
-
-    public ToxicBite(SkillData data)
+    
+    public SingleAttackHealLowestAlly(SkillData data)
     {
         skillData = data;
     }
-
-    // 20% 확률로 2턴동안 독
+    
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -23,10 +23,20 @@ public class ToxicBite : ISkillEffect
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
 
-            if (Random.value < 0.2f && caster.Level >= 10)
+            if (Random.value < 0.5f && caster.Level >= 10)
             {
                 yield return new WaitForSeconds(1f);
-                target.ApplyStatus(new Poison(2));
+
+                List<Monster> monsters = BattleManager.Instance.BattleEntryTeam
+                    .Where(m => m.CurHp > 0)
+                    .OrderBy(m => m.CurHp)
+                    .ToList();
+
+                if (monsters.Count > 0)
+                {
+                    int amount = Mathf.RoundToInt(monsters[0].CurMaxHp * 0.1f);
+                    monsters[0].Heal(amount);
+                }
             }
         }
     }

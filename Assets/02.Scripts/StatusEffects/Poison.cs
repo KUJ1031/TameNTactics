@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Poison : StatusEffect
 {
-    private int damagePerTurn;
-    
     public Poison(int duration) : base(StatusEffectType.Poison, duration) {}
     
     // 독, 턴이 시작될때 정해진 턴 만큼 최대체력의 10%만큼의 수치로 데미지 받음
