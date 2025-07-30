@@ -49,6 +49,13 @@ public class SpawnBattleAllMonsters : MonoBehaviour
                 //스폰 위치에 객체 생성
                 GameObject enemyMonster = Instantiate(loadedPrefab, spawnPointTransform);
 
+                if (playerTeam.Contains(monsterList[i]))
+                {
+                    Vector3 newScale = enemyMonster.transform.localScale;
+                    newScale.x *= -1;
+                    enemyMonster.transform.localScale = newScale;
+                }
+
                 //객체 값 수정
                 var monsterChar = enemyMonster.GetComponent<MonsterCharacter>();
                 monsterChar.Init(monsterList[i]);

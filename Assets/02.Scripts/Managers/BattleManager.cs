@@ -30,6 +30,8 @@ public class BattleManager : Singleton<BattleManager>
 
     public string previousSceneName;
 
+    public bool isCoroutineOver = false;
+
     // 배틀 시작시 배틀에 나오는 몬스터 찾아서 리스트에 넣어줌
     public void FindSpawnMonsters()
     {
@@ -98,6 +100,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.CheckMonsterAction();
         }
 
+        isCoroutineOver = true;
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
 
@@ -178,14 +181,18 @@ public class BattleManager : Singleton<BattleManager>
 
             case TargetScope.EnemyTeam:
                 possibleTargets = aliveEnemy;
-                
+
                 if (aliveEnemy.Count == 1)
                 {
                     selectedTargets.Add(aliveEnemy[0]);
                     StartCoroutine(CompareSpeedAndFight());
+
+                    UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                    UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                    UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
                     return;
                 }
-                
+
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
 
@@ -298,7 +305,7 @@ public class BattleManager : Singleton<BattleManager>
 
         MonsterCharacter casterChar = FindMonsterCharacter(caster);
         List<MonsterCharacter> targetChars = new();
-        
+
         foreach (var t in targets)
         {
             MonsterCharacter targetChar = FindMonsterCharacter(t);
@@ -330,7 +337,7 @@ public class BattleManager : Singleton<BattleManager>
                 yield return StartCoroutine(effect.Execute(caster, targets));
                 SkillEffectController.PlayEffect(skill, casterChar, targetChars);
             }
-            
+
             yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f));
         }
 
@@ -466,6 +473,7 @@ public class BattleManager : Singleton<BattleManager>
 
     private IEnumerator EnemyAttackAfterPlayerTurnCoroutine()
     {
+        isCoroutineOver = false;
         Debug.Log("EnemyAttackAfterPlayerTurn");
         var enemyAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
@@ -513,7 +521,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         DeadEntryMonsters = BattleEntryTeam.Where(m => m.CurHp <= 0).ToList();
         DeadEnemyMonsters = BattleEnemyTeam.Where(m => m.CurHp <= 0).ToList();
-        
+
         BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
         BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
 
@@ -599,13 +607,13 @@ public class BattleManager : Singleton<BattleManager>
             caster.SetActionRestriction(1);
         }
     }
-    
+
     private void InitializeDeadMonsters()
     {
         DeadEnemyMonsters.Clear();
         DeadEntryMonsters.Clear();
     }
-    
+
     private void NotifyUltUsed(Monster ultimateUser, List<Monster> team)
     {
         foreach (var monster in team)

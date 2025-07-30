@@ -5923,7 +5923,7 @@ GameObject:
   - component: {fileID: 653704014134590263}
   - component: {fileID: 3534871867803215549}
   - component: {fileID: 3207703036362747598}
-  - component: {fileID: 6449833181470980056}
+  - component: {fileID: 2007500640891240631}
   m_Layer: 0
   m_Name: Acurion
   m_TagString: Untagged
@@ -5941,7 +5941,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8678589690759681974}
@@ -6046,7 +6046,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703ae52b3f7986e4c9af0d0c29b49a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 838953812, guid: 19269f745e85d444f852ebe63ca656ee, type: 3}
 --- !u!114 &653704014134590263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6083,7 +6082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6449833181470980056
+--- !u!114 &2007500640891240631
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6097,7 +6096,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   changeDirectionInterval: 3
-  stopChance: 0.3
+  stopChance: 0.65
   stopDuration: 3
 --- !u!1 &4624962124156117400
 GameObject:
