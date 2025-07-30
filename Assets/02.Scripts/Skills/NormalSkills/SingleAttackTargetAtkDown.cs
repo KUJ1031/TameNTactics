@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlareStrike : ISkillEffect
+public class SingleAttackTargetAtkDown : ISkillEffect
 {
     private SkillData skillData;
-
-    public FlareStrike(SkillData data)
+    
+    public SingleAttackTargetAtkDown(SkillData data)
     {
         skillData = data;
     }
-
-    // 20% 확률로 2턴동안 화상
+    
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -25,10 +24,9 @@ public class FlareStrike : ISkillEffect
 
             if (Random.value < 0.2f && caster.Level >= 10)
             {
-                target.ApplyStatus(new Burn(2));
+                int amount = Mathf.RoundToInt(target.CurAttack * 0.1f);
+                target.PowerDown(amount);
             }
         }
-
-        yield break;
     }
 }

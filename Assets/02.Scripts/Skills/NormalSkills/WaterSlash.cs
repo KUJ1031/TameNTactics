@@ -25,7 +25,6 @@ public class WaterSlash : ISkillEffect
 
             if (caster.Level >= 10)
             {
-                yield return new WaitForSeconds(1f);
                 int healAmount = Mathf.RoundToInt(result.damage * 0.1f);
                 caster.Heal(healAmount);
             }
