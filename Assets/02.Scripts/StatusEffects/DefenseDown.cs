@@ -1,22 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-public class AttackDown : StatusEffect
+public class DefenseDown : StatusEffect
 {
-    public AttackDown(int duration) : base(StatusEffectType.AttackDown, duration){}
+    public DefenseDown(int duration) : base(StatusEffectType.DefenseDown, duration) {}
 
-    private bool isApplied = false;
+    bool isApplied = false;
     
-    // 공격력 낮춤
     public override void OnTurnStart(Monster target)
     {
-        int amount = Mathf.RoundToInt(target.CurAttack * 0.1f);
+        int amount = Mathf.RoundToInt(target.CurDefense * 0.1f);
         
         if (!isApplied)
         {
-            target.PowerDown(amount);
+            target.BattleDefenseDown(amount);
             isApplied = true;
         }
         
@@ -24,7 +22,7 @@ public class AttackDown : StatusEffect
         
         if (duration == 0)
         {
-            target.PowerUp(amount);
+            target.BattleDefenseUp(amount);
             isApplied = false;
         }
     }
