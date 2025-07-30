@@ -1,30 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-public class AttackDown : StatusEffect
+public class Sleep : StatusEffect
 {
-    public AttackDown(int duration) : base(StatusEffectType.AttackDown, duration){}
+    public Sleep(int duration) : base(StatusEffectType.Sleep, duration){}
 
     private bool isApplied = false;
     
-    // 공격력 낮춤
+    // 턴이 시작될때 정해진 턴 만큼 행동 불가(어떤것도 할수없음)
     public override void OnTurnStart(Monster target)
     {
-        int amount = Mathf.RoundToInt(target.CurAttack * 0.1f);
-        
         if (!isApplied)
         {
-            target.PowerDown(amount);
+            target.ApplyStun(true);
             isApplied = true;
         }
         
         duration--;
-        
+
         if (duration == 0)
         {
-            target.PowerUp(amount);
+            target.ApplyStun(false);
             isApplied = false;
         }
     }

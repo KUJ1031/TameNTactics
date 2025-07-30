@@ -4,7 +4,9 @@ public enum StatusEffectType
     Paralysis,
     Poison,
     Stun,
-    AttackDown
+    AttackDown,
+    Sleep,
+    DefenseDown,
 }
 
 public abstract class StatusEffect
