@@ -8671,6 +8671,7 @@ MonoBehaviour:
   MonsterSkill2: {fileID: 5970112217011900460}
   MonsterSkill3: {fileID: 6290798833370859671}
   CollectionSlot: {fileID: 8425440483352195797}
+  closeMenuButton: {fileID: 7469466056705418062}
 --- !u!114 &5927742719103812395
 MonoBehaviour:
   m_ObjectHideFlags: 0

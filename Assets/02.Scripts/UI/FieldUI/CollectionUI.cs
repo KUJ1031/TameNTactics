@@ -23,8 +23,16 @@ public class CollectionUI : FieldMenuBaseUI
 
     [SerializeField] private Image CollectionSlot;
 
+    [SerializeField] private Button closeMenuButton;
+    private void Awake()
+    {
+        closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
+    }
 
-
+    public void OnClickCloseMenuButton()
+    {
+        FieldUIManager.Instance.CloseAllUI();
+    }
 
     public void Setdata(MonsterData data)
     {
