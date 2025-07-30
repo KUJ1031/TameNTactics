@@ -39,7 +39,6 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         monsterLevel.text = $"Lv.{monster.Level}";
         monsterHP.text = $"{monster.CurHp}/{monster.MaxHp}";
         monsterExp.text = $"{monster.CurExp}/{monster.MaxExp}";
-        monsterExp.color = (float)monster.CurExp/monster.MaxExp*100f > 60f ? Color.black : Color.white;
         HPBar.fillAmount = (float)monster.CurHp / monster.MaxHp;
         ExpBar.fillAmount = (float)monster.CurExp / monster.MaxExp;
     }

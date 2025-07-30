@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class OwnedMonsterUI : FieldMenuBaseUI
 {
-    [SerializeField] private Button detailButton, addEntryButton, removeEntryButton, releaseButton;
+    [SerializeField] private Button detailButton, addEntryButton, removeEntryButton, releaseButton, closeMenuButton;
     [SerializeField] private MonsterDetailUI monsterDetailUI;
 
     [Header("window")]
@@ -27,6 +27,7 @@ public class OwnedMonsterUI : FieldMenuBaseUI
     {
         SetLogoVisibility(true);
         ownedUIManager = OwnedMonsterUIManager.Instance;
+        closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
     }
 
     //버튼 세팅
@@ -88,6 +89,11 @@ public class OwnedMonsterUI : FieldMenuBaseUI
         monster.ToggleFavorite();
         ToggleFavoriteMark(monster.IsFavorite);
         ownedUIManager.RefreshSlotFor(monster);
+    }
+    //닫기버튼
+    public void OnClickCloseMenuButton()
+    {
+        FieldUIManager.Instance.CloseAllUI();
     }
 
     //즐겨찾기 색 변경

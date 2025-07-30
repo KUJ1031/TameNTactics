@@ -15,8 +15,8 @@ public class OneHitShield : IPassiveSkill
     {
         if (isShielding)
         {
-            isShielding = false;
             return 0;
+            isShielding = false;
         }
         else return damage;
     }

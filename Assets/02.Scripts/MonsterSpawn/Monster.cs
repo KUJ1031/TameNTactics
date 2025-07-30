@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = System.Random;
 
 [System.Serializable]
 public class Monster
@@ -257,11 +256,6 @@ public class Monster
         {
             CurCriticalChance = maxLimit;
         }
-    }
-
-    public void BattleMaxHpUp(int amount)
-    {
-        CurMaxHp += amount;
     }
 
 

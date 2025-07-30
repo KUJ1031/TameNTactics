@@ -16,8 +16,8 @@ MonoBehaviour:
   monsterNumber: 12
   monsterImage: {fileID: 886092445, guid: 9f92c1c28c73c7b4eb2353e0d70bf40a, type: 3}
   encounterCount: 0
-  captureCount: 8
-  type: 0
+  captureCount: 170
+  type: 2
   personality: 0
   maxHp: 100
   attack: 18
@@ -32,8 +32,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9e3e3845a0532e5468df36eb74010b56, type: 2}
   - {fileID: 11400000, guid: 310ab3e8840fe7b4ead64b0001267d63, type: 2}
   - {fileID: 11400000, guid: e0b50ce991fbe5940af85b78abb2b69f, type: 2}
-  spawnArea: 0
+  spawnArea: 
   spawnTime: 0
   captureRate: 0
   description: 
-  damageSound: {fileID: 0}

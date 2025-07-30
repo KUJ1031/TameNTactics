@@ -12,16 +12,6 @@ public class PlayerInfoUI : FieldMenuBaseUI
     [SerializeField] private TextMeshProUGUI BastMonsterText;
     [SerializeField] private TextMeshProUGUI EquipItemText;
     [SerializeField] private TextMeshProUGUI atherText;
-    [SerializeField] private Button closeMenuButton;
-    private void Awake()
-    {
-        closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
-    }
-
-    public void OnClickCloseMenuButton()
-    {
-        FieldUIManager.Instance.CloseAllUI();
-    }
 
     private void OnEnable()
     {

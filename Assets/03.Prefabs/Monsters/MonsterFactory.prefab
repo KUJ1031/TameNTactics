@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4807397922315224042
 RectTransform:
   m_ObjectHideFlags: 0
@@ -139,7 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687769ba24397b640a18b93cd0a85384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterDataList: []
+  monsterList: []
+  monsterPrefab: {fileID: 4522283486932235510, guid: a9e095c01c527b649ad940f6dd36578d, type: 3}
   minLevel: 0
   maxLevel: 0
   width: 0

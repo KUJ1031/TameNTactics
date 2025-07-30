@@ -89,7 +89,6 @@ public class MonsterFactory : MonoBehaviour
                 MonsterMover mover = monsterGo.GetComponent<MonsterMover>();
                 if (mover != null)
                 {
-                    Debug.Log("mover 감지");
                     mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
                 }
             }

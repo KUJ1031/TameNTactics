@@ -27,17 +27,6 @@ public class InventoryUI : FieldMenuBaseUI
     [SerializeField] private TextMeshProUGUI warringPopupText;
     [SerializeField] private Button warringPopupExitButton;
 
-    [SerializeField] private Button closeMenuButton;
-    private void Awake()
-    {
-        closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
-    }
-
-    public void OnClickCloseMenuButton()
-    {
-        FieldUIManager.Instance.CloseAllUI();
-    }
-
     private void Start()
     {
         useButton.onClick.AddListener(OnUse);

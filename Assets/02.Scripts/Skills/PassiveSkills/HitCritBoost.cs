@@ -6,6 +6,7 @@ public class HitCritBoost : IPassiveSkill
 {
     private int curStack = 0;
     private int maxStack = 3;
+    private float increaseAmount = 0.05f;
     
     public void OnBattleStart(Monster self, List<Monster> monsters)
     {

@@ -29,5 +29,7 @@ public class FlareStrike : ISkillEffect
                 target.ApplyStatus(new Burn(2));
             }
         }
+
+        yield break;
     }
 }
