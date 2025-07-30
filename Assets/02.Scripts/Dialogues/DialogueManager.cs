@@ -41,12 +41,13 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         if (dialogueUI == null)
             dialogueUI = FindObjectOfType<DialogueUI>();
+        // CSV 데이터 로딩
+        Addressables.LoadAssetAsync<TextAsset>(csvAddress).Completed += OnCSVLoaded;
     }
 
     void Start()
     {
-        // CSV 데이터 로딩
-        Addressables.LoadAssetAsync<TextAsset>(csvAddress).Completed += OnCSVLoaded;
+        
     }
 
     void OnCSVLoaded(AsyncOperationHandle<TextAsset> handle)
