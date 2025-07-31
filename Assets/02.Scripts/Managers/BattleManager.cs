@@ -342,6 +342,11 @@ public class BattleManager : Singleton<BattleManager>
             {
                 yield return StartCoroutine(effect.Execute(caster, targets));
                 SkillEffectController.PlayEffect(skill, casterChar, targetChars);
+
+                foreach (var target in targets)
+                {
+                    yield return StartCoroutine(UIManager.Instance.battleUIManager.WaitHpBarAnimationDone(target));
+                }
             }
 
             yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f, true));
