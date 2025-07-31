@@ -26,15 +26,17 @@ public class MiniGameManager : Singleton<MiniGameManager>
     private bool isCatching = false;
 
     private Dictionary<(string, Personality), float> personalityRule;
+    private Player player;
     private void Start()
     {
         gameObject.SetActive(false);
         DataComparer();
+        player = PlayerManager.Instance.player;
     }
 
     private void Update()
     {
-        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path) && isCatching == false)
+        if (player.playerKeySetting.TryGetValue(keySettingName, out string path) && isCatching == false)
         {
             string InputControlPath = path;
             var control = InputSystem.FindControl(path);
@@ -84,14 +86,19 @@ public class MiniGameManager : Singleton<MiniGameManager>
         float range;
         float hpPercent;
 
-        //Debug.Log("현재 체력 : " + targetMonster.CurHp + "최대 체력 : " + targetMonster.CurMaxHp);
         hpPercent = (float)targetMonster.CurHp / targetMonster.CurMaxHp;
-        speed = 1 - (hpPercent * 0.9f);
 
-        range = 30;
-        //range = GetRange(gesture.itemName, targetMonster.personality);
-        
-        //Debug.Log("몬스터 체력퍼 : " + hpPercent + "속도 : " + speed);
+        if (!player.playerTutorialCheck)
+        {
+            range = 75f;
+            speed = 0.9f;
+        }
+        else { 
+            speed = 1 - (hpPercent * 0.9f);
+            range = 30;
+            //range = GetRange(gesture.itemName, targetMonster.personality);
+        }
+
         SetSuccessRanges(range);
         rotatePoint.SetRotateSpeed(speed);
         rotatePoint.SetRanges(ranges);
