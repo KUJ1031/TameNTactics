@@ -12,7 +12,8 @@ public class GameTimeFlow : Singleton<GameTimeFlow>
 {
     [Header("시간 흐름 설정")]
     public float dayLengthInSeconds = 2880f; // 게임 내 하루 = 48분
-    private float timer;
+    internal float timer;
+    internal string timeString;
 
     [Header("시간 UI")]
     public TextMeshProUGUI timeText;
@@ -68,7 +69,7 @@ public class GameTimeFlow : Singleton<GameTimeFlow>
         int hours12 = hours24 % 12;
         if (hours12 == 0) hours12 = 12;
 
-        string timeString = string.Format("{0:00}:{1:00} {2}", hours12, minutes, period);
+        timeString = string.Format("{0:00}:{1:00} {2}", hours12, minutes, period);
 
         if (timeText != null) timeText.text = timeString;
 

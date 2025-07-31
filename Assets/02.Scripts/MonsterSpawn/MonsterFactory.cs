@@ -39,7 +39,7 @@ public class MonsterFactory : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !PlayerManager.Instance.player.playerTutorialCheck)
+        if (collision.CompareTag("Player") && !PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             var playerController = collision.GetComponent<PlayerController>();
             if (playerController != null)

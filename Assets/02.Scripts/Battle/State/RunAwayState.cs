@@ -8,7 +8,7 @@ public class RunAwayState : BaseBattleState
 
     public override void Enter()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             BattleTutorialManager.Instance.RunAwayTry();
             BattleTutorialManager.Instance.EndEscapeTutorial();

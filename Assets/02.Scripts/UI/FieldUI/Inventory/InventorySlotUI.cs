@@ -13,6 +13,7 @@ public class InventorySlotUI : MonoBehaviour
     private ItemInstance item;
     private InventoryUI inventoryUI;
     private ShopUI shopUI;
+    private WanderingShopUI wanderingShopUI;
 
     private Button button;
 
@@ -65,6 +66,10 @@ public class InventorySlotUI : MonoBehaviour
         else if (shopUI != null)
         {
             shopUI.SelectItem(item);
+        }
+        else if (wanderingShopUI != null)
+        {
+            wanderingShopUI.SelectItem(item);
         }
     }
 }

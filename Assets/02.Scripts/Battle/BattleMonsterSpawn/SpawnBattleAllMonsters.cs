@@ -30,7 +30,7 @@ public class SpawnBattleAllMonsters : MonoBehaviour
         BattleManager.Instance.FindSpawnMonsters();
         BattleManager.Instance.StartBattle();
 
-        if (PlayerManager.Instance.player.playerTutorialCheck)
+        if (PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             UIManager.Instance.battleUIManager.SettingMonsterInfo(allySpawner, enemySpawner);
             UIManager.Instance.battleUIManager.SettingMonsterPassive(playerTeam);

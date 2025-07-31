@@ -341,19 +341,25 @@ public class DialogueManager : Singleton<DialogueManager>
                 Debug.Log("[이벤트] 카메라 플레이어 시점으로 이동");
                 CameraController.Instance.SwitchTo("PlayerCamera", true, false); // 기존 타겟 유지
                 CameraController.Instance.SetTarget(PlayerManager.Instance.playerController.transform);
-                if (!PlayerManager.Instance.player.playerTutorialCheck && TutorialManager.Instance.gameinit)
+                if (!PlayerManager.Instance.player.playerBattleTutorialCheck && TutorialManager.Instance.gameinit)
                 {
                     FieldUIManager.Instance.playerGuideUI.gameObject.SetActive(true);
                     FieldUIManager.Instance.playerGuideUI.ShowCategory("이동"); // 플레이어 튜토리얼이 안 끝났으면 UI 표시
                     TutorialManager.Instance.gameinit = false;
                 }
-                   
+                break;
+            case "TakeMoveCamShop":
+                Debug.Log("[이벤트] 카메라 상점 시점으로 이동");
+                CameraController.Instance.SwitchTo("ShopCam", true, false); // 타겟 클리어
                 break;
             case "Shop_Buy":
                 ShopManager.Instance.OpenShopUI();
                 break;
             case "Shop_Sell":
                 ShopManager.Instance.OpenShopUI_Sell();
+                break;
+            case "WanderingShop_Buy":
+                ShopManager.Instance.OpenWanderingShopUI();
                 break;
             case "OwnedMonsters_Healing":
                 List<HealedMonsterInfo> ownedHealedList = new List<HealedMonsterInfo>();
@@ -427,8 +433,21 @@ public class DialogueManager : Singleton<DialogueManager>
                 }
 
                 break;
-            case "GiveItem":
-                Debug.Log("[이벤트] 아이템 지급");
+            case "GetGesture_Scolding":
+                PlayerManager.Instance.player.AddItem("호통치기", 1);
+                Debug.Log("[이벤트] [호통치기] 제스처 획득");
+                break;
+            case "Check_GetGesture_Scolding":
+                if (PlayerManager.Instance.player.HasItem("호통치기"))
+                    StartDialogue("노인", currentNPCImage, 350);
+                break;
+            case "GetGesture_Ignoring":
+                PlayerManager.Instance.player.AddItem("무시하기", 1);
+                Debug.Log("[이벤트] [무시하기] 제스처 획득");
+                break;
+            case "Check_GetGesture_Ignoring":
+                if (PlayerManager.Instance.player.HasItem("무시하기"))
+                    StartDialogue("토끼용사", currentNPCImage, 1020);
                 break;
             case "MoveToPlayer":
                 Debug.Log("[이벤트] 플레이어 위치로 이동");

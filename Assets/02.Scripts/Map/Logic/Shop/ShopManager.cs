@@ -7,6 +7,7 @@ public class ShopManager : Singleton<ShopManager>
 
     [SerializeField] private GameObject shopUIObject;
     [SerializeField] private GameObject shopUI_SellObject;
+    [SerializeField] private GameObject wanderingShopUIObject;
 
     public void OpenShopUI()
     {
@@ -27,6 +28,15 @@ public class ShopManager : Singleton<ShopManager>
         shopUI_SellObject.SetActive(true);
     }
 
+    public void OpenWanderingShopUI()
+    {
+        if (wanderingShopUIObject == null)
+        {
+            Debug.LogError("Wandering Shop UI Object is not assigned in the ShopManager.");
+            return;
+        }
+        wanderingShopUIObject.SetActive(true);
+    }
 
     public void CloseShopUI()
     {

@@ -184,7 +184,7 @@ public class BattleManager : Singleton<BattleManager>
 
                 if (aliveEnemy.Count == 1)
                 {
-                    if (PlayerManager.Instance.player.playerTutorialCheck)
+                    if (PlayerManager.Instance.player.playerBattleTutorialCheck)
                     {
                         selectedTargets.Add(aliveEnemy[0]);
                         StartCoroutine(CompareSpeedAndFight());

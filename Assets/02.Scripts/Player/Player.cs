@@ -39,7 +39,8 @@ public class Player
     public List<ItemInstance> playerEquipment = new(); // 장착 아이템 목록
 
     [Header("진행 정보")]
-    public bool playerTutorialCheck = false; // 스테이지 클리어 체크
+    public bool playerBattleTutorialCheck = false; // 배틀 클리어 체크
+    public bool playerAllTutorialCheck = false; // 모든 튜토리얼 체크
     public SerializableDictionary<int, bool> playerBossClearCheck = new();
     public SerializableDictionary<int, bool> playerQuestClearCheck = new();
     public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();
@@ -296,6 +297,19 @@ public class Player
 
     }
 
+    public void AddItem(string itemName, int quantity)
+    {
+        ItemData item = ItemManager.Instance.GetItemByName(itemName);
+        if (item != null)
+        {
+            AddItem(item, quantity);
+        }
+        else
+        {
+            Debug.LogWarning($"'{itemName}'이라는 이름의 아이템을 찾을 수 없습니다.");
+        }
+    }
+
 
     // 아이템 제거
     public void RemoveItem(ItemInstance item, int quantity)
@@ -364,6 +378,11 @@ public class Player
     public void SetPlayerPuzzleClearCheck(int puzzleId)
     {
         playerPuzzleClearCheck[puzzleId] = true;
+    }
+
+    public bool HasItem(string itemName)
+    {
+        return items.Any(i => i.data.itemName == itemName && i.quantity > 0);
     }
 
 }
