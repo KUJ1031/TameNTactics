@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterName: Brio
   monsterNumber: 12
-  monsterImage: {fileID: -1047355641, guid: 5e826d0858406f7429e7988c09ace0f2, type: 3}
+  monsterImage: {fileID: 886092445, guid: 9f92c1c28c73c7b4eb2353e0d70bf40a, type: 3}
   encounterCount: 0
   captureCount: 8
   type: 2

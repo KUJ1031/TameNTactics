@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterName: Riena
   monsterNumber: 8
-  monsterImage: {fileID: -294260056, guid: 467cc45417a3fce4aa11d8e5518e5b6f, type: 3}
+  monsterImage: {fileID: 1648354300, guid: 4eba8fc4e9a9285469ce30e6c0d99c36, type: 3}
   encounterCount: 0
   captureCount: 0
   type: 1
