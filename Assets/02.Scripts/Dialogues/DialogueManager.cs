@@ -327,17 +327,27 @@ public class DialogueManager : Singleton<DialogueManager>
                 Transform playerTransform = PlayerManager.Instance.playerController.transform;
                 PlayerManager.Instance.playerController.isInputBlocked = true;
                 playerTransform.position -= new Vector3(11f, 0f, 0f);
-                CameraController.Instance.SwitchTo("StartCam", true); // 타겟 클리어
+                CameraController.Instance.SwitchTo("StartCam", true, false); // 타겟 클리어
                 break;
 
             case "TakeMoveCamTutorialZone":
                 Debug.Log("[이벤트] 카메라 이동 튜토리얼 존으로 이동");
-                CameraController.Instance.SwitchTo("TutorialZoneCam", true); // 타겟 클리어
+                CameraController.Instance.SwitchTo("TutorialZoneCam", true, false); // 타겟 클리어
+                break;
+            case "TakeMoveCamVillage":
+                TutorialManager.Instance.MoveCamToVillage();
                 break;
             case "TakeMoveCamPlayer":
                 Debug.Log("[이벤트] 카메라 플레이어 시점으로 이동");
-                CameraController.Instance.SwitchTo("PlayerCamera"); // 기존 타겟 유지
+                CameraController.Instance.SwitchTo("PlayerCamera", true, false); // 기존 타겟 유지
                 CameraController.Instance.SetTarget(PlayerManager.Instance.playerController.transform);
+                if (!PlayerManager.Instance.player.playerTutorialCheck && TutorialManager.Instance.gameinit)
+                {
+                    FieldUIManager.Instance.playerGuideUI.gameObject.SetActive(true);
+                    FieldUIManager.Instance.playerGuideUI.ShowCategory("이동"); // 플레이어 튜토리얼이 안 끝났으면 UI 표시
+                    TutorialManager.Instance.gameinit = false;
+                }
+                   
                 break;
             case "Shop_Buy":
                 ShopManager.Instance.OpenShopUI();
@@ -428,7 +438,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 break;
             case "GameStart":
                 Debug.Log("[이벤트] 게임 시작");
-                PlayerManager.Instance.playerController.AutoMove(Vector2.right, 1.5f, 8f); // 오른쪽으로 2초간 이동
+                PlayerManager.Instance.playerController.AutoMove(Vector2.right, 1.5f, 8f, false); // 오른쪽으로 2초간 이동
                 break;
             case "HideDialogue":
                 Debug.Log("[이벤트] 대화 UI 숨김");
@@ -473,9 +483,32 @@ public class DialogueManager : Singleton<DialogueManager>
                 BattleTutorialManager.Instance.InitEmbraceSelected();
                 BattleTutorialManager.Instance.isBattleEmbraceTutorialStarded = true;
                 break;
-            case "End_Tutorial":
+            case "End_BattleTutorial":
                 Debug.Log("튜토리얼 종료");
                 BattleTutorialManager.Instance.EndTutorial();
+                break;
+            case "Guide_MonsterOpen":
+                Debug.Log("몬스터 가이드 열기");
+                TutorialManager.Instance.Guide_MonsterOpen();
+                break;
+            case "Guide_EntryOpen":
+                Debug.Log("엔트리 가이드 열기");
+                TutorialManager.Instance.Guide_EntryOpen();
+                break;
+            case "Guide_BattleOpen":
+                Debug.Log("전투 가이드 열기");
+                TutorialManager.Instance.Guide_BattleOpen();
+                break;
+            case "Guide_SaveOpen":
+                Debug.Log("저장 가이드 열기");
+                TutorialManager.Instance.Guide_SaveOpen();
+                break;
+            case "Guide_MinimapOpen":
+                Debug.Log("미니맵 가이드 열기");
+                TutorialManager.Instance.Guide_MinimapOpen();
+                break;
+            case "End_AllTutorial":
+                TutorialManager.Instance.TutorialCompeleted();
                 break;
 
             default:

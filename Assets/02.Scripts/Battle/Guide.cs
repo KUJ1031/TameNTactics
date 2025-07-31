@@ -88,6 +88,8 @@ public class Guide : MonoBehaviour
         currentGuidePages[currentIndex].SetActive(true);
         currentBackground.SetActive(true);
         SetButtonsActive(true);
+
+        UpdateNavigationButtons(); // 버튼 상태 초기화
     }
 
     private void ShowPrevPage()
@@ -95,8 +97,10 @@ public class Guide : MonoBehaviour
         if (currentGuidePages == null || currentGuidePages.Count == 0) return;
 
         currentGuidePages[currentIndex].SetActive(false);
-        currentIndex = (currentIndex - 1 + currentGuidePages.Count) % currentGuidePages.Count;
+        currentIndex = Mathf.Max(0, currentIndex - 1);
         currentGuidePages[currentIndex].SetActive(true);
+
+        UpdateNavigationButtons();
     }
 
     private void ShowNextPage()
@@ -104,8 +108,24 @@ public class Guide : MonoBehaviour
         if (currentGuidePages == null || currentGuidePages.Count == 0) return;
 
         currentGuidePages[currentIndex].SetActive(false);
-        currentIndex = (currentIndex + 1) % currentGuidePages.Count;
+        currentIndex = Mathf.Min(currentGuidePages.Count - 1, currentIndex + 1);
         currentGuidePages[currentIndex].SetActive(true);
+
+        UpdateNavigationButtons();
+    }
+
+
+    private void UpdateNavigationButtons()
+    {
+        if (currentGuidePages == null || currentGuidePages.Count == 0)
+        {
+            prevButton.interactable = false;
+            nextButton.interactable = false;
+            return;
+        }
+
+        prevButton.interactable = currentIndex > 0;
+        nextButton.interactable = currentIndex < currentGuidePages.Count - 1;
     }
 
     private void ExitGuide()

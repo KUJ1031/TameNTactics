@@ -24,7 +24,6 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
     {
         if (!PlayerManager.Instance.player.playerTutorialCheck)
         {
-            PlayerManager.Instance.playerController.isInputBlocked = false;
             if (!isBattleAttackTutorialEnded)
             {
                 StartCoroutine(WaitUntilDialogueLoadedAndStart());

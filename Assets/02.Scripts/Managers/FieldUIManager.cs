@@ -14,7 +14,7 @@ public class FieldUIManager : MonoBehaviour
     public static FieldUIManager Instance { get; private set; }
 
     [SerializeField] private FieldMenuBaseUI[] uiList;
-    [SerializeField] private PlayerGuideUI playerGuideUI;
+    public PlayerGuideUI playerGuideUI;
     [SerializeField] private GameObject LeftMenuUI;
     [SerializeField] private GameObject BaseUI;
     [SerializeField] private GameObject fieldBaseUI;

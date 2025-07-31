@@ -282,11 +282,11 @@ public class CameraController : Singleton<CameraController>
     /// <summary>
     /// 이름으로 카메라 전환
     /// </summary>
-    public void SwitchTo(string cameraName, bool forceClearTarget = false)
+    public void SwitchTo(string cameraName, bool forceClearTarget = false, bool canPlayerMove = false)
     {
         if (cameraDict.TryGetValue(cameraName, out var cam))
         {
-            SwitchTo(cam, forceClearTarget);
+            SwitchTo(cam, forceClearTarget, canPlayerMove);
         }
         else
         {
@@ -313,9 +313,13 @@ public class CameraController : Singleton<CameraController>
     /// <summary>
     /// 실제 카메라 전환 처리
     /// </summary>
-    private void SwitchTo(CinemachineVirtualCamera targetCam, bool forceClearTarget = false)
+    private void SwitchTo(CinemachineVirtualCamera targetCam, bool forceClearTarget = false, bool canPlayerMove = false)
     {
         if (targetCam == null) return;
+
+        // 플레이어 입력 잠금
+        if (PlayerManager.Instance?.playerController != null)
+            PlayerManager.Instance.playerController.isInputBlocked = true;
 
         Transform currentTarget = CurrentVCam?.Follow;
 
@@ -338,7 +342,19 @@ public class CameraController : Singleton<CameraController>
 
         perlin = CurrentVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         originalOrthoSize = CurrentVCam.m_Lens.OrthographicSize;
+
+        if (!canPlayerMove)
+        {
+            StartCoroutine(UnblockPlayerInputAfterDelay(3f));
+        }
     }
+
+    private IEnumerator UnblockPlayerInputAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PlayerManager.Instance.playerController.isInputBlocked = false;
+    }
+
 
 
 }
