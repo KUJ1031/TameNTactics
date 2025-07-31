@@ -70,7 +70,7 @@ public class SelectCaptureTargetState : BaseBattleState
         BattleTutorialManager.Instance.InitMinigame();
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
         //MiniGameManager.Instance.StartMiniGame(targetMonster, CheckEmbraceResult);
-        
+
     }
 
     private void CheckEmbraceResult(bool isSuccess, Monster targetMonster)
