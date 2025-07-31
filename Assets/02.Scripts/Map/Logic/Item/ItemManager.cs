@@ -13,4 +13,9 @@ public class ItemManager : Singleton<ItemManager>
     {
         return allItems.Find(i => i.itemName == itemName);
     }
+
+    public void GetThisItem(ItemData item, int num)
+    {
+        PlayerManager.Instance.player.AddItem(item, num);
+    }
 }

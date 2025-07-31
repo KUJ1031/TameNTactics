@@ -366,4 +366,9 @@ public class Player
         playerPuzzleClearCheck[puzzleId] = true;
     }
 
+    public bool HasItem(ItemData item)
+    {
+        return items.Any(i => i.data.itemName == item.itemName && i.quantity > 0);
+    }
+
 }

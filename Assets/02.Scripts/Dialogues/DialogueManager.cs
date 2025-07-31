@@ -427,8 +427,21 @@ public class DialogueManager : Singleton<DialogueManager>
                 }
 
                 break;
-            case "GiveItem":
-                Debug.Log("[이벤트] 아이템 지급");
+            case "GetGesture_Scolding":
+                ItemManager.Instance.GetThisItem(ItemManager.Instance.allItems[6], 1);
+                Debug.Log("[이벤트] [호통치기] 제스처 획득");
+                break;
+            case "Check_GetGesture_Scolding":
+                if (PlayerManager.Instance.player.HasItem(ItemManager.Instance.allItems[6]))
+                    StartDialogue("노인", currentNPCImage, 350);
+                break;
+            case "GetGesture_Ignoring":
+                ItemManager.Instance.GetThisItem(ItemManager.Instance.allItems[13], 1);
+                Debug.Log("[이벤트] [무시하기] 제스처 획득");
+                break;
+            case "Check_GetGesture_Ignoring":
+                if (PlayerManager.Instance.player.HasItem(ItemManager.Instance.allItems[13]))
+                    StartDialogue("토끼용사", currentNPCImage, 1020);
                 break;
             case "MoveToPlayer":
                 Debug.Log("[이벤트] 플레이어 위치로 이동");
