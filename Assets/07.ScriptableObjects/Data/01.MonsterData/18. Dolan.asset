@@ -17,8 +17,8 @@ MonoBehaviour:
   monsterImage: {fileID: -923747870, guid: b6912f1d60942074aa6c715e2a2ffa56, type: 3}
   encounterCount: 0
   captureCount: 0
-  type: 0
-  personality: 0
+  type: 3
+  personality: 3
   maxHp: 80
   attack: 15
   defense: 6
