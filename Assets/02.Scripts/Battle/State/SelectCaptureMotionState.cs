@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SelectCaptureMotionState : BaseBattleState
@@ -22,8 +23,14 @@ public class SelectCaptureMotionState : BaseBattleState
     }
 
     // 잡는걸로 이동
-    public void OnCaptureTargetSelected()
+    public void OnCaptureTargetSelected(string itemName)
     {
-        battleSystem.ChangeState(new SelectCaptureTargetState(battleSystem));
+        var item = PlayerManager.Instance.player.gestureItems.FirstOrDefault(i => i.data.itemName == itemName);
+
+        if (item != null)
+        {
+            battleSystem.selectedGestureItem = item;
+            battleSystem.ChangeState(new SelectCaptureTargetState(battleSystem));
+        }
     }
 }

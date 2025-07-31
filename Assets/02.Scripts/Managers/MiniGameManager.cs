@@ -93,10 +93,12 @@ public class MiniGameManager : Singleton<MiniGameManager>
             range = 75f;
             speed = 0.9f;
         }
-        else { 
+        else
+        {
             speed = 1 - (hpPercent * 0.9f);
-            range = 30;
-            //range = GetRange(gesture.itemName, targetMonster.personality);
+            //range = 30;
+            range = GetRange(gesture.itemName, targetMonster.personality);
+            Debug.Log($"GetRange: {gesture.itemName}, {targetMonster.personality} = {range}");
         }
 
         SetSuccessRanges(range);
