@@ -24,8 +24,8 @@ public class SingleAttackTargetDefDown : ISkillEffect
 
             if (Random.value < 0.2f && caster.Level >= 10)
             {
-                yield return new WaitForSeconds(1f);
-                target.ApplyStatus(new DefenseDown(2));
+                int amount = Mathf.RoundToInt(target.CurDefense * 0.05f);
+                target.BattleDefenseDown(amount);
             }
         }
     }

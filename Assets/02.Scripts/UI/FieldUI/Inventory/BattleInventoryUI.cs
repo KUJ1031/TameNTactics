@@ -65,6 +65,9 @@ public class BattleInventoryUI : MonoBehaviour
     private void OnItemSlotClicked(ItemInstance item)
     {
         Debug.Log($"클릭한 아이템: {item.data.itemName}, 수량: {item.quantity}");
+
+        BattleTutorialManager.Instance.InitItemButtonSelected();
+
         itemDetailImage.sprite = item.data.itemImage; // Assuming itemIcon is a SpriteRenderer or Image component
         itemDetailName.text = item.data.itemName; // Assuming itemName is a TextMeshProUGUI component
         itemDetailDescription.text = item.data.description; // Assuming itemDescription is a TextMeshProUGUI component

@@ -39,6 +39,7 @@ public class Player
     public List<ItemInstance> playerEquipment = new(); // 장착 아이템 목록
 
     [Header("진행 정보")]
+    public bool playerTutorialCheck = false; // 스테이지 클리어 체크
     public SerializableDictionary<int, bool> playerBossClearCheck = new();
     public SerializableDictionary<int, bool> playerQuestClearCheck = new();
     public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();

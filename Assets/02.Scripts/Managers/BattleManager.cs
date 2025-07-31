@@ -184,13 +184,16 @@ public class BattleManager : Singleton<BattleManager>
 
                 if (aliveEnemy.Count == 1)
                 {
-                    selectedTargets.Add(aliveEnemy[0]);
-                    StartCoroutine(CompareSpeedAndFight());
+                    if (PlayerManager.Instance.player.playerTutorialCheck)
+                    {
+                        selectedTargets.Add(aliveEnemy[0]);
+                        StartCoroutine(CompareSpeedAndFight());
 
-                    UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
-                    UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
-                    UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
-                    return;
+                        UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                        UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                        UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
+                        return;
+                    }
                 }
 
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));

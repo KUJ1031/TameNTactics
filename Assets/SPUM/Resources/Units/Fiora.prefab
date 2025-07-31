@@ -6606,7 +6606,6 @@ GameObject:
   - component: {fileID: 7581984644777161147}
   - component: {fileID: 2027054123999837928}
   - component: {fileID: 4963964542565949245}
-  - component: {fileID: 1558547851762341921}
   - component: {fileID: 2728826189398270343}
   m_Layer: 0
   m_Name: Fiora
@@ -6751,22 +6750,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1558547851762341921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7406787892551227653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.3
-  stopDuration: 3
 --- !u!114 &2728826189398270343
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -21,7 +21,7 @@ public enum PassiveSkillList
     OneHitShield, // 공격을 한번 막아주는 실드(상태이상은 못막음)
     AtkUpOnAllyDeath, // 아군 쓰러질때마다 공격력 20% 상승
     TypeHitRecovery, // 유리한 상성 공격시 데미지의 20% 체력 회복
-    EnemyAtkDownTwoTurns, // 게임 시작시 2턴동안 상대 공격력 10% 감소
+    EnemyAtkDown, // 게임 시작시 상대 공격력 5% 감소
     UltGaugeChancePerTurn, // 매 턴 끝날때 20% 확률로 궁극기 게이지 1개 증가
     BonusAttack, // 10% 확률로 추가 공격(데미지의 20%)
     PowerBoostPerUlt, // 같은팀(본인 포함) 궁극기를 사용하면 공격력 10% 증가
@@ -56,6 +56,10 @@ public enum NormalSkillList
     SingleAttackTargetAtkDown, // 기본 공격 해금시 일정 확률로 상대 공격력 10% 감소
     SingleAttackTargetDefDown, // 기본 공격 해금시 일정 확률로 상대 방어력 10% 감소
     SingleAttackHealLowestAlly, // 기본 공격 해금시 일정 확률로 우리팀중 체력이 가장 낮은 몬스터 최대체력의 10% 회복
+    SingleAttackChanceCrit, // 기본 공격 해금시 50% 확률로 치명타 적용
+    EnemyTeamAttackChanceSpdDown, // 전체 공격 해금시 15% 확률로 적 스피드 10% 감소
+    EnemyTeamAttackChanceAtkUp, // 전체 공격 해금시 10% 확률로 공격자 공격력 10% 상승
+
 }
 
 public enum UltimateSkillList

@@ -696,7 +696,6 @@ GameObject:
   - component: {fileID: 3577580811282633644}
   - component: {fileID: 3936126247672114553}
   - component: {fileID: 4523703126822360129}
-  - component: {fileID: 9091543968308191240}
   - component: {fileID: 8644665022308362155}
   m_Layer: 0
   m_Name: Velka
@@ -841,22 +840,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9091543968308191240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1164407951449651176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.3
-  stopDuration: 3
 --- !u!114 &8644665022308362155
 MonoBehaviour:
   m_ObjectHideFlags: 0

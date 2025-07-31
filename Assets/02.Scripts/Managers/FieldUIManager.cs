@@ -14,6 +14,7 @@ public class FieldUIManager : MonoBehaviour
     public static FieldUIManager Instance { get; private set; }
 
     [SerializeField] private FieldMenuBaseUI[] uiList;
+    public PlayerGuideUI playerGuideUI;
     [SerializeField] private GameObject LeftMenuUI;
     [SerializeField] private GameObject BaseUI;
     [SerializeField] private GameObject fieldBaseUI;
@@ -40,6 +41,12 @@ public class FieldUIManager : MonoBehaviour
             if (ui is T) ui.Open();
             else ui.Close();
         }
+    }
+
+    //메뉴열기 (PlayerGuideUI)
+    public void OpenPlayerGuideUI()
+    {
+        playerGuideUI.Open();
     }
 
     //메뉴닫기

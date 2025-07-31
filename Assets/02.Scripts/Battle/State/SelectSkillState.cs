@@ -9,6 +9,7 @@ public class SelectSkillState : BaseBattleState
     public override void Enter()
     {
         Debug.Log("스킬 선택 상태로 진입했습니다. 스킬을 선택하세요.");
+        BattleTutorialManager.Instance.InitSkillSelected();
 
         MonsterData monsterCharacter = BattleManager.Instance.selectedPlayerMonster.monsterData;
         UIManager.Instance.battleUIManager.ShowMonsterSkills(monsterCharacter);

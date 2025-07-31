@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ItemManager : Singleton<ItemManager>
 {
-    protected override bool IsDontDestroy => false;
+    protected override bool IsDontDestroy => true;
 
     public List<ItemData> allItems;  // 인스펙터에 아이템 모두 등록
 
