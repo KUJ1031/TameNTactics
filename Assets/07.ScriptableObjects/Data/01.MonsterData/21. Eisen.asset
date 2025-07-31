@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterName: Eisen
   monsterNumber: 21
-  monsterImage: {fileID: -431090392, guid: 4a174f771ef620a46bf3077c3bea8582, type: 3}
+  monsterImage: {fileID: 378127519, guid: 5d04ab7a4ce1a7545ab772a8c43f0eaa, type: 3}
   encounterCount: 0
   captureCount: 0
-  type: 0
-  personality: 0
+  type: 4
+  personality: 12
   maxHp: 85
   attack: 14
   defense: 8

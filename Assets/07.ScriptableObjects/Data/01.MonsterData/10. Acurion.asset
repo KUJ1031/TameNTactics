@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterName: Acurion
   monsterNumber: 10
-  monsterImage: {fileID: 838953812, guid: 19269f745e85d444f852ebe63ca656ee, type: 3}
-  encounterCount: 7
-  captureCount: 8
-  type: 0
+  monsterImage: {fileID: -980964804, guid: e8364a13e2866f14faef1cd950048581, type: 3}
+  encounterCount: 8
+  captureCount: 9
+  type: 1
   personality: 0
   maxHp: 85
   attack: 17

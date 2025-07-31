@@ -139,12 +139,12 @@ TextureImporter:
       name: Fiora_ATTACK0_0_Attack_Normal_0_0
       rect:
         serializedVersion: 2
-        x: 122
-        y: 1835
-        width: 116
-        height: 129
+        x: 130
+        y: 1840
+        width: 110
+        height: 110
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
