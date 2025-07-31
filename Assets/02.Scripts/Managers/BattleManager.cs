@@ -587,18 +587,6 @@ public class BattleManager : Singleton<BattleManager>
             elapsed += Time.deltaTime;
             character.PlayMove();
 
-            //// gauge 위치 갱신
-            //if (gaugeRect != null && parentCanvas != null)
-            //{
-            //    Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
-            //    RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
-
-            //    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
-            //    {
-            //        gaugeRect.localPosition = localPoint;
-            //    }
-            //}
-
             yield return null;
         }
 

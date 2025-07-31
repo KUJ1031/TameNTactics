@@ -24,7 +24,7 @@ public class MonsterCharacter : MonoBehaviour
 
     private void OnDisable()
     {
-        EventBus.OnMonsterDead += OnMonsterDead;
+        EventBus.OnMonsterDead -= OnMonsterDead;
     }
 
     private void OnDestroy()
@@ -43,10 +43,15 @@ public class MonsterCharacter : MonoBehaviour
 
     private void OnMonsterDead(Monster monster)
     {
-        if (this.monster == monster && monster.CurHp == 0)
+        if (this.monster != monster) return;
+
+        if (animHandler == null || !animHandler.gameObject.activeInHierarchy)
         {
-            PlayDeath();
+            Debug.LogWarning($"애니메이션 핸들러가 존재하지 않거나 비활성화됨: {gameObject.name}");
+            return;
         }
+
+        PlayDeath();
     }
 
     public void PlayIdle() => animHandler?.PlayAnimation(PlayerState.IDLE, 0);
