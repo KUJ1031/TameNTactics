@@ -19,11 +19,14 @@ public class PlayerController : MonoBehaviour
     internal bool isInputBlocked = false;
     public bool isSliding { get; set; } = false;
     public Vector2 slideDirection { get; set; } = Vector2.zero;
-    public Vector2 lastMoveInput { get; private set; } = Vector2.zero;
+    public Vector2 lastMoveInput = Vector2.zero;
 
     private Animator animator;
     private Vector3 originalScale;
 
+    private bool isAutoMoving = false;
+    private Vector2 autoMoveDirection = Vector2.zero;
+    private float autoMoveSpeed = 0f;
 
     private void Awake()
     {
@@ -64,13 +67,26 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    // Update is called once per frame
     void Update()
     {
-        // 항상 입력 갱신
         UpdateLastMoveInput();
 
-        if (isInputBlocked) return;
+        if (isInputBlocked && !isAutoMoving)
+        {
+            rb.velocity = Vector2.zero;
+            animator.SetBool("1_Move", false);
+            return;
+        }
+
+        if (isAutoMoving)
+        {
+            // 자동 이동 중 velocity 유지
+            rb.velocity = autoMoveDirection.normalized * autoMoveSpeed;
+            animator.SetBool("1_Move", true);
+            if (Mathf.Abs(autoMoveDirection.x) > 0.01f)
+                Flip(autoMoveDirection.x);
+            return;  // 자동 이동 중엔 입력 무시하고 여기서 끝냄
+        }
 
         currentState?.OnHandlelnput(this);
         currentState?.OnUpdate(this);
@@ -81,6 +97,9 @@ public class PlayerController : MonoBehaviour
 
         if (Mathf.Abs(input.x) > 0.01f)
             Flip(input.x);
+
+        // 실제 물리 이동 처리
+        rb.velocity = input.normalized * movespeed;
     }
 
     public void UpdateLastMoveInput()
@@ -118,4 +137,39 @@ public class PlayerController : MonoBehaviour
         scale.x = Mathf.Abs(originalScale.x) * (moveX > 0 ? -1 : 1);
         transform.localScale = scale;
     }
+
+    public void BlockInput(bool shouldBlock)
+    {
+        isInputBlocked = shouldBlock;
+
+        if (shouldBlock)
+        {
+            rb.velocity = Vector2.zero; // 이동 멈추기
+            animator.SetBool("1_Move", false);
+            lastMoveInput = Vector2.zero;
+        }
+    }
+
+    public void AutoMove(Vector2 direction, float duration, float customSpeed, bool canMove)
+    {
+        StartCoroutine(AutoMoveCoroutine(direction, duration, customSpeed, canMove));
+    }
+
+    private IEnumerator AutoMoveCoroutine(Vector2 direction, float duration, float customSpeed, bool canMove)
+    {
+        isAutoMoving = true;
+        autoMoveDirection = direction;
+        autoMoveSpeed = customSpeed;
+
+        BlockInput(true);  // 입력 차단
+
+        yield return new WaitForSeconds(duration);
+
+        isAutoMoving = false;
+        autoMoveDirection = Vector2.zero;
+        autoMoveSpeed = 0f;
+
+        BlockInput(!canMove); // 입력 허용
+    }
+
 }

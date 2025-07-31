@@ -5,9 +5,13 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
+
+    protected override bool IsDontDestroy => true;
+
     [Header("어드레서블")]
     public string csvAddress = "dialogue"; // 어드레서블 이름 (e.g. Assets/AddressableAssetsData/Dialogs/dialogue.csv)
 
@@ -28,11 +32,22 @@ public class DialogueManager : Singleton<DialogueManager>
 
     private Dictionary<string, Sprite> speakerSprites = new(); // 이름 → 스프라이트
 
+    public bool IsLoaded { get; private set; } = false;
+
+    public event Action OnDialogueLoaded;
+    public event Action OnDialogueEnded;
+
+    protected override void Awake()
+    {
+        if (dialogueUI == null)
+            dialogueUI = FindObjectOfType<DialogueUI>();
+        // CSV 데이터 로딩
+        Addressables.LoadAssetAsync<TextAsset>(csvAddress).Completed += OnCSVLoaded;
+    }
 
     void Start()
     {
-        // CSV 데이터 로딩
-        Addressables.LoadAssetAsync<TextAsset>(csvAddress).Completed += OnCSVLoaded;
+        
     }
 
     void OnCSVLoaded(AsyncOperationHandle<TextAsset> handle)
@@ -41,6 +56,11 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             dialogueTrees = DialogueCSVParser.ParseByTreeID(handle.Result);
             Debug.Log("모든 NPC 대사 로드 완료");
+            
+
+            IsLoaded = true; // 여기서 로드 완료 플래그 true
+            OnDialogueLoaded?.Invoke(); // 이 타이밍에 알림
+
         }
         else
         {
@@ -119,6 +139,7 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             dialogueUI.Hide();
             isCommunicationEneded = true; // 대화 종료 상태로 설정
+            OnDialogueEnded?.Invoke();
 
             if (!string.IsNullOrEmpty(currentNode.LateEventKey))
             {
@@ -249,6 +270,23 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
 
+    public void SetDialogueUI(bool active)
+    {
+        if (active)
+        {
+            if (dialogueUI == null)
+            {
+                Debug.LogError("DialogueUI가 설정되지 않았습니다.");
+                return;
+            }
+            dialogueUI.gameObject.SetActive(true);
+        }
+        else
+        {
+            dialogueUI?.gameObject.SetActive(false);
+        }
+    }
+
     private void TriggerEvent(string eventKey)
     {
         if (eventKey.Contains(":"))
@@ -284,7 +322,33 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         switch (eventKey)
         {
+            case "TakeMoveCamStartZone":
+                Debug.Log("[이벤트] 메인 맵 스타트로 이동");
+                Transform playerTransform = PlayerManager.Instance.playerController.transform;
+                PlayerManager.Instance.playerController.isInputBlocked = true;
+                playerTransform.position -= new Vector3(11f, 0f, 0f);
+                CameraController.Instance.SwitchTo("StartCam", true, false); // 타겟 클리어
+                break;
 
+            case "TakeMoveCamTutorialZone":
+                Debug.Log("[이벤트] 카메라 이동 튜토리얼 존으로 이동");
+                CameraController.Instance.SwitchTo("TutorialZoneCam", true, false); // 타겟 클리어
+                break;
+            case "TakeMoveCamVillage":
+                TutorialManager.Instance.MoveCamToVillage();
+                break;
+            case "TakeMoveCamPlayer":
+                Debug.Log("[이벤트] 카메라 플레이어 시점으로 이동");
+                CameraController.Instance.SwitchTo("PlayerCamera", true, false); // 기존 타겟 유지
+                CameraController.Instance.SetTarget(PlayerManager.Instance.playerController.transform);
+                if (!PlayerManager.Instance.player.playerTutorialCheck && TutorialManager.Instance.gameinit)
+                {
+                    FieldUIManager.Instance.playerGuideUI.gameObject.SetActive(true);
+                    FieldUIManager.Instance.playerGuideUI.ShowCategory("이동"); // 플레이어 튜토리얼이 안 끝났으면 UI 표시
+                    TutorialManager.Instance.gameinit = false;
+                }
+                   
+                break;
             case "Shop_Buy":
                 ShopManager.Instance.OpenShopUI();
                 break;
@@ -372,19 +436,84 @@ public class DialogueManager : Singleton<DialogueManager>
             case "UnlockSecretPassage":
                 Debug.Log("[이벤트] 숨겨진 통로 열림");
                 break;
+            case "GameStart":
+                Debug.Log("[이벤트] 게임 시작");
+                PlayerManager.Instance.playerController.AutoMove(Vector2.right, 1.5f, 8f, false); // 오른쪽으로 2초간 이동
+                break;
+            case "HideDialogue":
+                Debug.Log("[이벤트] 대화 UI 숨김");
+                SetDialogueUI(false);
+                break;
+            case "ShowDialogue":
+                Debug.Log("[이벤트] 대화 UI 표시");
+                SetDialogueUI(true);
+                break;
+            case "HideNpcSprite":
+                Debug.Log("[이벤트] NPC 스프라이트 숨김");
+                dialogueUI.npcImage.gameObject.SetActive(false);
+                break;
+            case "ShowNpcSprite":
+                Debug.Log("[이벤트] NPC 스프라이트 표시");
+                dialogueUI.npcImage.gameObject.SetActive(true);
+                break;
+            case "AddEntry_Kairen":
+                Debug.Log("[이벤트] 카이렌을 엔트리 몬스터로 추가");
+                Monster kairen = new Monster();
+                kairen.SetMonsterData(BattleTutorialManager.Instance.reaward_Kairen);
+                PlayerManager.Instance.player.AddOwnedMonster(kairen);
+                PlayerManager.Instance.player.TryAddEntryMonster(kairen, (_, success) =>
+                {
+                    if (success != null)
+                    {
+                        PlayerManager.Instance.player.AddBattleEntry(kairen);
+                    }
+                    });
+                BattleTutorialManager.Instance.AddMemberKairen();
+                BattleManager.Instance.BattleEntryTeam.Add(kairen);
+                BattleManager.Instance.StartBattle();
+                BattleTutorialManager.Instance.InitAttackSelected();
+                break;
+            case "Inventory_Kairen":
+                Debug.Log("[이벤트] 인벤토리 열기");
+                BattleTutorialManager.Instance.InitInventorySelected();
+                break;
+
+            case "End_RunawayGuide":
+                Debug.Log("도망가기 가이드 종료");
+                BattleTutorialManager.Instance.InitEmbraceSelected();
+                BattleTutorialManager.Instance.isBattleEmbraceTutorialStarded = true;
+                break;
+            case "End_BattleTutorial":
+                Debug.Log("튜토리얼 종료");
+                BattleTutorialManager.Instance.EndTutorial();
+                break;
+            case "Guide_MonsterOpen":
+                Debug.Log("몬스터 가이드 열기");
+                TutorialManager.Instance.Guide_MonsterOpen();
+                break;
+            case "Guide_EntryOpen":
+                Debug.Log("엔트리 가이드 열기");
+                TutorialManager.Instance.Guide_EntryOpen();
+                break;
+            case "Guide_BattleOpen":
+                Debug.Log("전투 가이드 열기");
+                TutorialManager.Instance.Guide_BattleOpen();
+                break;
+            case "Guide_SaveOpen":
+                Debug.Log("저장 가이드 열기");
+                TutorialManager.Instance.Guide_SaveOpen();
+                break;
+            case "Guide_MinimapOpen":
+                Debug.Log("미니맵 가이드 열기");
+                TutorialManager.Instance.Guide_MinimapOpen();
+                break;
+            case "End_AllTutorial":
+                TutorialManager.Instance.TutorialCompeleted();
+                break;
+
             default:
                 Debug.LogWarning($"[이벤트] 알 수 없는 이벤트 키: {eventKey}");
                 break;
         }
     }
-    private string ExtractItemNameFromText(string text)
-    {
-        // 예: "중형 전체 회복 물약을 획득했다." → "중형 전체 회복 물약"
-        if (text.Contains("을 획득했다.") || text.Contains("를 획득했다."))
-        {
-            return text.Replace("을 획득했다.", "").Replace("를 획득했다.", "").Trim();
-        }
-        return text.Trim(); // fallback
-    }
-
 }

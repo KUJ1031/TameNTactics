@@ -1146,7 +1146,6 @@ GameObject:
   - component: {fileID: 7885461804963506675}
   - component: {fileID: 1504303672470276928}
   - component: {fileID: 6111437573170038351}
-  - component: {fileID: 6435927624575135858}
   - component: {fileID: 245835614986336492}
   m_Layer: 0
   m_Name: Dathra
@@ -1291,22 +1290,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6435927624575135858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2382751357723729952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.3
-  stopDuration: 3
 --- !u!114 &245835614986336492
 MonoBehaviour:
   m_ObjectHideFlags: 0

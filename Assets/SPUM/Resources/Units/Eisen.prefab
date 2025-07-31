@@ -4535,7 +4535,6 @@ GameObject:
   - component: {fileID: 713597040440196700}
   - component: {fileID: 5823411470385033184}
   - component: {fileID: 6435244303686866482}
-  - component: {fileID: 2005484710899189261}
   - component: {fileID: 4528425204444925524}
   m_Layer: 0
   m_Name: Eisen
@@ -4680,22 +4679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2005484710899189261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4412107887221261210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.3
-  stopDuration: 3
 --- !u!114 &4528425204444925524
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,6 +29,9 @@ public class MonsterMover : MonoBehaviour
     private float moveTimer = 0f;
     private float moveDuration = 2f; // 정찰 시 걷는 시간
 
+    private Animator animator;
+    private SpriteRenderer sideInPlayerMark;
+
     // 외부에서 이동 영역을 지정해줄 수 있음
     public void SetMoveArea(BoxCollider2D bounds)
     {
@@ -44,6 +47,8 @@ public class MonsterMover : MonoBehaviour
 
         // 몬스터 데이터 참조
         monsterData = GetComponent<MonsterCharacter>()?.monster.monsterData;
+        animator = GetComponentInChildren<Animator>();
+        sideInPlayerMark = GetComponentInChildren<SpriteRenderer>(true);
     }
 
     private void Update()
@@ -53,7 +58,7 @@ public class MonsterMover : MonoBehaviour
 
         // 플레이어 감지 로직
         float distance = Vector2.Distance(rb.position, player.position);
-        bool inFactory = factoryBounds.bounds.Contains(player.position);
+        bool inFactory = factoryBounds.bounds.Intersects(player.GetComponent<Collider2D>().bounds);
         isPlayerInSight = distance < sightRadius && inFactory;
 
         // 도망 성격일 경우 도망 타겟 설정
@@ -103,6 +108,7 @@ public class MonsterMover : MonoBehaviour
     /// </summary>
     private void Patrol()
     {
+        sideInPlayerMark.gameObject.SetActive(isPlayerInSight);
         if (isWaiting)
         {
             // 멈춰 있는 시간 처리
@@ -122,8 +128,16 @@ public class MonsterMover : MonoBehaviour
 
         // 걷고 있는 경우
         moveTimer -= Time.fixedDeltaTime;
+        animator.SetBool("1_Move", true);
+        if (moveDirection.x != 0)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x) * (moveDirection.x < 0 ? 1 : -1);
+            transform.localScale = scale;
+        }
         if (moveTimer <= 0f)
         {
+            animator.SetBool("1_Move", false);
             isWaiting = true;
             waitDuration = Random.Range(1.5f, 3.5f); // 다음 멈춤 시간 설정
             waitTimer = waitDuration;
@@ -139,6 +153,12 @@ public class MonsterMover : MonoBehaviour
         else
         {
             moveDirection = -moveDirection; // 경계에 닿으면 방향 반전
+            if (moveDirection.x != 0)
+            {
+                Vector3 scale = transform.localScale;
+                scale.x = Mathf.Abs(scale.x) * (moveDirection.x < 0 ? 1 : -1);
+                transform.localScale = scale;
+            }
         }
     }
 
@@ -147,12 +167,34 @@ public class MonsterMover : MonoBehaviour
     /// </summary>
     private void MoveToward(Vector2 target, float speed)
     {
-        Vector2 dir = (target - rb.position).normalized;
+        sideInPlayerMark.gameObject.SetActive(isPlayerInSight);
+        Vector2 dir = (target - rb.position);
+
+        // 도달 여부 체크 (정확하게 같을 필요는 없음, 약간의 오차 허용)
+        if (dir.magnitude < 0.05f)
+        {
+            animator.SetBool("1_Move", false);
+            return;
+        }
+
+        // 방향과 이동 처리
+        dir.Normalize();
         Vector2 next = rb.position + dir * speed * Time.fixedDeltaTime;
 
+        if (dir.x != 0)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x) * (dir.x < 0 ? 1 : -1);
+            transform.localScale = scale;
+        }
+
         if (factoryBounds.bounds.Contains(next))
+        {
+            animator.SetBool("1_Move", true);
             rb.MovePosition(next);
+        }
     }
+
 
     /// <summary>
     /// 도망 성격일 때 플레이어로부터 반대 방향으로 도망치는 위치 계산

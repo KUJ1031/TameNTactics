@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB2EB\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
-  m_sharedMaterial: {fileID: 494330904105292196, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
+  m_sharedMaterial: {fileID: 1808668386612340283, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -518,8 +518,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC0AC\uC6A9"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
-  m_sharedMaterial: {fileID: 494330904105292196, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
+  m_sharedMaterial: {fileID: 1808668386612340283, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -652,8 +652,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uBC84\uC12F"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
-  m_sharedMaterial: {fileID: 494330904105292196, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
+  m_sharedMaterial: {fileID: 1808668386612340283, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -845,6 +845,10 @@ MonoBehaviour:
   closeButton: {fileID: 7153268735829775240}
   battleInventoryParents: {fileID: 7564624310312488496}
   battleInventoryslotPrefab: {fileID: 4763619897576738482, guid: ad2b887be19a0d349b6e7a8f6bbcd118, type: 3}
+  selectedItem:
+    data: {fileID: 0}
+    isEquipped: 0
+    quantity: 0
 --- !u!1 &7253859549809395523
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,8 +1096,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uCCB4\uB825\uC744 20 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
-  m_sharedMaterial: {fileID: 494330904105292196, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
+  m_sharedMaterial: {fileID: 1808668386612340283, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
