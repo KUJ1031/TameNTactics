@@ -795,6 +795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuButton: {fileID: 753198062527357074}
+  guideButton: {fileID: 0}
   entrySlotPrefab: {fileID: 1767147267890326854, guid: c6df431a3dc99fd4e820acbf52d0059e, type: 3}
   entrySlotParent: {fileID: 1556114717336354770}
 --- !u!114 &2987290076014755777
@@ -935,8 +936,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uCD08\uBCF4 \uC0AC\uB0E5\uD130"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
-  m_sharedMaterial: {fileID: 494330904105292196, guid: 8116bfe12b62fc04689b9f3ff8b5b5a7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
+  m_sharedMaterial: {fileID: 1808668386612340283, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

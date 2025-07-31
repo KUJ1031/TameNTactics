@@ -150,12 +150,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void AutoMove(Vector2 direction, float duration, float customSpeed)
+    public void AutoMove(Vector2 direction, float duration, float customSpeed, bool canMove)
     {
-        StartCoroutine(AutoMoveCoroutine(direction, duration, customSpeed));
+        StartCoroutine(AutoMoveCoroutine(direction, duration, customSpeed, canMove));
     }
 
-    private IEnumerator AutoMoveCoroutine(Vector2 direction, float duration, float customSpeed)
+    private IEnumerator AutoMoveCoroutine(Vector2 direction, float duration, float customSpeed, bool canMove)
     {
         isAutoMoving = true;
         autoMoveDirection = direction;
@@ -169,7 +169,7 @@ public class PlayerController : MonoBehaviour
         autoMoveDirection = Vector2.zero;
         autoMoveSpeed = 0f;
 
-        BlockInput(false); // 입력 허용
+        BlockInput(!canMove); // 입력 허용
     }
 
 }

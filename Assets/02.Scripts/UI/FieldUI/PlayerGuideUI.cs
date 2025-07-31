@@ -224,6 +224,12 @@ public class PlayerGuideUI : FieldMenuBaseUI
 
         prevButton.interactable = currentPageIndex > 0;
         nextButton.interactable = currentPageIndex < pages.Count - 1;
+
+        for (int i = 0; i < currentSubTabButtons.Count; i++)
+        {
+            currentSubTabButtons[i].interactable = (i != currentPageIndex);
+        }
+
     }
 
     public void OnPrevClicked()
@@ -242,6 +248,27 @@ public class PlayerGuideUI : FieldMenuBaseUI
             currentPageIndex++;
             RefreshUI();
         }
+    }
+
+    public void ShowCategory(string categoryName)
+    {
+        // 카테고리 인덱스 찾기
+        int index = categoryButtons.FindIndex(btn =>
+            btn.GetComponentInChildren<TextMeshProUGUI>().text == categoryName);
+
+        if (index < 0)
+        {
+            Debug.LogWarning($"카테고리 '{categoryName}'를 찾을 수 없습니다.");
+            return;
+        }
+
+        currentCategoryIndex = index;
+        currentPageIndex = 0;
+
+        string selectedCategory = categoryButtons[currentCategoryIndex].GetComponentInChildren<TextMeshProUGUI>().text;
+
+        RefreshSubTabs(selectedCategory);
+        RefreshUI(); // 이 두 줄이면 충분
     }
 }
 

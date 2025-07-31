@@ -10,18 +10,6 @@ public class NPCAutoDialogue : MonoBehaviour
     [SerializeField] private bool canRepeat = false; // 대화 중복 실행 여부
     private bool hasTriggered = false; // 중복 실행 방지
 
-    private void OnEnable()
-    {
-        DialogueManager.Instance.OnDialogueEnded += HandleDialogueEnd;
-    }
-
-    private void OnDisable()
-    {
-        DialogueManager.Instance.OnDialogueEnded -= HandleDialogueEnd;
-    }
-
-
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if ((!hasTriggered || canRepeat) && other.CompareTag("Player"))
@@ -37,50 +25,53 @@ public class NPCAutoDialogue : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if ((!hasTriggered || canRepeat) && other.CompareTag("Player"))
+        {
+            if (!DialogueManager.Instance.IsLoaded)
+                return;
+
+            hasTriggered = true;
+
+            DialogueManager.Instance.StartDialogue(npcName, npcSprite, startID);
+
+            var playerController = other.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.isInputBlocked = true;
+                playerController.BlockInput(true);
+                DialogueManager.Instance.isCommunicationEneded = false;
+            }
+        }
+    }
     private void TryStartDialogue(Collider2D other)
     {
         if (hasTriggered && !canRepeat) return;
 
         hasTriggered = true;
+
+        // 이벤트 구독
+        DialogueManager.Instance.OnDialogueEnded += HandleDialogueEnd;
+
         DialogueManager.Instance.StartDialogue(npcName, npcSprite, startID);
 
-        var playerController = other.GetComponent<PlayerController>();
-        if (playerController != null)
-        {
-            playerController.isInputBlocked = true;
-            DialogueManager.Instance.isCommunicationEneded = false;
-        }
+        PlayerManager.Instance.playerController.isInputBlocked = true;
+        DialogueManager.Instance.isCommunicationEneded = false;
     }
-
-    //private void OnTriggerStay2D(Collider2D other)
-    //{
-    //    if ((!hasTriggered || canRepeat) && other.CompareTag("Player"))
-    //    {
-    //        if (!DialogueManager.Instance.IsLoaded)
-    //            return;
-
-    //        hasTriggered = true;
-
-    //        DialogueManager.Instance.StartDialogue(npcName, npcSprite, startID);
-
-    //        var playerController = other.GetComponent<PlayerController>();
-    //        if (playerController != null)
-    //        {
-    //            playerController.isInputBlocked = true;
-    //            playerController.BlockInput(true);
-    //            DialogueManager.Instance.isCommunicationEneded = false;
-    //        }
-    //    }
-    //}
 
     private void HandleDialogueEnd()
     {
-        var playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        var playerController = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerController>();
         if (playerController != null && playerController.isInputBlocked)
         {
             playerController.BlockInput(false);
             Debug.Log("Dialogue ended, restoring player input.");
         }
+
+        // 이벤트 해제
+        if (DialogueManager.Instance != null)
+            DialogueManager.Instance.OnDialogueEnded -= HandleDialogueEnd;
 
         if (canRepeat)
         {
