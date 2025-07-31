@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Monster01Skill2
   m_EditorClassIdentifier: 
   clipName: Monster01Skill2
-  clip: {fileID: 0}
+  clip: {fileID: 8300000, guid: b56ac770d88e3574fa927b42c19e0d41, type: 3}
   type: 1
   volume: 1
   loop: 0
