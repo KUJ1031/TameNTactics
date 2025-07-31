@@ -54,8 +54,8 @@ public class PlayerManager : MonoBehaviour
 
                 if (loadedPlayer == null)
                 {
-                    player.AddItem(ItemManager.Instance.allItems[1], 1);
-                    player.AddItem(ItemManager.Instance.allItems[2], 1);
+                    player.AddItem("소형 회복 물약", 1);
+                    player.AddItem("대화하기", 1);
                     KeyRebinderManager.Instance.SaveCurrentBindingsToPlayer(player);
                 }
 

@@ -14,9 +14,18 @@ public class TutorialManager : Singleton<TutorialManager>
     [SerializeField] private GameObject CompleteTutorialPanel;
     [SerializeField] private Button tutorialPanelExitButton;
 
+    protected override void Awake()
+    {
+        if (PlayerManager.Instance.player.playerAllTutorialCheck)
+        {
+            Debug.Log("모든 튜토리얼을 완료했습니다. 튜토리얼 매니저를 제거합니다.");
+            Destroy(gameObject);
+            return;
+        }
+    }
     private void Start()
     {
-        if (PlayerManager.Instance.player.playerTutorialCheck)
+        if (PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             Debug.Log("필드 내 튜토리얼 시작.");
             PlayerManager.Instance.playerController.BlockInput(true);
@@ -34,7 +43,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
     public void MoveCamToVillage()
     {
-        if (PlayerManager.Instance.player.playerTutorialCheck)
+        if (PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             StartCoroutine(ShowVillageThenStartTutorial());
         }
@@ -105,14 +114,15 @@ public class TutorialManager : Singleton<TutorialManager>
         Debug.Log("튜토리얼 패널을 닫고, 튜토리얼매니저를 제거합니다.");
         CompleteTutorialPanel.SetActive(false);
         PlayerManager.Instance.playerController.BlockInput(false);
+        PlayerManager.Instance.player.playerAllTutorialCheck = true;
         Destroy(gameObject);
     }
 
     public void TutorialCompeleted()
     {
         Debug.Log("튜토리얼이 완료되었습니다.");
-        PlayerManager.Instance.player.AddItem(ItemManager.Instance.allItems[3], 1);
-        Debug.Log("설득 기술을 획득했습니다. 아이템: " + ItemManager.Instance.allItems[3].itemName);
+        PlayerManager.Instance.player.AddItem("설득하기", 1);
+        Debug.Log("설득 기술을 획득했습니다. 아이템: " + ItemManager.Instance.gestureItems[1].itemName);
         CompleteTutorialPanel.SetActive(true);
     }
 }

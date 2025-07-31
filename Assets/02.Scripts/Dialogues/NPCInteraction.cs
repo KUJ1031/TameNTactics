@@ -45,8 +45,8 @@ public class NPCInteraction : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             isPlayerTouching = true;
-            playerController.BlockInput(true);
             playerController = collision.gameObject.GetComponent<PlayerController>();
+            playerController.BlockInput(true);
         }
     }
 

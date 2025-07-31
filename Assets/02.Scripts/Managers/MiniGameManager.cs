@@ -88,7 +88,7 @@ public class MiniGameManager : Singleton<MiniGameManager>
 
         hpPercent = (float)targetMonster.CurHp / targetMonster.CurMaxHp;
 
-        if (!player.playerTutorialCheck)
+        if (!player.playerBattleTutorialCheck)
         {
             range = 75f;
             speed = 0.9f;

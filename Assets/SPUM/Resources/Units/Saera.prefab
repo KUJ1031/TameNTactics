@@ -7086,8 +7086,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolSpeed: 1
-  chaseSpeed: 3
-  sightRadius: 50
+  chaseSpeed: 6
+  sightRadius: 70
 --- !u!1 &6993682059790469592
 GameObject:
   m_ObjectHideFlags: 0
