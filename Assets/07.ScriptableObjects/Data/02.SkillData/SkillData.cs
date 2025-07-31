@@ -100,4 +100,7 @@ public class SkillData : ScriptableObject
     [TextArea]
     public string description;
     public string upgradeDescription;
+    
+    [Header("사운드")]
+    public AudioData damageSound;
 }
