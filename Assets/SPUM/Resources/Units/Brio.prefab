@@ -1541,7 +1541,6 @@ GameObject:
   - component: {fileID: 4292086282215233098}
   - component: {fileID: 49467931620738410}
   - component: {fileID: 7189334920423512688}
-  - component: {fileID: 721687997309491991}
   - component: {fileID: 2373666780918779688}
   m_Layer: 0
   m_Name: Brio
@@ -1686,22 +1685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df781b6011d6844295b2d2b2bb5ff8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &721687997309491991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4455988087870966316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ada2e1c9711b324fb7a38bea14ac4ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionInterval: 3
-  stopChance: 0.3
-  stopDuration: 3
 --- !u!114 &2373666780918779688
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -54968,12 +54968,7 @@ MonoBehaviour:
   playerImage:
   - {fileID: -78382797, guid: c80d8c44fe2dc964aacd3589224084b1, type: 3}
   - {fileID: -1075037592, guid: e8ee25299567b6b449d466aff054da3c, type: 3}
-  testMonsterList:
-  - {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
-  - {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}
-  - {fileID: 11400000, guid: 468187f0dfc5ec9428591245ba311912, type: 2}
-  - {fileID: 11400000, guid: e5bc2c82e7c46b741b5a33a82f0db101, type: 2}
-  - {fileID: 11400000, guid: f6adb78a362b91040a16465371d4b0f3, type: 2}
+  testMonsterList: []
 --- !u!4 &1082594337
 Transform:
   m_ObjectHideFlags: 0

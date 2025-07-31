@@ -295,11 +295,6 @@ public class Monster
         CurSpeed += amount;
     }
 
-    public void RecoverUpSpeed(int amount)
-    {
-        CurSpeed += amount;
-    }
-
     //피해받기
     public void TakeDamage(int damage)
     {

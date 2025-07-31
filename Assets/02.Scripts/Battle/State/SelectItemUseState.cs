@@ -14,6 +14,7 @@ public class SelectItemUseState : BaseBattleState
     public override void Enter()
     {
         Debug.Log($"아이템 사용 상태 진입: {selectedItem.data.itemName}");
+        BattleTutorialManager.Instance.InitMonsterItemSelected();
         UIManager.Instance.battleUIManager.BattleSelectView.ShowBehaviorPanel("아이템을 사용할 몬스터를 선택하세요.");
         // 선택 대상이 필요 없는 경우 (예: 아군 전체 회복)
         if (selectedItem.data.itemEffects.Any(e => e.type == ItemEffectType.allMonsterCurHp))
@@ -60,6 +61,7 @@ public class SelectItemUseState : BaseBattleState
     {
         UIManager.Instance.battleUIManager.DisableHoverSelect(BattleManager.Instance.possibleTargets);
         UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
+        BattleTutorialManager.Instance.EndInventoryTutorial();
         if (target == null || target.CurHp <= 0)
         {
             Debug.LogWarning("죽었거나 유효한 몬스터가 아닙니다.");

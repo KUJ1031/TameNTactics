@@ -25,8 +25,6 @@ public class SingleAttackHealLowestAlly : ISkillEffect
 
             if (Random.value < 0.5f && caster.Level >= 10)
             {
-                yield return new WaitForSeconds(1f);
-
                 List<Monster> monsters = BattleManager.Instance.BattleEntryTeam
                     .Where(m => m.CurHp > 0)
                     .OrderBy(m => m.CurHp)
