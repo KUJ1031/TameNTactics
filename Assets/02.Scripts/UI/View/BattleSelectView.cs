@@ -26,7 +26,7 @@ public class BattleSelectView : MonoBehaviour
 
     public void ShowCancelButton()
     {
-        if (PlayerManager.Instance.player.playerTutorialCheck) cancelButton.gameObject.SetActive(true);
+        if (PlayerManager.Instance.player.playerBattleTutorialCheck) cancelButton.gameObject.SetActive(true);
 
         cancelButton.onClick.AddListener(() => BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance)));
     }

@@ -69,8 +69,18 @@ public class SelectCaptureTargetState : BaseBattleState
         // UI 초기화
         BattleTutorialManager.Instance.InitMinigame();
         UIManager.Instance.battleUIManager.EmbraceView.ShowGuide("스페이스바를 눌러 화살표를 멈추세요!");
-        if (PlayerManager.Instance.player.playerTutorialCheck) MiniGameManager.Instance.StartMiniGame(targetMonster, CheckEmbraceResult);
-        else MiniGameManager.Instance.StartMiniGame(targetMonster, CheckEmbraceResult, 0.9f);
+
+        var selectedGesture = battleSystem.selectedGestureItem;
+
+        if (selectedGesture != null)
+        {
+            Debug.Log($"선택된 제스쳐 아이템 : {selectedGesture.data.itemName}");
+            MiniGameManager.Instance.StartMiniGame(selectedGesture.data, targetMonster, CheckEmbraceResult);
+        }
+        else
+        {
+            Debug.LogWarning("선택된 제스쳐 아이템이 없습니다.");
+        }
     }
 
     private void CheckEmbraceResult(bool isSuccess, Monster targetMonster)
@@ -105,7 +115,7 @@ public class SelectCaptureTargetState : BaseBattleState
                 Debug.Log("포섭 미니게임 실패, 다시 메뉴로 돌아갑니다.");
                 return;
             }
-                
+
             Debug.Log("포섭 실패...!");
             UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
             UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);

@@ -24,7 +24,7 @@ public class PlayerBattleTrigger : MonoBehaviour
 
         List<Monster> enemyTeam;
         // 적 팀 구성
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             Debug.Log("배틀 튜토리얼 중이므로 고정된 적 팀 사용");
             enemyTeam = factory.GetFixedEnemyTeam(monster);

@@ -13,6 +13,7 @@ public class ShopItemSlot : MonoBehaviour
     private ItemInstance currentItem;
     private ShopUI shopUI;
     private ShopUI_Sell shopUI_Sell;
+    private WanderingShopUI wanderingShopUI;
 
     public void Init(ItemInstance item, ShopUI shop)
     {
@@ -42,9 +43,24 @@ public class ShopItemSlot : MonoBehaviour
         selectButton.onClick.AddListener(OnClick);
     }
 
+    public void Init(ItemInstance item, WanderingShopUI shop)
+    {
+        currentItem = item;
+        wanderingShopUI = shop;
+
+        itemImage.sprite = item.data.itemImage;
+        NameText.text = item.data.itemName;
+        ExplainText.text = item.data.description;
+        GoldText.text = $"{item.data.goldValue} G";
+
+        selectButton.onClick.RemoveAllListeners();
+        selectButton.onClick.AddListener(OnClick);
+    }
+
     private void OnClick()
     {
         shopUI?.SelectItem(currentItem);
         shopUI_Sell?.SelectItem(currentItem);
+        wanderingShopUI?.SelectItem(currentItem);
     }
 }

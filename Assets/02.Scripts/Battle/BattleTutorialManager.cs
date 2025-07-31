@@ -22,7 +22,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void InitialBattle()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             if (!isBattleAttackTutorialEnded)
             {
@@ -60,7 +60,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
     public void InitAttackSelected()
     {
         // 공격 선택 초기화 로직
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.ShowTutorialPanel();
             tutorialView.ShowGuideAttackPanel();
@@ -74,7 +74,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
     public void InitMonsterelected_Attack()
     {
         // 공격 선택 초기화 로직
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.HideTutorialPanel();
             tutorialView.ShowTutorialMonsterSelectPanel();
@@ -88,7 +88,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
     public void InitSkillSelected()
     {
         // 스킬 선택 초기화 로직
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.HideTutorialMonsterSelectPanel();
             tutorialView.ShowTutorialSkillPanel();
@@ -99,7 +99,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
     public void InitEnemySelected_Attack()
     {
         // 적 선택 후 공격 초기화 로직
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.HideTutorialSkillPanel();
             tutorialView.ShowTutorialEnemySelectPanel();
@@ -110,7 +110,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
     public void EndAttackTutorial()
     {
         // 공격 튜토리얼 종료 로직
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             isBattleAttackTutorialEnded = true;
             tutorialView.HideTutorialEnemySelectPanel();
@@ -121,7 +121,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void InitInventorySelected()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.ShowInventoryPanel();
             tutorialView.ShowGuideInventoryPanel();
@@ -131,7 +131,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
     public void InitItemSelected()
     {
         // 아이템 선택 초기화 로직
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.HideInventoryPanel();
             tutorialView.ShowItemSelectPanel();
@@ -141,14 +141,14 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void InitItemButtonSelected()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
             tutorialView.HideItemSelectPanel();
         tutorialView.ShowItemSelectButtonPanel();
     }
 
     public void InitMonsterItemSelected()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.HideItemSelectButtonPanel();
             tutorialView.ShowItemUsePanel();
@@ -159,7 +159,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void EndInventoryTutorial()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             isBattleInventoryTutorialEnded = true;
             tutorialView.HideItemUsePanel();
@@ -170,7 +170,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void InitEscapeSelected()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.ShowRunAwayPanel();
             tutorialView.ShowGuideEscapePanel();
@@ -180,7 +180,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void EndEscapeTutorial()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             isBattleEscapeTutorialEnded = true;
             tutorialView.HideRunAwayPanel();
@@ -192,7 +192,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void InitEmbraceSelected()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.ShowEmbracePanel();
             tutorialView.HideEmbraceEnemySelectPanel();
@@ -203,7 +203,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void InitTalkingSelected()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.HideEmbracePanel();
             tutorialView.ShowTalkingButtonPanel();
@@ -213,7 +213,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void InitEnemySelected_Embrace()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.HideTalkingButtonPanel();
             tutorialView.ShowEmbraceEnemySelectPanel();
@@ -223,7 +223,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void InitMinigame()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             tutorialView.HideEmbraceEnemySelectPanel();
             tutorialView.ShowMinigamePanel();
@@ -232,7 +232,7 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void EndEmbraceTutorial()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             isBattleEmbraceTutorialEnded = true;
             tutorialView.HideMinigamePanel();
@@ -243,22 +243,22 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
 
     public void EndTutorial()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
-            PlayerManager.Instance.player.playerTutorialCheck = true;
+            PlayerManager.Instance.player.playerBattleTutorialCheck = true;
         }
         // 여기에 배틀 튜토리얼 종료 관련 코드를 추가하세요.
     }
 
     public void RunAwayTry()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
             DialogueManager.Instance.StartDialogue("카이렌", npcSprite, 6300);
     }
 
     public void MinigameFailed()
     {
-        if (!PlayerManager.Instance.player.playerTutorialCheck)
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
             DialogueManager.Instance.StartDialogue("카이렌", npcSprite, 6200);
     }
 }

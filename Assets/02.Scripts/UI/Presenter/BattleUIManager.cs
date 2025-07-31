@@ -311,7 +311,7 @@ public class BattleUIManager : MonoBehaviour
         IndicatorList.Clear();
     }
 
-    public void ShowBehaviorMenu(Player player, Action onGestureSelected)
+    public void ShowBehaviorMenu(Player player, Action<string> onGestureSelected)
     {
         player.UpdateCategorizedItemLists();
 
@@ -327,7 +327,7 @@ public class BattleUIManager : MonoBehaviour
 
                 behaviorButtons.Add(behaviorButton);
 
-                button.onClick.AddListener(() => onGestureSelected?.Invoke());
+                button.onClick.AddListener(() => onGestureSelected?.Invoke(capturedItem.data.itemName));
             }
         }
 
