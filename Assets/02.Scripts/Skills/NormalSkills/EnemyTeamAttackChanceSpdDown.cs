@@ -20,9 +20,7 @@ public class EnemyTeamAttackChanceSpdDown : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            int damage = Mathf.RoundToInt(result.damage * 0.4f);
-            
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
 
             if (Random.value < 0.15f && caster.Level >= 10)
             {

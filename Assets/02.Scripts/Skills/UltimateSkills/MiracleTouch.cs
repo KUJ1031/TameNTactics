@@ -22,12 +22,9 @@ public class MiracleTouch : ISkillEffect
         {
             if (target.CurHp > 0)
             {
-                yield return new WaitForSeconds(1f);
                 target.Heal(target.MaxHp);
                 target.RemoveStatusEffects();
             }
         }
-        
-        yield break;
     }
 }

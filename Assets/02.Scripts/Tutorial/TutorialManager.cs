@@ -28,7 +28,7 @@ public class TutorialManager : Singleton<TutorialManager>
         if (PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             Debug.Log("필드 내 튜토리얼 시작.");
-            PlayerManager.Instance.playerController.BlockInput(true);
+            PlayerManager.Instance.playerController.isInputBlocked = true;
             PlayerManager.Instance.playerController.transform.position = battleLaterTransform.position;
             StartCoroutine(WaitUntilDialogueLoadedAndStart());
             tutorialPanelExitButton.onClick.AddListener(ExitTutorialPanel);
@@ -113,7 +113,7 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         Debug.Log("튜토리얼 패널을 닫고, 튜토리얼매니저를 제거합니다.");
         CompleteTutorialPanel.SetActive(false);
-        PlayerManager.Instance.playerController.BlockInput(false);
+        PlayerManager.Instance.playerController.isInputBlocked = false;
         PlayerManager.Instance.player.playerAllTutorialCheck = true;
         Destroy(gameObject);
     }

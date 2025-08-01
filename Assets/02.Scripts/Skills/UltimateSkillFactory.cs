@@ -9,7 +9,12 @@ public static class UltimateSkillFactory
         { UltimateSkillList.MiracleTouch , data => new MiracleTouch(data)},
         { UltimateSkillList.BreathOfDeath, data => new BreathOfDeath(data)},
         { UltimateSkillList.GracePulse, data => new GracePulse(data)},
-        { UltimateSkillList.PowerSlam, data => new PowerSlam(data)}
+        { UltimateSkillList.PowerSlam, data => new PowerSlam(data)},
+        { UltimateSkillList.EnemyTeamAttackAtkDown, data => new EnemyTeamAttackAtkDown(data)},
+        { UltimateSkillList.TeamBuffDefUp, data => new TeamBuffDefUp(data)},
+        { UltimateSkillList.EnemyTeamAttackPoison, data => new EnemyTeamAttackPoison(data)},
+        { UltimateSkillList.EnemyTeamAttackTeamStatUp, data => new EnemyTeamAttackTeamStatUp(data)},
+        
     };
 
     public static ISkillEffect GetUltimateSkill(SkillData data)

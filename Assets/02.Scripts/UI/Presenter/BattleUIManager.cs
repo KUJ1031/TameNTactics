@@ -202,7 +202,48 @@ public class BattleUIManager : MonoBehaviour
         if (gaugeHolder == null || gaugeHolder.gauge == null) return;
 
         float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
-        battleSelectView.SetHpGauge(gaugeHolder.gauge, hpRatio);
+        //battleSelectView.SetHpGauge(gaugeHolder.gauge, hpRatio);
+        StartCoroutine(UpdateHpGaugeCoroutine(gaugeHolder.gauge, hpRatio));
+    }
+
+    private IEnumerator UpdateHpGaugeCoroutine(GameObject gauge, float targetRatio)
+    {
+        Image hpBar = gauge.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+
+        if (hpBar == null) yield break;
+
+        float duration = 0.5f;
+        float elapsed = 0f;
+        float startValue = hpBar.fillAmount;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            hpBar.fillAmount = Mathf.Lerp(startValue, targetRatio, elapsed / duration);
+            yield return null;
+        }
+
+        hpBar.fillAmount = targetRatio;
+    }
+
+    public IEnumerator WaitHpBarAnimationDone(Monster monster)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+
+        if (mc == null) yield break;
+
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+        if (gaugeHolder == null || gaugeHolder.gauge == null) yield break;
+
+        Image hpBar = gaugeHolder.gauge.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+        if (hpBar == null) yield break;
+
+        float targetRatio = Mathf.Clamp01((float)monster.CurHp / monster.CurMaxHp);
+
+        while (Mathf.Abs(hpBar.fillAmount - targetRatio) > 0.01f)
+        {
+            yield return null;
+        }
     }
 
     public void UpdateUltimateGauge(Monster monster)
@@ -248,9 +289,14 @@ public class BattleUIManager : MonoBehaviour
         return null;
     }
 
-    public void BattleEndMessage(bool isWin)
+    public void BattlePanelWhenWin(int exp, int gold)
     {
-        battleInfoView.ShowEndBattleMessage(isWin);
+        battleInfoView.ShowVictoryPanel(exp, gold);
+    }
+
+    public void BattlePanelWhenDefeat()
+    {
+        battleInfoView.ShowDefeatPanel();
     }
 
     public void DeselectAllMonsters()

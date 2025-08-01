@@ -40,7 +40,6 @@ public class NPCAutoDialogue : MonoBehaviour
             if (playerController != null)
             {
                 playerController.isInputBlocked = true;
-                playerController.BlockInput(true);
                 DialogueManager.Instance.isCommunicationEneded = false;
             }
         }
@@ -65,7 +64,7 @@ public class NPCAutoDialogue : MonoBehaviour
         var playerController = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerController>();
         if (playerController != null && playerController.isInputBlocked)
         {
-            playerController.BlockInput(false);
+            playerController.isInputBlocked = false;
             Debug.Log("Dialogue ended, restoring player input.");
         }
 

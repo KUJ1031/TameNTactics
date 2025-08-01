@@ -4,7 +4,7 @@ using UnityEngine;
 public class WanderingShopNPCHandler : WanderingShopNPC
 {
     [Header("떠상 등장 관련 설정")]
-    private List<int> appearedTimes = new List<int> { 0, 1440 }; // 게임 분 기준
+    private List<int> appearedTimes = new List<int> { 120, 1560 }; // 게임 분 기준
     public List<Transform> appearedTransform = new List<Transform>(); // 등장할 수 있는 위치들
     public GameObject npcPrefab; // 떠상 NPC 프리팹
 
@@ -21,7 +21,7 @@ public class WanderingShopNPCHandler : WanderingShopNPC
 
     void Update()
     {
-        float currentTime = GameTimeFlow.Instance.timer;
+        float currentTime = GameTimeFlow.Instance.timer % GameTimeFlow.Instance.dayLengthInSeconds;
         bool shouldBeActive = false;
 
         foreach (int appearTime in appearedTimes)
@@ -37,13 +37,13 @@ public class WanderingShopNPCHandler : WanderingShopNPC
         if (shouldBeActive && !isCurrentlyActive && currentNPCInstance == null)
         {
             isCurrentlyActive = true;
-            Debug.Log($"[WanderingShopNPC] 상점 NPC가 나타났습니다. 시간: {GameTimeFlow.Instance.timeString}");
+            Debug.Log($"[WanderingShopNPC] 맵 어딘가에 [떠돌이 상인] NPC가 나타났습니다. 시간: {GameTimeFlow.Instance.timeString}");
             SpawnWanderingNPC();
         }
         else if (!shouldBeActive && isCurrentlyActive && currentNPCInstance != null)
         {
             isCurrentlyActive = false;
-            Debug.Log($"[WanderingShopNPC] 상점 NPC가 사라졌습니다. 시간: {GameTimeFlow.Instance.timeString}");
+            Debug.Log($"[WanderingShopNPC] [떠돌이 상인] NPC가 사라졌습니다. 시간: {GameTimeFlow.Instance.timeString}");
             RemoveWanderingNPC();
         }
     }

@@ -14,12 +14,13 @@ public class EndBattleState : BaseBattleState
         var alivePlayer = BattleManager.Instance.BattleEntryTeam.Where(m => m.CurHp > 0).ToList();
         if (alivePlayer.Count > 0)
         {
-            BattleManager.Instance.BattleReward();
-            UIManager.Instance.battleUIManager.BattleEndMessage(true);
+            var (exp, gold) = BattleManager.Instance.BattleReward();
+            Debug.Log($"전투 종료 보상: 경험치 {exp}, 골드 {gold}");
+            UIManager.Instance.battleUIManager.BattlePanelWhenWin(exp, gold);
         }
         else
         {
-            UIManager.Instance.battleUIManager.BattleEndMessage(false);
+            UIManager.Instance.battleUIManager.BattlePanelWhenDefeat();
         }
 
         if (PlayerManager.Instance.player.playerBattleTutorialCheck)
@@ -40,7 +41,7 @@ public class EndBattleState : BaseBattleState
     {
         yield return new WaitForSeconds(2f);
 
-        BattleDialogueManager.Instance.ClearBattleDialogue();
+        BattleDialogueManager.Instance.ClearBattleEndPanel();
         SceneManager.LoadScene("MainMapScene");
     }
 }

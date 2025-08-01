@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
             animator.SetBool("1_Move", false);
+            lastMoveInput = Vector2.zero;
             return;
         }
 
@@ -138,18 +139,6 @@ public class PlayerController : MonoBehaviour
         transform.localScale = scale;
     }
 
-    public void BlockInput(bool shouldBlock)
-    {
-        isInputBlocked = shouldBlock;
-
-        if (shouldBlock)
-        {
-            rb.velocity = Vector2.zero; // 이동 멈추기
-            animator.SetBool("1_Move", false);
-            lastMoveInput = Vector2.zero;
-        }
-    }
-
     public void AutoMove(Vector2 direction, float duration, float customSpeed, bool canMove)
     {
         StartCoroutine(AutoMoveCoroutine(direction, duration, customSpeed, canMove));
@@ -161,7 +150,7 @@ public class PlayerController : MonoBehaviour
         autoMoveDirection = direction;
         autoMoveSpeed = customSpeed;
 
-        BlockInput(true);  // 입력 차단
+        isInputBlocked = true;  // 입력 차단
 
         yield return new WaitForSeconds(duration);
 
@@ -169,7 +158,7 @@ public class PlayerController : MonoBehaviour
         autoMoveDirection = Vector2.zero;
         autoMoveSpeed = 0f;
 
-        BlockInput(!canMove); // 입력 허용
+        isInputBlocked = !canMove; // 입력 허용
     }
 
 }

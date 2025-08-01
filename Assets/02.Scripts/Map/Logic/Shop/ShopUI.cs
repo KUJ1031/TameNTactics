@@ -41,6 +41,11 @@ public class ShopUI : MonoBehaviour
         LoadCategory(ShopItems_Consumable);
     }
 
+    private void OnEnable()
+    {
+        LoadCategory(ShopItems_Consumable); // 항상 소모품 탭으로 초기화
+    }
+
     private void LoadCategory(List<ItemData> categoryItems)
     {
         shopItems.Clear();

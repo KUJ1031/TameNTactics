@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,17 +22,35 @@ public class GameStart : MonoBehaviour
 
     public LoadUI loadUI; // 로드 UI 스크립트
 
+    [SerializeField] private GameObject saveWarringPopup;
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button prevButton;
+
+
+    [SerializeField] private GameObject startWarringPopup;
+    [SerializeField] private Image playerImage;
+    [SerializeField] private TextMeshProUGUI playerNameText;
+    [SerializeField] private Button showStartWarringPopupButton;
+    [SerializeField] private Button hideStartWarringPopupButton;
+
     private void Start()
     {
         // 시작 버튼 클릭 이벤트 등록
         startButton.onClick.AddListener(OnStartButtonClicked);
         loadButton.onClick.AddListener(OnLoadButtonClicked);
-        startPanelOnButton.onClick.AddListener(OpenStartPanel);
+        startPanelOnButton.onClick.AddListener(ShowWarringPopup);
         startPanelOffButton.onClick.AddListener(CloseStartPanel);
         loadPanelOnButton.onClick.AddListener(OpenLoadPanel);
         loadPanelOffButton.onClick.AddListener(CloseLoadPanel);
         lisenceButton.onClick.AddListener(OnLisenceButtonClicked);
         closeLisenceButton.onClick.AddListener(CloseLisenceeButtonClicked);
+
+        nextButton.onClick.AddListener(OpenStartPanel);
+        prevButton.onClick.AddListener(HideWarringPopup);
+
+        showStartWarringPopupButton.onClick.AddListener(ShowStartWarringPopup);
+        hideStartWarringPopupButton.onClick.AddListener(HideStartWarringPopup);
+
     }
 
     private void OnStartButtonClicked()
@@ -83,6 +102,7 @@ public class GameStart : MonoBehaviour
     public void OpenStartPanel()
     {
         // 시작 패널 열기
+        HideWarringPopup();
         gameStartPanel.SetActive(true);
     }
     public void CloseStartPanel()
@@ -107,6 +127,34 @@ public class GameStart : MonoBehaviour
     {
         // 로드 패널 닫기
         gameLoadPanel.SetActive(false);
+    }
+
+    public void ShowWarringPopup()
+    {
+        Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
+        if (loadedPlayer == null)
+        {
+            HideWarringPopup();
+            OpenStartPanel();
+            return;
+        }
+        saveWarringPopup.SetActive(true);
+    }
+    public void HideWarringPopup()
+    {
+        saveWarringPopup.SetActive(false);
+    }
+
+    public void ShowStartWarringPopup()
+    {
+        playerNameText.text = PlayerManager.Instance.player.playerName;
+        playerImage.sprite = PlayerManager.Instance.playerImage[PlayerManager.Instance.player.playerGender];
+        startWarringPopup.SetActive(true);
+    }
+
+    public void HideStartWarringPopup()
+    {
+        startWarringPopup.SetActive(false);
     }
 }
 

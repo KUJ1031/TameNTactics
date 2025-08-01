@@ -8793,6 +8793,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b0775f36d58dd44b849d37abeeb42ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedGestureItem:
+    data: {fileID: 0}
+    isEquipped: 0
+    quantity: 0
 --- !u!4 &559817652
 Transform:
   m_ObjectHideFlags: 0
@@ -11456,6 +11460,10 @@ PrefabInstance:
     - target: {fileID: 941203028722149700, guid: b73791f4ed752904c9a76d00db7def95, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3260122213355253601, guid: b73791f4ed752904c9a76d00db7def95, type: 3}
+      propertyPath: m_SortingOrder
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 8724896803280874284, guid: b73791f4ed752904c9a76d00db7def95, type: 3}
       propertyPath: m_Name
@@ -15839,7 +15847,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 200
+  m_SortingOrder: 89
   m_TargetDisplay: 0
 --- !u!1 &1582730448
 GameObject:
@@ -19749,6 +19757,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterSkillUI
       objectReference: {fileID: 0}
+    - target: {fileID: 5018849659410706846, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6060898198549399044, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -20709,7 +20721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6945082021044612578, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000333786
+      value: 0.000057401136
       objectReference: {fileID: 0}
     - target: {fileID: 6952682704605165051, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
       propertyPath: m_Pivot.x
@@ -21131,9 +21143,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1727359398713454409, guid: 02fa4e53b795f9e4da3f63f9a926b286, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2389516983798532549, guid: 02fa4e53b795f9e4da3f63f9a926b286, type: 3}
       propertyPath: m_Name
       value: EmbraceUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385212350257944969, guid: 02fa4e53b795f9e4da3f63f9a926b286, type: 3}
+      propertyPath: m_SortingOrder
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 8000962906064729108, guid: 02fa4e53b795f9e4da3f63f9a926b286, type: 3}
       propertyPath: m_Pivot.x

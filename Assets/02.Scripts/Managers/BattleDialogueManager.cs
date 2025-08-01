@@ -40,9 +40,9 @@ public class BattleDialogueManager : Singleton<BattleDialogueManager>
         BattleDialogueAppend("도망가기 실패...!\n");
     }
 
-    public void ClearBattleDialogue()
+    public void ClearBattleEndPanel()
     {
-        UIManager.Instance.battleUIManager.BattleInfoView.ClearBattleDialogue();
+        UIManager.Instance.battleUIManager.BattleInfoView.ClearBattleEndPanel();
     }
 
     /// <summary>

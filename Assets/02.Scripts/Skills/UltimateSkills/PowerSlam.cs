@@ -22,10 +22,7 @@ public class PowerSlam : ISkillEffect
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
-            yield return new WaitForSeconds(1f);
-            target.ApplyStatus(new Stun(2));
+            target.ApplyStatus(new Stun(3));
         }
-
-        yield break;
     }
 }
