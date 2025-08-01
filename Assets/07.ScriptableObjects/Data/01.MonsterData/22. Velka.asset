@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterName: Velka
   monsterNumber: 22
-  monsterImage: {fileID: 1112736112, guid: 79740e8a9529ed949893bd2cf6b7b86f, type: 3}
+  monsterImage: {fileID: -2038461800, guid: 61eed6e8438117d4c9bbaab24ab93329, type: 3}
   encounterCount: 0
   captureCount: 8
   type: 4
