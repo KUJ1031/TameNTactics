@@ -22,7 +22,6 @@ public class BreathOfDeath : ISkillEffect
         {
             if (Random.value < 0.05f && target.CurHp > 0)
             {
-                yield return new WaitForSeconds(1f);
                 BattleManager.Instance.DealDamage(target, target.CurHp, caster, this.skillData, false);
             }
 
@@ -32,7 +31,5 @@ public class BreathOfDeath : ISkillEffect
                 BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
             }
         }
-
-        yield break;
     }
 }

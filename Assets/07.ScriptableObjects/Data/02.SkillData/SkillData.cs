@@ -65,11 +65,15 @@ public enum NormalSkillList
 public enum UltimateSkillList
 {
     None,
-    FireStorm,
-    MiracleTouch,
-    BreathOfDeath,
-    PowerSlam,
-    GracePulse
+    FireStorm, // 전체공격 50% 확률로 3턴동안 화상
+    MiracleTouch, // 같은팀 한명 100% 회복, 모든 상태이상 제거
+    BreathOfDeath, // 단일공격 5%확률로 즉사
+    PowerSlam, // 단일공격 100% 3턴동안 스턴
+    GracePulse, // 같은팀 최대체력의 30% 회복, 궁극기 코스트 1개씩 증가
+    EnemyTeamAttackAtkDown, // 전체공격 상대팀 공격력 10% 감소
+    TeamBuffDefUp, // 우리팀 방어력 20% 상승
+    EnemyTeamAttackPoison, // 전체공격 50% 확률로 3턴동안 중독
+    EnemyTeamAttackTeamStatUp, // 전체공격 우리팀 전체 공격력, 방어력, 스피드, 치명타확률 10%씩 상승
 }
 
 public enum TargetScope
