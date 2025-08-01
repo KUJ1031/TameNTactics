@@ -41,7 +41,13 @@ public class MonsterFactory : MonoBehaviour
     {
         if (collision.CompareTag("Player") && !PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
-            PlayerManager.Instance.playerController.isInputBlocked = true;
+            var playerController = collision.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                Debug.Log("Player entered the exhibit area.");
+
+                playerController.isInputBlocked = true;
+            }
         }
 
     }
@@ -83,7 +89,6 @@ public class MonsterFactory : MonoBehaviour
                 MonsterMover mover = monsterGo.GetComponent<MonsterMover>();
                 if (mover != null)
                 {
-                    Debug.Log("mover 감지");
                     mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
                 }
             }
