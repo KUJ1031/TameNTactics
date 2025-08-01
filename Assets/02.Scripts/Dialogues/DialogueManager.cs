@@ -114,6 +114,11 @@ public class DialogueManager : Singleton<DialogueManager>
             speakerImage,
             node.Speaker
         );
+
+        if (node.Next == -1 && string.IsNullOrEmpty(node.Choice1) && string.IsNullOrEmpty(node.Choice2) && string.IsNullOrEmpty(node.Choice3))
+        {
+            dialogueUI.skipButton.gameObject.SetActive(false);
+        }
     }
 
     private Sprite GetSpeakerSprite(string speakerName)
@@ -190,6 +195,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 // 마지막 노드 보여준 상태 유지 (Hide 안 함)
                 StopSkipBlink();
                 isSkipping = false;
+                dialogueUI.skipButton.gameObject.SetActive(false);
                 yield break;
             }
 
@@ -205,6 +211,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 {
                     StopSkipBlink();
                     isSkipping = false;
+                    dialogueUI.skipButton.gameObject.SetActive(false);
                     yield break;
                 }
             }
@@ -214,6 +221,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 dialogueUI.Hide();
                 StopSkipBlink();
                 isSkipping = false;
+                dialogueUI.skipButton.gameObject.SetActive(false);
                 yield break;
             }
         }
