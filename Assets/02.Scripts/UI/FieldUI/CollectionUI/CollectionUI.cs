@@ -17,11 +17,12 @@ public class CollectionUI : FieldMenuBaseUI
     [SerializeField] private TextMeshProUGUI MonsterCaptureCount;
     [SerializeField] private TextMeshProUGUI MonsterPersonality;
 
-    //[SerializeField] private TextMeshProUGUI MonsterSkill1;
-    //[SerializeField] private TextMeshProUGUI MonsterSkill2;
-    //[SerializeField] private TextMeshProUGUI MonsterSkill3;
 
-    //[SerializeField] private Image CollectionSlot;
+    [SerializeField] private TextMeshProUGUI MonsterSkill1;
+    [SerializeField] private TextMeshProUGUI MonsterSkill2;
+    [SerializeField] private TextMeshProUGUI MonsterSkill3;
+
+    [SerializeField] private Image CollectionSlot;
 
     [Header("해금에 필요한 포섭수")]
     [SerializeField] private int areaNuRockCount = 1;

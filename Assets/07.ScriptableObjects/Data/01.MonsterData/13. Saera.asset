@@ -15,10 +15,10 @@ MonoBehaviour:
   monsterName: Saera
   monsterNumber: 13
   monsterImage: {fileID: -1578091471, guid: 250de522fa7d1b44b8e4b786112ef6a6, type: 3}
-  encounterCount: 0
-  captureCount: 0
-  type: 0
-  personality: 6
+  encounterCount: 5
+  captureCount: 3
+  type: 2
+  personality: 4
   maxHp: 90
   attack: 13
   defense: 11
