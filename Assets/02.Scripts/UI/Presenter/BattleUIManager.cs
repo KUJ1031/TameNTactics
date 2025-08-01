@@ -289,9 +289,14 @@ public class BattleUIManager : MonoBehaviour
         return null;
     }
 
-    public void BattleEndMessage(bool isWin)
+    public void BattlePanelWhenWin(int exp, int gold)
     {
-        battleInfoView.ShowEndBattleMessage(isWin);
+        battleInfoView.ShowVictoryPanel(exp, gold);
+    }
+
+    public void BattlePanelWhenDefeat()
+    {
+        battleInfoView.ShowDefeatPanel();
     }
 
     public void DeselectAllMonsters()

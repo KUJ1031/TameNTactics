@@ -406,11 +406,13 @@ public class BattleManager : Singleton<BattleManager>
     }
 
     // 배틀 승리시 보상
-    public void BattleReward()
+    public (int totalExp, int totalGold) BattleReward()
     {
         int totalExp = BattleEnemyTeam.Sum(e => e.ExpReward);
         int getBenchExp = Mathf.RoundToInt(totalExp * 0.7f);
         int totalGold = BattleEnemyTeam.Sum(e => e.GoldReward);
+
+        Debug.Log($"전투 보상: 경험치 {totalExp}, 벤치 몬스터 경험치 {getBenchExp}, 골드 {totalGold}");
 
         PlayerManager.Instance.player.AddGold(totalGold);
 
@@ -419,6 +421,8 @@ public class BattleManager : Singleton<BattleManager>
 
         foreach (var monster in BenchMonsters.Where(m => m.CurHp > 0))
             monster.AddExp(getBenchExp);
+
+        return (totalExp, totalGold);
     }
 
     // 모든 몬스터 궁극기 코스트 1개씩 증가

@@ -8,9 +8,13 @@ using UnityEngine.UI;
 public class BattleInfoView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI battleDialogue;
-    [SerializeField] private TextMeshProUGUI endBattleMessage;
     [SerializeField] private RectTransform passivePanel;
     [SerializeField] private GameObject passiveImage;
+    [SerializeField] private GameObject victoryPanel;
+    [SerializeField] private GameObject defeatPanel;
+
+    [SerializeField] private TextMeshProUGUI gainExp;
+    [SerializeField] private TextMeshProUGUI gainGold;
 
     private StringBuilder logBuilder = new();
 
@@ -21,25 +25,28 @@ public class BattleInfoView : MonoBehaviour
         battleDialogue.text = logBuilder.ToString();
     }
 
-    // 배틀 끝나고 나서 Dialogue 초기화
-    public void ClearBattleDialogue()
+    public void ClearBattleEndPanel()
     {
-        logBuilder.Clear();
-        battleDialogue.text = string.Empty;
+        if (victoryPanel.activeSelf)
+        {
+            victoryPanel.SetActive(false);
+        }
+        else if (defeatPanel.activeSelf)
+        {
+            defeatPanel.SetActive(false);
+        }
     }
 
-    public void ShowEndBattleMessage(bool isWin)
+    public void ShowVictoryPanel(int exp, int gold)
     {
-        endBattleMessage.gameObject.SetActive(true);
+        victoryPanel.SetActive(true);
+        gainExp.text = exp.ToString();
+        gainGold.text = gold.ToString();
+    }
 
-        if (isWin)
-        {
-            endBattleMessage.text = "승리했습니다!";
-        }
-        else
-        {
-            endBattleMessage.text = "패배했습니다...";
-        }
+    public void ShowDefeatPanel()
+    {
+        defeatPanel.SetActive(true);
     }
 
     public GameObject InitializePassiveIcon(Sprite skillIcon)
