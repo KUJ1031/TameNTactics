@@ -10,12 +10,6 @@ public class NPCAutoDialogue : MonoBehaviour
     [SerializeField] private bool canRepeat = false; // 대화 중복 실행 여부
     private bool hasTriggered = false; // 중복 실행 방지
 
-    private void Update()
-    {
-        if (!DialogueManager.Instance.isCommunicationEneded)
-            PlayerManager.Instance.playerController.isInputBlocked = true;
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if ((!hasTriggered || canRepeat) && other.CompareTag("Player"))
