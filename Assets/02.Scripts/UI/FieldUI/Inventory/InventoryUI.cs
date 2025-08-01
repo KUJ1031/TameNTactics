@@ -26,6 +26,7 @@ public class InventoryUI : FieldMenuBaseUI
     [SerializeField] private GameObject warringPopup;
     [SerializeField] private TextMeshProUGUI warringPopupText;
     [SerializeField] private Button warringPopupExitButton;
+    [SerializeField] private TextMeshProUGUI alertText;
 
     [SerializeField] private Button closeMenuButton;
     private void Awake()
@@ -52,38 +53,69 @@ public class InventoryUI : FieldMenuBaseUI
         warringPopupExitButton.onClick.AddListener(CloseWarringPopup);
 
         Refresh();
+
+        ApplyFilter(ItemType.consumable);
     }
 
     private void OnEnable()
     {
         items = PlayerManager.Instance.player.items;
-        Refresh();
+        ApplyFilter(ItemType.consumable);
     }
 
-    public void Refresh()
+    public void Refresh(ItemInstance retainSelectedItem = null)
     {
         // 기존 슬롯 제거
         for (int i = 0; i < slotParent.childCount; i++)
-        {
-            GameObject child = slotParent.GetChild(i).gameObject;
-            Destroy(child);
-        }
+            Destroy(slotParent.GetChild(i).gameObject);
 
-        // 아이템 슬롯 생성
+        int createdSlotCount = 0;
+
         foreach (var item in items)
         {
+            // 현재 필터 조건에 맞지 않으면 건너뜀
             if (currentFilter.HasValue && item.data.type != currentFilter.Value)
                 continue;
 
+            // 슬롯 생성
             GameObject slotObj = Instantiate(slotPrefab, slotParent);
             InventorySlotUI slotUI = slotObj.GetComponent<InventorySlotUI>();
             slotUI.Init(item, this);
+
+            // 장착 여부 확인 후 설정
             item.isEquipped = PlayerManager.Instance.player.playerEquipment.Any(e => e.data.itemId == item.data.itemId);
+
+            createdSlotCount++;
         }
 
-        selectedItem = null;
+        // 필터에 해당하는 아이템이 하나도 없을 경우
+        if (currentFilter.HasValue && createdSlotCount == 0)
+        {
+            string typeText = "";
+
+            switch (currentFilter.Value)
+            {
+                case ItemType.equipment:
+                    typeText = "장착";
+                    break;
+                case ItemType.consumable:
+                    typeText = "소비";
+                    break;
+                case ItemType.gesture:
+                    typeText = "제스처";
+                    break;
+            }
+            alertText.gameObject.SetActive(true);
+            alertText.text = $"보유중인 {typeText} 아이템이 없습니다!";
+        }
+        else alertText.gameObject.SetActive(false);
+
+        // 선택 항목 및 버튼 UI 갱신
+        selectedItem = retainSelectedItem;
         UpdateButtons();
     }
+
+
 
     public void SelectItem(ItemInstance item)
     {
@@ -110,6 +142,11 @@ public class InventoryUI : FieldMenuBaseUI
         equipButton.interactable = isEquipment && !selectedItem.isEquipped;
         unequipButton.interactable = isEquipment && selectedItem.isEquipped;
         dropButton.interactable = true;
+
+        useButton.gameObject.SetActive(isConsumable);
+        equipButton.gameObject.SetActive(isEquipment && !selectedItem.isEquipped);
+        unequipButton.gameObject.SetActive(isEquipment && selectedItem.isEquipped);
+        dropButton.gameObject.SetActive(!isGesture);
     }
 
     private void OnUse()
@@ -164,7 +201,7 @@ public class InventoryUI : FieldMenuBaseUI
 
         var equipment = PlayerManager.Instance.player.playerEquipment;
 
-        // 이미 같은 itemID가 장착되어 있는지 체크 (중복 방지)
+        // 중복 착용 체크
         if (equipment.Any(equip => equip.data.itemId == selectedItem.data.itemId))
         {
             Debug.LogWarning("[장착 실패] 이미 같은 장비가 장착되어 있습니다.");
@@ -173,7 +210,7 @@ public class InventoryUI : FieldMenuBaseUI
             return;
         }
 
-        // 이미 플레이어가 아이템을 하나라도 장착하고 있는지 확인
+        // 1개만 착용 제한
         if (equipment.Count >= 1)
         {
             Debug.LogWarning("[장착 실패] 장비 아이템은 1개만 착용 가능합니다.");
@@ -185,45 +222,29 @@ public class InventoryUI : FieldMenuBaseUI
         selectedItem.isEquipped = true;
         equipment.Add(selectedItem);
 
-        if (selectedItem.data.itemEffects.Exists(e => e.type == ItemEffectType.attack))
+        // 능력치 반영
+        foreach (var effect in selectedItem.data.itemEffects)
         {
-            int bonus = selectedItem.data.itemEffects.First(e => e.type == ItemEffectType.attack).value;
             foreach (var m in PlayerManager.Instance.player.ownedMonsters)
             {
-                m.AttackUp(bonus);
-                Debug.Log($"[장착] {m.monsterName} 공격력 +{bonus}");
-            }
-        }
-        else if (selectedItem.data.itemEffects.Exists(e => e.type == ItemEffectType.defense))
-        {
-            int bonus = selectedItem.data.itemEffects.First(e => e.type == ItemEffectType.defense).value;
-            foreach (var m in PlayerManager.Instance.player.ownedMonsters)
-            {
-                m.DefenseUp(bonus);
-                Debug.Log($"[장착] {m.monsterName} 방어력 +{bonus}");
-            }
-        }
-        else if (selectedItem.data.itemEffects.Exists(e => e.type == ItemEffectType.speed))
-        {
-            int bonus = selectedItem.data.itemEffects.First(e => e.type == ItemEffectType.speed).value;
-            foreach (var m in PlayerManager.Instance.player.ownedMonsters)
-            {
-                m.SpeedUp(bonus);
-                Debug.Log($"[장착] {m.monsterName} 속도 +{bonus}");
-            }
-        }
-        else if (selectedItem.data.itemEffects.Exists(e => e.type == ItemEffectType.criticalChance))
-        {
-            int bonus = selectedItem.data.itemEffects.First(e => e.type == ItemEffectType.criticalChance).value;
-            foreach (var m in PlayerManager.Instance.player.ownedMonsters)
-            {
-                m.CriticalChanceUp(bonus);
-                Debug.Log($"[장착] {m.monsterName} 치명타 확률 +{bonus}%");
+                switch (effect.type)
+                {
+                    case ItemEffectType.attack:
+                        m.AttackUp(effect.value); break;
+                    case ItemEffectType.defense:
+                        m.DefenseUp(effect.value); break;
+                    case ItemEffectType.speed:
+                        m.SpeedUp(effect.value); break;
+                    case ItemEffectType.criticalChance:
+                        m.CriticalChanceUp(effect.value); break;
+                }
             }
         }
 
-        Refresh();
+        Refresh(selectedItem);
+        SelectItem(selectedItem);
     }
+
 
     private void OnUnEquip()
     {
@@ -231,18 +252,15 @@ public class InventoryUI : FieldMenuBaseUI
 
         var player = PlayerManager.Instance.player;
 
-        // itemId 기준으로 찾되, 참조가 다른 경우도 포함
-        var equippedItem = player.playerEquipment
-            .FirstOrDefault(equip => equip.data.itemId == selectedItem.data.itemId);
+        // itemId 기준으로 장착된 아이템 제거
+        int removedCount = player.playerEquipment.RemoveAll(equip => equip.data.itemId == selectedItem.data.itemId);
 
-        if (equippedItem != null)
+        if (removedCount > 0)
         {
-            equippedItem.isEquipped = false;
+            selectedItem.isEquipped = false;
 
-            // 참조가 다를 수 있으므로 itemId 기준으로 직접 제거
-            player.playerEquipment.RemoveAll(equip => equip.data.itemId == selectedItem.data.itemId);
-
-            foreach (var effect in equippedItem.data.itemEffects)
+            // 능력치 감소 적용
+            foreach (var effect in selectedItem.data.itemEffects)
             {
                 foreach (var m in player.ownedMonsters)
                 {
@@ -275,8 +293,10 @@ public class InventoryUI : FieldMenuBaseUI
             warringPopupText.text = $"[해제 실패] 장착 목록에서 해당 아이템을 찾을 수 없습니다.";
         }
 
-        Refresh();
+        Refresh(selectedItem);
+        SelectItem(selectedItem);
     }
+
 
 
 

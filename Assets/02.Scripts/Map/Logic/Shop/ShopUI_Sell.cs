@@ -40,6 +40,12 @@ public class ShopUI_Sell : MonoBehaviour
         Refresh(); // 인벤토리에서 불러옴
     }
 
+    private void OnEnable()
+    {
+        currentFilter = FilterType.Consumable;
+        Refresh();
+    }
+
     public void Refresh()
     {
         foreach (Transform child in slotParent)

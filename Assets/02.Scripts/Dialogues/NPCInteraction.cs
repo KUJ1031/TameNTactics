@@ -45,8 +45,7 @@ public class NPCInteraction : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             isPlayerTouching = true;
-            playerController = collision.gameObject.GetComponent<PlayerController>();
-            playerController.BlockInput(true);
+           // playerController.isInputBlocked = true;
         }
     }
 
@@ -59,13 +58,6 @@ public class NPCInteraction : MonoBehaviour
 
             if (interactPromptObj != null)
                 interactPromptObj.SetActive(false);
-
-            if (playerController != null)
-            {
-                playerController.isInputBlocked = false;
-                playerController.BlockInput(false);
-                playerController = null;
-            }
         }
     }
 
@@ -111,20 +103,18 @@ public class NPCInteraction : MonoBehaviour
     {
         Interact();
 
-        if (playerController != null)
+        if (PlayerManager.Instance.playerController != null)
         {
-            playerController.isInputBlocked = true;
-            playerController.lastMoveInput = Vector2.zero;
-            DialogueManager.Instance.isCommunicationEneded = false; // 대화 중 상태 유지
+            PlayerManager.Instance.playerController.isInputBlocked = true;
+            PlayerManager.Instance.playerController.lastMoveInput = Vector2.zero;
         }
     }
 
     private void HandleDialogueEnd()
     {
-        if (DialogueManager.Instance.isCommunicationEneded && playerController != null)
+        if (DialogueManager.Instance.isCommunicationEneded)
         {
-            playerController.isInputBlocked = false;
-            DialogueManager.Instance.isCommunicationEneded = false; // 다음 대화 방지를 위해 초기화
+            PlayerManager.Instance.playerController.isInputBlocked = false;
             Debug.Log("대화 종료: 입력 차단 해제됨");
         }
     }

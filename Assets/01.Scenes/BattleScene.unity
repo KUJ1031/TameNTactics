@@ -11461,6 +11461,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3260122213355253601, guid: b73791f4ed752904c9a76d00db7def95, type: 3}
+      propertyPath: m_SortingOrder
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 8724896803280874284, guid: b73791f4ed752904c9a76d00db7def95, type: 3}
       propertyPath: m_Name
       value: DialogueUI
@@ -15843,7 +15847,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 200
+  m_SortingOrder: 89
   m_TargetDisplay: 0
 --- !u!1 &1582730448
 GameObject:
@@ -21139,9 +21143,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1727359398713454409, guid: 02fa4e53b795f9e4da3f63f9a926b286, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2389516983798532549, guid: 02fa4e53b795f9e4da3f63f9a926b286, type: 3}
       propertyPath: m_Name
       value: EmbraceUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385212350257944969, guid: 02fa4e53b795f9e4da3f63f9a926b286, type: 3}
+      propertyPath: m_SortingOrder
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 8000962906064729108, guid: 02fa4e53b795f9e4da3f63f9a926b286, type: 3}
       propertyPath: m_Pivot.x

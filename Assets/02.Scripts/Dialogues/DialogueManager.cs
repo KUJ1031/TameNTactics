@@ -74,6 +74,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public void StartDialogue(string dialogueTreeId, Sprite npcImage, int startID)
     {
         currentNPCImage = npcImage;
+        isCommunicationEneded = false; // 대화 시작 시 초기화
 
         if (!dialogueTrees.ContainsKey(dialogueTreeId))
         {
@@ -325,7 +326,6 @@ public class DialogueManager : Singleton<DialogueManager>
             case "TakeMoveCamStartZone":
                 Debug.Log("[이벤트] 메인 맵 스타트로 이동");
                 Transform playerTransform = PlayerManager.Instance.playerController.transform;
-                PlayerManager.Instance.playerController.isInputBlocked = true;
                 playerTransform.position -= new Vector3(11f, 0f, 0f);
                 CameraController.Instance.SwitchTo("StartCam", true, false); // 타겟 클리어
                 break;

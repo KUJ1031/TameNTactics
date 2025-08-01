@@ -38,6 +38,12 @@ public class LoadUI : MonoBehaviour
         TakeLoadDataUI();
     }
 
+    private void OnEnable()
+    {
+        currentIndex = 0;
+        UpdateImageVisibility();
+    }
+
     public void TakeLoadDataUI()
     {
         Player loadedPlayer = PlayerSaveManager.Instance.LoadPlayerData();
