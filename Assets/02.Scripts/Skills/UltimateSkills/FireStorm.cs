@@ -11,7 +11,7 @@ public class FireStorm : ISkillEffect
         skillData = data;
     }
 
-    // 전체 공격, 50% 확률로 2턴동안 화상
+    // 전체 공격, 50% 확률로 3턴동안 화상
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -25,11 +25,8 @@ public class FireStorm : ISkillEffect
 
             if (Random.value < 0.5f)
             {
-                yield return new WaitForSeconds(1f);
-                target.ApplyStatus(new Burn(2));
+                target.ApplyStatus(new Burn(3));
             }
         }
-
-        yield break;
     }
 }

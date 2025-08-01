@@ -38,6 +38,8 @@ public class SkillDataEditor : Editor
         skillData.icon = (Sprite)EditorGUILayout.ObjectField("Icon", skillData.icon, typeof(Sprite), false);
         skillData.upgradeIcon = (Sprite)EditorGUILayout.ObjectField("Upgrade Icon", skillData.upgradeIcon, typeof(Sprite), false);
 
+        skillData.damageSound = (AudioData)EditorGUILayout.ObjectField("Damage Sound", skillData.damageSound, typeof(AudioClip), false);
+        
         EditorGUILayout.LabelField("Description");
         skillData.description = EditorGUILayout.TextArea(skillData.description);
 
