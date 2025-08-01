@@ -408,9 +408,9 @@ public class BattleManager : Singleton<BattleManager>
     // 배틀 승리시 보상
     public (int totalExp, int totalGold) BattleReward()
     {
-        int totalExp = BattleEnemyTeam.Sum(e => e.ExpReward);
+        int totalExp = DeadEnemyMonsters.Sum(e => e.ExpReward);
         int getBenchExp = Mathf.RoundToInt(totalExp * 0.7f);
-        int totalGold = BattleEnemyTeam.Sum(e => e.GoldReward);
+        int totalGold = DeadEnemyMonsters.Sum(e => e.GoldReward);
 
         Debug.Log($"전투 보상: 경험치 {totalExp}, 벤치 몬스터 경험치 {getBenchExp}, 골드 {totalGold}");
 
