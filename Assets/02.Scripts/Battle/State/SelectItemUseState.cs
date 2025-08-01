@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using System.Threading;
+using UnityEditor.Experimental.GraphView;
 
 public class SelectItemUseState : BaseBattleState
 {
@@ -67,8 +69,14 @@ public class SelectItemUseState : BaseBattleState
             Debug.LogWarning("죽었거나 유효한 몬스터가 아닙니다.");
             return;
         }
+        if (!BattleManager.Instance.BattleEntryTeam.Contains(target))
+        {
+            Debug.LogWarning("아군 몬스터만 치료할 수 있습니다.");
+            return;
+        }
 
         UIManager.Instance.battleUIManager.DeselectMonster(target);
+
 
         // 회복 코루틴 끝난 후 적 공격 시작하도록 처리
         battleSystem.StartCoroutine(ApplyEffectAndProceed(target));
@@ -80,6 +88,7 @@ public class SelectItemUseState : BaseBattleState
             if (effect.type == ItemEffectType.curHp)
             {
                 yield return battleSystem.StartCoroutine(HealOverTime(target, effect.value, 0.5f));
+                BattleDialogueManager.Instance.UseItemDialogue(target, effect.value, selectedItem.data);
                 Debug.Log($"{target.monsterName} → {selectedItem.data.itemName} 사용: 체력 {effect.value} 서서히 회복");
             }
             else
@@ -105,7 +114,9 @@ public class SelectItemUseState : BaseBattleState
                 {
                     if (monster.CurHp > 0 && monster.CurHp < monster.MaxHp)
                     {
+                        UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
                         yield return battleSystem.StartCoroutine(HealOverTime(monster, effect.value, 0.5f));
+                        BattleDialogueManager.Instance.UseItemDialogue(monster, effect.value, selectedItem.data);
                         Debug.Log($"{monster.monsterName} → {selectedItem.data.itemName} 사용: 체력 {effect.value} 서서히 회복");
                     }
                 }

@@ -142,8 +142,11 @@ public class BattleTutorialManager : Singleton<BattleTutorialManager>
     public void InitItemButtonSelected()
     {
         if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
+        {
             tutorialView.HideItemSelectPanel();
-        tutorialView.ShowItemSelectButtonPanel();
+            tutorialView.ShowItemSelectButtonPanel();
+        }
+
     }
 
     public void InitMonsterItemSelected()

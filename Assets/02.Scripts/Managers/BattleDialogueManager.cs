@@ -35,6 +35,20 @@ public class BattleDialogueManager : Singleton<BattleDialogueManager>
         BattleDialogueAppend(useSkill + message);
     }
 
+    public void UseItemDialogue(Monster target, int amount, ItemData itemData)
+    {
+        if (target == null || itemData == null) return;
+
+        string itemName = itemData.itemName;
+        string targetName = target.monsterName;
+
+        string dialogue = $"우리 {targetName}에게 {itemName} 사용!\n";
+        dialogue += $"{amount}의 체력이 회복되었습니다!";
+
+        BattleDialogueAppend(dialogue);
+    }
+
+
     public void UseRunFailDialogue()
     {
         BattleDialogueAppend("도망가기 실패...!\n");
