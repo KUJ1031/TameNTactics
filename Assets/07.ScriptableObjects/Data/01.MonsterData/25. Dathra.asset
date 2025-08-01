@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterName: Dathra
   monsterNumber: 25
-  monsterImage: {fileID: -1398617283, guid: 9042064f04e55bf43b40699787b533aa, type: 3}
+  monsterImage: {fileID: 1594685187, guid: 9ac7d263136cbd340bc4f9721b770120, type: 3}
   encounterCount: 0
   captureCount: 8
   type: 4
