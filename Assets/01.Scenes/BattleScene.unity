@@ -8793,6 +8793,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b0775f36d58dd44b849d37abeeb42ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedGestureItem:
+    data: {fileID: 0}
+    isEquipped: 0
+    quantity: 0
 --- !u!4 &559817652
 Transform:
   m_ObjectHideFlags: 0
@@ -11456,6 +11460,10 @@ PrefabInstance:
     - target: {fileID: 941203028722149700, guid: b73791f4ed752904c9a76d00db7def95, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3260122213355253601, guid: b73791f4ed752904c9a76d00db7def95, type: 3}
+      propertyPath: m_SortingOrder
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 8724896803280874284, guid: b73791f4ed752904c9a76d00db7def95, type: 3}
       propertyPath: m_Name
@@ -15839,7 +15847,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 200
+  m_SortingOrder: 89
   m_TargetDisplay: 0
 --- !u!1 &1582730448
 GameObject:

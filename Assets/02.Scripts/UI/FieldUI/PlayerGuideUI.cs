@@ -11,6 +11,7 @@ public class PlayerGuideUI : FieldMenuBaseUI
 
     [Header("페이지 내용")]
     public Image guideImage;
+    public List<Sprite> guideImages; // 여러 이미지가 있을 경우를 대비
     public TextMeshProUGUI guideTitle;
     public TextMeshProUGUI guideDescription;
 
@@ -66,15 +67,15 @@ public class PlayerGuideUI : FieldMenuBaseUI
             {
                 "이동", new List<GuidePage>
                 {
-                    new GuidePage("조작", null, "조작은 기본적으로 WASD로 가능합니다."),
-                    new GuidePage("키 설정", null, "환경 설정에서 따로 키셋팅을 다르게 설정할 수 있습니다.")
+                    new GuidePage("조작", guideImages[0], "조작은 기본적으로 WASD로 가능합니다."),
+                    new GuidePage("키 설정", guideImages[1], "환경 설정에서 따로 키셋팅을 다르게 설정할 수 있습니다.")
                 }
             },
             {
                 "몬스터", new List<GuidePage>
                 {
-                    new GuidePage("몬스터란", null, "반향 증후군 (Resonance Syndrome) 전염병으로 인해 마음이 타락해버린 인간이었던 무언가입니다.\n겉의 빨간 테두리로 감염 여부를 확인할 수 있습니다."),
-                    new GuidePage("공격성", null, "본인들의 영역에 누군가 발을 들이면\n성격에 따라 피하기도, 적극적으로 공격에 나서기도 합니다."),
+                    new GuidePage("몬스터란", guideImages[2], "반향 증후군 (Resonance Syndrome) 전염병으로 인해 마음이 타락해버린 인간이었던 무언가입니다.\n겉의 빨간 테두리로 감염 여부를 확인할 수 있습니다."),
+                    new GuidePage("공격성", guideImages[3], "본인들의 영역에 누군가 발을 들이면\n성격에 따라 피하기도, 적극적으로 공격에 나서기도 합니다."),
                     new GuidePage("전투 개시", null, "플레이어와 접촉 시 전투가 발생합니다."),
                     new GuidePage("인간성..?", null, "비록 전염병으로 인해 타락해버린 존재들이지만...\n그들의 인간성은 정말 사라져버린 걸까요?")
                 }

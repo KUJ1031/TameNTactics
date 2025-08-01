@@ -111,6 +111,8 @@ public class SelectCaptureTargetState : BaseBattleState
             if (!BattleTutorialManager.Instance.isBattleEmbraceTutorialEnded)
             {
                 battleSystem.ChangeState(new PlayerMenuState(battleSystem));
+                BattleTutorialManager.Instance.tutorialView.ShowEmbracePanel();
+                BattleTutorialManager.Instance.tutorialView.HideMinigamePanel();
                 BattleTutorialManager.Instance.MinigameFailed();
                 Debug.Log("포섭 미니게임 실패, 다시 메뉴로 돌아갑니다.");
                 return;

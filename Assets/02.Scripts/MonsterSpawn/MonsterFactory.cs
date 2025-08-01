@@ -41,13 +41,7 @@ public class MonsterFactory : MonoBehaviour
     {
         if (collision.CompareTag("Player") && !PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
-            var playerController = collision.GetComponent<PlayerController>();
-            if (playerController != null)
-            {
-                Debug.Log("Player entered the exhibit area.");
-               
-                playerController.isInputBlocked = true;
-            }
+            PlayerManager.Instance.playerController.isInputBlocked = true;
         }
 
     }
