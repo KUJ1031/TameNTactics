@@ -8793,6 +8793,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b0775f36d58dd44b849d37abeeb42ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedGestureItem:
+    data: {fileID: 0}
+    isEquipped: 0
+    quantity: 0
 --- !u!4 &559817652
 Transform:
   m_ObjectHideFlags: 0
@@ -19749,6 +19753,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterSkillUI
       objectReference: {fileID: 0}
+    - target: {fileID: 5018849659410706846, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6060898198549399044, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -20709,7 +20717,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6945082021044612578, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000333786
+      value: 0.000057401136
       objectReference: {fileID: 0}
     - target: {fileID: 6952682704605165051, guid: 4e2cadb86bf300a47a81d11c633783a0, type: 3}
       propertyPath: m_Pivot.x
