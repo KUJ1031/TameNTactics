@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
-  m_Name: WaterSlash
+  m_Name: DoubleTargetHit
   m_EditorClassIdentifier: 
   skillType: 1
   passiveSkillList: 0
-  normalSkillList: 3
+  normalSkillList: 6
   ultimateSkillList: 0
-  skillName: "\uC6CC\uD130 \uC2AC\uB798\uC2DC"
+  skillName: "\uB354\uBE14 \uC5B4\uD0DD"
   skillPower: 1
-  skillEffectPrefab: {fileID: 4748681987041982144, guid: 61d33e8d5b9a7d54080f81521eb4f992, type: 3}
+  skillEffectPrefab: {fileID: 4748681987041982144, guid: a32195572ef3dc040bdf1d9f52373826, type: 3}
   targetScope: 3
-  targetCount: 1
-  icon: {fileID: 21300000, guid: 92f6c5f09928ecf4f959591bed7e03b7, type: 3}
+  targetCount: 2
+  icon: {fileID: 21300000, guid: a567f9ccf8b38e04993f114f4961736a, type: 3}
   upgradeIcon: {fileID: 0}
-  description: "\uC218 \uC18D\uC131 \uAE30\uBCF8 \uACF5\uACA9. \uACF5\uACA9 \uB370\uBBF8\uC9C0\uC758
-    10%\uB97C \uD68C\uBCF5\uD55C\uB2E4."
+  description: "2\uBA85\uC758 \uC0C1\uB300\uC5D0\uAC8C \uB370\uBBF8\uC9C0\uC758 50%\uC758
+    \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
   upgradeDescription: 
   damageSound: {fileID: 0}
