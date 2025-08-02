@@ -54,6 +54,8 @@ public class Monster
 
     public bool canAct { get; private set; } = true;
     private int skipTurnCount = 0;
+    private bool isShield;
+    private bool canBeHealed = true;
 
     public Action<Monster> HpChange;
     public Action<Monster> ultimateCostChange;
@@ -267,7 +269,16 @@ public class Monster
 
     public void Heal(int amount)
     {
-        CurHp += amount;
+        int modifiedAmount;
+        
+        if (!canBeHealed)
+        {
+            modifiedAmount = 0;
+        }
+        
+        else modifiedAmount = amount;
+        
+        CurHp += modifiedAmount;
         if (CurHp >= CurMaxHp) CurHp = CurMaxHp;
         HpChange?.Invoke(this);
     }
@@ -298,7 +309,17 @@ public class Monster
     //피해받기
     public void TakeDamage(int damage)
     {
-        CurHp -= damage;
+        int modifiedDamage;
+
+        if (isShield)
+        {
+            modifiedDamage = 0;
+            isShield = false;
+        }
+
+        else modifiedDamage = damage;
+        
+        CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(this, damage);
@@ -474,6 +495,11 @@ public class Monster
         ultimateCostChange?.Invoke(this);
     }
 
+    public void IncreaseUltimateCostMax()
+    {
+        CurUltimateCost = MaxUltimateCost;
+    }
+
     // 상태이상 제거
     public void RemoveStatusEffects()
     {
@@ -533,5 +559,21 @@ public class Monster
         InitializePassiveSkills();
         InitializeBattleStats();
         RemoveStatusEffects();
+        InitializeShield();
+    }
+
+    public void Shield()
+    {
+        isShield = true;
+    }
+
+    public void CanBeHealed(bool isHealable)
+    {
+        canBeHealed = false;
+    }
+    
+    public void InitializeShield()
+    {
+        isShield = false;
     }
 }

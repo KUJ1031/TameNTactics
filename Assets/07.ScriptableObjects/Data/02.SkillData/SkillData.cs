@@ -74,6 +74,12 @@ public enum UltimateSkillList
     TeamBuffDefUp, // 우리팀 방어력 20% 상승
     EnemyTeamAttackPoison, // 전체공격 50% 확률로 3턴동안 중독
     EnemyTeamAttackTeamStatUp, // 전체공격 우리팀 전체 공격력, 방어력, 스피드, 치명타확률 10%씩 상승
+    SelfCleanseAndShield, // 자기자신 모든 상태이상 제거, 실드생성(데미지 받아야 사라짐, 1회 방어)
+    EnemyTeamAttackResetUltCost, // 전체공격 상대팀 궁극기 코스트 초기화
+    SingleAttackRemoveAllBuffs, // 단일공격 상대 스텟버프 초기화
+    EnemyTeamAttackHealBlock2Turn, // 전체공격 2턴동안 힐 불가
+    SelectAllyCleanseAndUltMax, // 우리팀중 선택한 몬스터 모든 상태이상 제거, 궁극기 최대치로 채움
+    SingleAttackDoubleDamageIfDebuffed, // 단일공격 타겟 몬스터가 상태이상에 걸려있다면 데미지2배
 }
 
 public enum TargetScope

@@ -14,7 +14,12 @@ public static class UltimateSkillFactory
         { UltimateSkillList.TeamBuffDefUp, data => new TeamBuffDefUp(data)},
         { UltimateSkillList.EnemyTeamAttackPoison, data => new EnemyTeamAttackPoison(data)},
         { UltimateSkillList.EnemyTeamAttackTeamStatUp, data => new EnemyTeamAttackTeamStatUp(data)},
-        
+        { UltimateSkillList.SelfCleanseAndShield, data => new SelfCleanseAndShield(data)},
+        { UltimateSkillList.EnemyTeamAttackResetUltCost, data => new EnemyTeamAttackResetUltCost(data)},
+        { UltimateSkillList.SingleAttackRemoveAllBuffs, data => new SingleAttackRemoveAllBuffs(data)},
+        { UltimateSkillList.EnemyTeamAttackHealBlock2Turn, data => new EnemyTeamAttackHealBlock2Turn(data)},
+        { UltimateSkillList.SelectAllyCleanseAndUltMax, data => new SelectAllyCleanseAndUltMax(data)},
+        { UltimateSkillList.SingleAttackDoubleDamageIfDebuffed, data => new SingleAttackDoubleDamageIfDebuffed(data)}
     };
 
     public static ISkillEffect GetUltimateSkill(SkillData data)
