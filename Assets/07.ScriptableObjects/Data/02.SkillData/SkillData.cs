@@ -80,6 +80,7 @@ public enum UltimateSkillList
     EnemyTeamAttackHealBlock2Turn, // 전체공격 2턴동안 힐 불가
     SelectAllyCleanseAndUltMax, // 우리팀중 선택한 몬스터 모든 상태이상 제거, 궁극기 최대치로 채움
     SingleAttackDoubleDamageIfDebuffed, // 단일공격 타겟 몬스터가 상태이상에 걸려있다면 데미지2배
+    TeamRegenHp3Turn, // 같은팀 전체 3턴동안 최대체력의 10% 회복
 }
 
 public enum TargetScope

@@ -19,7 +19,9 @@ public static class UltimateSkillFactory
         { UltimateSkillList.SingleAttackRemoveAllBuffs, data => new SingleAttackRemoveAllBuffs(data)},
         { UltimateSkillList.EnemyTeamAttackHealBlock2Turn, data => new EnemyTeamAttackHealBlock2Turn(data)},
         { UltimateSkillList.SelectAllyCleanseAndUltMax, data => new SelectAllyCleanseAndUltMax(data)},
-        { UltimateSkillList.SingleAttackDoubleDamageIfDebuffed, data => new SingleAttackDoubleDamageIfDebuffed(data)}
+        { UltimateSkillList.SingleAttackDoubleDamageIfDebuffed, data => new SingleAttackDoubleDamageIfDebuffed(data)},
+        { UltimateSkillList.TeamRegenHp3Turn, data => new TeamRegenHp3Turn(data)},
+        
     };
 
     public static ISkillEffect GetUltimateSkill(SkillData data)

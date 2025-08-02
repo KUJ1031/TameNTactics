@@ -56,6 +56,7 @@ public class Monster
     private int skipTurnCount = 0;
     private bool isShield;
     private bool canBeHealed = true;
+    private int healDuration = 0;
 
     public Action<Monster> HpChange;
     public Action<Monster> ultimateCostChange;
@@ -281,6 +282,16 @@ public class Monster
         CurHp += modifiedAmount;
         if (CurHp >= CurMaxHp) CurHp = CurMaxHp;
         HpChange?.Invoke(this);
+    }
+
+    public void TriggerOnStartTurnHeal()
+    {
+        if (healDuration > 0 && canBeHealed)
+        {
+            int amount = Mathf.RoundToInt(CurMaxHp * 0.1f);
+            Heal(amount);
+            healDuration--;
+        }
     }
 
     public void Heal_Potion(int amount)
@@ -559,7 +570,7 @@ public class Monster
         InitializePassiveSkills();
         InitializeBattleStats();
         RemoveStatusEffects();
-        InitializeShield();
+        InitializeStatus();
     }
 
     public void Shield()
@@ -572,8 +583,16 @@ public class Monster
         canBeHealed = false;
     }
     
-    public void InitializeShield()
+    public void InitializeStatus()
     {
         isShield = false;
+        canBeHealed = true;
+        healDuration = 0;
+    }
+
+    public void HealDuration(int duration)
+    {
+        duration -= 1;
+        healDuration = duration;
     }
 }
