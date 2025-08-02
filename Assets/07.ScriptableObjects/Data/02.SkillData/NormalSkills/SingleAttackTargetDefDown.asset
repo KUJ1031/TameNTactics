@@ -21,7 +21,7 @@ MonoBehaviour:
   skillEffectPrefab: {fileID: 4748681987041982144, guid: 49f8bc9fbaacee144a7de203076ea7db, type: 3}
   targetScope: 3
   targetCount: 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 7ff721980eb03734e948151f461c7fee, type: 3}
   upgradeIcon: {fileID: 0}
   description: "\uC77C\uC815 \uD655\uB960\uB85C \uC0C1\uB300\uBC29\uC758 \uBC29\uC5B4\uB825\uC744
     10% \uAC10\uC18C\uC2DC\uD0A8\uB2E4."

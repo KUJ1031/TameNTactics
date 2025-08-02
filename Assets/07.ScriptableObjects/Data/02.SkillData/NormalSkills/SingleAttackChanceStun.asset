@@ -16,12 +16,12 @@ MonoBehaviour:
   passiveSkillList: 0
   normalSkillList: 7
   ultimateSkillList: 0
-  skillName: 
-  skillPower: 0
-  skillEffectPrefab: {fileID: 0}
-  targetScope: 0
-  targetCount: 0
-  icon: {fileID: 0}
+  skillName: "\uB10C \uC880 \uB204\uC6CC\uB77C"
+  skillPower: 1
+  skillEffectPrefab: {fileID: 4748681987041982144, guid: 49f8bc9fbaacee144a7de203076ea7db, type: 3}
+  targetScope: 3
+  targetCount: 1
+  icon: {fileID: 21300000, guid: 9ac8630f2480f554f86ee78961224968, type: 3}
   upgradeIcon: {fileID: 0}
   description: "\uC77C\uC815 \uD655\uB960\uB85C \uAE30\uC808\uC2DC\uD0A8\uB2E4."
   upgradeDescription: 
