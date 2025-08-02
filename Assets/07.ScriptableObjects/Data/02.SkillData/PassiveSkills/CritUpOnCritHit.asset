@@ -10,20 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
-  m_Name: LowHpAttackBoost
+  m_Name: CritUpOnCritHit
   m_EditorClassIdentifier: 
   skillType: 0
-  passiveSkillList: 3
+  passiveSkillList: 18
   normalSkillList: 0
   ultimateSkillList: 0
-  skillName: "\uC544\uC9C1 \uC8FD\uC9C0 \uC54A\uC558\uC5B4!"
-  skillPower: 1
+  skillName: "\uD06C..\uD06C\uD06D..\uD751\uC5FC\uB8E1..."
+  skillPower: 0
   skillEffectPrefab: {fileID: 0}
   targetScope: 1
   targetCount: 0
-  icon: {fileID: 1668693436, guid: 22ee27c46945df345ab49f1a657177fb, type: 3}
+  icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
-  description: "\uCCB4\uB825\uC774 50% \uC774\uD558\uC77C \uB54C \uACF5\uACA9\uB825\uC774
-    20% \uC0C1\uC2B9\uD55C\uB2E4."
+  description: "\uCE58\uBA85\uD0C0\uB85C \uACF5\uACA9\uB2F9\uD560 \uC2DC, \uC790\uC2E0\uC758
+    \uCE58\uBA85\uD0C0 \uD655\uB960\uC774 30% \uC0C1\uC2B9\uD55C\uB2E4. (\uCD5C\uB300
+    3\uC2A4\uD0DD)"
   upgradeDescription: 
   damageSound: {fileID: 0}

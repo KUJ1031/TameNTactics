@@ -10,20 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
-  m_Name: LowHpAttackBoost
+  m_Name: IncreaseMissChance
   m_EditorClassIdentifier: 
   skillType: 0
-  passiveSkillList: 3
+  passiveSkillList: 7
   normalSkillList: 0
   ultimateSkillList: 0
-  skillName: "\uC544\uC9C1 \uC8FD\uC9C0 \uC54A\uC558\uC5B4!"
+  skillName: "\uC289\uC288\uC288\uC289.."
   skillPower: 1
   skillEffectPrefab: {fileID: 0}
   targetScope: 1
   targetCount: 0
-  icon: {fileID: 1668693436, guid: 22ee27c46945df345ab49f1a657177fb, type: 3}
+  icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
-  description: "\uCCB4\uB825\uC774 50% \uC774\uD558\uC77C \uB54C \uACF5\uACA9\uB825\uC774
-    20% \uC0C1\uC2B9\uD55C\uB2E4."
+  description: "5% \uD655\uB960\uB85C \uACF5\uACA9\uC744 \uD68C\uD53C\uD55C\uB2E4."
   upgradeDescription: 
   damageSound: {fileID: 0}
