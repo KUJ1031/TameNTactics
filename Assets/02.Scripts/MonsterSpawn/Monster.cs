@@ -50,6 +50,7 @@ public class Monster
     public int CurCriticalChance { get; private set; }
 
     public List<StatusEffect> ActiveStatusEffects { get; private set; } = new();
+    public List<BuffEffect> ActiveBuffEffects { get; private set; } = new();
     public List<IPassiveSkill> PassiveSkills { get; private set; } = new();
 
     public bool canAct { get; private set; } = true;
@@ -57,6 +58,7 @@ public class Monster
     private bool isShield;
     private bool canBeHealed = true;
     private int healDuration = 0;
+    private bool isTaunted;
 
     public Action<Monster> HpChange;
     public Action<Monster> ultimateCostChange;
@@ -338,6 +340,8 @@ public class Monster
 
         if (CurHp <= 0)
         {
+            InitializeStatus();
+            
             foreach (var passive in PassiveSkills)
             {
                 if (passive is ReviveOnDeathChance reviveOnDeathChance)
@@ -387,6 +391,20 @@ public class Monster
         ActiveStatusEffects.Add(effect);
     }
 
+    public void ApplyBuff(BuffEffect effect)
+    {
+        foreach (var existing in ActiveBuffEffects)
+        {
+            if (existing.Type == effect.Type)
+            {
+                existing.duration += effect.duration;
+                return;
+            }
+        }
+
+        ActiveBuffEffects.Add(effect);
+    }
+
     // 상태이상 정해진 턴 수가 지나면 제거
     public void UpdateStatusEffects()
     {
@@ -405,6 +423,26 @@ public class Monster
         foreach (var effect in expired)
         {
             ActiveStatusEffects.Remove(effect);
+        }
+    }
+
+    public void UpdateBuffEffects()
+    {
+        List<BuffEffect> expired = new();
+        
+        foreach (var effect in ActiveBuffEffects)
+        {
+            effect.OnTurnStart(this);
+
+            if (effect.duration <= 0)
+            {
+                expired.Add(effect);
+            }
+        }
+
+        foreach (var effect in expired)
+        {
+            ActiveBuffEffects.Remove(effect);
         }
     }
 
@@ -580,19 +618,29 @@ public class Monster
 
     public void CanBeHealed(bool isHealable)
     {
-        canBeHealed = false;
+        if (isHealable) canBeHealed = true;
+        else canBeHealed = false;
     }
     
     public void InitializeStatus()
     {
         isShield = false;
         canBeHealed = true;
+        canAct = true;
+        isTaunted = false;
         healDuration = 0;
+        skipTurnCount = 0;
     }
 
     public void HealDuration(int duration)
     {
         duration -= 1;
         healDuration = duration;
+    }
+    
+    public void Taunt(bool isApplied)
+    {
+        if (isApplied) isTaunted = true;
+        else isTaunted = false;
     }
 }

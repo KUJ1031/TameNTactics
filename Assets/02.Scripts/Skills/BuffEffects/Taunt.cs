@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealBlock : StatusEffect
+public class Taunt : BuffEffect
 {
-    public HealBlock(int duration) : base(StatusEffectType.HealBlock, duration){}
+    public Taunt(int duration) : base(BuffEffectType.Taunt, duration){}
     
     public override void OnTurnStart(Monster target)
     {
-        if (duration == 0)
+        if (duration <= 0)
         {
-            target.CanBeHealed(true);
+            target.Taunt(false);
             return;
         }
         
-        target.CanBeHealed(false);
+        target.Taunt(true);
         duration--;
     }
 }

@@ -81,6 +81,15 @@ public enum UltimateSkillList
     SelectAllyCleanseAndUltMax, // 우리팀중 선택한 몬스터 모든 상태이상 제거, 궁극기 최대치로 채움
     SingleAttackDoubleDamageIfDebuffed, // 단일공격 타겟 몬스터가 상태이상에 걸려있다면 데미지2배
     TeamRegenHp3Turn, // 같은팀 전체 3턴동안 최대체력의 10% 회복
+    EnemyTeamAttackChanceStun, // 전체공격 30% 확률로 2턴동안 스턴
+    SingleAttackBonusDamageChance, // 단일공격 50확률로 데미지의 50%만큼 추가 데미지
+    ReviveAllyFullHp, // 기절한 우리팀 하나 최대 체력으로 부활
+    SingleAttackDoubleDamageWithHpCost30, // 단일공격 최대체력의 30% 데미지 입고, 공격 데미지 2배
+    SingleAllyStatBoost30, // 우리팀 한명 선택해서 스텟 30% 상승(공격력,방어력,속도,치명타확률)
+    SingleAttackDoubleDamageIfTargetHpOver80, // 단일 공격 상대 몬스터의 체력이 최대체력의 80%가 넘으면 데미지 2배
+    SingleAttackHpScaledDamage, // 단일 공격 타겟 체력에따라 공격력이 달라짐(100% 2배, 70%이상 1.5배, 30% 이상 1배, 30%미만 0.5배)
+    SingleAttackFixedHp40, // 단일공격 타겟 최대체력의 40% 고정 데미지
+    SelfTaunt, // 도발 2턴 동안 모든 공격 대신 맞음
 }
 
 public enum TargetScope

@@ -97,6 +97,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             monster.TriggerOnTurnEnd();
             monster.UpdateStatusEffects();
+            monster.UpdateBuffEffects();
             monster.CheckMonsterAction();
         }
 
@@ -118,6 +119,17 @@ public class BattleManager : Singleton<BattleManager>
                 {
                     InterceptDamage(target, skillData, finalDamage);
                     attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
+                    BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
+                    return;
+                }
+            }
+            
+            foreach (var buff in monster.ActiveBuffEffects)
+            {
+                if (buff.Type == BuffEffectType.Taunt)
+                {
+                    monster.TakeDamage(finalDamage);
+                    attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData);
                     BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
                     return;
                 }
