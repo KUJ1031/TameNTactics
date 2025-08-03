@@ -111,30 +111,34 @@ public class BattleManager : Singleton<BattleManager>
         int finalDamage = target.TriggerOnDamaged(damage, attacker);
         var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
 
-        foreach (var monster in team)
+        if (skillData.targetCount == 1 || skillData.targetCount == 2)
         {
-            foreach (var passive in monster.PassiveSkills)
+            foreach (var monster in team)
             {
-                if (passive is InterceptDamage)
+                foreach (var passive in monster.PassiveSkills)
                 {
-                    InterceptDamage(target, skillData, finalDamage);
-                    attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
-                    BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
-                    return;
+                    if (passive is InterceptDamage)
+                    {
+                        InterceptDamage(target, skillData, finalDamage);
+                        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
+                        BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
+                        return;
+                    }
                 }
-            }
             
-            foreach (var buff in monster.ActiveBuffEffects)
-            {
-                if (buff.Type == BuffEffectType.Taunt)
+                foreach (var buff in monster.ActiveBuffEffects)
                 {
-                    monster.TakeDamage(finalDamage);
-                    attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData);
-                    BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
-                    return;
+                    if (buff.Type == BuffEffectType.Taunt)
+                    {
+                        monster.TakeDamage(finalDamage);
+                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData);
+                        BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
+                        return;
+                    }
                 }
             }
         }
+        
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
         attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
