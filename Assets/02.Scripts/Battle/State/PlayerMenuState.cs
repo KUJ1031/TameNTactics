@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class PlayerMenuState : BaseBattleState
@@ -12,6 +13,7 @@ public class PlayerMenuState : BaseBattleState
         UIManager.Instance.battleUIManager.BattleSelectView.HideCancelButton();
         UIManager.Instance.battleUIManager.DisableHoverSelect();
         UIManager.Instance.battleUIManager.IntoBattleMenuSelect();
+        OnTurnStart();
     }
 
     public override void Execute()
@@ -38,5 +40,16 @@ public class PlayerMenuState : BaseBattleState
     public void OnRunSelected()
     {
         battleSystem.ChangeState(new RunAwayState(battleSystem));
+    }
+
+    private void OnTurnStart()
+    {
+        var allMonsters =
+            BattleManager.Instance.BattleEntryTeam.Concat(BattleManager.Instance.BattleEnemyTeam);
+
+        foreach (var monster in allMonsters)
+        {
+            monster.TriggerOnStartTurnHeal();
+        }
     }
 }
