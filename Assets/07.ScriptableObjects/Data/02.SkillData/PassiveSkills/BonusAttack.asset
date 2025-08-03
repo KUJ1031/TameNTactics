@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
+  m_Name: BonusAttack
+  m_EditorClassIdentifier: 
+  skillType: 0
+  passiveSkillList: 14
+  normalSkillList: 0
+  ultimateSkillList: 0
+  skillName: "\uC6B4\uBE68\uB9DD\uAC9C"
+  skillPower: 0
+  skillEffectPrefab: {fileID: 0}
+  targetScope: 1
+  targetCount: 0
+  icon: {fileID: 0}
+  upgradeIcon: {fileID: 0}
+  description: "10% \uD655\uB960\uB85C \uB370\uBBF8\uC9C0\uC758 20% \uB9CC\uD07C
+    \uCD94\uAC00 \uACF5\uACA9\uD55C\uB2E4."
+  upgradeDescription: 
+  damageSound: {fileID: 0}

@@ -16,12 +16,14 @@ MonoBehaviour:
   passiveSkillList: 0
   normalSkillList: 3
   ultimateSkillList: 0
-  skillName: e
-  skillPower: 1.3
-  skillEffectPrefab: {fileID: 5769673284640504494, guid: eb6d6797a4e139e4bb6e5a3da158235a, type: 3}
+  skillName: "\uC6CC\uD130 \uC2AC\uB798\uC2DC"
+  skillPower: 1
+  skillEffectPrefab: {fileID: 4748681987041982144, guid: 61d33e8d5b9a7d54080f81521eb4f992, type: 3}
   targetScope: 3
   targetCount: 1
-  icon: {fileID: 21300000, guid: a95b3716495c4494093c46b8846d57c3, type: 3}
+  icon: {fileID: 21300000, guid: 92f6c5f09928ecf4f959591bed7e03b7, type: 3}
   upgradeIcon: {fileID: 0}
-  description: eeeeeee
+  description: "\uC218 \uC18D\uC131 \uAE30\uBCF8 \uACF5\uACA9. \uACF5\uACA9 \uB370\uBBF8\uC9C0\uC758
+    10%\uB97C \uD68C\uBCF5\uD55C\uB2E4."
   upgradeDescription: 
+  damageSound: {fileID: 0}

@@ -92,10 +92,10 @@ public class BattleSelectView : MonoBehaviour
         GameObject selectImage = Instantiate(selectMonsterImage, battleSelectCanvas.transform);
 
         // 몬스터의 Sprite Renderer 참조
-        SpriteRenderer sr = tr.GetComponentInChildren<SpriteRenderer>();
+        BoxCollider2D collider = tr.GetComponent<BoxCollider2D>();
 
         // 몬스터 sprite의 중앙
-        Vector3 monsterCenterPos = sr.bounds.center;
+        Vector3 monsterCenterPos = collider.bounds.center;
 
         // UI 좌표를 몬스터의 좌표로 옮기기 위한 변수
         Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterCenterPos);
