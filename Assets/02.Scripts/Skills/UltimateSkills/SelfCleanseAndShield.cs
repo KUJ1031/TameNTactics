@@ -11,11 +11,14 @@ public class SelfCleanseAndShield : ISkillEffect
         skillData = data;
     }
     
+    // 자기자신 모든 상태이상 제거, 실드생성(데미지 받아야 사라짐, 1회 방어), 15레벨 도발 2턴 부여
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
         
         caster.Shield();
         caster.RemoveStatusEffects();
+
+        if (caster.Level >= 15) caster.ApplyBuff(new Taunt(2));
     }
 }

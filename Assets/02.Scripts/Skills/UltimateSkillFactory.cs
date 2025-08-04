@@ -25,10 +25,10 @@ public static class UltimateSkillFactory
         { UltimateSkillList.SingleAttackBonusDamageChance, data => new SingleAttackBonusDamageChance(data)},
         { UltimateSkillList.ReviveAllyFullHp, data => new ReviveAllyFullHp(data)},
         { UltimateSkillList.SingleAttackDoubleDamageWithHpCost30, data => new SingleAttackDoubleDamageWithHpCost30(data)},
-        { UltimateSkillList.SingleAllyStatBoost30, data => new SingleAllyStatBoost30(data)},
+        { UltimateSkillList.SingleAllyStatBoost, data => new SingleAllyStatBoost(data)},
         { UltimateSkillList.SingleAttackDoubleDamageIfTargetHpOver80, data => new SingleAttackDoubleDamageIfTargetHpOver80(data)},
         { UltimateSkillList.SingleAttackHpScaledDamage, data => new SingleAttackHpScaledDamage(data)},
-        { UltimateSkillList.SingleAttackFixedHp40, data => new SingleAttackFixedHp40(data)},
+        { UltimateSkillList.SingleAttackFixedHp, data => new SingleAttackFixedHp(data)},
         { UltimateSkillList.SelfTaunt, data => new SelfTaunt(data)}
     };
 
