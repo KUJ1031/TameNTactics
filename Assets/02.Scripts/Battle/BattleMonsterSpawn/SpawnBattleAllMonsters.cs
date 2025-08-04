@@ -53,6 +53,10 @@ public class SpawnBattleAllMonsters : MonoBehaviour
             {
                 //스폰 위치에 객체 생성
                 GameObject enemyMonster = Instantiate(loadedPrefab, spawnPointTransform);
+                BoxCollider2D collider = enemyMonster.GetComponent<BoxCollider2D>();
+
+                // 몬스터 간 충돌을 방지하기 위한 코드
+                collider.isTrigger = true;
 
                 if (playerTeam.Contains(monsterList[i]))
                 {

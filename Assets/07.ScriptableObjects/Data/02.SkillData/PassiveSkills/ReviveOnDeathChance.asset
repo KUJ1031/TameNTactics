@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
+  m_Name: ReviveOnDeathChance
+  m_EditorClassIdentifier: 
+  skillType: 0
+  passiveSkillList: 22
+  normalSkillList: 0
+  ultimateSkillList: 0
+  skillName: "\uBD88\uC0AC\uB300\uB9C8\uC655"
+  skillPower: 0
+  skillEffectPrefab: {fileID: 0}
+  targetScope: 1
+  targetCount: 0
+  icon: {fileID: 0}
+  upgradeIcon: {fileID: 0}
+  description: "\uC4F0\uB7EC\uC84C\uC744 \uB54C 50% \uD655\uB960\uB85C \uCD5C\uB300
+    \uCCB4\uB825\uC758 30%\uB85C \uBD80\uD65C\uD55C\uB2E4."
+  upgradeDescription: 
+  damageSound: {fileID: 0}

@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 public class StartUI : MonoBehaviour
 {
@@ -25,8 +26,10 @@ public class StartUI : MonoBehaviour
 
     private void OnDisable()
     {
-        selected.SetSelected(false);
+        if (selected != null)
+            selected.SetSelected(false);
         selected = null;
+        nickNameWarringText.text = "";
     }
 
     private void Start()
@@ -62,14 +65,16 @@ public class StartUI : MonoBehaviour
     {
         string nickname = inputNicknameField.text;
 
-        // 1. 길이 제한
-
-        if (nickname.Length <= 0)
+        // 1. 공백이거나, 공백을 포함한 경우 모두 차단
+        if (string.IsNullOrWhiteSpace(nickname) || nickname.Any(char.IsWhiteSpace))
         {
             nickNameWarringText.gameObject.SetActive(true);
-            nickNameWarringText.text = "닉네임을 입력해주세요.";
+            nickNameWarringText.text = "닉네임에는 공백을 포함할 수 없습니다.";
+            inputNicknameField.text = "";
             return;
         }
+
+        // 2. 전체 길이 제한 (공백 포함)
         if (nickname.Length > 8)
         {
             nickNameWarringText.gameObject.SetActive(true);
@@ -78,7 +83,7 @@ public class StartUI : MonoBehaviour
             return;
         }
 
-        // 2. 특수 문자 제한 (예시 단어 리스트)
+        // 3. 특수 문자 제한
         string[] forbiddenSymbols = { "!", "@", "#", "$", "%", "^", "&", "*", "(", ")" };
         foreach (string symbol in forbiddenSymbols)
         {
@@ -90,6 +95,7 @@ public class StartUI : MonoBehaviour
                 return;
             }
         }
+
         // 통과 시 저장
         PlayerManager.Instance.player.playerName = nickname;
         Debug.Log("닉네임이 설정되었습니다: " + nickname);
@@ -97,6 +103,8 @@ public class StartUI : MonoBehaviour
         startPhase_1.SetActive(false);
         startPhase_2.SetActive(true);
     }
+
+
 
 
     private void OnClickSelectButton()

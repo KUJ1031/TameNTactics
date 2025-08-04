@@ -26,13 +26,13 @@ public class BattleInventoryUI : MonoBehaviour
 
     private void Start()
     {
-        useItemButton.onClick.AddListener(() => UseItem());
-        closeButton.onClick.AddListener(() =>
+        if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
-            HideInventory();
-            HideitemDetailInfoPanel();
-            OnInventoryCancelled?.Invoke(); // ← 콜백 실행
-        });
+            closeButton.gameObject.SetActive(false); // 배틀 튜토리얼 중에는 닫기 버튼 비활성화
+        }
+
+        useItemButton.onClick.AddListener(() => UseItem());
+        closeButton.onClick.AddListener(() => HideInventoryUI());
     }
 
     private void OnEnable()
@@ -89,6 +89,13 @@ public class BattleInventoryUI : MonoBehaviour
         RefreshInventory();
         HideInventory();
         HideitemDetailInfoPanel();
+    }
+
+    public void HideInventoryUI()
+    {
+        HideInventory();
+        HideitemDetailInfoPanel();
+        OnInventoryCancelled?.Invoke(); // ← 콜백 실행
     }
 
     public void ShowInventory() => battleInventoryUIPanel.SetActive(true);
