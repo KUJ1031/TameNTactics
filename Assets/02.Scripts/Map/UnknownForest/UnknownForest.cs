@@ -4,113 +4,103 @@ using UnityEngine;
 
 public class UnknownForest : MonoBehaviour
 {
-    public int startDelay = 3;
-    public float eventCooldown = 1f;
+    public GameObject strangeBushesPrefab;
+    public int maxBushCount = 5;
+    public float minBushDistance = 1f;
 
-    private bool isOnCooldown = false;
-
-    // 아이템 드롭 확률 딕셔너리 (아이템 이름 기준)
-    private Dictionary<string, float> itemDropChances = new();
+    private List<Vector2> spawnedPositions = new();
 
     private void Start()
     {
-        InitializeItemChances();
+        SpawnRandomBushes();
     }
 
-    private void InitializeItemChances()
+    private void SpawnRandomBushes()
     {
-        // 확률 설정
-        itemDropChances["소형 회복 물약"] = 0.01f;
-        itemDropChances["중형 회복 물약"] = 0.005f;
-        itemDropChances["대형 회복 물약"] = 0.001f;
-
-        itemDropChances["소형 전체 회복 물약"] = 0.007f;
-        itemDropChances["중형 전체 회복 물약"] = 0.003f;
-        itemDropChances["대형 전체 회복 물약"] = 0.001f;
-
-        itemDropChances["이상한 물약"] = 0.0002f;
-        itemDropChances["고기"] = 0.0001f;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
+        Collider2D forestCollider = GetComponent<Collider2D>();
+        if (forestCollider == null)
         {
-            Debug.Log("미지의 숲에 입장하였습니다.");
+            Debug.LogError("[UnknownForest] 콜라이더가 없습니다!");
+            return;
         }
-    }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && !isOnCooldown)
+        Bounds bounds = forestCollider.bounds;
+        int spawnAttempts = 0;
+
+        while (spawnedPositions.Count < maxBushCount && spawnAttempts < 100)
         {
-            PlayerController playerController = collision.GetComponent<PlayerController>();
-            if (playerController != null && playerController.lastMoveInput != Vector2.zero)
+            Vector2 randomPos = GetValidRandomPosition(bounds);
+            if (randomPos != Vector2.positiveInfinity)
             {
-                OccurrenceNewEvent();
+                SpawnBushAt(randomPos);
             }
+
+            spawnAttempts++;
+        }
+
+        if (spawnedPositions.Count < maxBushCount)
+        {
+            Debug.LogWarning($"[UnknownForest] 생성된 수풀 수: {spawnedPositions.Count}/{maxBushCount} (충분한 공간 부족)");
         }
     }
 
-    private void OccurrenceNewEvent()
+    private Vector2 GetValidRandomPosition(Bounds bounds)
     {
-        float roll = Random.value; // 0.0 ~ 1.0
+        for (int i = 0; i < 20; i++)
+        {
+            Vector2 randomPos = new Vector2(
+                Random.Range(bounds.min.x, bounds.max.x),
+                Random.Range(bounds.min.y, bounds.max.y)
+            );
 
-        if (roll < 0.33f)
-        {
-            // 아이템 획득 이벤트
-            TryDropItem();
+            bool tooClose = false;
+            foreach (Vector2 pos in spawnedPositions)
+            {
+                if (Vector2.Distance(pos, randomPos) < minBushDistance)
+                {
+                    tooClose = true;
+                    break;
+                }
+            }
+
+            if (!tooClose)
+                return randomPos;
         }
-        else if (roll < 0.66f)
+
+        return Vector2.positiveInfinity;
+    }
+
+    private void SpawnBushAt(Vector2 position)
+    {
+        GameObject bush = Instantiate(strangeBushesPrefab, position, Quaternion.identity, this.transform);
+        spawnedPositions.Add(position);
+    }
+
+    public void RequestBushRespawn(Vector2 oldPos, float delay)
+    {
+        // 현재 위치 제거 (없으면 무시)
+        spawnedPositions.Remove(oldPos);
+        StartCoroutine(RespawnBushAfterDelay(delay));
+    }
+
+    private IEnumerator RespawnBushAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Collider2D forestCollider = GetComponent<Collider2D>();
+        if (forestCollider == null)
+            yield break;
+
+        Bounds bounds = forestCollider.bounds;
+
+        Vector2 newPos = GetValidRandomPosition(bounds);
+        if (newPos != Vector2.positiveInfinity)
         {
-            // 전투 발생
-            Debug.Log("[미지의 숲] 몬스터가 나타났다! 전투 시작!");
-            StartCoroutine(EventCooldown());
+            SpawnBushAt(newPos);
         }
         else
         {
-            // 아무 일도 없음
-            Debug.Log("[미지의 숲] 아무 일도 일어나지 않았다...");
-            StartCoroutine(EventCooldown());
-        }
-    }
-
-    private void TryDropItem()
-    {
-        foreach (var itemData in ItemManager.Instance.consumableItems)
-        {
-            string itemName = itemData.itemName;
-
-            if (itemDropChances.TryGetValue(itemName, out float chance))
-            {
-                if (Random.value < chance)
-                {
-                    Debug.Log($"[미지의 숲] '{itemName}' 아이템을 획득했습니다!");
-                    PlayerManager.Instance.player.AddItem(itemName, 1);
-
-                    StartCoroutine(EventCooldown());
-                    return;
-                }
-            }
-        }
-
-        Debug.Log("[미지의 숲] 아이템 드롭 이벤트였지만 아무것도 얻지 못했습니다.");
-        StartCoroutine(EventCooldown());
-    }
-
-    private IEnumerator EventCooldown()
-    {
-        isOnCooldown = true;
-        yield return new WaitForSeconds(eventCooldown);
-        isOnCooldown = false;
-        Debug.Log("이벤트 쿨타임이 끝났습니다.");
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            Debug.Log("미지의 숲을 떠났습니다.");
+            Debug.LogWarning("[UnknownForest] 재생성할 공간이 부족합니다.");
         }
     }
 }

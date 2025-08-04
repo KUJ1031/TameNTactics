@@ -78,7 +78,7 @@ public class GameStart : MonoBehaviour
         if (loadedPlayer != null)
         {
             PlayerManager.Instance.player = loadedPlayer;
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMapScene");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMapPuzzleTestScene");
             Debug.Log("저장된 플레이어 데이터를 불러왔습니다.");
         }
         else

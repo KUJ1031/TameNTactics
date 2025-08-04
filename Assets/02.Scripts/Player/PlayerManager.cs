@@ -40,7 +40,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "MainMapScene")
+        if (scene.name == "MainMapPuzzleTestScene")
         {
             // 1. 저장된 데이터가 있는지 시도해서 불러옴
             SpawnPlayerCharacter(player);

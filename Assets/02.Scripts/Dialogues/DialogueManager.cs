@@ -537,6 +537,8 @@ public class DialogueManager : Singleton<DialogueManager>
             case "End_AllTutorial":
                 TutorialManager.Instance.TutorialCompeleted();
                 break;
+            case "UnknownForest_GetItem":
+
 
             default:
                 Debug.LogWarning($"[이벤트] 알 수 없는 이벤트 키: {eventKey}");
