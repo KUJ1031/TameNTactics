@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameSettingUI : FieldMenuBaseUI
@@ -12,7 +13,10 @@ public class GameSettingUI : FieldMenuBaseUI
     {
         audioSettingButton.onClick.AddListener(OnClickAudioSettingButton);
         keySettingButton.onClick.AddListener(OnClickKeySettingButton);
-        closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
+        if (SceneManager.GetActiveScene().name == "MainMapScene")
+        {
+            closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
+        }
     }
 
     private void OnClickAudioSettingButton()
