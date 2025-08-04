@@ -19757,10 +19757,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterSkillUI
       objectReference: {fileID: 0}
-    - target: {fileID: 5018849659410706846, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6060898198549399044, guid: b95ffcced0ab05a408272998b08e7c55, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -20855,10 +20851,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BattleSelectUI
       objectReference: {fileID: 0}
-    - target: {fileID: 1949517314820545275, guid: 546ef10333cf1a842a87d45a3a64cca0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2684984429478296836, guid: 546ef10333cf1a842a87d45a3a64cca0, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -20938,10 +20930,6 @@ PrefabInstance:
     - target: {fileID: 2684984429478296836, guid: 546ef10333cf1a842a87d45a3a64cca0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3019345627977933484, guid: 546ef10333cf1a842a87d45a3a64cca0, type: 3}
-      propertyPath: m_SortingOrder
-      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 3201116205222815629, guid: 546ef10333cf1a842a87d45a3a64cca0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

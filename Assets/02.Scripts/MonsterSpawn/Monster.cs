@@ -50,10 +50,15 @@ public class Monster
     public int CurCriticalChance { get; private set; }
 
     public List<StatusEffect> ActiveStatusEffects { get; private set; } = new();
+    public List<BuffEffect> ActiveBuffEffects { get; private set; } = new();
     public List<IPassiveSkill> PassiveSkills { get; private set; } = new();
 
     public bool canAct { get; private set; } = true;
     private int skipTurnCount = 0;
+    private bool isShield;
+    private bool canBeHealed = true;
+    private int healDuration = 0;
+    private bool isTaunted;
 
     public Action<Monster> HpChange;
     public Action<Monster> ultimateCostChange;
@@ -267,9 +272,28 @@ public class Monster
 
     public void Heal(int amount)
     {
-        CurHp += amount;
+        int modifiedAmount;
+        
+        if (!canBeHealed)
+        {
+            modifiedAmount = 0;
+        }
+        
+        else modifiedAmount = amount;
+        
+        CurHp += modifiedAmount;
         if (CurHp >= CurMaxHp) CurHp = CurMaxHp;
         HpChange?.Invoke(this);
+    }
+
+    public void TriggerOnStartTurnHeal()
+    {
+        if (healDuration > 0 && canBeHealed)
+        {
+            int amount = Mathf.RoundToInt(CurMaxHp * 0.1f);
+            Heal(amount);
+            healDuration--;
+        }
     }
 
     public void Heal_Potion(int amount)
@@ -298,7 +322,17 @@ public class Monster
     //피해받기
     public void TakeDamage(int damage)
     {
-        CurHp -= damage;
+        int modifiedDamage;
+
+        if (isShield)
+        {
+            modifiedDamage = 0;
+            isShield = false;
+        }
+
+        else modifiedDamage = damage;
+        
+        CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(this, damage);
@@ -306,6 +340,8 @@ public class Monster
 
         if (CurHp <= 0)
         {
+            InitializeStatus();
+            
             foreach (var passive in PassiveSkills)
             {
                 if (passive is ReviveOnDeathChance reviveOnDeathChance)
@@ -355,6 +391,20 @@ public class Monster
         ActiveStatusEffects.Add(effect);
     }
 
+    public void ApplyBuff(BuffEffect effect)
+    {
+        foreach (var existing in ActiveBuffEffects)
+        {
+            if (existing.Type == effect.Type)
+            {
+                existing.duration += effect.duration;
+                return;
+            }
+        }
+
+        ActiveBuffEffects.Add(effect);
+    }
+
     // 상태이상 정해진 턴 수가 지나면 제거
     public void UpdateStatusEffects()
     {
@@ -373,6 +423,26 @@ public class Monster
         foreach (var effect in expired)
         {
             ActiveStatusEffects.Remove(effect);
+        }
+    }
+
+    public void UpdateBuffEffects()
+    {
+        List<BuffEffect> expired = new();
+        
+        foreach (var effect in ActiveBuffEffects)
+        {
+            effect.OnTurnStart(this);
+
+            if (effect.duration <= 0)
+            {
+                expired.Add(effect);
+            }
+        }
+
+        foreach (var effect in expired)
+        {
+            ActiveBuffEffects.Remove(effect);
         }
     }
 
@@ -474,6 +544,11 @@ public class Monster
         ultimateCostChange?.Invoke(this);
     }
 
+    public void IncreaseUltimateCostMax()
+    {
+        CurUltimateCost = MaxUltimateCost;
+    }
+
     // 상태이상 제거
     public void RemoveStatusEffects()
     {
@@ -533,5 +608,39 @@ public class Monster
         InitializePassiveSkills();
         InitializeBattleStats();
         RemoveStatusEffects();
+        InitializeStatus();
+    }
+
+    public void Shield()
+    {
+        isShield = true;
+    }
+
+    public void CanBeHealed(bool isHealable)
+    {
+        if (isHealable) canBeHealed = true;
+        else canBeHealed = false;
+    }
+    
+    public void InitializeStatus()
+    {
+        isShield = false;
+        canBeHealed = true;
+        canAct = true;
+        isTaunted = false;
+        healDuration = 0;
+        skipTurnCount = 0;
+    }
+
+    public void HealDuration(int duration)
+    {
+        duration -= 1;
+        healDuration = duration;
+    }
+    
+    public void Taunt(bool isApplied)
+    {
+        if (isApplied) isTaunted = true;
+        else isTaunted = false;
     }
 }
