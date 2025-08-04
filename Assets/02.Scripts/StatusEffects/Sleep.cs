@@ -5,24 +5,17 @@ using UnityEngine;
 public class Sleep : StatusEffect
 {
     public Sleep(int duration) : base(StatusEffectType.Sleep, duration){}
-
-    private bool isApplied = false;
     
     // 턴이 시작될때 정해진 턴 만큼 행동 불가(어떤것도 할수없음)
     public override void OnTurnStart(Monster target)
     {
-        if (!isApplied)
-        {
-            target.ApplyStun(true);
-            isApplied = true;
-        }
-        
-        duration--;
-
-        if (duration == 0)
+        if (duration <= 0)
         {
             target.ApplyStun(false);
-            isApplied = false;
+            return;
         }
+        
+        target.ApplyStun(true);
+        duration--;
     }
 }

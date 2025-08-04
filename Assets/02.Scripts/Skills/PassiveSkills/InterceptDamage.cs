@@ -11,7 +11,7 @@ public class InterceptDamage : IPassiveSkill
             skill.targetCount > 0)
         {
             int check = Mathf.RoundToInt(target.MaxHp * 0.7f);
-            if (damage < check)
+            if (damage >= check)
             {
                 self.TakeDamage(damage);
             }

@@ -5,6 +5,7 @@ public enum StatusEffectType
     Poison,
     Stun,
     Sleep,
+    HealBlock
 }
 
 public abstract class StatusEffect
