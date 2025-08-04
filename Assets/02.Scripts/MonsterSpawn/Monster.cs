@@ -555,6 +555,12 @@ public class Monster
         ActiveStatusEffects.Clear();
     }
 
+    // 버프 제거
+    public void RemoveBuffEffects()
+    {
+        ActiveBuffEffects.Clear();
+    }
+
     // 행동불가 상태 적용/해제
     public void ApplyStun(bool isApplied)
     {
@@ -608,6 +614,7 @@ public class Monster
         InitializePassiveSkills();
         InitializeBattleStats();
         RemoveStatusEffects();
+        RemoveBuffEffects();
         InitializeStatus();
     }
 
@@ -634,8 +641,7 @@ public class Monster
 
     public void HealDuration(int duration)
     {
-        duration -= 1;
-        healDuration = duration;
+        healDuration += duration - 1;
     }
     
     public void Taunt(bool isApplied)

@@ -65,31 +65,31 @@ public enum NormalSkillList
 public enum UltimateSkillList
 {
     None,
-    FireStorm, // 전체공격 50% 확률로 3턴동안 화상
-    MiracleTouch, // 같은팀 한명 100% 회복, 모든 상태이상 제거
-    BreathOfDeath, // 단일공격 5%확률로 즉사
-    PowerSlam, // 단일공격 100% 3턴동안 스턴
-    GracePulse, // 같은팀 최대체력의 30% 회복, 궁극기 코스트 1개씩 증가
-    EnemyTeamAttackAtkDown, // 전체공격 상대팀 공격력 10% 감소
-    TeamBuffDefUp, // 우리팀 방어력 20% 상승
-    EnemyTeamAttackPoison, // 전체공격 50% 확률로 3턴동안 중독
-    EnemyTeamAttackTeamStatUp, // 전체공격 우리팀 전체 공격력, 방어력, 스피드, 치명타확률 10%씩 상승
-    SelfCleanseAndShield, // 자기자신 모든 상태이상 제거, 실드생성(데미지 받아야 사라짐, 1회 방어)
-    EnemyTeamAttackResetUltCost, // 전체공격 상대팀 궁극기 코스트 초기화
-    SingleAttackRemoveAllBuffs, // 단일공격 상대 스텟버프 초기화
-    EnemyTeamAttackHealBlock2Turn, // 전체공격 2턴동안 힐 불가
-    SelectAllyCleanseAndUltMax, // 우리팀중 선택한 몬스터 모든 상태이상 제거, 궁극기 최대치로 채움
-    SingleAttackDoubleDamageIfDebuffed, // 단일공격 타겟 몬스터가 상태이상에 걸려있다면 데미지2배
-    TeamRegenHp3Turn, // 같은팀 전체 3턴동안 최대체력의 10% 회복
-    EnemyTeamAttackChanceStun, // 전체공격 30% 확률로 2턴동안 스턴
-    SingleAttackBonusDamageChance, // 단일공격 50확률로 데미지의 50%만큼 추가 데미지
-    ReviveAllyFullHp, // 기절한 우리팀 하나 최대 체력으로 부활
-    SingleAttackDoubleDamageWithHpCost30, // 단일공격 최대체력의 30% 데미지 입고, 공격 데미지 2배
-    SingleAllyStatBoost30, // 우리팀 한명 선택해서 스텟 30% 상승(공격력,방어력,속도,치명타확률)
-    SingleAttackDoubleDamageIfTargetHpOver80, // 단일 공격 상대 몬스터의 체력이 최대체력의 80%가 넘으면 데미지 2배
-    SingleAttackHpScaledDamage, // 단일 공격 타겟 체력에따라 공격력이 달라짐(100% 2배, 70%이상 1.5배, 30% 이상 1배, 30%미만 0.5배)
-    SingleAttackFixedHp40, // 단일공격 타겟 최대체력의 40% 고정 데미지
-    SelfTaunt, // 도발 2턴 동안 모든 공격 대신 맞음
+    FireStorm, // 전체공격 50% 확률로 3턴동안 화상, 15레벨 데미지 1.5배 70% 확률 화상
+    MiracleTouch, // 같은팀 한명 100% 회복, 모든 상태이상 제거, 15레벨 전체 스텟 10% 상승
+    BreathOfDeath, // 단일공격 5%확률로 즉사, 15레벨 데미지 1.5배 10%확률 즉사
+    PowerSlam, // 단일공격 100% 2턴동안 스턴, 15레벨 데미지 3턴동안 스턴
+    GracePulse, // 같은팀 최대체력의 20% 회복, 궁극기 코스트 1개씩 증가, 15레벨 최대체력 40% 회복
+    EnemyTeamAttackAtkDown, // 전체공격 상대팀 공격력 10% 감소, 15레벨 데미지 1.5배 공격력 15% 감소
+    TeamBuffDefUp, // 우리팀 방어력 20% 상승, 15레벨 40% 상승
+    EnemyTeamAttackPoison, // 전체공격 50% 확률로 3턴동안 중독, 15레벨 데미지 1.5배 70% 확률 3턴 중독
+    EnemyTeamAttackTeamStatUp, // 전체공격 우리팀 전체 공격력, 방어력, 스피드, 치명타확률 10%씩 상승, 15레벨 15%씩 상승
+    SelfCleanseAndShield, // 자기자신 모든 상태이상 제거, 실드생성(데미지 받아야 사라짐, 1회 방어), 15레벨 도발 2턴 부여
+    EnemyTeamAttackResetUltCost, // 전체공격 상대팀 궁극기 코스트 초기화, 15레벨 데미지 1.5배
+    SingleAttackRemoveAllBuffs, // 단일공격 상대 스텟버프 초기화, 15레벨 데미지 1.5배 30% 확률로 아무 상태이상 적용
+    EnemyTeamAttackHealBlock2Turn, // 전체공격 2턴동안 힐 불가, 15레벨 데미지 1.5배 3턴동안 힐 불가
+    SelectAllyCleanseAndUltMax, // 우리팀중 선택한 몬스터 모든 상태이상 제거, 궁극기 최대치로 채움, 15레벨 본인도 상태이상 제거
+    SingleAttackDoubleDamageIfDebuffed, // 단일공격 타겟 몬스터가 상태이상에 걸려있다면 데미지2배, 15레벨 본인도 상태이상일때도 2배
+    TeamRegenHp3Turn, // 같은팀 전체 3턴동안 최대체력의 10% 회복, 15레벨 4턴으로 증가
+    EnemyTeamAttackChanceStun, // 전체공격 30% 확률로 2턴동안 스턴, 15레벨 데미지 1.5배 50%확률 스턴
+    SingleAttackBonusDamageChance, // 단일공격 40% 확률로 데미지의 50%만큼 추가 데미지, 15레벨 데미지 1.5배 60% 확률 증가
+    ReviveAllyFullHp, // 기절한 우리팀 하나 최대 체력으로 부활, 15레벨 실드 부여
+    SingleAttackDoubleDamageWithHpCost30, // 단일공격 최대체력의 35% 데미지 입고, 공격 데미지 2배, 15레벨 데미지 1.5배 25% 데미지 입음
+    SingleAllyStatBoost, // 우리팀 한명 선택해서 스텟 20% 상승(공격력,방어력,속도,치명타확률), 15레벨 30% 상승
+    SingleAttackDoubleDamageIfTargetHpOver80, // 단일 공격 상대 몬스터의 체력이 최대체력의 80%가 넘으면 데미지 2배, 15레벨 데미지 1.5배 최대체력 조건 65% 이상
+    SingleAttackHpScaledDamage, // 단일 공격 타겟 체력에따라 공격력이 달라짐, 15레벨 데미지 1.5배 증가 공격력 달라지는 데미지 배수 올라감
+    SingleAttackFixedHp, // 단일공격 타겟 최대체력의 30% 고정 데미지, 15레벨 40% 고정 데미지
+    SelfTaunt, // 도발 2턴 동안 모든 공격 대신 맞음, 15레벨 3턴 도발 실드 추가
 }
 
 public enum TargetScope
