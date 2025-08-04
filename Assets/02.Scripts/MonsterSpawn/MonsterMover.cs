@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -14,6 +15,7 @@ public class MonsterMover : MonoBehaviour
     private Vector2 startPosition;
     private BoxCollider2D factoryBounds;
     private Transform player;
+    private Monster monster; // 몬스터 데이터
     private MonsterData monsterData;
 
     // 상태 변수
@@ -32,6 +34,9 @@ public class MonsterMover : MonoBehaviour
     private Animator animator;
     private SpriteRenderer sideInPlayerMark;
 
+    [Header("외부 방향 반영 오브젝트")]
+    private GameObject directionTargetObject;
+
     // 외부에서 이동 영역을 지정해줄 수 있음
     public void SetMoveArea(BoxCollider2D bounds)
     {
@@ -46,9 +51,24 @@ public class MonsterMover : MonoBehaviour
         startPosition = rb.position;
 
         // 몬스터 데이터 참조
+        monster = GetComponent<MonsterCharacter>()?.monster;
         monsterData = GetComponent<MonsterCharacter>()?.monster.monsterData;
         animator = GetComponentInChildren<Animator>();
         sideInPlayerMark = GetComponentInChildren<SpriteRenderer>(true);
+
+        // directionTargetObject 자동 설정
+        if (directionTargetObject == null)
+        {
+            SPUM_Prefabs spum = GetComponentInChildren<SPUM_Prefabs>(true);
+            if (spum != null)
+            {
+                directionTargetObject = spum.gameObject;
+            }
+            else
+            {
+                Debug.LogWarning("[MonsterMover] Spum_Prefabs 컴포넌트를 찾을 수 없습니다.");
+            }
+        }
     }
 
     private void Update()
@@ -129,11 +149,11 @@ public class MonsterMover : MonoBehaviour
         // 걷고 있는 경우
         moveTimer -= Time.fixedDeltaTime;
         animator.SetBool("1_Move", true);
-        if (moveDirection.x != 0)
+        if (directionTargetObject != null && moveDirection.x != 0)
         {
-            Vector3 scale = transform.localScale;
+            Vector3 scale = directionTargetObject.transform.localScale;
             scale.x = Mathf.Abs(scale.x) * (moveDirection.x < 0 ? 1 : -1);
-            transform.localScale = scale;
+            directionTargetObject.transform.localScale = scale;
         }
         if (moveTimer <= 0f)
         {
@@ -153,11 +173,11 @@ public class MonsterMover : MonoBehaviour
         else
         {
             moveDirection = -moveDirection; // 경계에 닿으면 방향 반전
-            if (moveDirection.x != 0)
+            if (directionTargetObject != null && moveDirection.x != 0)
             {
-                Vector3 scale = transform.localScale;
+                Vector3 scale = directionTargetObject.transform.localScale;
                 scale.x = Mathf.Abs(scale.x) * (moveDirection.x < 0 ? 1 : -1);
-                transform.localScale = scale;
+                directionTargetObject.transform.localScale = scale;
             }
         }
     }
@@ -183,9 +203,9 @@ public class MonsterMover : MonoBehaviour
 
         if (dir.x != 0)
         {
-            Vector3 scale = transform.localScale;
+            Vector3 scale = directionTargetObject.transform.localScale;
             scale.x = Mathf.Abs(scale.x) * (dir.x < 0 ? 1 : -1);
-            transform.localScale = scale;
+            directionTargetObject.transform.localScale = scale;
         }
 
         if (factoryBounds.bounds.Contains(next))
