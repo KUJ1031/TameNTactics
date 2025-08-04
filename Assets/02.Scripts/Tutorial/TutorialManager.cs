@@ -115,14 +115,14 @@ public class TutorialManager : Singleton<TutorialManager>
         CompleteTutorialPanel.SetActive(false);
         PlayerManager.Instance.playerController.isInputBlocked = false;
         PlayerManager.Instance.player.playerAllTutorialCheck = true;
+        PlayerManager.Instance.player.AddItem("설득하기", 1);
+        Debug.Log("설득 기술을 획득했습니다. 아이템: " + ItemManager.Instance.gestureItems[1].itemName);
         Destroy(gameObject);
     }
 
     public void TutorialCompeleted()
     {
         Debug.Log("튜토리얼이 완료되었습니다.");
-        PlayerManager.Instance.player.AddItem("설득하기", 1);
-        Debug.Log("설득 기술을 획득했습니다. 아이템: " + ItemManager.Instance.gestureItems[1].itemName);
         CompleteTutorialPanel.SetActive(true);
     }
 }

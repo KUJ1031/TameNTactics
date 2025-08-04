@@ -11,6 +11,7 @@ public class SingleAttackBonusDamageChance : ISkillEffect
         skillData = data;
     }
     
+    // 단일공격 40% 확률로 데미지의 50%만큼 추가 데미지, 15레벨 데미지 1.5배 60% 확률 증가
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -20,9 +21,12 @@ public class SingleAttackBonusDamageChance : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
+            int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
+            float value = caster.Level >= 15 ? 0.6f : 0.4f;
             
-            if (Random.value < 0.5f)
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            
+            if (Random.value < value)
             {
                 int amount = Mathf.RoundToInt(result.damage * 0.5f);
                 target.TakeDamage(amount);

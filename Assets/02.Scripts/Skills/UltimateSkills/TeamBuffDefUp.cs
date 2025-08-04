@@ -11,6 +11,7 @@ public class TeamBuffDefUp : ISkillEffect
         skillData = data;
     }
     
+    // 우리팀 방어력 20% 상승, 15레벨 40% 상승
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -21,7 +22,7 @@ public class TeamBuffDefUp : ISkillEffect
         {
             if (target.CurHp > 0)
             {
-                int amount = Mathf.RoundToInt(target.CurDefense * 0.2f);
+                int amount = Mathf.RoundToInt(caster.Level >= 15 ? target.CurDefense * 0.4f : target.CurDefense * 0.2f);
                 target.BattleDefenseUp(amount);
             }
         }

@@ -1,0 +1,118 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EventAlertManager : Singleton<EventAlertManager>
+{
+    public EventAlertSlot alertSlotPrefab; // 알림 슬롯 프리팹
+    public Transform alertSlotsParent;
+
+    private Queue<EventAlertRequest> alertQueue = new Queue<EventAlertRequest>();
+    private bool isDisplaying = false;
+
+    public void SetEventAlert(EventAlertType alertType, ItemData itemData = null, string name = null, int quantity = 0)
+    {
+        EventAlertRequest request = new EventAlertRequest(alertType, itemData, name, quantity);
+        alertQueue.Enqueue(request);
+
+        if (!isDisplaying)
+            StartCoroutine(ProcessAlertQueue());
+    }
+
+    private IEnumerator ProcessAlertQueue()
+    {
+        isDisplaying = true;
+
+        while (alertQueue.Count > 0)
+        {
+            EventAlertRequest request = alertQueue.Dequeue();
+            yield return StartCoroutine(DisplayAlert(request));
+        }
+
+        isDisplaying = false;
+    }
+
+    private IEnumerator DisplayAlert(EventAlertRequest request)
+    {
+        EventAlertSlot instance = Instantiate(alertSlotPrefab, alertSlotsParent);
+        RectTransform rect = instance.GetComponent<RectTransform>();
+
+        // 초기 위치 세팅 전에 비활성화 (렌더링 차단)
+        instance.gameObject.SetActive(false);
+
+        // 알림 내용 설정
+        switch (request.alertType)
+        {
+            case EventAlertType.Wanderer_Appear:
+                instance.eventAlertType.text = "[이벤트]";
+                instance.eventAlertText.text = $"맵 어딘가에 <color=#D27905>[떠돌이 상인]</color>이 나타났습니다! (30분)";
+                break;
+
+            case EventAlertType.Wanderer_DisAppear:
+                instance.eventAlertType.text = "[이벤트]";
+                instance.eventAlertText.text = "시간이 다 되어 <color=#D27905>[떠돌이 상인]</color>이 사라졌습니다!";
+                break;
+            case EventAlertType.GetItem:
+                instance.alertImage.sprite = request.itemData.itemImage;
+                instance.eventAlertType.text = "[아이템]";
+                instance.eventAlertText.text = $"[<color=#D93333>{request.name}</color>] 아이템을 {request.quantity}개 획득하였습니다.\n인벤토리에서 확인해주세요.";
+                break;
+        }
+
+        Vector2 startPos = new Vector2(rect.anchoredPosition.x, 200);
+        Vector2 endPos = new Vector2(rect.anchoredPosition.x, 0);
+        Vector2 exitPos = new Vector2(rect.anchoredPosition.x, 200);
+        float duration = 0.5f;
+
+        // 위치 세팅 후에 활성화
+        rect.anchoredPosition = startPos;
+        instance.gameObject.SetActive(true);
+
+        // 슬라이드 인
+        float elapsed = 0;
+        while (elapsed < duration)
+        {
+            rect.anchoredPosition = Vector2.Lerp(startPos, endPos, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        rect.anchoredPosition = endPos;
+
+        yield return new WaitForSeconds(3f);
+
+        // 슬라이드 아웃
+        elapsed = 0;
+        while (elapsed < duration)
+        {
+            rect.anchoredPosition = Vector2.Lerp(endPos, exitPos, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(instance.gameObject);
+    }
+
+}
+
+public class EventAlertRequest
+{
+    public EventAlertType alertType;
+    public ItemData itemData;
+    public string name;
+    public int quantity;
+
+    public EventAlertRequest(EventAlertType alertType, ItemData itemData, string name, int quantity)
+    {
+        this.alertType = alertType;
+        this.itemData = itemData;
+        this.name = name;
+        this.quantity = quantity;
+    }
+}
+public enum EventAlertType
+{
+    None,
+    Wanderer_Appear,
+    Wanderer_DisAppear,
+    GetItem
+}

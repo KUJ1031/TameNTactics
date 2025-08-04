@@ -60,6 +60,7 @@ public class WanderingShopNPCHandler : WanderingShopNPC
 
         // npcParent가 지정되어 있으면 부모 설정, 없으면 null
         currentNPCInstance = Instantiate(npcPrefab, spawnPoint.position, spawnPoint.rotation, npcParent);
+        EventAlertManager.Instance.SetEventAlert(EventAlertType.Wanderer_Appear);
     }
 
     private void RemoveWanderingNPC()
@@ -75,6 +76,7 @@ public class WanderingShopNPCHandler : WanderingShopNPC
                 CameraController.Instance.SwitchTo("PlayerCamera", true, false);
                 CameraController.Instance.SetTarget(PlayerManager.Instance.playerController.transform);
             }
+            EventAlertManager.Instance.SetEventAlert(EventAlertType.Wanderer_DisAppear);
 
             Destroy(currentNPCInstance);
             currentNPCInstance = null;

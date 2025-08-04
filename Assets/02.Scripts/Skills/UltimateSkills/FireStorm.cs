@@ -11,7 +11,7 @@ public class FireStorm : ISkillEffect
         skillData = data;
     }
 
-    // 전체 공격, 50% 확률로 3턴동안 화상
+    // 전체공격 50% 확률로 3턴동안 화상, 15레벨 데미지 1.5배 70% 확률 화상
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -21,9 +21,12 @@ public class FireStorm : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
+            int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
+            float value = caster.Level >= 15 ? 0.7f : 0.5f;
+            
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
 
-            if (Random.value < 0.5f)
+            if (Random.value < value)
             {
                 target.ApplyStatus(new Burn(3));
             }
