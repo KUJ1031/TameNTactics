@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public enum PopupType
 {
     EntrySwap,  //엔트리 교체
@@ -52,6 +53,7 @@ public class FieldUIManager : MonoBehaviour
     {
         BaseUI.SetActive(true);
         LeftMenuUI.SetActive(false);
+
         foreach (var ui in uiList)
         {
             ui.Close();

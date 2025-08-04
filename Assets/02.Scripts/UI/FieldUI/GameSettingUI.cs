@@ -11,10 +11,10 @@ public class GameSettingUI : FieldMenuBaseUI
 
     private void Awake()
     {
-        audioSettingButton.onClick.AddListener(OnClickAudioSettingButton);
-        keySettingButton.onClick.AddListener(OnClickKeySettingButton);
         if (SceneManager.GetActiveScene().name == "MainMapScene")
         {
+            audioSettingButton.onClick.AddListener(OnClickAudioSettingButton);
+            keySettingButton.onClick.AddListener(OnClickKeySettingButton);
             closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
         }
     }
