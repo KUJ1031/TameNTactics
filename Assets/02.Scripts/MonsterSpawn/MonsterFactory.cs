@@ -120,12 +120,6 @@ public class MonsterFactory : MonoBehaviour
     {
         List<Monster> selectedTeam = new List<Monster>();
 
-        //충돌한 몬스터 포함
-        if (monster != null)
-        {
-            selectedTeam.Add(monster);
-        }
-
         //추가로 넣을 몬스터 개수 (0,1,2)
         int moreAddMonsterCount = Random.Range(0, 3);
         for (int i = 0; i < moreAddMonsterCount; i++)
@@ -145,6 +139,12 @@ public class MonsterFactory : MonoBehaviour
             m.SetLevel(Random.Range(minLevel, maxLevel + 1));
         }
 
+        //충돌한 몬스터 포함
+        if (monster != null)
+        {
+            selectedTeam.Add(monster);
+        }
+
         return selectedTeam;
     }
     public List<Monster> GetFixedEnemyTeam(Monster monster)
@@ -155,11 +155,6 @@ public class MonsterFactory : MonoBehaviour
         if (monster != null)
         {
             selectedTeam.Add(monster);
-        }
-        //레벨설정
-        foreach (Monster m in selectedTeam)
-        {
-            m.SetLevel(Random.Range(minLevel, maxLevel + 1));
         }
 
         return selectedTeam;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 [System.Serializable]
@@ -303,6 +304,7 @@ public class Player
         if (item != null)
         {
             AddItem(item, quantity);
+            if (PlayerManager.Instance.player.playerAllTutorialCheck) EventAlertManager.Instance.SetEventAlert(EventAlertType.GetItem, item ,itemName, quantity);
         }
         else
         {
