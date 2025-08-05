@@ -30,6 +30,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         public bool playerBattleTutorialCheck = false; // 튜토리얼 클리어 여부
         public bool playerAllTutorialCheck = false; // 전체 튜토리얼 클리어 여부
         public SerializableDictionary<int, bool> playerBossClearCheck = new();
+        public SerializableDictionary<int, bool> playerQuestStartCheck= new();
         public SerializableDictionary<int, bool> playerQuestClearCheck = new();
         public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();
         public SerializableDictionary<string, string> playerKeySetting = new();
@@ -66,6 +67,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             playerBattleTutorialCheck = player.playerBattleTutorialCheck,
             playerAllTutorialCheck = player.playerAllTutorialCheck,
             playerBossClearCheck = player.playerBossClearCheck,
+            playerQuestStartCheck = player.playerQuestStartCheck,
             playerQuestClearCheck = player.playerQuestClearCheck,
             playerPuzzleClearCheck = player.playerPuzzleClearCheck,
             playerKeySetting = player.playerKeySetting
@@ -83,6 +85,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             Debug.LogWarning("저장된 플레이어 데이터가 없습니다.");
             return null;
         }
+        Debug.Log("플레이어 데이터 로드 경로: " + path);
 
         string json = File.ReadAllText(path, Encoding.UTF8);
         PlayerSaveData saved = JsonUtility.FromJson<PlayerSaveData>(json);
@@ -117,6 +120,7 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         player.playerBattleTutorialCheck = saved.playerBattleTutorialCheck;
         player.playerAllTutorialCheck = saved.playerAllTutorialCheck;
         player.playerBossClearCheck = saved.playerBossClearCheck;
+        player.playerQuestStartCheck = saved.playerQuestStartCheck;
         player.playerQuestClearCheck = saved.playerQuestClearCheck;
         player.playerPuzzleClearCheck = saved.playerPuzzleClearCheck;
         player.playerKeySetting = saved.playerKeySetting;

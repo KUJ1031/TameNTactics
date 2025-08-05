@@ -155,3 +155,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventCooldown: 1
+  respawnDelay: 5
+  unknownForest: {fileID: 0}
+  forestMonsterDataList:
+  - {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
+  - {fileID: 11400000, guid: 2b60526ebfea2094fbb1cc9ed3e9bc13, type: 2}
+  - {fileID: 11400000, guid: 55511a8efc2c3324d970f4dc07441479, type: 2}
+  - {fileID: 11400000, guid: 29a52bc250948d943afcbb6c8cb07dfa, type: 2}
+  - {fileID: 11400000, guid: 07fbdb89eb5ed314eaa6229b5c7624f5, type: 2}
+  - {fileID: 11400000, guid: 4f0014038e992b94bb3b9988588352cd, type: 2}
+  - {fileID: 11400000, guid: 23b41468be0176a45b38329e9bc8bde2, type: 2}

@@ -43,6 +43,8 @@ public class Player
     public bool playerBattleTutorialCheck = false; // 배틀 클리어 체크
     public bool playerAllTutorialCheck = false; // 모든 튜토리얼 체크
     public SerializableDictionary<int, bool> playerBossClearCheck = new();
+
+    public SerializableDictionary<int, bool> playerQuestStartCheck = new();
     public SerializableDictionary<int, bool> playerQuestClearCheck = new();
     public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();
 
@@ -324,6 +326,34 @@ public class Player
             items.Remove(item);
 
         UpdateCategorizedItemLists();
+    }
+
+    public void RemoveItem(string itemName, int quantity)
+    {
+        var item = items.Find(i => i.data.itemName == itemName);
+        if (item != null)
+        {
+            RemoveItem(item, quantity);
+            EventAlertManager.Instance.SetEventAlert(EventAlertType.RemoveItem, item.data, itemName, quantity);
+        }
+        else
+        {
+            Debug.LogWarning($"'{itemName}'이라는 이름의 아이템을 찾을 수 없습니다.");
+        }
+    }
+
+    public void SendItem(string itemName, int quantity)
+    {
+        var item = items.Find(i => i.data.itemName == itemName);
+        if (item != null)
+        {
+            RemoveItem(item, quantity);
+            EventAlertManager.Instance.SetEventAlert(EventAlertType.SendItem, item.data, itemName, quantity);
+        }
+        else
+        {
+            Debug.LogWarning($"'{itemName}'이라는 이름의 아이템을 찾을 수 없습니다.");
+        }
     }
 
     // 골드 추가

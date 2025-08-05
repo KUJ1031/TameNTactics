@@ -229,6 +229,8 @@ public class InventoryUI : FieldMenuBaseUI
             {
                 switch (effect.type)
                 {
+                    case ItemEffectType.maxHp:
+                        m.MaxHpUp(effect.value); break;
                     case ItemEffectType.attack:
                         m.AttackUp(effect.value); break;
                     case ItemEffectType.defense:
@@ -266,6 +268,10 @@ public class InventoryUI : FieldMenuBaseUI
                 {
                     switch (effect.type)
                     {
+                        case ItemEffectType.maxHp:
+                            m.MaxHpDown(effect.value);
+                            Debug.Log($"[해제] {m.monsterName} 최대 체력 -{effect.value}");
+                            break;
                         case ItemEffectType.attack:
                             m.AttackDown(effect.value);
                             Debug.Log($"[해제] {m.monsterName} 공격력 -{effect.value}");

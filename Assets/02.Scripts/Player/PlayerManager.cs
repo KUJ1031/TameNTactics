@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
     }
 
     private void OnEnable()
@@ -56,11 +57,27 @@ public class PlayerManager : MonoBehaviour
                 {
                     player.AddItem("소형 회복 물약", 1);
                     player.AddItem("대화하기", 1);
+                    SetQuestCleared();
                     KeyRebinderManager.Instance.SaveCurrentBindingsToPlayer(player);
                 }
 
             }
         }
+    }
+
+    public void SetQuestCleared()
+    {
+        player.playerQuestStartCheck.Add(0, false);
+        player.playerQuestStartCheck.Add(1, false);
+        player.playerQuestStartCheck.Add(2, false);
+        player.playerQuestStartCheck.Add(3, false);
+        player.playerQuestStartCheck.Add(4, false);
+
+        player.playerQuestClearCheck.Add(0, false);
+        player.playerQuestClearCheck.Add(1, false);
+        player.playerQuestClearCheck.Add(2, false);
+        player.playerQuestClearCheck.Add(3, false);
+        player.playerQuestClearCheck.Add(4, false);
     }
 
     /// <summary>

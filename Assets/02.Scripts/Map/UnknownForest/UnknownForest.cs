@@ -5,8 +5,11 @@ using UnityEngine;
 public class UnknownForest : MonoBehaviour
 {
     public GameObject strangeBushesPrefab;
-    public int maxBushCount = 5;
+    public int maxBushCount = 15;
     public float minBushDistance = 1f;
+
+    public bool isQuest_FindRegueStarted = false; // 퀘스트 시작 여부
+    public bool isQuest_FindRegueCleared = false; // 퀘스트 완료 여부
 
     private List<Vector2> spawnedPositions = new();
 

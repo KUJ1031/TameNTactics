@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using System;
+using static UnityEditor.Progress;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
@@ -149,7 +150,13 @@ public class DialogueManager : Singleton<DialogueManager>
 
             if (!string.IsNullOrEmpty(currentNode.LateEventKey))
             {
-                TriggerEvent(currentNode.LateEventKey);
+                // 쉼표 또는 세미콜론으로 구분
+                var keys = currentNode.LateEventKey.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var key in keys)
+                {
+                    TriggerEvent(key.Trim()); // 공백 제거 후 실행
+                }
             }
 
             return;
@@ -360,6 +367,14 @@ public class DialogueManager : Singleton<DialogueManager>
                 Debug.Log("[이벤트] 카메라 상점 시점으로 이동");
                 CameraController.Instance.SwitchTo("ShopCam", true, false); // 타겟 클리어
                 break;
+                case "PlayerInputBlock":
+                Debug.Log("[이벤트] 플레이어 입력 차단");
+                PlayerManager.Instance.playerController.isInputBlocked = true;
+                break;
+            case "PlayerInputUnBlock":
+                Debug.Log("[이벤트] 플레이어 입력 차단 해제");
+                PlayerManager.Instance.playerController.isInputBlocked = false;
+                break;
             case "Shop_Buy":
                 ShopManager.Instance.OpenShopUI();
                 break;
@@ -453,6 +468,10 @@ public class DialogueManager : Singleton<DialogueManager>
                 PlayerManager.Instance.player.AddItem("무시하기", 1);
                 Debug.Log("[이벤트] [무시하기] 제스처 획득");
                 break;
+            case "GetGesture_Joking":
+                PlayerManager.Instance.player.AddItem("농담하기", 1);
+                Debug.Log("[이벤트] [농담하기] 제스처 획득");
+                break;
             case "Check_GetGesture_Ignoring":
                 if (PlayerManager.Instance.player.HasItem("무시하기"))
                     StartDialogue("토끼용사", currentNPCImage, 1020);
@@ -460,8 +479,9 @@ public class DialogueManager : Singleton<DialogueManager>
             case "MoveToPlayer":
                 Debug.Log("[이벤트] 플레이어 위치로 이동");
                 break;
-            case "UnlockSecretPassage":
-                Debug.Log("[이벤트] 숨겨진 통로 열림");
+            case "Quest_FindRegur":
+                Debug.Log("[퀘스트 수주] 레거 찾기");
+                UnknownForestManager.Instance.unknownForest.isQuest_FindRegueStarted = true;
                 break;
             case "GameStart":
                 Debug.Log("[이벤트] 게임 시작");
@@ -483,6 +503,21 @@ public class DialogueManager : Singleton<DialogueManager>
                 Debug.Log("[이벤트] NPC 스프라이트 표시");
                 dialogueUI.npcImage.gameObject.SetActive(true);
                 break;
+
+            case "Check_Quest_WanderingShop":
+                if (!PlayerManager.Instance.player.playerQuestClearCheck[3])
+                {
+                    PlayerManager.Instance.player.playerQuestClearCheck[3] = true;
+                    PlayerManager.Instance.player.playerQuestStartCheck[3] = false;
+                    EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "떠돌이 상인");
+                }
+                break;
+
+            case "Quest_Tutorial":
+                PlayerManager.Instance.player.playerQuestStartCheck[0] = true;
+                EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "전투의 기본");
+                break;
+
             case "AddEntry_Kairen":
                 Debug.Log("[이벤트] 카이렌을 엔트리 몬스터로 추가");
                 Monster kairen = new Monster();
@@ -537,7 +572,92 @@ public class DialogueManager : Singleton<DialogueManager>
             case "End_AllTutorial":
                 TutorialManager.Instance.TutorialCompeleted();
                 break;
-            case "UnknownForest_GetItem":
+            case "UnKnownForest_OccurrenceNewEvent":
+                if (UnknownForestManager.Instance.currentBush != null)
+                {
+                    UnknownForestManager.Instance.currentBush.OccurrenceNewEvent();
+                }
+                else
+                {
+                    Debug.LogWarning("현재 접촉 중인 수풀이 없습니다.");
+                }
+                break;
+            case "UnKnownForest_GetItem":
+                UnknownForestManager.Instance.currentBush.TryDropItem();
+                break;
+            case "UnKnownForest_Fight":
+                Debug.Log("[이벤트] 미지의 숲에서 전투 시작");
+                UnknownForestManager.Instance.currentBush.TryBattle();
+                break;
+            case "UnKnownForest_None":
+                break;
+            case "Quest_FindRegurInit":
+                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
+                FadeManager.Instance.FadeOutThenIn(
+                    1.5f,
+                    () =>  // 어두울 때 실행
+                    {
+                        PlayerManager.Instance.playerController.transform.position = UnknownForestManager.Instance.playerRespawnTransporm.position;
+                    },
+                    () =>  // 밝아질 때 실행
+                    {
+                        //플레이어 x축플립
+                        PlayerManager.Instance.playerController.transform.localScale = new Vector3(-1.8f, 1.8f, 1.8f);
+                        StartDialogue("핑거", currentNPCImage, 702);
+                    }
+                );
+                break;
+            case "Quest_FindRegurStarted":
+                PlayerManager.Instance.playerController.isInputBlocked = false;
+        //        QuestManager.Instance.AddQuest(new QuestData(
+        //    "[레거의 편지]",
+        //    "편지를 찾아야 한다.",
+        //    "미지의 숲에 들어가려는 찰나, 핑거가 부탁해왔다.\n\"동생의 편지를 찾아줘.\"\n\n그의 편지는 어디에 있는걸까?\n...미지의 수풀 속을 잘 찾아보면 나올지도..?",
+        //    "진행 중",
+        //    QuestManager.Instance.questUI.defaultquestImage[0]
+        //));
+                EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "레거의 편지");
+                PlayerManager.Instance.player.playerQuestStartCheck[1] = true;
+                break;
+            case "Check_Quest_FindRegurStarted":
+                if (PlayerManager.Instance.player.playerQuestStartCheck[1] == true)
+                    StartDialogue("핑거", currentNPCImage, 780);
+                break;
+            case "Quest_FindRegurLetter":
+                FadeManager.Instance.FadeOutThenIn(
+                    1.5f,
+                    () =>  // 어두울 때 실행
+                    {
+                        PlayerManager.Instance.playerController.transform.position = UnknownForestManager.Instance.playerRespawnTransporm.position;
+                    },
+                    () =>  // 밝아질 때 실행
+                    {
+                        StartDialogue("핑거", currentNPCImage, 730);
+                    }
+                );
+                break;
+            case "Quest_FindRegurLetterSended":
+                PlayerManager.Instance.player.SendItem("레거의 편지", 1);
+                break;
+            case "GetItem_Potion_Meat":
+                PlayerManager.Instance.player.AddItem("고기", 1);
+                Debug.Log("[이벤트] 고기 아이템 획득");
+                break;
+            case "GetEquip_Armor":
+                PlayerManager.Instance.player.AddItem("든든한 갑옷", 1);
+                Debug.Log("[이벤트] 든든한 갑옷 아이템 획득");
+                break;
+            case "Quest_DisappearPinger":
+                Destroy(UnknownForestManager.Instance.npc.gameObject);
+                dialogueUI.npcImage.gameObject.SetActive(false);
+                break;
+            case "Quest_FindRegurLetterCleared":
+                EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "레거의 편지");
+                PlayerManager.Instance.player.playerQuestClearCheck[1] = true;
+                PlayerManager.Instance.player.playerQuestStartCheck[1] = false;
+                Debug.Log("[레거의 편지] 퀘스트를 클리어하였습니다.");
+                PlayerManager.Instance.playerController.isInputBlocked = false; // 플레이어 입력 차단
+                break;
 
 
             default:

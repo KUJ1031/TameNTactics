@@ -92,6 +92,8 @@ public class MonsterDetailUI : FieldMenuBaseUI
         monsterTypeText.text = monster.monsterData.type.ToKorean();
         monsterPersonalityText.text = monster.monsterData.personality.ToKorean();
 
+        //hp는 단순히 몬스터의 현재 체력과 최대 체력을 표시
+        monsterHPText.text = $"{monster.CurHp}/{monster.MaxHp}";
         monsterAttackText.text = player.GetTotalEffectBonus(ItemEffectType.attack) > 0 ?
             $"{monster.Attack} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.attack)})</color>" : $"{monster.Attack}";
         monsterDefenseText.text = player.GetTotalEffectBonus(ItemEffectType.defense) > 0 ?
