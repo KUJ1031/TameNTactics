@@ -23,7 +23,7 @@ public class DoubleTargetHit : ISkillEffect
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             int damage = Mathf.RoundToInt(result.damage * damageMultiplier);
             
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
         }
     }
 }

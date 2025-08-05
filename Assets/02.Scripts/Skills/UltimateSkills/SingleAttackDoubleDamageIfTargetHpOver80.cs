@@ -27,10 +27,10 @@ public class SingleAttackDoubleDamageIfTargetHpOver80 : ISkillEffect
             if (target.CurHp > target.CurMaxHp * value)
             {
                 int amount = Mathf.RoundToInt(damage * 2);
-                BattleManager.Instance.DealDamage(target, amount, caster, this.skillData, result.isCritical);
+                BattleManager.Instance.DealDamage(target, amount, caster, this.skillData, result.isCritical, result.effectiveness);
             }
             
-            else BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            else BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
         }
     }
 }

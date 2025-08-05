@@ -22,7 +22,7 @@ public class SingleAttackChanceRemoveDebuff : ISkillEffect
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             int damage = Mathf.RoundToInt(result.damage * 0.4f);
             
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
         }
         
         if (Random.value < 0.1f && caster.Level >= 10 && caster.ActiveStatusEffects.Count > 0)

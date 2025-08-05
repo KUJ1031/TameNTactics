@@ -23,7 +23,7 @@ public class EnemyTeamAttackResetUltCost : ISkillEffect
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
             
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
             target.InitializeUltimateCost();
         }
     }

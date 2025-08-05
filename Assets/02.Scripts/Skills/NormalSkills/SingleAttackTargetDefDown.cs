@@ -20,7 +20,7 @@ public class SingleAttackTargetDefDown : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical, result.effectiveness);
 
             if (Random.value < 0.2f && caster.Level >= 10)
             {

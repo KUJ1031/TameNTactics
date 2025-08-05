@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 공격받는 데미지 10% 감소, 15레벨 데미지 15% 감소
 public class DefensiveStance : IPassiveSkill
 {
-    // 공격받는 데미지 10% 감소
     public int OnDamaged(Monster self, int damage, Monster actor)
     {
-        int decreaseAmount = Mathf.RoundToInt(damage * 0.1f);
-        return damage - decreaseAmount;
+        int amount = Mathf.RoundToInt(self.Level >= 15 ? damage * 0.15f : damage * 0.1f);
+        return damage - amount;
     }
     
     public void OnBattleStart(Monster self, List<Monster> monsters) {}
     public void OnTurnEnd(Monster self) {}
-    public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam) {}
-    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill) {}
+    public void OnAllyDeath(Monster self) {}
+    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

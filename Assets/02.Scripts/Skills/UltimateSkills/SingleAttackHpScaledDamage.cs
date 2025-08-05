@@ -24,7 +24,7 @@ public class SingleAttackHpScaledDamage : ISkillEffect
             int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
             int finalDamage = Mathf.RoundToInt(damage * ChanceToDamage(caster, target));
             
-            BattleManager.Instance.DealDamage(target, finalDamage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, finalDamage, caster, this.skillData, result.isCritical, result.effectiveness);
         }
     }
 
