@@ -12,11 +12,31 @@ public class BattleInfoView : MonoBehaviour
     [SerializeField] private GameObject passiveImage;
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
+    [SerializeField] private GameObject settingPanel;
+
+    [SerializeField] private Button settingButton;
 
     [SerializeField] private TextMeshProUGUI gainExp;
     [SerializeField] private TextMeshProUGUI gainGold;
 
     private StringBuilder logBuilder = new();
+
+    private void Start()
+    {
+        settingButton.onClick.AddListener(ShowSettingPanel);
+    }
+
+    public void ShowSettingPanel()
+    {
+        if (settingPanel.activeSelf)
+        {
+            settingPanel.SetActive(false);
+        }
+        else
+        {
+            settingPanel.SetActive(true);
+        }
+    }
 
     // 배틀 중 Dialogue를 출력해줄 메서드
     public void BattleDialogue(string battleLog)

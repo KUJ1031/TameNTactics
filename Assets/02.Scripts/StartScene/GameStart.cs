@@ -16,9 +16,13 @@ public class GameStart : MonoBehaviour
     public Button lisenceButton;
     public Button closeLisenceButton; // 라이센스 닫기 버튼
 
+    public Button configureButton;  // 설정 패널 열기 버튼
+    public Button closeConfigureButton; // 설정 패널 닫기 버튼
+
     public Image lisenceBackGroundImage;
     public GameObject gameStartPanel; // 시작 패널 오브젝트
     public GameObject gameLoadPanel;
+    public GameObject configurePanel; // 설정 패널 오브젝트
 
     public LoadUI loadUI; // 로드 UI 스크립트
 
@@ -42,6 +46,8 @@ public class GameStart : MonoBehaviour
         startPanelOffButton.onClick.AddListener(CloseStartPanel);
         loadPanelOnButton.onClick.AddListener(OpenLoadPanel);
         loadPanelOffButton.onClick.AddListener(CloseLoadPanel);
+        configureButton.onClick.AddListener(ShowConfigureButton);
+        closeConfigureButton.onClick.AddListener(HideConfigureButton);
         lisenceButton.onClick.AddListener(OnLisenceButtonClicked);
         closeLisenceButton.onClick.AddListener(CloseLisenceeButtonClicked);
 
@@ -155,6 +161,16 @@ public class GameStart : MonoBehaviour
     public void HideStartWarringPopup()
     {
         startWarringPopup.SetActive(false);
+    }
+
+    public void ShowConfigureButton()
+    {
+        configurePanel.SetActive(true);
+    }
+
+    public void HideConfigureButton()
+    {
+        configurePanel.SetActive(false);
     }
 }
 
