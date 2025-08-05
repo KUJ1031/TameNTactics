@@ -8,13 +8,8 @@ public class Taunt : BuffEffect
     
     public override void OnTurnStart(Monster target)
     {
-        if (duration <= 0)
-        {
-            target.Taunt(false);
-            return;
-        }
+        if (duration <= 0) return;
         
-        target.Taunt(true);
         duration--;
     }
 }
