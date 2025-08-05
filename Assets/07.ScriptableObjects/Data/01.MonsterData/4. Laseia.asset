@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: Laseia
   monsterNumber: 4
   monsterImage: {fileID: -1008482701, guid: 805abaed85a36ae4db54afca15910606, type: 3}
-  encounterCount: 0
+  encounterCount: 8
   captureCount: 0
   type: 0
   personality: 7
@@ -29,7 +29,7 @@ MonoBehaviour:
   expReward: 5
   goldReward: 100
   skills:
-  - {fileID: 11400000, guid: 6fe94066213bed948bf0a220bcdfbeaa, type: 2}
+  - {fileID: 11400000, guid: 88be09269aed8e8488b76034b5c5822f, type: 2}
   - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
   - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
   spawnArea: 0
