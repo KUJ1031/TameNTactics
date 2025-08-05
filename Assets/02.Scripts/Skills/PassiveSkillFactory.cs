@@ -29,7 +29,8 @@ public static class PassiveSkillFactory
         { PassiveSkillList.ReviveOnDeathChance, () => new ReviveOnDeathChance()},
         { PassiveSkillList.CritUpOnTurnEnd, () => new CritUpOnTurnEnd()},
         { PassiveSkillList.PoisonEnemiesOnDeath, () => new PoisonEnemiesOnDeath()},
-        { PassiveSkillList.CleanseSelfOnUlt, () => new CleanseSelfOnUlt()}
+        { PassiveSkillList.CleanseSelfOnUlt, () => new CleanseSelfOnUlt()},
+        { PassiveSkillList.LowHpDefBoost, () => new LowHpDefBoost()}
     };
 
     public static IPassiveSkill GetPassiveSkill(PassiveSkillList list)

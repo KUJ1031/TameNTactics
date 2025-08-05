@@ -33,7 +33,8 @@ public enum PassiveSkillList
     ReviveOnDeathChance, // 쓰러젔을때 50% 확률로 최대체력의 30%로 부활, 15레벨 50%로 부활
     CritUpOnTurnEnd, // 매 턴 끝날때 치명타확률 5% 상승 (최대 60%), 15레벨 최대 100%
     PoisonEnemiesOnDeath, // 쓰러졌을때 상대 몬스터 전체에게 2턴 중독 부여, 15레벨 4턴 부여
-    CleanseSelfOnUlt // 궁극기 사용시 모든 상태이상 제거, 15레벨 공격력 10% 증가
+    CleanseSelfOnUlt, // 궁극기 사용시 모든 상태이상 제거, 15레벨 공격력 10% 증가
+    LowHpDefBoost // 체력 50% 이하일때 방어력 20% 상승, 15레벨 30% 상승
 }
 
 public enum NormalSkillList

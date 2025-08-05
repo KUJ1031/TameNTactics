@@ -131,7 +131,7 @@ public class BattleManager : Singleton<BattleManager>
                     if (buff.Type == BuffEffectType.Taunt)
                     {
                         monster.TakeDamage(finalDamage);
-                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData);
+                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness);
                         BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
                         return;
                     }
@@ -141,7 +141,7 @@ public class BattleManager : Singleton<BattleManager>
         
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
-        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
+        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness);
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, finalDamage, skillData);
     }
 

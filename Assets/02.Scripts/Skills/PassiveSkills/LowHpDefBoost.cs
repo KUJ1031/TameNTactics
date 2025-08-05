@@ -1,11 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 체력 50% 이하일때 공격력 20% 상승, 15레벨 30% 상승
-public class LowHpAttackBoost : IPassiveSkill
+public class LowHpDefBoost : IPassiveSkill
 {
     private bool isApplied = false;
-    private int powerDelta;
+    private int increaseDef;
     
     public void OnTurnEnd(Monster self)
     {
@@ -14,13 +14,13 @@ public class LowHpAttackBoost : IPassiveSkill
         if (isBelowHalf && !isApplied)
         {
             int amount = Mathf.RoundToInt(self.Level >= 15 ? 0.3f : 0.2f);
-            powerDelta = self.CurAttack * amount;
-            self.PowerUp(powerDelta);
+            increaseDef = self.CurDefense * amount;
+            self.BattleDefenseUp(increaseDef);
             isApplied = true;
         }
         else if (!isBelowHalf && isApplied)
         {
-            self.PowerDown(powerDelta);
+            self.BattleDefenseDown(increaseDef);
             isApplied = false;
         }
     }
