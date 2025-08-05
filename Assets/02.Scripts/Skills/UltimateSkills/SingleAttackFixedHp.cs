@@ -23,7 +23,7 @@ public class SingleAttackFixedHp : ISkillEffect
             int amount = Mathf.RoundToInt(caster.Level >= 15 ? target.CurMaxHp * 0.4f : target.CurMaxHp * 0.3f);
             int damage = Mathf.RoundToInt(target.CurMaxHp * amount);
             
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, false);
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, false, 1f);
         }
     }
 }

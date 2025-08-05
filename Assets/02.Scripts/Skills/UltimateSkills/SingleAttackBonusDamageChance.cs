@@ -24,7 +24,7 @@ public class SingleAttackBonusDamageChance : ISkillEffect
             int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
             float value = caster.Level >= 15 ? 0.6f : 0.4f;
             
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
             
             if (Random.value < value)
             {

@@ -10,31 +10,30 @@ public enum SkillType
 public enum PassiveSkillList
 {
     None,
-    AllyTypeBoost, // 우리팀중 본인과 같은 타입이 2명 이상일 시 발동, 우리팀중 본인과 같은 타입은 모두 공격력 10% 증가
-    SelfHealOnTurnEnd, // 턴 끝날때 최대체력의 5% 회복
-    LowHpAttackBoost, // 체력 50% 이하일때 공격력 20% 상승
-    ReflectDamage, // 받는 데미지의 10% 되돌려줌
-    EscapeMaster, // 도망가기 100% 성공
-    DefensiveStance, // 받는 피해 10% 감소
-    IncreaseMissChance, // 5% 확률로 공격 회피
-    StatusEffectImmunity, // 모든 상태이상 무효
-    OneHitShield, // 공격을 한번 막아주는 실드(상태이상은 못막음)
-    AtkUpOnAllyDeath, // 아군 쓰러질때마다 공격력 20% 상승
-    TypeHitRecovery, // 유리한 상성 공격시 데미지의 20% 체력 회복
-    EnemyAtkDown, // 게임 시작시 상대 공격력 5% 감소
-    UltGaugeChancePerTurn, // 매 턴 끝날때 20% 확률로 궁극기 게이지 1개 증가
-    BonusAttack, // 10% 확률로 추가 공격(데미지의 20%)
-    PowerBoostPerUlt, // 같은팀(본인 포함) 궁극기를 사용하면 공격력 10% 증가
-    HealOnKill, // 적 처치시 최대체력의 20% 체력 회복
-    AliveTeamGuard, // 본인이 살아있는 동안 팀 전체 방어력 10% 상승
-    CritUpOnCritHit, // 치명타로 맞을시 치명타 확률 30% 상승 (최대 3스택)
-    InterceptDamage, // 같은팀의 최대체력의 70% 이상의 데미지를 받을 시 공격을 대신 받음
-    AtkUpOnDamaged, // 피격시 공격력 5% 상승(최대 3스택)
-    HitCritBoost, // 피격시 치명타확률 15% 상승(최대 3스택)
-    ReviveOnDeathChance, // 쓰러젔을때 50% 확률로 최대체력의 30%로 부활
-    CritUpOnTurnEnd, // 매 턴 끝날때 치명타확률 5% 상승 (최대 80%)
-    PoisonEnemiesOnDeath, // 쓰러졌을때 상대 몬스터 전체에게 3턴 중독 부여
-    CleanseSelfOnUlt // 궁극기 사용시 모든 상태이상 제거
+    AllyTypeBoost, // 우리팀중 본인과 같은 타입이 2명 이상일 시 발동, 우리팀중 본인과 같은 타입은 모두 공격력 10% 증가, 15레벨 20% 증가
+    SelfHealOnTurnEnd, // 턴 끝날때 최대체력의 5% 회복, 15레벨 10% 회복
+    LowHpAttackBoost, // 체력 50% 이하일때 공격력 20% 상승, 15레벨 30% 상승
+    ReflectDamage, // 받는 데미지의 10% 되돌려줌, 15레벨 15% 증가
+    EscapeMaster, // 도망시 100% 도망 가능, 15레벨 게임 시작시 팀 전체 스피드 10% 증가
+    DefensiveStance, // 공격받는 데미지 10% 감소, 15레벨 데미지 15% 감소
+    IncreaseMissChance, // 5% 확률로 공격 회피, 15레벨 10% 반사 데미지
+    StatusEffectImmunity, // 모든 상태이상 무효, 15레벨 배틀 시작시 방어력 10% 상승
+    OneHitShield, // 공격을 한번 막아주는 실드(상태이상은 못막음), 20% 확률로 공격 받아도 안깨짐
+    AtkUpOnAllyDeath, // 아군 쓰러질때마다 공격력 20%씩 상승, 15레벨 스피드 20%씩 상승
+    TypeHitRecovery, // 유리한 상성 공격시 데미지의 20% 체력 회복 15레벨 30% 회복
+    EnemyAtkDown, // 게임 시작시 상대 공격력 5% 감소 15레벨 상대 방어력 5% 감소
+    UltGaugeChancePerTurn, // 매 턴 끝날때 20% 확률로 궁극기 게이지 1개 증가, 15레벨 40% 증가
+    BonusAttack, // 10% 확률로 추가 공격(데미지의 20%), 15레벨 20% 확률 데미지의 30%
+    PowerBoostPerUlt, // 같은팀(본인 포함) 궁극기를 사용하면 공격력 10% 증가, 15레벨 스피드 10% 증가
+    AliveTeamGuard, // 본인이 살아있는 동안 팀 전체 방어력 10% 상승, 15레벨 20% 상승
+    CritUpOnCritHit, // 치명타로 맞을시 치명타 확률 30% 상승 (최대 3스택), 15레벨 40% 상승
+    InterceptDamage, // 같은팀중 최대체력의 50% 이상의 데미지를 받을 시 공격을 대신 받음, 15레벨 30% 이상 데미지 받을 시
+    AtkUpOnDamaged, // 피격시 공격력 5% 상승(최대 3스택), 15레벨 10% 상승
+    HitCritBoost, // 피격시 치명타확률 10% 상승(최대 3스택), 15레벨 20% 상승
+    ReviveOnDeathChance, // 쓰러젔을때 50% 확률로 최대체력의 30%로 부활, 15레벨 50%로 부활
+    CritUpOnTurnEnd, // 매 턴 끝날때 치명타확률 5% 상승 (최대 60%), 15레벨 최대 100%
+    PoisonEnemiesOnDeath, // 쓰러졌을때 상대 몬스터 전체에게 2턴 중독 부여, 15레벨 4턴 부여
+    CleanseSelfOnUlt // 궁극기 사용시 모든 상태이상 제거, 15레벨 공격력 10% 증가
 }
 
 public enum NormalSkillList
