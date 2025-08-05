@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 모든 상태이상 무효, 15레벨 배틀 시작시 방어력 10% 상승
+// 모든 상태이상 무효, 20레벨 배틀 시작시 방어력 10% 상승
 public class StatusEffectImmunity : IPassiveSkill
 {
     public bool IsImmuneToStatus { get; private set; } = true;
@@ -10,7 +10,7 @@ public class StatusEffectImmunity : IPassiveSkill
 
     public void OnBattleStart(Monster self, List<Monster> monsters)
     {
-        if (self.Level >= 15)
+        if (self.Level >= 20)
         {
             int amount = Mathf.RoundToInt(self.CurDefense * 0.1f);
             self.BattleDefenseUp(amount);

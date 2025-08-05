@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 같은팀(본인 포함) 궁극기를 사용하면 공격력 10% 증가, 15레벨 스피드 10% 증가
+// 같은팀(본인 포함) 궁극기를 사용하면 공격력 10% 증가, 20레벨 스피드 10% 증가
 public class PowerBoostPerUlt : IPassiveSkill
 {
     public void OnUseUlt(Monster self, Monster ultimateUser, List<Monster> team)
@@ -12,7 +12,7 @@ public class PowerBoostPerUlt : IPassiveSkill
             int boostAmount = Mathf.RoundToInt(self.Attack * 0.1f);
             self.PowerUp(boostAmount);
             
-            if (self.Level >= 15)
+            if (self.Level >= 20)
             {
                 int amount = Mathf.RoundToInt(self.CurSpeed * 0.1f);
                 self.SpeedUpEffect(amount);

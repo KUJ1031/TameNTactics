@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-// 피격시 공격력 5% 상승(최대 3스택), 15레벨 10% 상승
+// 피격시 공격력 5% 상승(최대 3스택), 20레벨 10% 상승
 public class AtkUpOnDamaged : IPassiveSkill
 {
     private int curStack = 0;
@@ -16,7 +16,7 @@ public class AtkUpOnDamaged : IPassiveSkill
 
     public int OnDamaged(Monster self, int damage, Monster actor)
     {
-        float increaseAmount = self.Level >= 15 ? 0.1f : 0.05f;
+        float increaseAmount = self.Level >= 20 ? 0.1f : 0.05f;
         
         if (curStack < maxStack)
         {
