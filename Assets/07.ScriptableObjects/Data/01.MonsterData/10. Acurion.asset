@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: Acurion
   monsterNumber: 10
   monsterImage: {fileID: -980964804, guid: e8364a13e2866f14faef1cd950048581, type: 3}
-  encounterCount: 8
+  encounterCount: 10
   captureCount: 9
   type: 0
   personality: 0
@@ -36,4 +36,4 @@ MonoBehaviour:
   spawnTime: 0
   captureRate: 0
   description: 
-  damageSound: {fileID: 0}
+  damageSound: {fileID: 11400000, guid: fe5e29aa9d9891748ba0e2ff6be399ce, type: 2}

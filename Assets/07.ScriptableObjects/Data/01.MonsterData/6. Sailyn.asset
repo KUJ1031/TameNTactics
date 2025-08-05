@@ -36,4 +36,4 @@ MonoBehaviour:
   spawnTime: 0
   captureRate: 0
   description: 
-  damageSound: {fileID: 0}
+  damageSound: {fileID: 11400000, guid: 264d1ecca827df7409b0cf3434f0139a, type: 2}

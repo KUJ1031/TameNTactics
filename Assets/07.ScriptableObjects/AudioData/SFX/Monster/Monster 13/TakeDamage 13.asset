@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TakeDamage 13
   m_EditorClassIdentifier: 
   clipName: Monster01TackDamage
-  clip: {fileID: 8300000, guid: 617ccff8c2a9d63479d449cc851b48cd, type: 3}
+  clip: {fileID: 8300000, guid: 1465b825ff0e6d744a380e4c4a664146, type: 3}
   type: 1
   volume: 1
   loop: 0
