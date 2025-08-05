@@ -24,7 +24,7 @@ public class EnemyTeamAttackAtkDown : ISkillEffect
             int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
             float decreaseAmount = caster.Level >= 15 ? 0.2f : 0.15f;
             
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
             
             int amount = Mathf.RoundToInt(target.CurAttack * decreaseAmount);
             target.PowerDown(amount);

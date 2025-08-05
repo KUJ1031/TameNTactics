@@ -24,7 +24,7 @@ public class PowerSlam : ISkillEffect
             int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
             int amount = caster.Level >= 15 ? 3 : 2;
             
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
             target.ApplyStatus(new Stun(amount));
         }
     }

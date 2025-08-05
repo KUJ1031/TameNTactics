@@ -26,10 +26,10 @@ public class SingleAttackDoubleDamageIfDebuffed : ISkillEffect
             if (target.ActiveStatusEffects.Count > 0 || IsDebuffed(caster))
             {
                 int finalDamage = damage * 2;
-                BattleManager.Instance.DealDamage(target, finalDamage, caster, this.skillData, result.isCritical);
+                BattleManager.Instance.DealDamage(target, finalDamage, caster, this.skillData, result.isCritical, result.effectiveness);
             }
             
-            else BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            else BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
         }
     }
 

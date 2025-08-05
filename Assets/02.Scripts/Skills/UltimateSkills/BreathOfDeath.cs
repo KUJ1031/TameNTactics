@@ -26,12 +26,12 @@ public class BreathOfDeath : ISkillEffect
             
             if (Random.value < value && target.CurHp > 0)
             {
-                BattleManager.Instance.DealDamage(target, target.CurHp, caster, this.skillData, false);
+                BattleManager.Instance.DealDamage(target, target.CurHp, caster, this.skillData, false, result.effectiveness);
             }
 
             else
             {
-                BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+                BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
             }
         }
     }

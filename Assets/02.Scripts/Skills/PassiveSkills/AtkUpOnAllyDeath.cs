@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class AtkUpOnAllyDeath : IPassiveSkill
 {
-    public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam)
+    // 아군 쓰러질때마다 공격력 20%씩 상승, 15레벨 스피드 20%씩 상승
+    public void OnAllyDeath(Monster self)
     {
-        float increaseRate = deadAllyTeam.Count * 0.2f;
-        
-        int increaseAmount = Mathf.RoundToInt(self.Attack * increaseRate);
+        int increaseAmount = Mathf.RoundToInt(self.Attack * 0.2f);
         self.PowerUp(increaseAmount);
+
+        if (self.Level >= 15)
+        {
+            int amount = Mathf.RoundToInt(self.CurSpeed * 0.2f);
+            self.SpeedUpEffect(amount);
+        }
     }
     
     public void OnBattleStart(Monster self, List<Monster> monsters) {}
     public void OnTurnEnd(Monster self) {}
     public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
-    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill) {}
+    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

@@ -24,7 +24,7 @@ public class FireStorm : ISkillEffect
             int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
             float value = caster.Level >= 15 ? 0.7f : 0.5f;
             
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
 
             if (Random.value < value)
             {

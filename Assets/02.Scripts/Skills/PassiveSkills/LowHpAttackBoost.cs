@@ -1,19 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 체력 50% 이하일때 공격력 20% 상승, 15레벨 30% 상승
 public class LowHpAttackBoost : IPassiveSkill
 {
     private bool isApplied = false;
     private int powerDelta;
-
-    // 턴이 끝날때, 본인 현재 체력이 50% 이하일때 공격력 20% 상승
+    
     public void OnTurnEnd(Monster self)
     {
         bool isBelowHalf = self.CurHp <= self.MaxHp / 2;
 
         if (isBelowHalf && !isApplied)
         {
-            powerDelta = Mathf.RoundToInt(self.Attack * 0.2f);
+            int amount = Mathf.RoundToInt(self.Level >= 15 ? 0.3f : 0.2f);
+            powerDelta = self.CurAttack * amount;
             self.PowerUp(powerDelta);
             isApplied = true;
         }
@@ -24,8 +25,12 @@ public class LowHpAttackBoost : IPassiveSkill
         }
     }
 
-    public void OnBattleStart(Monster self, List<Monster> allies) { }
+    public void OnBattleStart(Monster self, List<Monster> allies)
+    {
+        isApplied = false;
+    }
+    
     public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
-    public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam) {}
-    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill) {}
+    public void OnAllyDeath(Monster self) {}
+    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

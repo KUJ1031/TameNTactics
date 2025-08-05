@@ -10,20 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
-  m_Name: HealOnKill
+  m_Name: LowHpDefBoost
   m_EditorClassIdentifier: 
   skillType: 0
-  passiveSkillList: 16
+  passiveSkillList: 0
   normalSkillList: 0
   ultimateSkillList: 0
-  skillName: "\uB098\uC758 \uC591\uBD84\uC774 \uB418\uC5B4\uB77C"
+  skillName: 
   skillPower: 0
   skillEffectPrefab: {fileID: 0}
-  targetScope: 1
+  targetScope: 0
   targetCount: 0
   icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
-  description: "\uC801 \uCC98\uCE58 \uC2DC \uCD5C\uB300 \uCCB4\uB825\uC758 20%\uB9CC\uD07C
-    \uCCB4\uB825\uC744 \uD68C\uBCF5\uD55C\uB2E4."
+  description: 
   upgradeDescription: 
   damageSound: {fileID: 0}
