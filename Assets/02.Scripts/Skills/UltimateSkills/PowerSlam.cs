@@ -11,7 +11,7 @@ public class PowerSlam : ISkillEffect
         skillData = data;
     }
 
-    // 100% 스턴 성공
+    // 단일공격 100% 2턴동안 스턴, 25레벨 데미지 3턴동안 스턴
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -21,8 +21,11 @@ public class PowerSlam : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
-            target.ApplyStatus(new Stun(3));
+            int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
+            int amount = caster.Level >= 15 ? 3 : 2;
+            
+            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
+            target.ApplyStatus(new Stun(amount));
         }
     }
 }

@@ -41,6 +41,10 @@ public class EntryUI : FieldMenuBaseUI
     private Player player;
 
 
+    private void Start()
+    {
+        removeEntryButton.onClick.AddListener(RemoveMonsterInEntry);
+    }
 
     //몬스터 디테일 유아이 셋팅
     public void SetMonsterDetailUI(Monster newMonster)
@@ -107,5 +111,12 @@ public class EntryUI : FieldMenuBaseUI
 
         if (lockObj != null)
             lockObj.SetActive(!isUnLock);
+    }
+
+    private void RemoveMonsterInEntry()
+    {
+        Debug.Log($"해당 몬스터를 엔트리에서 제외했습니다.");
+        player.RemoveEntryMonster(monster);
+        EntryUIManager.Instance.SetEntryUISlots();
     }
 }

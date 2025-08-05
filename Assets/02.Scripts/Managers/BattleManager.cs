@@ -106,7 +106,7 @@ public class BattleManager : Singleton<BattleManager>
     }
 
     // 데미지 넣기 + 데미지 후 패시브 발동
-    public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData, bool isCrit)
+    public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData, bool isCrit, float effectiveness)
     {
         int finalDamage = target.TriggerOnDamaged(damage, attacker);
         var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
@@ -119,8 +119,8 @@ public class BattleManager : Singleton<BattleManager>
                 {
                     if (passive is InterceptDamage)
                     {
-                        InterceptDamage(target, skillData, finalDamage);
-                        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
+                        InterceptDamage(monster, skillData, finalDamage, team);
+                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness);
                         BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
                         return;
                     }
@@ -131,7 +131,7 @@ public class BattleManager : Singleton<BattleManager>
                     if (buff.Type == BuffEffectType.Taunt)
                     {
                         monster.TakeDamage(finalDamage);
-                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData);
+                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness);
                         BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
                         return;
                     }
@@ -141,7 +141,7 @@ public class BattleManager : Singleton<BattleManager>
         
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
-        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData);
+        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness);
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, finalDamage, skillData);
     }
 
@@ -555,28 +555,6 @@ public class BattleManager : Singleton<BattleManager>
 
         BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
         BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
-
-        foreach (var monster in BattleEntryTeam)
-        {
-            foreach (var passive in monster.PassiveSkills)
-            {
-                if (passive is AtkUpOnAllyDeath)
-                {
-                    passive.OnAllyDeath(monster, DeadEntryMonsters);
-                }
-            }
-        }
-
-        foreach (var enemyMonster in BattleEnemyTeam)
-        {
-            foreach (var passive in enemyMonster.PassiveSkills)
-            {
-                if (passive is AtkUpOnAllyDeath)
-                {
-                    passive.OnAllyDeath(enemyMonster, DeadEnemyMonsters);
-                }
-            }
-        }
     }
 
     // 공격중인 몬스터의 character를 가져오기 위한 메서드
@@ -665,10 +643,8 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    private void InterceptDamage(Monster target, SkillData skillData, int damage)
+    private void InterceptDamage(Monster target, SkillData skillData, int damage, List<Monster> team)
     {
-        var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
-
         foreach (var monster in team)
         {
             foreach (var passive in monster.PassiveSkills)

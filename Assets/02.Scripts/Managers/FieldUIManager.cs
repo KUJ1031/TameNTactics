@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public enum PopupType
 {
     EntrySwap,  //엔트리 교체
@@ -23,13 +24,11 @@ public class FieldUIManager : MonoBehaviour
     //[SerializeField] private GameObject confirmPopupPrefab;
     //[SerializeField] private Transform uiCanvas;
 
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
-
 
     //메뉴열기
     public void OpenUI<T>() where T : FieldMenuBaseUI
@@ -54,6 +53,7 @@ public class FieldUIManager : MonoBehaviour
     {
         BaseUI.SetActive(true);
         LeftMenuUI.SetActive(false);
+
         foreach (var ui in uiList)
         {
             ui.Close();
@@ -66,7 +66,7 @@ public class FieldUIManager : MonoBehaviour
     {
         PopupUIManager.Instance.ShowPanel<ConfirmPopup>("SimplePopup", popup =>
         {
-            popup.Open(type,message, onConfirmed);
+            popup.Open(type, message, onConfirmed);
         });
     }
 

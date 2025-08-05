@@ -61,7 +61,7 @@ public class Monster
     private bool isTaunted;
 
     public Action<Monster> HpChange;
-    public Action<Monster> ultimateCostChange;
+    public Action<Monster> UltimateCostChange;
     public Action<Monster, int> DamagePopup;
     public Action<Monster> DamagedAnimation;
 
@@ -360,11 +360,13 @@ public class Monster
                 {
                     reviveOnDeathChance.OnDeath(this);
                 }
-                else if (passive is PoisonEnemiesOnDeath poisonEnemiesOnDeath)
+                if (passive is PoisonEnemiesOnDeath poisonEnemiesOnDeath)
                 {
                     poisonEnemiesOnDeath.OnDeath(BattleManager.Instance.BattleEnemyTeam);
                 }
             }
+            
+            OnAllyDeath(this);
             EventBus.OnMonsterDead?.Invoke(this);
         }
         else
@@ -385,7 +387,7 @@ public class Monster
     {
         foreach (var passive in PassiveSkills)
         {
-            if (passive is StatusEffectImmunity immunity && immunity.IsImmuneToStatus)
+            if (passive is StatusEffectImmunity { IsImmuneToStatus: true })
             {
                 return;
             }
@@ -479,11 +481,11 @@ public class Monster
         }
     }
     
-    public void TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill)
+    public void TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill, float effectiveness)
     {
         foreach (var passive in PassiveSkills)
         {
-            passive.OnAttack(actor, damage, target, skill);
+            passive.OnAttack(actor, damage, target, skill, effectiveness);
         }
     }
 
@@ -545,7 +547,7 @@ public class Monster
     {
         CurUltimateCost++;
         CurUltimateCost = Mathf.Min(CurUltimateCost, MaxUltimateCost);
-        ultimateCostChange?.Invoke(this);
+        UltimateCostChange?.Invoke(this);
     }
 
     // 궁극기 코스트 1개 감소
@@ -553,7 +555,7 @@ public class Monster
     {
         CurUltimateCost--;
         CurUltimateCost = Mathf.Clamp(CurUltimateCost, 0, MaxUltimateCost);
-        ultimateCostChange?.Invoke(this);
+        UltimateCostChange?.Invoke(this);
     }
 
     public void IncreaseUltimateCostMax()
@@ -565,6 +567,12 @@ public class Monster
     public void RemoveStatusEffects()
     {
         ActiveStatusEffects.Clear();
+    }
+
+    // 버프 제거
+    public void RemoveBuffEffects()
+    {
+        ActiveBuffEffects.Clear();
     }
 
     // 행동불가 상태 적용/해제
@@ -620,6 +628,7 @@ public class Monster
         InitializePassiveSkills();
         InitializeBattleStats();
         RemoveStatusEffects();
+        RemoveBuffEffects();
         InitializeStatus();
     }
 
@@ -646,13 +655,30 @@ public class Monster
 
     public void HealDuration(int duration)
     {
-        duration -= 1;
-        healDuration = duration;
+        healDuration += duration - 1;
     }
     
     public void Taunt(bool isApplied)
     {
         if (isApplied) isTaunted = true;
         else isTaunted = false;
+    }
+
+    private void OnAllyDeath(Monster self)
+    {
+        var team = BattleManager.Instance.BattleEntryTeam.Contains(self)
+            ? BattleManager.Instance.BattleEntryTeam
+            : BattleManager.Instance.BattleEnemyTeam;
+
+        foreach (var monster in team)
+        {
+            foreach (var passive in monster.PassiveSkills)
+            {
+                if (passive is AtkUpOnAllyDeath)
+                {
+                    passive.OnAllyDeath(monster);
+                }
+            }
+        }
     }
 }

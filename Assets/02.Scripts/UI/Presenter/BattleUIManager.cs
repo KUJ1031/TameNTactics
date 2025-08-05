@@ -14,7 +14,6 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private BattleInfoView battleInfoView;
     [SerializeField] private SkillView skillView;
     [SerializeField] private BattleInventoryUI inventoryView;
-    [SerializeField] private MenuView menuView;
     [SerializeField] private EmbraceView embraceView;
 
     public EmbraceView EmbraceView { get { return embraceView; } }
@@ -378,5 +377,10 @@ public class BattleUIManager : MonoBehaviour
         }
 
         embraceView.ShowBehaviorPanel();
+    }
+
+    public void ShowSettingMenu()
+    {
+        battleInfoView.ShowSettingPanel();
     }
 }

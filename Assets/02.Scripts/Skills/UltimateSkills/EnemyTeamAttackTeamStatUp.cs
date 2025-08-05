@@ -12,6 +12,7 @@ public class EnemyTeamAttackTeamStatUp : ISkillEffect
         skillData = data;
     }
 
+    // 전체공격 우리팀 전체 공격력, 방어력, 스피드, 치명타확률 10%씩 상승, 25레벨 15%씩 상승
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -22,15 +23,15 @@ public class EnemyTeamAttackTeamStatUp : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical, result.effectiveness);
         }
 
         foreach (var monster in allyMonsters)
         {
-            int atkUp = Mathf.RoundToInt(monster.CurAttack * 0.1f);
-            int defUp = Mathf.RoundToInt(monster.CurDefense * 0.1f);
-            int spdUp = Mathf.RoundToInt(monster.CurSpeed * 0.1f);
-            int criUp = 10;
+            int atkUp = Mathf.RoundToInt(monster.Level >= 25 ? monster.CurAttack * 0.15f : monster.CurAttack * 0.1f);
+            int defUp = Mathf.RoundToInt(monster.Level >= 25 ? monster.CurDefense * 0.15f : monster.CurDefense * 0.1f);
+            int spdUp = Mathf.RoundToInt(monster.Level >= 25 ? monster.CurSpeed * 0.15f : monster.CurSpeed * 0.1f);
+            int criUp = monster.Level >= 15 ? 20 : 10;
             
             monster.PowerUp(atkUp);
             monster.BattleDefenseUp(defUp);
