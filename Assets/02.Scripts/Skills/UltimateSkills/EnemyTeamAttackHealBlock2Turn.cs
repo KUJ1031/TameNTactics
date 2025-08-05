@@ -11,7 +11,7 @@ public class EnemyTeamAttackHealBlock2Turn : ISkillEffect
         skillData = data;
     }
 
-    // 전체공격 2턴동안 힐 불가, 15레벨 데미지 1.5배 3턴동안 힐 불가
+    // 전체공격 2턴동안 힐 불가, 25레벨 데미지 1.5배 3턴동안 힐 불가
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -21,8 +21,8 @@ public class EnemyTeamAttackHealBlock2Turn : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            int damage = caster.Level >= 15 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
-            int amount = Mathf.RoundToInt(caster.Level >= 15 ? 3 : 2);
+            int damage = caster.Level >= 25 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
+            int amount = Mathf.RoundToInt(caster.Level >= 25 ? 3 : 2);
             
             BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
             target.ApplyStatus(new HealBlock(amount));

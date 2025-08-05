@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 체력 50% 이하일때 방어력 20% 상승, 20레벨 30% 상승
 public class LowHpDefBoost : IPassiveSkill
 {
     private bool isApplied = false;
@@ -13,7 +14,7 @@ public class LowHpDefBoost : IPassiveSkill
 
         if (isBelowHalf && !isApplied)
         {
-            int amount = Mathf.RoundToInt(self.Level >= 15 ? 0.3f : 0.2f);
+            int amount = Mathf.RoundToInt(self.Level >= 20 ? 0.3f : 0.2f);
             increaseDef = self.CurDefense * amount;
             self.BattleDefenseUp(increaseDef);
             isApplied = true;

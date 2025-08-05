@@ -11,7 +11,7 @@ public class PowerSlam : ISkillEffect
         skillData = data;
     }
 
-    // 단일공격 100% 2턴동안 스턴, 15레벨 데미지 3턴동안 스턴
+    // 단일공격 100% 2턴동안 스턴, 25레벨 데미지 3턴동안 스턴
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
