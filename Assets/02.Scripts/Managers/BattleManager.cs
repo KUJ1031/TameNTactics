@@ -73,7 +73,6 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var monster in BattleEntryTeam)
         {
             monster.InitializeBattleStart();
-            monster.TriggerOnBattleStart(BattleEntryTeam);
             Debug.Log($"Entry Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Entry Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
             Debug.Log($"이름 : {monster.monsterName}\n공격력 : {monster.CurAttack}\n방어력 : {monster.CurDefense}\n치명타확률 : {monster.CurCriticalChance}\n스피드 : {monster.CurSpeed}");
@@ -83,12 +82,25 @@ public class BattleManager : Singleton<BattleManager>
         {
             monster.RecalculateStats();
             monster.InitializeBattleStart();
-            monster.TriggerOnBattleStart(BattleEnemyTeam);
             Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
 
+        PassiveSkillActivate();
         ClearSelections();
+    }
+
+    private void PassiveSkillActivate()
+    {
+        foreach (var monster in BattleEntryTeam)
+        {
+            monster.TriggerOnBattleStart(BattleEntryTeam);
+        }
+
+        foreach (var monster in BattleEnemyTeam)
+        {
+            monster.TriggerOnBattleStart(BattleEnemyTeam);
+        }
     }
 
     // 턴 끝날 때 실행
