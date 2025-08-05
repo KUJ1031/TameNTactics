@@ -18,7 +18,7 @@ MonoBehaviour:
   encounterCount: 0
   captureCount: 0
   type: 0
-  personality: 12
+  personality: 0
   maxHp: 90
   attack: 15
   defense: 9
@@ -36,4 +36,4 @@ MonoBehaviour:
   spawnTime: 0
   captureRate: 0
   description: 
-  damageSound: {fileID: 0}
+  damageSound: {fileID: 11400000, guid: 62ee218748d55754b9706e815341cd4b, type: 2}
