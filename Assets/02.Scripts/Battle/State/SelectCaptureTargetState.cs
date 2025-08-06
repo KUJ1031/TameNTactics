@@ -93,6 +93,7 @@ public class SelectCaptureTargetState : BaseBattleState
             BattleManager.Instance.CaptureSelectedEnemy(targetMonster);
             UIManager.Instance.battleUIManager.RemoveGauge(targetMonster);
             UIManager.Instance.battleUIManager.EmbraceView.ShowSuccessMessage();
+            AudioManager.Instance.PlaySFX("MiniGameWin");
 
             if (BattleTutorialManager.Instance.isBattleEmbraceTutorialEnded)
                 BattleTutorialManager.Instance.EndEmbraceTutorial();
@@ -113,6 +114,7 @@ public class SelectCaptureTargetState : BaseBattleState
                 battleSystem.ChangeState(new PlayerMenuState(battleSystem));
                 BattleTutorialManager.Instance.tutorialView.ShowEmbracePanel();
                 BattleTutorialManager.Instance.tutorialView.HideMinigamePanel();
+                AudioManager.Instance.PlaySFX("MiniGameLose");
                 BattleTutorialManager.Instance.MinigameFailed();
                 Debug.Log("포섭 미니게임 실패, 다시 메뉴로 돌아갑니다.");
                 return;
@@ -121,10 +123,16 @@ public class SelectCaptureTargetState : BaseBattleState
             Debug.Log("포섭 실패...!");
             UIManager.Instance.battleUIManager.EmbraceView.ShowFailMessage();
             UIManager.Instance.battleUIManager.DeselectMonster(targetMonster);
+            AudioManager.Instance.PlaySFX("MiniGameLose");
             battleSystem.StartCoroutine(EnemyAttackAfterDelay(2.0f));
         }
         battleSystem.StartCoroutine(Delay(2.0f));
         targetMonster = null;
+    }
+
+    public override void Exit()
+    {
+        UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
     }
 
     IEnumerator Delay(float delayTime)

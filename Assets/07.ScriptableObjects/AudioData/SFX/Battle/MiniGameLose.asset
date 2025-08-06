@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MiniGameLose
   m_EditorClassIdentifier: 
   clipName: MiniGameLose
-  clip: {fileID: 8300000, guid: 8ca82d480b1de2147897ef111a6a75de, type: 3}
+  clip: {fileID: 8300000, guid: 2d8134e89097f9d44810b283109e67a4, type: 3}
   type: 1
-  volume: 1
+  volume: 0.5
   loop: 0

@@ -15,10 +15,10 @@ MonoBehaviour:
   monsterName: Fiora
   monsterNumber: 5
   monsterImage: {fileID: -26941391, guid: 57408883aa9df884083b5493375dede4, type: 3}
-  encounterCount: 0
+  encounterCount: 8
   captureCount: 0
   type: 0
-  personality: 5
+  personality: 0
   maxHp: 75
   attack: 12
   defense: 6
@@ -29,11 +29,11 @@ MonoBehaviour:
   expReward: 5
   goldReward: 100
   skills:
-  - {fileID: 11400000, guid: 6fe94066213bed948bf0a220bcdfbeaa, type: 2}
+  - {fileID: 11400000, guid: 88be09269aed8e8488b76034b5c5822f, type: 2}
   - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
   - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
   spawnArea: 0
   spawnTime: 0
   captureRate: 0
   description: 
-  damageSound: {fileID: 0}
+  damageSound: {fileID: 11400000, guid: 8055f7ce092905840979cddae7cbaca9, type: 2}
