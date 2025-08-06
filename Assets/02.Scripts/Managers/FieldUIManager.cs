@@ -20,6 +20,13 @@ public class FieldUIManager : MonoBehaviour
     [SerializeField] private GameObject BaseUI;
     [SerializeField] private GameObject fieldBaseUI;
 
+    [SerializeField] private GameObject fadePanel;
+
+    public GameObject FadePanel
+    {
+        get { return fadePanel; }
+    }
+
     //[SerializeField] private GameObject swapPopupPrefab;
     //[SerializeField] private GameObject confirmPopupPrefab;
     //[SerializeField] private Transform uiCanvas;
