@@ -326,7 +326,7 @@ public class Monster
         var team = BattleManager.Instance.BattleEntryTeam.Contains(this)
             ? BattleManager.Instance.BattleEntryTeam
             : BattleManager.Instance.BattleEnemyTeam;
-
+        
         foreach (var monster in team)
         {
             foreach (var buff in ActiveBuffEffects)
@@ -357,21 +357,10 @@ public class Monster
 
         if (CurHp <= 0)
         {
+            Debug.Log("Dead");
             InitializeStatus();
-            
-            foreach (var passive in PassiveSkills)
-            {
-                if (passive is ReviveOnDeathChance reviveOnDeathChance)
-                {
-                    reviveOnDeathChance.OnDeath(this);
-                }
-                if (passive is PoisonEnemiesOnDeath poisonEnemiesOnDeath)
-                {
-                    poisonEnemiesOnDeath.OnDeath(BattleManager.Instance.BattleEnemyTeam);
-                }
-            }
-            
             OnAllyDeath(this);
+            
             EventBus.OnMonsterDead?.Invoke(this);
         }
         else
@@ -664,14 +653,28 @@ public class Monster
         var team = BattleManager.Instance.BattleEntryTeam.Contains(self)
             ? BattleManager.Instance.BattleEntryTeam
             : BattleManager.Instance.BattleEnemyTeam;
-
+        
+        var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(self)
+            ? BattleManager.Instance.BattleEnemyTeam
+            : BattleManager.Instance.BattleEntryTeam;
+        
         foreach (var monster in team)
         {
             foreach (var passive in monster.PassiveSkills)
             {
                 if (passive is AtkUpOnAllyDeath)
                 {
-                    passive.OnAllyDeath(monster);
+                    passive.OnAllyDeath(monster, team);
+                }
+                
+                if (passive is PoisonEnemiesOnDeath)
+                {
+                    passive.OnAllyDeath(monster, enemyTeam);
+                }
+                
+                if (passive is ReviveOnDeathChance)
+                {
+                    passive.OnAllyDeath(monster, team);
                 }
             }
         }
@@ -684,6 +687,10 @@ public class Monster
 
     public void TaunterDamage(Monster taunter, int damage)
     {
+        var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(taunter)
+            ? BattleManager.Instance.BattleEnemyTeam
+            : BattleManager.Instance.BattleEntryTeam;
+        
         int modifiedDamage;
 
         if (isShield)
@@ -703,20 +710,8 @@ public class Monster
         if (CurHp <= 0)
         {
             InitializeStatus();
-            
-            foreach (var passive in PassiveSkills)
-            {
-                if (passive is ReviveOnDeathChance reviveOnDeathChance)
-                {
-                    reviveOnDeathChance.OnDeath(taunter);
-                }
-                if (passive is PoisonEnemiesOnDeath poisonEnemiesOnDeath)
-                {
-                    poisonEnemiesOnDeath.OnDeath(BattleManager.Instance.BattleEnemyTeam);
-                }
-            }
-            
             OnAllyDeath(taunter);
+            
             EventBus.OnMonsterDead?.Invoke(taunter);
         }
         else

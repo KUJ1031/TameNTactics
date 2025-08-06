@@ -27,6 +27,6 @@ public class AllyTypeBoost : IPassiveSkill
 
     public void OnTurnEnd(Monster self) { }
     public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
-    public void OnAllyDeath(Monster self) {}
+    public void OnAllyDeath(Monster self, List<Monster> team) {}
     public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

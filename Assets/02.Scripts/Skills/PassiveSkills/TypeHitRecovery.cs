@@ -17,5 +17,5 @@ public class TypeHitRecovery : IPassiveSkill
     public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
     public void OnBattleStart(Monster self, List<Monster> monsters) {}
     public void OnTurnEnd(Monster self) {}
-    public void OnAllyDeath(Monster self) {}
+    public void OnAllyDeath(Monster self, List<Monster> team) {}
 }

@@ -26,6 +26,6 @@ public class HitCritBoost : IPassiveSkill
     }
     
     public void OnTurnEnd(Monster self) {}
-    public void OnAllyDeath(Monster self) {}
+    public void OnAllyDeath(Monster self, List<Monster> team) {}
     public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

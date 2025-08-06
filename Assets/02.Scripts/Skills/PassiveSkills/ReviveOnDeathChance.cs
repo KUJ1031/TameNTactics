@@ -5,7 +5,7 @@ using UnityEngine;
 // 쓰러젔을때 50% 확률로 최대체력의 30%로 부활, 20레벨 50%로 부활
 public class ReviveOnDeathChance : IPassiveSkill
 {
-    public void OnDeath(Monster self)
+    public void OnAllyDeath(Monster self, List<Monster> team)
     {
         if (Random.value < 0.5)
         {
@@ -17,6 +17,5 @@ public class ReviveOnDeathChance : IPassiveSkill
     public void OnBattleStart(Monster self, List<Monster> monsters) {}
     public void OnTurnEnd(Monster self) {}
     public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
-    public void OnAllyDeath(Monster self) {}
     public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

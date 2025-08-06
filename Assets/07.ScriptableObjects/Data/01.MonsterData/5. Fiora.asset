@@ -19,7 +19,7 @@ MonoBehaviour:
   captureCount: 0
   type: 0
   personality: 0
-  maxHp: 75
+  maxHp: 7
   attack: 12
   defense: 6
   speed: 16
@@ -29,7 +29,7 @@ MonoBehaviour:
   expReward: 5
   goldReward: 100
   skills:
-  - {fileID: 11400000, guid: 74d03e2cac3c56a4aa95d00224e98e0d, type: 2}
+  - {fileID: 11400000, guid: b1909c30a43c27e48957027547e584ac, type: 2}
   - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
   - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
   spawnArea: 0
