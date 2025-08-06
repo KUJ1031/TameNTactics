@@ -24,7 +24,7 @@ public class SingleAttackChanceCrit : ISkillEffect
                 result.isCritical = true;
             }
 
-            BattleManager.Instance.DealDamage(target, result.damage, caster, skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, result.damage, caster, skillData, result.isCritical, result.effectiveness);
         }
     }
 }

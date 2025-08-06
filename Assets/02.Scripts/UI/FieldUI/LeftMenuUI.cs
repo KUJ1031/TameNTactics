@@ -13,6 +13,7 @@ public class LeftMenuUI : MonoBehaviour
         entryMonsterButton.onClick.AddListener(OnClickEntryMonsterButton);
         ownedMonsterButton.onClick.AddListener(OnClickOwnedMonsterButton);
         settingButton.onClick.AddListener(OnClickSettingButton);
+        exitButton.onClick.AddListener(OnClickGameQuitButton);
         //closeMenuButton.onClick.AddListener(OnClickCloseMenuButton);
     }
 
@@ -41,6 +42,15 @@ public class LeftMenuUI : MonoBehaviour
     private void OnClickSettingButton()
     {
         FieldUIManager.Instance.OpenUI<GameSettingUI>();
+    }
+
+    private void OnClickGameQuitButton()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 
     //public void OnClickCloseMenuButton()

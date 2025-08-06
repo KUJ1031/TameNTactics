@@ -16,12 +16,11 @@ public static class PassiveSkillFactory
         { PassiveSkillList.StatusEffectImmunity, () => new StatusEffectImmunity()},
         { PassiveSkillList.OneHitShield, () => new OneHitShield()},
         { PassiveSkillList.AtkUpOnAllyDeath , () => new AtkUpOnAllyDeath()},
-        { PassiveSkillList.TypeHitRecovery, () => new StatusEffectImmunity()},
+        { PassiveSkillList.TypeHitRecovery, () => new TypeHitRecovery()},
         { PassiveSkillList.EnemyAtkDown, () => new EnemyAtkDown()},
         { PassiveSkillList.UltGaugeChancePerTurn, () => new UltGaugeChancePerTurn()},
         { PassiveSkillList.BonusAttack, () => new BonusAttack()},
         { PassiveSkillList.PowerBoostPerUlt, () => new PowerBoostPerUlt()},
-        { PassiveSkillList.HealOnKill, () => new HealOnKill()},
         { PassiveSkillList.AliveTeamGuard, () => new AliveTeamGuard()},
         { PassiveSkillList.CritUpOnCritHit, () => new CritUpOnCritHit()},
         { PassiveSkillList.InterceptDamage, () => new InterceptDamage()},
@@ -30,7 +29,8 @@ public static class PassiveSkillFactory
         { PassiveSkillList.ReviveOnDeathChance, () => new ReviveOnDeathChance()},
         { PassiveSkillList.CritUpOnTurnEnd, () => new CritUpOnTurnEnd()},
         { PassiveSkillList.PoisonEnemiesOnDeath, () => new PoisonEnemiesOnDeath()},
-        { PassiveSkillList.CleanseSelfOnUlt, () => new CleanseSelfOnUlt()}
+        { PassiveSkillList.CleanseSelfOnUlt, () => new CleanseSelfOnUlt()},
+        { PassiveSkillList.LowHpDefBoost, () => new LowHpDefBoost()}
     };
 
     public static IPassiveSkill GetPassiveSkill(PassiveSkillList list)

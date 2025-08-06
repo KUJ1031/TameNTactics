@@ -40,7 +40,7 @@ public class BattleTestSetup : MonoBehaviour
         {
             Monster m = new Monster();
             m.SetMonsterData(data);
-            m.SetLevel(10);
+            m.SetLevel(25);
             m.RecalculateStats();
             player.battleEntry.Add(m);
         }
@@ -49,7 +49,7 @@ public class BattleTestSetup : MonoBehaviour
         {
             Monster m = new Monster();
             m.SetMonsterData(data);
-            m.SetLevel(10);
+            m.SetLevel(25);
             m.RecalculateStats();
             BattleManager.Instance.enemyTeam.Add(m);
         }

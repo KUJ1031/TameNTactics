@@ -73,7 +73,7 @@ public class SpawnBattleAllMonsters : MonoBehaviour
                 clickable?.Initialize(monsterChar.monster); // Monster 데이터 넘기기
 
                 monsterChar.monster.HpChange += UIManager.Instance.battleUIManager.UpdateHpGauge;
-                monsterChar.monster.ultimateCostChange += UIManager.Instance.battleUIManager.UpdateUltimateGauge;
+                monsterChar.monster.UltimateCostChange += UIManager.Instance.battleUIManager.UpdateUltimateGauge;
             }
         }
     }

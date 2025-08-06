@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 치명타로 맞을시 치명타 확률 30% 상승 (최대 3스택), 20레벨 40% 상승
 public class CritUpOnCritHit : IPassiveSkill
 {
     private int curStack = 0;
@@ -12,17 +13,18 @@ public class CritUpOnCritHit : IPassiveSkill
         curStack = 0;
     }
     
-    public void OnCritHit(Monster target, bool isCritical)
+    public void OnCritHit(Monster self, bool isCritical)
     {
         if (isCritical && curStack < maxStack)
         {
-            target.BattleCritChanceUp(30);
+            int amount = self.Level >= 20 ? 40 : 30;
+            self.BattleCritChanceUp(amount);
             curStack++;
         }
     }
     
     public void OnTurnEnd(Monster self) {}
     public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
-    public void OnAllyDeath(Monster self, List<Monster> deadAllyTeam) {}
-    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill) {}
+    public void OnAllyDeath(Monster self) {}
+    public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

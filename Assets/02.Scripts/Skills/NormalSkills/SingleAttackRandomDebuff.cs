@@ -22,34 +22,32 @@ public class SingleAttackRandomDebuff : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical);
+            BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical, result.effectiveness);
 
             if (Random.value < 0.2f && caster.Level >= 10)
             {
-                StatusEffectType[] values = (StatusEffectType[])Enum.GetValues(typeof(StatusEffectType));
-                int randomIndex = Random.Range(0, values.Length);
-                StatusEffectType randomEffectType = values[randomIndex];
-
-                StatusEffect randomEffect = CreateStatusEffect(randomEffectType, 2);
-
-                if (randomEffect != null)
+                switch (Random.Range(0, 6))
                 {
-                    target.ApplyStatus(randomEffect);
+                    case 0:
+                        target.ApplyStatus(new Sleep(2));
+                        break;
+                    case 1:
+                        target.ApplyStatus(new Stun(2));
+                        break;
+                    case 2:
+                        target.ApplyStatus(new Burn(2));
+                        break;
+                    case 3:
+                        target.ApplyStatus(new Poison(2));
+                        break;
+                    case 4:
+                        target.ApplyStatus(new Paralysis(2));
+                        break;
+                    case 5:
+                        target.ApplyStatus(new HealBlock(2));
+                        break;
                 }
             }
         }
-    }
-
-    // 상태이상을 생성하는 메서드
-    private StatusEffect CreateStatusEffect(StatusEffectType effectType, int duration)
-    {
-        return effectType switch
-        {
-            StatusEffectType.Burn => new Burn(duration),
-            StatusEffectType.Paralysis => new Paralysis(duration),
-            StatusEffectType.Poison => new Poison(duration),
-            StatusEffectType.Stun => new Stun(duration),
-            StatusEffectType.Sleep => new Sleep(duration),
-        };
     }
 }
