@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialoguePlayer : MonoBehaviour
+public class Dialogue : MonoBehaviour
 {
     public DialogueData[] dialogueDatas; //대화 데이터
     public Text dialogueText; //대화를 반영하는 Text
@@ -42,6 +42,11 @@ public class DialoguePlayer : MonoBehaviour
         {
             typingCoroutine = StartCoroutine(TypeLine(data.lines[currentLine]));
             currentLine++;
+        }
+        else
+        {
+            dialogueText.text = "";
+            Debug.Log("대화 종료!");
         }
     }
 
