@@ -31,14 +31,17 @@ public class RaycastEventTrigger : MonoBehaviour
     private void Update()
     {
         Vector2 direction = GetDirectionVector(rayDirectionEnum);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, rayDistance, playerLayer);
+
+        // 박스 크기 설정 (광선 대신 작은 박스 사용)
+        Vector2 boxSize = new Vector2(1f, 10f); // 조절 가능
+
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxSize, 0f, direction, rayDistance, playerLayer);
 
         if (drawDebugRay)
             Debug.DrawRay(transform.position, direction * rayDistance, Color.red);
 
         if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
-            // 플레이어가 처음 레이 안으로 들어왔을 때만 실행
             if (!playerInRay)
             {
                 playerInRay = true;
@@ -51,10 +54,10 @@ public class RaycastEventTrigger : MonoBehaviour
         }
         else
         {
-            // 플레이어가 레이 밖으로 나가면 playerInRay false로 변경
             playerInRay = false;
         }
     }
+
 
     private Vector2 GetDirectionVector(RayDirection direction)
     {

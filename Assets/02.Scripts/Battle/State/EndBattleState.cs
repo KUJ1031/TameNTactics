@@ -44,6 +44,6 @@ public class EndBattleState : BaseBattleState
         yield return new WaitForSeconds(2f);
 
         BattleDialogueManager.Instance.ClearBattleEndPanel();
-        SceneManager.LoadScene("MainMapPuzzleTestScene");
+        SceneManager.LoadScene("MainMapScene");
     }
 }

@@ -10,6 +10,15 @@ public class RayTriggerActivator : MonoBehaviour
         trigger = GetComponentInParent<RaycastEventTrigger>();
     }
 
+    private void Start()
+    {
+        // 퀘스트가 이미 시작되었는지 체크해서 canRepeat을 미리 끔
+        if (QuestManager.Instance != null && QuestManager.Instance.IsQuestStarted(questIDToWatch))
+        {
+            HandleQuestStarted(questIDToWatch);
+        }
+    }
+
     private void OnEnable()
     {
         QuestEventDispatcher.OnQuestStarted += HandleQuestStarted;
@@ -28,11 +37,13 @@ public class RayTriggerActivator : MonoBehaviour
             return;
         }
 
-        Debug.Log($"{gameObject.name}: Found trigger on {trigger.gameObject.name}");
-
         if (questID == questIDToWatch)
         {
             trigger.canRepeat = false;
+
+            var uniqueID = trigger.gameObject.name + trigger.transform.position.ToString();
+            DialogueSaveSystem.SaveRayTriggerState(uniqueID, true);
+
             Debug.Log($"Quest {questID} started, setting canRepeat to false for {trigger.gameObject.name}. New value: {trigger.canRepeat}");
         }
     }

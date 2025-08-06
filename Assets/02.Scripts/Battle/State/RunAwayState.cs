@@ -21,7 +21,7 @@ public class RunAwayState : BaseBattleState
                 // todo 도망 성공 UI 띄우고 배틀 종료
                 Debug.Log("도망가기 성공! 이전 씬으로 돌아갑니다.");
                 UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
-                SceneManager.LoadScene("MainMapPuzzleTestScene");
+                SceneManager.LoadScene("MainMapScene");
             }
             else
             {

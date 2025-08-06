@@ -616,7 +616,7 @@ public class DialogueManager : Singleton<DialogueManager>
                     () =>  // 밝아질 때 실행
                     {
                     //플레이어 x축플립
-                    PlayerManager.Instance.playerController.transform.localScale = new Vector3(-1.8f, 1.8f, 1.8f);
+                   // PlayerManager.Instance.playerController.transform.localScale = new Vector3(-1.8f, 1.8f, 1.8f);
                     StartDialogue("핑거", currentNPCImage, 702);
                 });
                 }
@@ -645,6 +645,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 PlayerManager.Instance.playerController.isInputBlocked = false;
                 EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "레거의 편지");
                 PlayerManager.Instance.player.playerQuestStartCheck[1] = true;
+                QuestEventDispatcher.OnQuestStarted?.Invoke(1);
                 break;
             case "Check_Quest_FindRegurStarted":
                 if (PlayerManager.Instance.player.playerQuestStartCheck[1] == true)

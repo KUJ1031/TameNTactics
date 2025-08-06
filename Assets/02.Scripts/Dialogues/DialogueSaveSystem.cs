@@ -41,8 +41,11 @@ public static class DialogueSaveSystem
 
     private static void SaveAll()
     {
-        // Dictionary를 List로 변환하여 저장
+        if (dataCache == null)
+            dataCache = new RayTriggerSaveData();
+
         dataCache.npcRayStates.Clear();
+
         foreach (var kvp in _npcRayStatesDict)
         {
             dataCache.npcRayStates.Add(new KeyValue { key = kvp.Key, value = kvp.Value });
@@ -51,6 +54,7 @@ public static class DialogueSaveSystem
         string json = JsonUtility.ToJson(dataCache, true);
         File.WriteAllText(savePath, json);
     }
+
 
     private static void LoadAll()
     {

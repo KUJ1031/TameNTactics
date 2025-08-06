@@ -55,6 +55,13 @@ public class QuestManager : Singleton<QuestManager>
         ));
     }
 
+    public bool IsQuestStarted(int questID)
+    {
+        if (questID < 0 || questID >= questList.Count)
+            return false;
+
+        return questList[questID].questStatus == QuestStatus.InProgress || questList[questID].questStatus == QuestStatus.Completed;
+    }
 
     public void AddQuest(QuestData data)
     {
@@ -100,6 +107,8 @@ public class QuestData
         questSprite = sprite;
         prerequisiteQuestIndex = prerequisite;
     }
+
+
 
     // 동적으로 현재 상태의 설명 반환
     public string GetCurrentDescription(Player player, int questIndex)

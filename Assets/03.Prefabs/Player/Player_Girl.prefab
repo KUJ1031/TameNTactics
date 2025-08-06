@@ -342,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lnputActions: {fileID: -944628639613478452, guid: c63559c45af8f6a418f54908a1529e08, type: 3}
-  movespeed: 15
+  movespeed: 10
   rb: {fileID: -2790666668237355010}
   moveAction:
     m_Name: Move
@@ -6815,7 +6815,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6707076, y: 0.66930187}
+  m_Size: {x: 0.6707076, y: 0.66}
   m_EdgeRadius: 0
 --- !u!114 &4731928290963152514
 MonoBehaviour:
