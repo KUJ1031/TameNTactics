@@ -513,6 +513,12 @@ public class DialogueManager : Singleton<DialogueManager>
                 }
                 break;
 
+            case "Quest_FIndCarpenter":
+                PlayerManager.Instance.player.playerQuestStartCheck[2] = true;
+                EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "끊어진 다리");
+                QuestEventDispatcher.OnQuestStarted?.Invoke(2);
+                break;
+
             case "Quest_Tutorial":
                 PlayerManager.Instance.player.playerQuestStartCheck[0] = true;
                 EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "전투의 기본");
@@ -658,6 +664,54 @@ public class DialogueManager : Singleton<DialogueManager>
                 Debug.Log("[레거의 편지] 퀘스트를 클리어하였습니다.");
                 PlayerManager.Instance.playerController.isInputBlocked = false; // 플레이어 입력 차단
                 break;
+            case "Check_Quest_FindCapenter":
+                if (PlayerManager.Instance.player.playerQuestStartCheck[2] == true)
+                    StartDialogue("나", currentNPCImage, 1503);
+                break;
+            case "Move_FindCarpenter_Init":
+                PlayerManager.Instance.playerController.AutoMove(Vector2.down, 0.5f, 3f, true);
+                break;
+            case "FightElite_Dean":
+                FinalFightManager.Instance.Fight_Dean();
+                break;
+                case "Disappear_Dean":
+                FadeManager.Instance.FadeOutThenIn(1f,() =>  // 어두울 때 실행
+                {
+                    Destroy(FinalFightManager.Instance.deanObj);
+                },
+                () =>  // 밝아질 때 실행
+                {
+                });
+                break;
+            case "FightElite_Eisen":
+                FinalFightManager.Instance.Fight_Eisen();
+                break;
+            case "Disappear_Eisen":
+                FadeManager.Instance.FadeOutThenIn(1f, () =>  // 어두울 때 실행
+                {
+                    Destroy(FinalFightManager.Instance.eisenObj);
+                },
+                () =>  // 밝아질 때 실행
+                {
+                });
+                break;
+            case "FightElite_Dolan":
+                FinalFightManager.Instance.Fight_Dolan();
+                break;
+            case "Disappear_Dolan":
+                FadeManager.Instance.FadeOutThenIn(1f, () =>  // 어두울 때 실행
+                {
+                    Destroy(FinalFightManager.Instance.dolanObj);
+                },
+                () =>  // 밝아질 때 실행
+                {
+                });
+                break;
+            case "FightElite_Boss":
+                FinalFightManager.Instance.Fight_Boss();
+                break;
+
+
 
 
             default:

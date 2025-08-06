@@ -32,6 +32,8 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         public SerializableDictionary<int, bool> playerBossClearCheck = new();
         public SerializableDictionary<int, bool> playerQuestStartCheck= new();
         public SerializableDictionary<int, bool> playerQuestClearCheck = new();
+        public SerializableDictionary<int, bool> playerEliteStartCheck = new(); // 엘리트 던전 클리어 여부
+        public SerializableDictionary<int, bool> playerEliteClearCheck = new(); // 퍼즐 클리어 여부
         public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();
         public SerializableDictionary<string, string> playerKeySetting = new();
 
@@ -69,12 +71,15 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
             playerBossClearCheck = player.playerBossClearCheck,
             playerQuestStartCheck = player.playerQuestStartCheck,
             playerQuestClearCheck = player.playerQuestClearCheck,
+            playerEliteStartCheck = player.playerEliteStartCheck,
+            playerEliteClearCheck = player.playerEliteClearCheck,
             playerPuzzleClearCheck = player.playerPuzzleClearCheck,
             playerKeySetting = player.playerKeySetting
         };
 
         string json = JsonUtility.ToJson(saveData, true);
         File.WriteAllText(Application.persistentDataPath + "/playerData.json", json);
+        EventAlertManager.Instance.SetEventAlert(EventAlertType.Save);
     }
 
     public Player LoadPlayerData()
@@ -122,6 +127,8 @@ public class PlayerSaveManager : Singleton<PlayerSaveManager>
         player.playerBossClearCheck = saved.playerBossClearCheck;
         player.playerQuestStartCheck = saved.playerQuestStartCheck;
         player.playerQuestClearCheck = saved.playerQuestClearCheck;
+        player.playerEliteStartCheck = saved.playerEliteStartCheck;
+        player.playerEliteClearCheck = saved.playerEliteClearCheck;
         player.playerPuzzleClearCheck = saved.playerPuzzleClearCheck;
         player.playerKeySetting = saved.playerKeySetting;
 

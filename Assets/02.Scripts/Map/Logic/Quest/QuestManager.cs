@@ -27,7 +27,7 @@ public class QuestManager : Singleton<QuestManager>
 
         AddQuest(new QuestData(
             "[끊어진 다리]", "목수는 어디에?",
-            "길을 연결해주는 다리가 끊어져 있다...\nNPC의 말에 따르면, 어떤 다리든 수리할 수 있는 목수가 있다고 하는데...\n어디에 있는걸까?\n\n초보 사냥터 위쪽에 잠겨있는 장소가 수상하다...",
+            "길을 연결해주는 다리가 끊어져 있다...\nNPC의 말에 따르면, 어떤 다리든 수리할 수 있는 목수가 있다고 하는데...어디에 있는걸까?\n\n초보 사냥터 위쪽에 잠겨있는 장소가 수상하다...",
             QuestStatus.NotStarted,
             questUI.defaultquestImage[2],
             0 // [전투의 기본] 완료 필요
@@ -42,8 +42,8 @@ public class QuestManager : Singleton<QuestManager>
         ));
 
         AddQuest(new QuestData(
-            "[붙잡힌 목수]", "보스를 토벌하자.",
-            "드디어 목수를 찾아냈다!\n그런데... 갇혀있던 것도 모자라 착취까지 당하고 있었다.\n\"제발 살려줘! 뭐든지 해줄테니까!!\"\n\n보스를 퇴치하고, 목수를 구출하여 다리를 재건해야 한다.",
+            "[빼앗긴 나무]", "보스를 토벌하자.",
+            "드디어 목수를 찾아냈다!\n그런데... 기껏 베어놓은 나무를 뺏길 위기에 처해있다.\n\"저 녀석이 내 나무를 가져가려고 해!!\"\n\n보스를 퇴치하고, 목수를 데려가 다리를 재건해야 한다.",
             QuestStatus.NotStarted,
             questUI.defaultquestImage[4],
             2 // [끊어진 다리] 완료 필요

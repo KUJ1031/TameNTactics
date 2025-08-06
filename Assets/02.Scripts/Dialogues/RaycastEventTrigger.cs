@@ -16,7 +16,7 @@ public class RaycastEventTrigger : MonoBehaviour
     public bool drawDebugRay = true;
 
     [Header("반복 설정")]
-    [SerializeField] private bool canRepeat = false;
+    public bool canRepeat = false;
 
     private bool hasTriggered = false;
     private bool playerInRay = false; // 플레이어가 레이 범위 내에 있는지

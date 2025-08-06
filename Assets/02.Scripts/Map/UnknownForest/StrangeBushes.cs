@@ -35,7 +35,7 @@ public class StrangeBushes : MonoBehaviour
     }
     private void InitializeItemChances()
     {
-        if (!PlayerManager.Instance.player.playerQuestStartCheck[0])
+        if (!PlayerManager.Instance.player.playerQuestStartCheck[1])
         {
             Debug.Log("[StrangeBushes] 레거의 편지 퀘스트가 시작되지 않았습니다. 아이템 드랍 확률을 초기화합니다.");
             itemDropChances["소형 회복 물약"] = 0.4f;

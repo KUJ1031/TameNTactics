@@ -42,10 +42,14 @@ public class Player
     [Header("진행 정보")]
     public bool playerBattleTutorialCheck = false; // 배틀 클리어 체크
     public bool playerAllTutorialCheck = false; // 모든 튜토리얼 체크
-    public SerializableDictionary<int, bool> playerBossClearCheck = new();
 
     public SerializableDictionary<int, bool> playerQuestStartCheck = new();
     public SerializableDictionary<int, bool> playerQuestClearCheck = new();
+
+    public SerializableDictionary<int, bool> playerEliteStartCheck = new(); // 스테이지 클리어 체크
+    public SerializableDictionary<int, bool> playerEliteClearCheck = new();
+    public SerializableDictionary<int, bool> playerBossClearCheck = new();
+
     public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();
 
     [Header("설정 정보")]

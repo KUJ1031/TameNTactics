@@ -82,6 +82,10 @@ public class EventAlertManager : Singleton<EventAlertManager>
                 instance.eventAlertType.text = "[퀘스트]";
                 instance.eventAlertText.text = $"<color=#D27905>{request.name}</color> 퀘스트가 완료되었습니다!";
                 break;
+            case EventAlertType.Save:
+                instance.eventAlertType.text = "[저장]";
+                instance.eventAlertText.text = "게임이 저장되었습니다.";
+                break;
         }
 
         Vector2 startPos = new Vector2(rect.anchoredPosition.x, 200);
@@ -144,4 +148,5 @@ public enum EventAlertType
     SendItem,
     QuestStart,
     QuestClear,
+    Save
 }

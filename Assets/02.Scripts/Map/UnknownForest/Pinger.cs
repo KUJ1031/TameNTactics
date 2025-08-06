@@ -6,7 +6,7 @@ public class Pinger : MonoBehaviour
 {
     private void Start()
     {
-        if (PlayerManager.Instance.player.playerQuestClearCheck[0])
+        if (PlayerManager.Instance.player.playerQuestClearCheck[1])
         {
             Destroy(gameObject);
         }
