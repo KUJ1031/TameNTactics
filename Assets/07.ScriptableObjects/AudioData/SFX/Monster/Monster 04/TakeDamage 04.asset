@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab89f479fdc92d246a6dabde120c50e9, type: 3}
-  m_Name: TackDamage 11
+  m_Name: TakeDamage 04
   m_EditorClassIdentifier: 
   clipName: Monster01TackDamage
   clip: {fileID: 8300000, guid: 617ccff8c2a9d63479d449cc851b48cd, type: 3}
