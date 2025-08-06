@@ -17,10 +17,12 @@ public class EndBattleState : BaseBattleState
             var (exp, gold) = BattleManager.Instance.BattleReward();
             Debug.Log($"전투 종료 보상: 경험치 {exp}, 골드 {gold}");
             UIManager.Instance.battleUIManager.BattlePanelWhenWin(exp, gold);
+            AudioManager.Instance.PlaySFX("BattleWin");
         }
         else
         {
             UIManager.Instance.battleUIManager.BattlePanelWhenDefeat();
+            AudioManager.Instance.PlaySFX("BattleLose");
         }
 
         if (PlayerManager.Instance.player.playerBattleTutorialCheck)

@@ -17,8 +17,8 @@ MonoBehaviour:
   monsterImage: {fileID: 834645391, guid: 8490b868454264e49a7b0f5fe8746143, type: 3}
   encounterCount: 0
   captureCount: 0
-  type: 1
-  personality: 10
+  type: 0
+  personality: 0
   maxHp: 90
   attack: 16
   defense: 7
@@ -36,4 +36,4 @@ MonoBehaviour:
   spawnTime: 0
   captureRate: 0
   description: 
-  damageSound: {fileID: 0}
+  damageSound: {fileID: 11400000, guid: c1214cd06796c344cb6cb6bcad20fb46, type: 2}
