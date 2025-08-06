@@ -130,6 +130,11 @@ public class SelectCaptureTargetState : BaseBattleState
         targetMonster = null;
     }
 
+    public override void Exit()
+    {
+        UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
+    }
+
     IEnumerator Delay(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
