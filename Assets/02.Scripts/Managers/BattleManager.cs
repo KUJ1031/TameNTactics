@@ -76,6 +76,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.TriggerOnBattleStart(BattleEntryTeam);
             Debug.Log($"Entry Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Entry Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
+            Debug.Log($"이름 : {monster.monsterName}\n공격력 : {monster.CurAttack}\n방어력 : {monster.CurDefense}\n치명타확률 : {monster.CurCriticalChance}\n스피드 : {monster.CurSpeed}");
         }
 
         foreach (var monster in BattleEnemyTeam)
@@ -120,7 +121,7 @@ public class BattleManager : Singleton<BattleManager>
                     if (passive is InterceptDamage)
                     {
                         InterceptDamage(monster, skillData, finalDamage, team);
-                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness);
+                        StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness));
                         BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
                         return;
                     }
@@ -131,7 +132,7 @@ public class BattleManager : Singleton<BattleManager>
                     if (buff.Type == BuffEffectType.Taunt)
                     {
                         monster.TakeDamage(finalDamage);
-                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness);
+                        StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness));
                         BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
                         return;
                     }
@@ -141,7 +142,7 @@ public class BattleManager : Singleton<BattleManager>
         
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
-        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness);
+        StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness));
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, finalDamage, skillData);
     }
 

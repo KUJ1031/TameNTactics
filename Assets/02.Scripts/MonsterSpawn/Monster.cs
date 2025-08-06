@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
@@ -58,7 +59,7 @@ public class Monster
     private bool isShield;
     private bool canBeHealed = true;
     private int healDuration = 0;
-    private bool isTaunted;
+    private bool isImmuneToStatus;
 
     public Action<Monster> HpChange;
     public Action<Monster> UltimateCostChange;
@@ -385,12 +386,9 @@ public class Monster
     // 상태이상 적용
     public void ApplyStatus(StatusEffect effect)
     {
-        foreach (var passive in PassiveSkills)
+        if (isImmuneToStatus)
         {
-            if (passive is StatusEffectImmunity { IsImmuneToStatus: true })
-            {
-                return;
-            }
+            return;
         }
         
         foreach (var existing in ActiveStatusEffects)
@@ -481,8 +479,9 @@ public class Monster
         }
     }
     
-    public void TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill, float effectiveness)
+    public IEnumerator TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill, float effectiveness)
     {
+        yield return new WaitForSeconds(1f);
         foreach (var passive in PassiveSkills)
         {
             passive.OnAttack(actor, damage, target, skill, effectiveness);
@@ -510,14 +509,12 @@ public class Monster
     // 데미지 받을 시 패시브 발동
     public int TriggerOnDamaged(int damage, Monster actor)
     {
-        int modifiedDamage = damage;
-
         foreach (var passive in PassiveSkills)
         {
-            modifiedDamage = passive.OnDamaged(this, modifiedDamage, actor);
+            damage = passive.OnDamaged(this, damage, actor);
         }
 
-        return modifiedDamage;
+        return damage;
     }
 
     // 도망마스터 패시브 있을 시 100 도망 가능
@@ -648,7 +645,7 @@ public class Monster
         isShield = false;
         canBeHealed = true;
         canAct = true;
-        isTaunted = false;
+        isImmuneToStatus = false;
         healDuration = 0;
         skipTurnCount = 0;
     }
@@ -656,12 +653,6 @@ public class Monster
     public void HealDuration(int duration)
     {
         healDuration += duration - 1;
-    }
-    
-    public void Taunt(bool isApplied)
-    {
-        if (isApplied) isTaunted = true;
-        else isTaunted = false;
     }
 
     private void OnAllyDeath(Monster self)
@@ -680,5 +671,10 @@ public class Monster
                 }
             }
         }
+    }
+
+    public void SetImmuneToStatus()
+    {
+        isImmuneToStatus = true;
     }
 }

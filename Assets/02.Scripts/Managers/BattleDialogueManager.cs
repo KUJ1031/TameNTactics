@@ -43,11 +43,21 @@ public class BattleDialogueManager : Singleton<BattleDialogueManager>
         string targetName = target.monsterName;
 
         string dialogue = $"우리 {targetName}에게 {itemName} 사용!\n";
-        dialogue += $"{amount}의 체력이 회복되었습니다!";
+        dialogue += $"{amount}의 체력이 회복되었습니다!\n\n";
 
         BattleDialogueAppend(dialogue);
     }
 
+    public void PassiveEffectDialogue(Monster caster, SkillData skill)
+    {
+        if (caster == null) return;
+
+        string casterName = caster.monsterName;
+
+        string dialogue = $"{casterName}의 \'{skill.skillName}\' 패시브 스킬이 발동했다!\n\n";
+
+        BattleDialogueAppend(dialogue);
+    }
 
     public void UseRunFailDialogue()
     {
