@@ -3,11 +3,12 @@ using UnityEngine.UI;
 
 public class LeftMenuUI : MonoBehaviour
 {
-    [SerializeField] private Button playerInfoButton, inventoryButton, collectionButton, entryMonsterButton, ownedMonsterButton, settingButton, saveButton, exitButton;
+    [SerializeField] private Button playerInfoButton, questButton, inventoryButton, collectionButton, entryMonsterButton, ownedMonsterButton, settingButton, saveButton, exitButton;
 
     private void Awake()
     {
         playerInfoButton.onClick.AddListener(OnClickPlyerInfoButton);
+        questButton.onClick.AddListener(OnClickQuestButton);
         inventoryButton.onClick.AddListener(OnClickInventoryButton);
         collectionButton.onClick.AddListener(OnClickCollectionButton);
         entryMonsterButton.onClick.AddListener(OnClickEntryMonsterButton);
@@ -20,6 +21,11 @@ public class LeftMenuUI : MonoBehaviour
     private void OnClickPlyerInfoButton()
     {
         FieldUIManager.Instance.OpenUI<PlayerInfoUI>();
+    }
+
+    private void OnClickQuestButton()
+    {
+        FieldUIManager.Instance.OpenUI<QuestUI>();
     }
     private void OnClickInventoryButton()
     {

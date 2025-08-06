@@ -159,6 +159,7 @@ public class PlayerController : MonoBehaviour
         autoMoveSpeed = 0f;
 
         isInputBlocked = !canMove; // 입력 허용
+        Debug.Log("자동 이동 종료, 입력 허용 상태: " + isInputBlocked);
     }
 
 }

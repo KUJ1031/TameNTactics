@@ -16,7 +16,7 @@ public class SerializableKeyValuePair<TKey, TValue>
 }
 
 [Serializable]
-public class SerializableDictionary<TKey, TValue> : ISerializationCallbackReceiver
+public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
 {
     // Inspector에 노출되는 직렬화 리스트
     [SerializeField]
@@ -29,7 +29,7 @@ public class SerializableDictionary<TKey, TValue> : ISerializationCallbackReceiv
     public List<SerializableKeyValuePair<TKey, TValue>> Pairs => pairs;
 
     // 딕셔너리 기능 - get/set
-    public TValue this[TKey key]
+    public new TValue this[TKey key]
     {
         get => dictionary[key];
         set
@@ -48,19 +48,19 @@ public class SerializableDictionary<TKey, TValue> : ISerializationCallbackReceiv
         }
     }
 
-    public int Count => dictionary.Count;
+    public new int Count => dictionary.Count;
 
-    public bool ContainsKey(TKey key) => dictionary.ContainsKey(key);
+    public new bool ContainsKey(TKey key) => dictionary.ContainsKey(key);
 
-    public bool TryGetValue(TKey key, out TValue value) => dictionary.TryGetValue(key, out value);
+    public new bool TryGetValue(TKey key, out TValue value) => dictionary.TryGetValue(key, out value);
 
-    public void Add(TKey key, TValue value)
+    public new void Add(TKey key, TValue value)
     {
         dictionary.Add(key, value);
         pairs.Add(new SerializableKeyValuePair<TKey, TValue>(key, value));
     }
 
-    public bool Remove(TKey key)
+    public new bool Remove(TKey key)
     {
         bool removedFromDict = dictionary.Remove(key);
         int index = pairs.FindIndex(p => EqualityComparer<TKey>.Default.Equals(p.key, key));
@@ -71,7 +71,7 @@ public class SerializableDictionary<TKey, TValue> : ISerializationCallbackReceiv
         return removedFromDict;
     }
 
-    public void Clear()
+    public new void Clear()
     {
         dictionary.Clear();
         pairs.Clear();

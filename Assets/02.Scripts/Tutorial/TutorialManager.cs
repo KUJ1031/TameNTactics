@@ -115,8 +115,13 @@ public class TutorialManager : Singleton<TutorialManager>
         CompleteTutorialPanel.SetActive(false);
         PlayerManager.Instance.playerController.isInputBlocked = false;
         PlayerManager.Instance.player.playerAllTutorialCheck = true;
+        PlayerManager.Instance.player.playerQuestClearCheck[0] = true;
+        PlayerManager.Instance.player.playerQuestStartCheck[0] = false;
+        EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "전투의 기본");
         PlayerManager.Instance.player.AddItem("설득하기", 1);
         Debug.Log("설득 기술을 획득했습니다. 아이템: " + ItemManager.Instance.gestureItems[1].itemName);
+        PlayerManager.Instance.player.playerQuestStartCheck[3] = true;
+        EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "떠돌이 상인");
         Destroy(gameObject);
     }
 
