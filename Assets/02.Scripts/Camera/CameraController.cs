@@ -72,6 +72,7 @@ public class CameraController : Singleton<CameraController>
 
             case "BattleScene":
                 CurrentVCam = GameObject.Find("Virtual Camera")?.GetComponent<CinemachineVirtualCamera>();
+                originalOrthoSize = 5f;
                 break;
         }
 
@@ -165,7 +166,7 @@ public class CameraController : Singleton<CameraController>
         zoomCoroutine = StartCoroutine(ZoomCoroutine(originalOrthoSize, duration));
     }
 
-    private IEnumerator ZoomCoroutine(float targetSize, float duration)
+    public IEnumerator ZoomCoroutine(float targetSize, float duration)
     {
         isZooming = true;
 
@@ -223,7 +224,7 @@ public class CameraController : Singleton<CameraController>
         rotationCoroutine = null;
     }
     #endregion
-    public void Kick(float kickSize = -2f, float totalDuration = 1f , Action onComplete = null)
+    public void Kick(float kickSize = -2f, float totalDuration = 1f, Action onComplete = null)
     {
         if (CurrentVCam == null) return;
         float kickTarget = CurrentVCam.m_Lens.OrthographicSize + kickSize;
@@ -236,7 +237,7 @@ public class CameraController : Singleton<CameraController>
         RotateTo(ran, totalDuration);
 
         // 줌 아웃
-        Zoom(0.5f, halfDuration/2);
+        Zoom(0.5f, halfDuration / 2);
         Zoom(kickTarget, halfDuration);
 
         // 복구 예약
