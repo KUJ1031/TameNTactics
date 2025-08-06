@@ -73,47 +73,46 @@ public class InventoryUI : FieldMenuBaseUI
 
         foreach (var item in items)
         {
-            // 현재 필터 조건에 맞지 않으면 건너뜀
             if (currentFilter.HasValue && item.data.type != currentFilter.Value)
                 continue;
 
-            // 슬롯 생성
             GameObject slotObj = Instantiate(slotPrefab, slotParent);
             InventorySlotUI slotUI = slotObj.GetComponent<InventorySlotUI>();
             slotUI.Init(item, this);
 
-            // 장착 여부 확인 후 설정
             item.isEquipped = PlayerManager.Instance.player.playerEquipment.Any(e => e.data.itemId == item.data.itemId);
 
             createdSlotCount++;
         }
 
-        // 필터에 해당하는 아이템이 하나도 없을 경우
+        // 알림 메시지 처리
         if (currentFilter.HasValue && createdSlotCount == 0)
         {
-            string typeText = "";
-
-            switch (currentFilter.Value)
+            string typeText = currentFilter switch
             {
-                case ItemType.equipment:
-                    typeText = "장착";
-                    break;
-                case ItemType.consumable:
-                    typeText = "소비";
-                    break;
-                case ItemType.gesture:
-                    typeText = "제스처";
-                    break;
-            }
+                ItemType.equipment => "장착",
+                ItemType.consumable => "소비",
+                ItemType.gesture => "제스처",
+                _ => ""
+            };
             alertText.gameObject.SetActive(true);
             alertText.text = $"보유중인 {typeText} 아이템이 없습니다!";
         }
         else alertText.gameObject.SetActive(false);
 
-        // 선택 항목 및 버튼 UI 갱신
-        selectedItem = retainSelectedItem;
+        // 선택된 아이템이 인벤토리에 남아있는 경우에만 선택 유지
+        if (retainSelectedItem != null && items.Contains(retainSelectedItem))
+        {
+            selectedItem = retainSelectedItem;
+        }
+        else
+        {
+            selectedItem = null;
+        }
+
         UpdateButtons();
     }
+
 
 
 
@@ -131,6 +130,9 @@ public class InventoryUI : FieldMenuBaseUI
             equipButton.interactable = false;
             unequipButton.interactable = false;
             dropButton.interactable = false;
+
+            ItemImage.color = new Color(1f, 1f, 1f, 0f);
+            ItemInfoText.text = "";
             return;
         }
 
@@ -147,7 +149,13 @@ public class InventoryUI : FieldMenuBaseUI
         equipButton.gameObject.SetActive(isEquipment && !selectedItem.isEquipped);
         unequipButton.gameObject.SetActive(isEquipment && selectedItem.isEquipped);
         dropButton.gameObject.SetActive(!isGesture);
+
+        ItemImage.sprite = selectedItem.data.itemImage;
+        ItemImage.color = new Color(1f, 1f, 1f, 1f);
+        ItemInfoText.text = $"{selectedItem.data.itemName}\n{selectedItem.data.description}\n가격: {selectedItem.data.goldValue} G";
+
     }
+
 
     private void OnUse()
     {

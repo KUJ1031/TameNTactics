@@ -6,7 +6,8 @@ using System.Collections;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using System;
-using static UnityEditor.Progress;
+using System.Linq;
+
 
 public class DialogueManager : Singleton<DialogueManager>
 {
@@ -456,6 +457,9 @@ public class DialogueManager : Singleton<DialogueManager>
                 }
 
                 break;
+            case "ReInit_HealingShop":
+                PlayerManager.Instance.playerController.AutoMove(Vector2.up, 0.5f, 3f, true);
+                break;
             case "GetGesture_Scolding":
                 PlayerManager.Instance.player.AddItem("호통치기", 1);
                 Debug.Log("[이벤트] [호통치기] 제스처 획득");
@@ -599,7 +603,31 @@ public class DialogueManager : Singleton<DialogueManager>
                 break;
             case "Quest_FindRegurInit":
                 PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
-                FadeManager.Instance.FadeOutThenIn(
+                bool hasLevel8OrAbove = PlayerManager.Instance.player.battleEntry.Any(monster => monster.Level >= 8);
+
+                if (hasLevel8OrAbove)
+                {
+                    FadeManager.Instance.FadeOutThenIn(
+                    1.5f,
+                    () =>  // 어두울 때 실행
+                    {
+                    PlayerManager.Instance.playerController.transform.position = UnknownForestManager.Instance.playerRespawnTransporm.position;
+                    },
+                    () =>  // 밝아질 때 실행
+                    {
+                    //플레이어 x축플립
+                    PlayerManager.Instance.playerController.transform.localScale = new Vector3(-1.8f, 1.8f, 1.8f);
+                    StartDialogue("핑거", currentNPCImage, 702);
+                });
+                }
+                else
+                {
+                    StartDialogue("핑거", currentNPCImage, 663);
+                }
+                break;
+            case "Move_InitUnknownForest":
+                {
+                    FadeManager.Instance.FadeOutThenIn(
                     1.5f,
                     () =>  // 어두울 때 실행
                     {
@@ -609,19 +637,12 @@ public class DialogueManager : Singleton<DialogueManager>
                     {
                         //플레이어 x축플립
                         PlayerManager.Instance.playerController.transform.localScale = new Vector3(-1.8f, 1.8f, 1.8f);
-                        StartDialogue("핑거", currentNPCImage, 702);
-                    }
-                );
+                        PlayerManager.Instance.playerController.isInputBlocked = false; // 플레이어 입력 차단
+                    });
+                }
                 break;
             case "Quest_FindRegurStarted":
                 PlayerManager.Instance.playerController.isInputBlocked = false;
-        //        QuestManager.Instance.AddQuest(new QuestData(
-        //    "[레거의 편지]",
-        //    "편지를 찾아야 한다.",
-        //    "미지의 숲에 들어가려는 찰나, 핑거가 부탁해왔다.\n\"동생의 편지를 찾아줘.\"\n\n그의 편지는 어디에 있는걸까?\n...미지의 수풀 속을 잘 찾아보면 나올지도..?",
-        //    "진행 중",
-        //    QuestManager.Instance.questUI.defaultquestImage[0]
-        //));
                 EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "레거의 편지");
                 PlayerManager.Instance.player.playerQuestStartCheck[1] = true;
                 break;

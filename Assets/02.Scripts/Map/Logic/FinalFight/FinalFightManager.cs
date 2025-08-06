@@ -105,7 +105,7 @@ public class FinalFightManager : Singleton<FinalFightManager>
     public void Fight_Dolan() => StartFight(2, dolan);
     public void Fight_Boss() => StartFight(-1, boss, 20);
 
-    private void StartFight(int index, List<MonsterData> teamData, int levelMin = 1, int levelMax = 1)
+    private void StartFight(int index, List<MonsterData> teamData, int levelMin = 30, int levelMax = 30)
     {
         if (index >= 0)
         {

@@ -12,6 +12,8 @@ public class ShopUI_Sell : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemInfoText;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private TextMeshProUGUI sellItemText;
+    private Coroutine hideSellTextCoroutine;
 
     [SerializeField] private Button consumableButton;
     [SerializeField] private Button equipableButton;
@@ -128,11 +130,28 @@ public class ShopUI_Sell : MonoBehaviour
         }
 
         Debug.Log($"[판매] {selectedItem.data.itemName} → {sellValue}G");
-
+        ShowSellMessage(selectedItem.data.itemName);
         UpdateGoldUI();
         inventoryUI.items = player.items;
         inventoryUI.Refresh();
         Refresh();
+    }
+
+    private void ShowSellMessage(string itemName)
+    {
+        if (hideSellTextCoroutine != null)
+            StopCoroutine(hideSellTextCoroutine);
+
+        sellItemText.text = $"[{itemName}] 아이템을 판매하였습니다.";
+        sellItemText.gameObject.SetActive(true);
+
+        hideSellTextCoroutine = StartCoroutine(HideSellMessageAfterDelay(3f));
+    }
+
+    private System.Collections.IEnumerator HideSellMessageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        sellItemText.gameObject.SetActive(false);
     }
 
     public void CloseUI()
