@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-// 5% 확률로 공격 회피, 15레벨 10% 반사 데미지
+// 5% 확률로 공격 회피, 20레벨 10% 반사 데미지
 public class IncreaseMissChance : IPassiveSkill
 {
     public int OnDamaged(Monster self, int damage, Monster actor)
     {
         if (Random.value < 0.05f)
         {
-            if (self.Level >= 15)
+            if (self.Level >= 20)
             {
                 int amount = Mathf.RoundToInt(damage * 0.1f);
                 actor.TakeDamage(amount);

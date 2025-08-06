@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 피격시 치명타확률 10% 상승(최대 3스택), 15레벨 20% 상승
+// 피격시 치명타확률 10% 상승(최대 3스택), 20레벨 20% 상승
 public class HitCritBoost : IPassiveSkill
 {
     private int curStack = 0;
@@ -17,7 +17,7 @@ public class HitCritBoost : IPassiveSkill
     {
         if (curStack < maxStack)
         {
-            int amount = self.Level >= 15 ? 20 : 10;
+            int amount = self.Level >= 20 ? 20 : 10;
             
             self.BattleCritChanceUp(amount);
             curStack++;

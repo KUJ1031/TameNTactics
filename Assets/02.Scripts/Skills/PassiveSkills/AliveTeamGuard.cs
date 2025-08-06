@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 본인이 살아있는 동안 팀 전체 방어력 10% 상승, 15레벨 20% 상승
+// 본인이 살아있는 동안 팀 전체 방어력 10% 상승, 20레벨 20% 상승
 public class AliveTeamGuard : IPassiveSkill
 {
     private bool isActive = false;
@@ -34,7 +34,7 @@ public class AliveTeamGuard : IPassiveSkill
 
     private void ApplyDefenseBuff(List<Monster> team, Monster self)
     {
-        float value = self.Level >= 15 ? 0.2f : 0.1f;
+        float value = self.Level >= 20 ? 0.2f : 0.1f;
         int amount = Mathf.RoundToInt(self.CurDefense * value);
         lastBuffAmount = amount;
 

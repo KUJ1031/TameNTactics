@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 체력 50% 이하일때 공격력 20% 상승, 15레벨 30% 상승
+// 체력 50% 이하일때 공격력 20% 상승, 20레벨 30% 상승
 public class LowHpAttackBoost : IPassiveSkill
 {
     private bool isApplied = false;
@@ -13,7 +13,7 @@ public class LowHpAttackBoost : IPassiveSkill
 
         if (isBelowHalf && !isApplied)
         {
-            int amount = Mathf.RoundToInt(self.Level >= 15 ? 0.3f : 0.2f);
+            int amount = Mathf.RoundToInt(self.Level >= 20 ? 0.3f : 0.2f);
             powerDelta = self.CurAttack * amount;
             self.PowerUp(powerDelta);
             isApplied = true;
