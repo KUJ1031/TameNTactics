@@ -124,21 +124,13 @@ public class BattleManager : Singleton<BattleManager>
         int finalDamage = target.TriggerOnDamaged(damage, attacker);
         var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
 
-        if (skillData.targetCount == 1 || skillData.targetCount == 2)
+        if (skillData.targetScope != TargetScope.All &&
+            skillData.targetScope != TargetScope.Self &&
+            skillData.targetScope != TargetScope.None &&
+            skillData.targetCount != 0)
         {
             foreach (var monster in team)
             {
-                foreach (var passive in monster.PassiveSkills)
-                {
-                    if (passive is InterceptDamage)
-                    {
-                        InterceptDamage(monster, skillData, finalDamage, team);
-                        StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness));
-                        BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
-                        return;
-                    }
-                }
-            
                 foreach (var buff in monster.ActiveBuffEffects)
                 {
                     if (buff.Type == BuffEffectType.Taunt)
@@ -652,20 +644,6 @@ public class BattleManager : Singleton<BattleManager>
             if (passive is CritUpOnCritHit critUpOnCritHit)
             {
                 critUpOnCritHit.OnCritHit(self, isCritical);
-            }
-        }
-    }
-
-    private void InterceptDamage(Monster target, SkillData skillData, int damage, List<Monster> team)
-    {
-        foreach (var monster in team)
-        {
-            foreach (var passive in monster.PassiveSkills)
-            {
-                if (passive is InterceptDamage interceptDamage)
-                {
-                    interceptDamage.OnDamagedAlly(monster, target, skillData, damage);
-                }
             }
         }
     }

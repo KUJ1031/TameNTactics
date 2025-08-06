@@ -701,12 +701,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allyMonsters:
   - {fileID: 11400000, guid: e0263e88a895193408d822c31016c192, type: 2}
-  - {fileID: 11400000, guid: 5f8dbfab7fd7cba439f171f705689fab, type: 2}
-  - {fileID: 11400000, guid: 1844dadf245b431488dbed30d3fae6b4, type: 2}
-  enemyMonsters:
-  - {fileID: 11400000, guid: 2c6392f9a5a56cc4fb91a5d2cb9ac297, type: 2}
   - {fileID: 11400000, guid: 6d43a47bd3c376e40b72413530b20c19, type: 2}
+  - {fileID: 11400000, guid: 6bddb94aabd3fea48b3998599aeed5b3, type: 2}
+  enemyMonsters:
+  - {fileID: 11400000, guid: 5f8dbfab7fd7cba439f171f705689fab, type: 2}
   - {fileID: 11400000, guid: d08c100a9835f7d4db09ce215a1b7858, type: 2}
+  - {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
   spawner: {fileID: 1824030546}
   attackPosition: {fileID: 651284892}
 --- !u!4 &10992082

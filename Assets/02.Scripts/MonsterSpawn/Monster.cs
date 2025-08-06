@@ -252,7 +252,7 @@ public class Monster
     public void BattleCritChanceUp(int amount)
     {
         CurCriticalChance += amount;
-        if (CriticalChance > 100) CriticalChance = 100;
+        if (CurCriticalChance > 100) CurCriticalChance = 100;
     }
     
     public void BattleCritChanceUpWithLimit(int amount, int maxLimit)
@@ -323,6 +323,22 @@ public class Monster
     //피해받기
     public void TakeDamage(int damage)
     {
+        var team = BattleManager.Instance.BattleEntryTeam.Contains(this)
+            ? BattleManager.Instance.BattleEntryTeam
+            : BattleManager.Instance.BattleEnemyTeam;
+
+        foreach (var monster in team)
+        {
+            foreach (var buff in ActiveBuffEffects)
+            {
+                if (buff.Type == BuffEffectType.Taunt)
+                {
+                    TaunterDamage(monster, damage);
+                    return;
+                }
+            }
+        }
+        
         int modifiedDamage;
 
         if (isShield)
@@ -664,5 +680,48 @@ public class Monster
     public void SetImmuneToStatus()
     {
         isImmuneToStatus = true;
+    }
+
+    public void TaunterDamage(Monster taunter, int damage)
+    {
+        int modifiedDamage;
+
+        if (isShield)
+        {
+            modifiedDamage = 0;
+            isShield = false;
+        }
+
+        else modifiedDamage = damage;
+        
+        CurHp -= modifiedDamage;
+        if (CurHp < 0) CurHp = 0;
+
+        DamagePopup?.Invoke(taunter, damage);
+        DamagedAnimation?.Invoke(taunter);
+
+        if (CurHp <= 0)
+        {
+            InitializeStatus();
+            
+            foreach (var passive in PassiveSkills)
+            {
+                if (passive is ReviveOnDeathChance reviveOnDeathChance)
+                {
+                    reviveOnDeathChance.OnDeath(taunter);
+                }
+                if (passive is PoisonEnemiesOnDeath poisonEnemiesOnDeath)
+                {
+                    poisonEnemiesOnDeath.OnDeath(BattleManager.Instance.BattleEnemyTeam);
+                }
+            }
+            
+            OnAllyDeath(taunter);
+            EventBus.OnMonsterDead?.Invoke(taunter);
+        }
+        else
+        {
+            HpChange?.Invoke(taunter);
+        }
     }
 }
