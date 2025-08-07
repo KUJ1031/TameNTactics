@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: Acurion
   monsterNumber: 10
   monsterImage: {fileID: -980964804, guid: e8364a13e2866f14faef1cd950048581, type: 3}
-  encounterCount: 31
+  encounterCount: 37
   captureCount: 9
   type: 1
   personality: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
   expReward: 5
   goldReward: 100
   skills:
-  - {fileID: 11400000, guid: 88be09269aed8e8488b76034b5c5822f, type: 2}
+  - {fileID: 11400000, guid: 0c099ab56652b004c8ae259e1628bc50, type: 2}
   - {fileID: 11400000, guid: 5ae91395531acfb49b9b9dc7ed356368, type: 2}
   - {fileID: 11400000, guid: c40e76dc4b9151c4092c95098e09ba82, type: 2}
   spawnArea: 0

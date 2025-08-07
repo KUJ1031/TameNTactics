@@ -9,7 +9,7 @@ public class PowerBoostPerUlt : IPassiveSkill
     {
         if (team.Contains(ultimateUser))
         {
-            int boostAmount = Mathf.RoundToInt(self.Attack * 0.1f);
+            int boostAmount = Mathf.RoundToInt(self.CurAttack * 0.1f);
             self.PowerUp(boostAmount);
             
             if (self.Level >= 20)

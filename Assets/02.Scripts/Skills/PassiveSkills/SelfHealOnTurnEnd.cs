@@ -6,7 +6,7 @@ public class SelfHealOnTurnEnd : IPassiveSkill
 {
     public void OnTurnEnd(Monster self)
     {
-        int amount = Mathf.RoundToInt(self.Level >= 20 ? self.MaxHp * 0.1f : self.MaxHp * 0.05f);
+        int amount = Mathf.RoundToInt(self.Level >= 20 ? self.CurMaxHp * 0.1f : self.CurMaxHp * 0.05f);
         self.Heal(amount);
     }
 

@@ -7,7 +7,7 @@ public class UltGaugeChancePerTurn : IPassiveSkill
 {
     public void OnTurnEnd(Monster self)
     {
-        int amount = Mathf.RoundToInt(self.Level >= 20 ? 0.4f : 0.2f);
+        int amount = Mathf.RoundToInt(self.Level >= 20 ? 0.7f : 0.4f);
         
         if (Random.value < amount)
         {
