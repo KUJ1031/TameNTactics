@@ -210,7 +210,7 @@ public class Monster
     {
         CurDefense += amount;
     }
-    
+
     public void BattleDefenseDown(int amount)
     {
         CurDefense -= amount;
@@ -266,7 +266,7 @@ public class Monster
         CurCriticalChance += amount;
         if (CurCriticalChance > 100) CurCriticalChance = 100;
     }
-    
+
     public void BattleCritChanceUpWithLimit(int amount, int maxLimit)
     {
         CurCriticalChance += amount;
@@ -286,14 +286,14 @@ public class Monster
     public void Heal(int amount)
     {
         int modifiedAmount;
-        
+
         if (!canBeHealed)
         {
             modifiedAmount = 0;
         }
-        
+
         else modifiedAmount = amount;
-        
+
         CurHp += modifiedAmount;
         if (CurHp >= CurMaxHp) CurHp = CurMaxHp;
         HpChange?.Invoke(this);
@@ -338,7 +338,7 @@ public class Monster
         var team = BattleManager.Instance.BattleEntryTeam.Contains(this)
             ? BattleManager.Instance.BattleEntryTeam
             : BattleManager.Instance.BattleEnemyTeam;
-        
+
         foreach (var monster in team)
         {
             foreach (var buff in ActiveBuffEffects)
@@ -350,7 +350,7 @@ public class Monster
                 }
             }
         }
-        
+
         int modifiedDamage;
 
         if (isShield)
@@ -360,23 +360,20 @@ public class Monster
         }
 
         else modifiedDamage = damage;
-        
+
         CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(this, damage);
         DamagedAnimation?.Invoke(this);
+        HpChange?.Invoke(this);
 
         if (CurHp <= 0)
         {
             InitializeStatus();
             EventBus.OnMonsterDead?.Invoke(this);
-            
+
             OnAllyDeath(this);
-        }
-        else
-        {
-            HpChange?.Invoke(this);
         }
     }
 
@@ -394,7 +391,7 @@ public class Monster
         {
             return;
         }
-        
+
         foreach (var existing in ActiveStatusEffects)
         {
             if (existing.Type == effect.Type)
@@ -445,7 +442,7 @@ public class Monster
     public void UpdateBuffEffects()
     {
         List<BuffEffect> expired = new();
-        
+
         foreach (var effect in ActiveBuffEffects)
         {
             effect.OnTurnStart(this);
@@ -482,7 +479,7 @@ public class Monster
             }
         }
     }
-    
+
     public IEnumerator TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill, float effectiveness)
     {
         yield return new WaitForSeconds(1f);
@@ -525,7 +522,7 @@ public class Monster
     public bool TryRunAwayWithPassive(out bool isGuaranteed)
     {
         isGuaranteed = false;
-        
+
         foreach (var passive in PassiveSkills)
         {
             if (passive is EscapeMaster escapeMaster)
@@ -533,7 +530,7 @@ public class Monster
                 return escapeMaster.TryEscape(this, ref isGuaranteed);
             }
         }
-        
+
         return false;
     }
 
@@ -643,7 +640,7 @@ public class Monster
         if (isHealable) canBeHealed = true;
         else canBeHealed = false;
     }
-    
+
     public void InitializeStatus()
     {
         isShield = false;
@@ -664,11 +661,11 @@ public class Monster
         var team = BattleManager.Instance.BattleEntryTeam.Contains(self)
             ? BattleManager.Instance.BattleEntryTeam
             : BattleManager.Instance.BattleEnemyTeam;
-        
+
         var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(self)
             ? BattleManager.Instance.BattleEnemyTeam
             : BattleManager.Instance.BattleEntryTeam;
-        
+
         foreach (var monster in team)
         {
             foreach (var passive in monster.PassiveSkills)
@@ -677,18 +674,16 @@ public class Monster
                 {
                     passive.OnAllyDeath(monster, team);
                 }
-                
+
                 if (passive is PoisonEnemiesOnDeath)
                 {
                     passive.OnAllyDeath(monster, enemyTeam);
                 }
-                
+
                 if (passive is ReviveOnDeathChance)
                 {
                     passive.OnAllyDeath(monster, team);
                 }
-
-                return;
             }
         }
     }
@@ -703,7 +698,7 @@ public class Monster
         var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(taunter)
             ? BattleManager.Instance.BattleEnemyTeam
             : BattleManager.Instance.BattleEntryTeam;
-        
+
         int modifiedDamage;
 
         if (isShield)
@@ -713,7 +708,7 @@ public class Monster
         }
 
         else modifiedDamage = damage;
-        
+
         CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
