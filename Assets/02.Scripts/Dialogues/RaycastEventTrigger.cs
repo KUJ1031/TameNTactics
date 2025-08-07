@@ -33,14 +33,13 @@ public class RaycastEventTrigger : MonoBehaviour
         Vector2 direction = GetDirectionVector(rayDirectionEnum);
 
         // 박스 크기 설정 (광선 대신 작은 박스 사용)
-        Vector2 boxSize = new Vector2(1f, 10f); // 조절 가능
+        Vector2 boxSize = (rayDirectionEnum == RayDirection.Left || rayDirectionEnum == RayDirection.Right)
+         ? new Vector2(rayDistance, 2f)
+         : new Vector2(2f, rayDistance);
 
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxSize, 0f, direction, rayDistance, playerLayer);
+        Collider2D hit = Physics2D.OverlapBox(transform.position, boxSize, 0f, playerLayer);
 
-        if (drawDebugRay)
-            Debug.DrawRay(transform.position, direction * rayDistance, Color.red);
-
-        if (hit.collider != null && hit.collider.CompareTag("Player"))
+        if (hit != null && hit.CompareTag("Player"))
         {
             if (!playerInRay)
             {
@@ -48,7 +47,7 @@ public class RaycastEventTrigger : MonoBehaviour
 
                 if (!hasTriggered || canRepeat)
                 {
-                    TriggerDialogue(hit.collider.gameObject);
+                    TriggerDialogue(hit.gameObject);
                 }
             }
         }

@@ -106,7 +106,10 @@ public class DialogueManager : Singleton<DialogueManager>
         // 이벤트 트리거
         if (!string.IsNullOrEmpty(node.EventKey))
         {
-            TriggerEvent(node.EventKey);
+            foreach (string key in node.EventKey.Split(','))
+            {
+                TriggerEvent(key.Trim());
+            }
         }
 
         Sprite speakerImage = GetSpeakerSprite(node.Speaker);
@@ -729,13 +732,100 @@ public class DialogueManager : Singleton<DialogueManager>
                 {
                 });
                 break;
-            case "FightElite_Boss":
-                FinalFightManager.Instance.Fight_Boss();
+            case "MoveBossRoomInit":
+                PlayerManager.Instance.playerController.transform.position = FinalFightManager.Instance.bossRoomInitZone.position;
                 break;
+            case "TakeMoveCamBoosRoom":
+                CameraController.Instance.SwitchTo("BossRoomCam", true, false); // 타겟 클리어
+                break;
+            case "Check_Quest_StolenTree":
+                if (PlayerManager.Instance.player.playerQuestStartCheck[4])
+                {
+                    bool hasLevel15OrAbove = PlayerManager.Instance.player.battleEntry.Any(monster => monster.Level >= 15);
+                    if (!hasLevel15OrAbove)
+                    {
 
+                        
+                        StartDialogue("나", FinalFightManager.Instance.carpenterImage, 1609);
+                    }
+                    else
+                    {
+                        StartDialogue("나", FinalFightManager.Instance.carpenterImage, 1612);
+                    }
 
+                }
+                break;
+            case "Quest_FindCarpenterCleared":
+                EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "끊어진 다리");
+                PlayerManager.Instance.player.playerQuestClearCheck[2] = true;
+                PlayerManager.Instance.player.playerQuestStartCheck[2] = false;
+                break;
+            case "Quest_StolenTree":
+                EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "빼앗긴 나무");
+                PlayerManager.Instance.player.playerQuestStartCheck[4] = true;
+                QuestEventDispatcher.OnQuestStarted?.Invoke(4);
+                break;
+            case "Animation_BoosRoomInitDestroyed":
+                FinalFightManager.Instance.Animation_BoosRoomInitDestroyed();
+                break;
+            case "Animation_RunCarpenter":
+                FinalFightManager.Instance.carpenterObj.gameObject.SetActive(false);
+                StartDialogue("보스", FinalFightManager.Instance.bossImage, 1621);
+                break;
+            case "FightBoss":
+                StartDialogue("보스", FinalFightManager.Instance.bossImage, 1630);
+                break;
+            case "Quest_StolenTreeCleared":
+                EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "빼앗긴 나무");
+                PlayerManager.Instance.player.playerQuestClearCheck[4] = true;
+                PlayerManager.Instance.player.playerQuestStartCheck[4] = false;
+                break;
+            case "DisappearBoss":
+                FadeManager.Instance.FadeOutThenIn(1f, () =>  // 어두울 때 실행
+                {
+                    Destroy(FinalFightManager.Instance.bossObj);
+                },
+() =>  // 밝아질 때 실행
+{
+    StartDialogue("파인", FinalFightManager.Instance.fineImage, 1640);
+});
+                break;
+            case "Animation_Come_Fine":
+                FinalFightManager.Instance.fineObj.transform.position = PlayerManager.Instance.playerController.transform.position + new Vector3(1.5f, 0f, 0f);
+                StartDialogue("파인", FinalFightManager.Instance.fineImage, 1641);
+                break;
+            case "Move_Bridge":
+                FadeManager.Instance.FadeOutThenIn(
+    1.5f,
+    () =>  // 어두울 때 실행
+    {
+        PlayerManager.Instance.playerController.transform.position = FinalFightManager.Instance.bridgeInitZone.position;
+        FinalFightManager.Instance.fineObj.transform.position = FinalFightManager.Instance.fineTransform.position;
+    },
+    () =>  // 밝아질 때 실행
+    {
+        StartDialogue("나", currentNPCImage, 1650);
+    }
+);
+                break;
+            case "TakeMoveCam_Bridge":
 
+                CameraController.Instance.SwitchTo("BridgeCam", true, false); // 타겟 클리어
+                break;
+            case "Check_Quest_StolenWood":
+                if (PlayerManager.Instance.player.playerQuestClearCheck[4])
+                {
+                    StartDialogue("파인", FinalFightManager.Instance.fineImage, 1410);
+                }
+                break;
+            case "GoToEndingScene":
+                PlayerManager.Instance.playerController.AutoMove(Vector2.right, 3f, 3f, true);
+                Debug.Log("[이벤트] 엔딩 씬으로 이동");
+                break;
+            case "BackToBridgeInit":
+                PlayerManager.Instance.playerController.AutoMove(Vector2.left, 1f, 3f, true);
 
+                break;
             default:
                 Debug.LogWarning($"[이벤트] 알 수 없는 이벤트 키: {eventKey}");
                 break;

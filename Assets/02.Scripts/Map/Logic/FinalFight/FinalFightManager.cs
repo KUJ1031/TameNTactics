@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 
 public class FinalFightManager : Singleton<FinalFightManager>
 {
@@ -10,11 +13,24 @@ public class FinalFightManager : Singleton<FinalFightManager>
     public List<MonsterData> dolan = new List<MonsterData>();
     public List<MonsterData> boss = new List<MonsterData>();
 
+    public GameObject carpenterObj;
     public GameObject deanObj;
     public GameObject eisenObj;
     public GameObject dolanObj;
     public GameObject bossObj;
+    public GameObject fineObj;
 
+    public Sprite carpenterImage;
+    public Sprite deanImage;
+    public Sprite eisenImage;
+    public Sprite dolanImage;
+    public Sprite bossImage;
+    public Sprite fineImage;
+
+    public GameObject BossRoomDoor;
+    public Transform bossRoomInitZone;
+    public Transform bridgeInitZone;
+    public Transform fineTransform;
     private void Start()
     {
         var player = PlayerManager.Instance.player;
@@ -139,4 +155,80 @@ public class FinalFightManager : Singleton<FinalFightManager>
             SceneManager.sceneLoaded -= OnBattleSceneLoaded;
         }
     }
+
+    public void Animation_BoosRoomInitDestroyed()
+    {
+        var highestLevelMonster = PlayerManager.Instance.player.ownedMonsters
+            .OrderByDescending(m => m.Level)
+            .FirstOrDefault();
+
+        if (highestLevelMonster == null)
+        {
+            Debug.LogWarning("소유한 몬스터가 없습니다.");
+            return;
+        }
+
+        string prefabPath = $"Units/{highestLevelMonster.monsterName}";
+        GameObject loadedPrefab = Resources.Load<GameObject>(prefabPath);
+
+        if (loadedPrefab == null)
+        {
+            Debug.LogWarning($"프리팹 로드 실패: {prefabPath}");
+            return;
+        }
+
+        Transform playerTransform = GameObject.FindWithTag("Player")?.transform;
+        if (playerTransform == null)
+        {
+            Debug.LogWarning("Player 태그를 가진 오브젝트를 찾을 수 없습니다.");
+            return;
+        }
+
+        Vector3 spawnPos = playerTransform.position + new Vector3(0f, 1f, 0f);
+
+        GameObject monsterGo = Instantiate(loadedPrefab, spawnPos, Quaternion.identity);
+        MonsterCharacter newMonster = monsterGo.GetComponent<MonsterCharacter>();
+
+        if (newMonster != null)
+        {
+            newMonster.Init(highestLevelMonster);
+
+            // 애니메이션 지연 및 느리게 실행
+            Animator animator = monsterGo.GetComponentInChildren<Animator>();
+            if (animator != null)
+            {
+                // 애니메이션 속도 조절
+                animator.speed = 0.5f;
+
+                // 애니메이션 클립 길이 가져오기
+                RuntimeAnimatorController controller = animator.runtimeAnimatorController;
+                float animClipLength = 0f;
+
+                foreach (var clip in controller.animationClips)
+                {
+                    if (clip.name == "Attack") // 반드시 애니메이션 클립 이름 확인
+                    {
+                        animClipLength = clip.length;
+                        break;
+                    }
+                }
+
+                float finalDestroyDelay = 4f + animClipLength / 0.5f;
+
+                // 1초 후 애니메이션 재생
+                StartCoroutine(PlayAndDestroy(newMonster, monsterGo, finalDestroyDelay));
+            }
+        }
+    }
+
+    private IEnumerator PlayAndDestroy(MonsterCharacter monster, GameObject target, float delay)
+    {
+        monster.PlayAttack();                // 애니메이션 재생
+
+        yield return new WaitForSeconds(delay - 1f); // 애니메이션 길이 대기
+        DialogueManager.Instance.StartDialogue("목수", carpenterImage, 1614);
+        Destroy(target);
+        Destroy(BossRoomDoor);
+    }
+
 }
