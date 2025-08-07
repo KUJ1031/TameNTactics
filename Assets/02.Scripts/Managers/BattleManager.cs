@@ -666,4 +666,10 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
     }
+
+    public IEnumerator ReviveMonsters(Monster actor, Monster reviveMonster, int healAmount)
+    {
+        yield return new WaitForSeconds(1.5f);
+        actor.ReviveMonster(reviveMonster, healAmount);
+    }
 }

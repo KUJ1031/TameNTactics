@@ -7,11 +7,9 @@ using Random = System.Random;
 [System.Serializable]
 public class Monster
 {
-    [Header("몬스터 정보 데이터")]
-    public MonsterData monsterData;
+    [Header("몬스터 정보 데이터")] public MonsterData monsterData;
 
-    [Header("기본 정보")]
-    public string monsterName;
+    [Header("기본 정보")] public string monsterName;
     public int monsterID;
     public MonsterType type;
     public Personality personality;
@@ -19,7 +17,8 @@ public class Monster
     [field: SerializeField] public bool IsFavorite { get; private set; } = false;
 
     [field: Header("능력치")]
-    [field: SerializeField] public int Level { get; private set; } = 1;
+    [field: SerializeField]
+    public int Level { get; private set; } = 1;
 
     [field: SerializeField] public int MaxHp { get; private set; }
     [field: SerializeField] public int CurHp { get; private set; }
@@ -37,11 +36,12 @@ public class Monster
 
 
     [field: Header("배틀 리워드")]
-    [field: SerializeField] public int ExpReward { get; private set; }
+    [field: SerializeField]
+    public int ExpReward { get; private set; }
+
     [field: SerializeField] public int GoldReward { get; private set; }
 
-    [Header("스킬 정보")]
-    public List<SkillData> skills;
+    [Header("스킬 정보")] public List<SkillData> skills;
 
     // 배틀 중 변경되는 스텟
     public int CurMaxHp { get; private set; }
@@ -74,6 +74,7 @@ public class Monster
             Debug.LogError("SetMonster: 복사할 sourceMonster가 null입니다.");
             return;
         }
+
         //몬스터 정보 데이터
         monsterData = newMonster.monsterData;
 
@@ -121,7 +122,8 @@ public class Monster
         monsterData = data;
 
         monsterName = data.monsterName;
-        monsterID = PlayerManager.Instance.player.playerGetMonsterCount + 1; //고유 ID는 플레이어가 몬스터를 얻은 횟수로 설정(처음 잡은 몬스터의 ID는 1부터 시작)
+        monsterID = PlayerManager.Instance.player.playerGetMonsterCount +
+                    1; //고유 ID는 플레이어가 몬스터를 얻은 횟수로 설정(처음 잡은 몬스터의 ID는 1부터 시작)
         type = data.type;
         personality = data.personality;
 
@@ -315,6 +317,7 @@ public class Monster
         if (CurHp > MaxHp) CurHp = MaxHp;
         HpChange?.Invoke(this);
     }
+
     public void HealFull()
     {
         CurHp = MaxHp;
@@ -643,6 +646,8 @@ public class Monster
 
     public void InitializeStatus()
     {
+        ActiveStatusEffects.Clear();
+        ActiveBuffEffects.Clear();
         isShield = false;
         canBeHealed = true;
         canAct = true;
@@ -714,16 +719,13 @@ public class Monster
 
         DamagePopup?.Invoke(taunter, damage);
         DamagedAnimation?.Invoke(taunter);
+        HpChange?.Invoke(taunter);
 
         if (CurHp <= 0)
         {
             InitializeStatus();
             EventBus.OnMonsterDead?.Invoke(taunter);
             OnAllyDeath(taunter);
-        }
-        else
-        {
-            HpChange?.Invoke(taunter);
         }
     }
 

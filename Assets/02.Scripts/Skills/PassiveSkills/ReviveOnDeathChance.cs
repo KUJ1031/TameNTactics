@@ -10,7 +10,7 @@ public class ReviveOnDeathChance : IPassiveSkill
         if (Random.value < 1)
         {
             int amount = Mathf.RoundToInt(self.Level >= 20 ? self.CurMaxHp * 0.3f : self.CurMaxHp * 0.5f);
-            self.ReviveMonster(self, amount);
+            BattleManager.Instance.StartCoroutine(BattleManager.Instance.ReviveMonsters(self, self, amount));
         }
     }
     
