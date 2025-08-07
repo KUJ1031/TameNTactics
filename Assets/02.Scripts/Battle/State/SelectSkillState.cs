@@ -5,7 +5,7 @@ using UnityEngine;
 public class SelectSkillState : BaseBattleState
 {
     public SelectSkillState(BattleSystem system) : base(system) { }
-
+    
     public override void Enter()
     {
         Debug.Log("스킬 선택 상태로 진입했습니다. 스킬을 선택하세요.");
@@ -34,7 +34,8 @@ public class SelectSkillState : BaseBattleState
                     Monster clickedMonster = monsterCharacter.monster;
 
                     if (BattleManager.Instance.possibleActPlayerMonsters.Contains(clickedMonster) &&
-                        clickedMonster != BattleManager.Instance.selectedPlayerMonster)
+                        clickedMonster != BattleManager.Instance.selectedPlayerMonster &&
+                        !BattleManager.Instance.isAttacking)
                     {
                         UIManager.Instance.battleUIManager.DeselectMonster(BattleManager.Instance.selectedPlayerMonster);
                         UIManager.Instance.battleUIManager.ShowMonsterSkills(clickedMonster.monsterData);

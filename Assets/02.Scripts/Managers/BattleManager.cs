@@ -32,6 +32,7 @@ public class BattleManager : Singleton<BattleManager>
     public string previousSceneName;
 
     public bool isCoroutineOver = false;
+    public bool isAttacking = false;
 
     // 배틀 시작시 배틀에 나오는 몬스터 찾아서 리스트에 넣어줌
     public void FindSpawnMonsters()
@@ -115,6 +116,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.CheckMonsterAction();
         }
 
+        isAttacking = false;
         isCoroutineOver = true;
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
@@ -190,31 +192,44 @@ public class BattleManager : Singleton<BattleManager>
         switch (skill.targetScope)
         {
             case TargetScope.Self:
+                isAttacking = true;
                 possibleTargets = new() { selectedPlayerMonster };
                 selectedTargets = new(possibleTargets);
                 StartCoroutine(CompareSpeedAndFight());
-                return;
+                break;
 
             case TargetScope.All:
+                isAttacking = true;
                 possibleTargets = alivePlayer.Concat(aliveEnemy).ToList();
                 selectedTargets = new(possibleTargets);
                 StartCoroutine(CompareSpeedAndFight());
-                return;
+                break;
 
             case TargetScope.EnemyTeam:
                 possibleTargets = aliveEnemy;
+                
+                if (selectedSkill.targetCount == 0)
+                {
+                    isAttacking = true;
+                    selectedTargets = new(possibleTargets);
+                    StartCoroutine(CompareSpeedAndFight());
+                    UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                    UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                    UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
+                    break;
+                }
 
-                if (aliveEnemy.Count == 1)
+                if (possibleTargets.Count == 1)
                 {
                     if (PlayerManager.Instance.player.playerBattleTutorialCheck)
                     {
-                        selectedTargets.Add(aliveEnemy[0]);
+                        isAttacking = true;
+                        selectedTargets.Add(possibleTargets[0]);
                         StartCoroutine(CompareSpeedAndFight());
-
                         UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
                         UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
                         UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
-                        return;
+                        break;
                     }
                 }
 
@@ -223,18 +238,13 @@ public class BattleManager : Singleton<BattleManager>
 
             case TargetScope.PlayerTeam:
                 possibleTargets = alivePlayer;
+                selectedTargets = new(possibleTargets);
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
 
             default:
                 possibleTargets = new();
                 break;
-        }
-
-        if (skill.targetCount == 0)
-        {
-            selectedTargets = new(possibleTargets);
-            StartCoroutine(CompareSpeedAndFight());
         }
     }
 
@@ -257,6 +267,7 @@ public class BattleManager : Singleton<BattleManager>
         if (selectedTargets.Count == selectedSkill.targetCount &&
             selectedTargets.All(t => t.CurHp > 0))
         {
+            MonsterSelecter.isClicked = true;
             UIManager.Instance.battleUIManager.HidePossibleTargets();
             StartCoroutine(CompareSpeedAndFight());
         }
@@ -371,6 +382,7 @@ public class BattleManager : Singleton<BattleManager>
                 }
             }
 
+            yield return new WaitForSeconds(1f);
             yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f, true));
         }
 
@@ -565,6 +577,8 @@ public class BattleManager : Singleton<BattleManager>
         bool isDeanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dean");
         bool isEisenDead = DeadEnemyMonsters.Any(m => m.monsterName == "Eisen");
         bool isDolanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dolan");
+        bool isBossDead = DeadEnemyMonsters.Any(m => m.monsterName == "Boss");
+
         if (isDeanDead)
         {
             Debug.Log("엘리트 Dean 처치");
@@ -579,6 +593,11 @@ public class BattleManager : Singleton<BattleManager>
         {
             Debug.Log("엘리트 Dolan 처치");
             PlayerManager.Instance.player.playerEliteClearCheck[2] = true;
+        }
+        if (isBossDead)
+        {
+            Debug.Log("보스 처치");
+            PlayerManager.Instance.player.playerBossClearCheck[0] = true;
         }
     }
 
