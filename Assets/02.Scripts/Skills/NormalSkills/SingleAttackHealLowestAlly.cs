@@ -23,7 +23,7 @@ public class SingleAttackHealLowestAlly : ISkillEffect
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
             BattleManager.Instance.DealDamage(target, result.damage, caster, this.skillData, result.isCritical, result.effectiveness);
 
-            if (Random.value < 1 && caster.Level >= 10)
+            if (Random.value < 0.3 && caster.Level >= 10)
             {
                 List<Monster> monsters = BattleManager.Instance.BattleEntryTeam
                     .Where(m => m.CurHp > 0)
