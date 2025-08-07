@@ -11,7 +11,7 @@ public class SingleAttackDoubleDamageWithHpCost30 : ISkillEffect
         skillData = data;
     }
     
-    // 단일공격 최대체력의 35% 데미지 입고, 공격 데미지 2배, 25레벨 데미지 1.5배 25% 데미지 입음
+    // 단일공격 최대체력의 30% 데미지 입고, 공격 데미지 2배, 25레벨 데미지 1.5배 20% 데미지 입음
     public IEnumerator Execute(Monster caster, List<Monster> targets)
     {
         if (skillData == null || targets == null || targets.Count == 0) yield break;
@@ -26,7 +26,7 @@ public class SingleAttackDoubleDamageWithHpCost30 : ISkillEffect
             
             BattleManager.Instance.DealDamage(target, finalDamage, caster, this.skillData, result.isCritical, result.effectiveness);
             
-            int amount = Mathf.RoundToInt(caster.Level >= 25 ? 0.25f : 0.35f);
+            int amount = Mathf.RoundToInt(caster.Level >= 25 ? 0.20f : 0.30f);
             int hpCost = Mathf.RoundToInt(target.CurMaxHp * amount);
             
             caster.TakeDamage(hpCost);

@@ -10,20 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
-  m_Name: SingleAttackChancePoison
+  m_Name: EnemyTeamAttackResetUltCost
   m_EditorClassIdentifier: 
-  skillType: 1
+  skillType: 2
   passiveSkillList: 0
-  normalSkillList: 2
-  ultimateSkillList: 0
-  skillName: "\uD655\uB960 \uC911\uB3C5"
+  normalSkillList: 0
+  ultimateSkillList: 11
+  skillName: "\uC804\uCCB4\uACF5\uACA9\uAD81\uADF9\uAE30\uCD08\uAE30\uD654"
   skillPower: 1
   skillEffectPrefab: {fileID: 0}
   targetScope: 3
-  targetCount: 1
+  targetCount: 0
   icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
-  description: "\uB3C5 \uC18D\uC131 \uAE30\uBCF8 \uACF5\uACA9. \uB3C5 \uB370\uBBF8\uC9C0\uB97C
-    \uC785\uD78C\uB2E4."
+  description: "\uAD81\uADF9\uAE30\uCD08\uAE30\uD654"
   upgradeDescription: 
   damageSound: {fileID: 0}

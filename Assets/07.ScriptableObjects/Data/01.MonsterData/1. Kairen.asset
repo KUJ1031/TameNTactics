@@ -30,7 +30,7 @@ MonoBehaviour:
   goldReward: 100
   skills:
   - {fileID: 11400000, guid: 261dff50365475546b2431557fd2dba8, type: 2}
-  - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
+  - {fileID: 11400000, guid: 9dae6f8e8744fb841b6013103bad5572, type: 2}
   - {fileID: 11400000, guid: e0b50ce991fbe5940af85b78abb2b69f, type: 2}
   spawnArea: 0
   spawnTime: 19
