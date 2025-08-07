@@ -6,12 +6,12 @@ public class SelfHealOnTurnEnd : IPassiveSkill
 {
     public void OnTurnEnd(Monster self)
     {
-        int amount = Mathf.RoundToInt(self.Level >= 20 ? self.MaxHp * 0.1f : self.MaxHp * 0.05f);
+        int amount = Mathf.RoundToInt(self.Level >= 20 ? self.CurMaxHp * 0.1f : self.CurMaxHp * 0.05f);
         self.Heal(amount);
     }
 
     public void OnBattleStart(Monster self, List<Monster> allies) { }
     public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
-    public void OnAllyDeath(Monster self) {}
+    public void OnAllyDeath(Monster self, List<Monster> team) {}
     public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

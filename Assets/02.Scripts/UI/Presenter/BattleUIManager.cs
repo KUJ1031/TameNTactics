@@ -201,7 +201,6 @@ public class BattleUIManager : MonoBehaviour
         if (gaugeHolder == null || gaugeHolder.gauge == null) return;
 
         float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
-        //battleSelectView.SetHpGauge(gaugeHolder.gauge, hpRatio);
         StartCoroutine(UpdateHpGaugeCoroutine(gaugeHolder.gauge, hpRatio));
     }
 
@@ -259,6 +258,7 @@ public class BattleUIManager : MonoBehaviour
         battleSelectView.SetUltimateGauge(gaugeHolder.gauge, ultimateRatio);
     }
 
+    // 몬스터 사망 시 게이지 제거
     public void RemoveGauge(Monster monster)
     {
         MonsterCharacter mc = FindMonsterCharacter(monster);
@@ -269,11 +269,26 @@ public class BattleUIManager : MonoBehaviour
 
         if (gaugeHolder != null && gaugeHolder.gauge != null)
         {
-            Destroy(gaugeHolder.gauge);
-            gaugeHolder.gauge = null;
+            //Destroy(gaugeHolder.gauge);
+            gaugeHolder.gauge.SetActive(false);
         }
 
-        allMonsterCharacters.Remove(mc);
+        //allMonsterCharacters.Remove(mc);
+    }
+
+    // 몬스터 부활 시 게이지 활성화
+    public void ReviveGauge(Monster monster)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+
+        if (mc == null) return;
+
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+
+        if (gaugeHolder != null && gaugeHolder.gauge != null)
+        {
+            gaugeHolder.gauge.SetActive(true);
+        }
     }
 
     private MonsterCharacter FindMonsterCharacter(Monster monster)
