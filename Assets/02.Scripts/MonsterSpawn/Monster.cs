@@ -7,11 +7,9 @@ using Random = System.Random;
 [System.Serializable]
 public class Monster
 {
-    [Header("몬스터 정보 데이터")]
-    public MonsterData monsterData;
+    [Header("몬스터 정보 데이터")] public MonsterData monsterData;
 
-    [Header("기본 정보")]
-    public string monsterName;
+    [Header("기본 정보")] public string monsterName;
     public int monsterID;
     public MonsterType type;
     public Personality personality;
@@ -19,7 +17,8 @@ public class Monster
     [field: SerializeField] public bool IsFavorite { get; private set; } = false;
 
     [field: Header("능력치")]
-    [field: SerializeField] public int Level { get; private set; } = 1;
+    [field: SerializeField]
+    public int Level { get; private set; } = 1;
 
     [field: SerializeField] public int MaxHp { get; private set; }
     [field: SerializeField] public int CurHp { get; private set; }
@@ -37,11 +36,12 @@ public class Monster
 
 
     [field: Header("배틀 리워드")]
-    [field: SerializeField] public int ExpReward { get; private set; }
+    [field: SerializeField]
+    public int ExpReward { get; private set; }
+
     [field: SerializeField] public int GoldReward { get; private set; }
 
-    [Header("스킬 정보")]
-    public List<SkillData> skills;
+    [Header("스킬 정보")] public List<SkillData> skills;
 
     // 배틀 중 변경되는 스텟
     public int CurMaxHp { get; private set; }
@@ -74,6 +74,7 @@ public class Monster
             Debug.LogError("SetMonster: 복사할 sourceMonster가 null입니다.");
             return;
         }
+
         //몬스터 정보 데이터
         monsterData = newMonster.monsterData;
 
@@ -121,7 +122,8 @@ public class Monster
         monsterData = data;
 
         monsterName = data.monsterName;
-        monsterID = PlayerManager.Instance.player.playerGetMonsterCount + 1; //고유 ID는 플레이어가 몬스터를 얻은 횟수로 설정(처음 잡은 몬스터의 ID는 1부터 시작)
+        monsterID = PlayerManager.Instance.player.playerGetMonsterCount +
+                    1; //고유 ID는 플레이어가 몬스터를 얻은 횟수로 설정(처음 잡은 몬스터의 ID는 1부터 시작)
         type = data.type;
         personality = data.personality;
 
@@ -210,7 +212,7 @@ public class Monster
     {
         CurDefense += amount;
     }
-    
+
     public void BattleDefenseDown(int amount)
     {
         CurDefense -= amount;
@@ -266,7 +268,7 @@ public class Monster
         CurCriticalChance += amount;
         if (CurCriticalChance > 100) CurCriticalChance = 100;
     }
-    
+
     public void BattleCritChanceUpWithLimit(int amount, int maxLimit)
     {
         CurCriticalChance += amount;
@@ -286,14 +288,14 @@ public class Monster
     public void Heal(int amount)
     {
         int modifiedAmount;
-        
+
         if (!canBeHealed)
         {
             modifiedAmount = 0;
         }
-        
+
         else modifiedAmount = amount;
-        
+
         CurHp += modifiedAmount;
         if (CurHp >= CurMaxHp) CurHp = CurMaxHp;
         HpChange?.Invoke(this);
@@ -315,6 +317,7 @@ public class Monster
         if (CurHp > MaxHp) CurHp = MaxHp;
         HpChange?.Invoke(this);
     }
+
     public void HealFull()
     {
         CurHp = MaxHp;
@@ -338,7 +341,7 @@ public class Monster
         var team = BattleManager.Instance.BattleEntryTeam.Contains(this)
             ? BattleManager.Instance.BattleEntryTeam
             : BattleManager.Instance.BattleEnemyTeam;
-        
+
         foreach (var monster in team)
         {
             foreach (var buff in ActiveBuffEffects)
@@ -350,7 +353,7 @@ public class Monster
                 }
             }
         }
-        
+
         int modifiedDamage;
 
         if (isShield)
@@ -360,23 +363,20 @@ public class Monster
         }
 
         else modifiedDamage = damage;
-        
+
         CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(this, damage);
         DamagedAnimation?.Invoke(this);
+        HpChange?.Invoke(this);
 
         if (CurHp <= 0)
         {
             InitializeStatus();
             EventBus.OnMonsterDead?.Invoke(this);
-            
+
             OnAllyDeath(this);
-        }
-        else
-        {
-            HpChange?.Invoke(this);
         }
     }
 
@@ -394,7 +394,7 @@ public class Monster
         {
             return;
         }
-        
+
         foreach (var existing in ActiveStatusEffects)
         {
             if (existing.Type == effect.Type)
@@ -445,7 +445,7 @@ public class Monster
     public void UpdateBuffEffects()
     {
         List<BuffEffect> expired = new();
-        
+
         foreach (var effect in ActiveBuffEffects)
         {
             effect.OnTurnStart(this);
@@ -482,7 +482,7 @@ public class Monster
             }
         }
     }
-    
+
     public IEnumerator TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill, float effectiveness)
     {
         yield return new WaitForSeconds(1f);
@@ -525,7 +525,7 @@ public class Monster
     public bool TryRunAwayWithPassive(out bool isGuaranteed)
     {
         isGuaranteed = false;
-        
+
         foreach (var passive in PassiveSkills)
         {
             if (passive is EscapeMaster escapeMaster)
@@ -533,7 +533,7 @@ public class Monster
                 return escapeMaster.TryEscape(this, ref isGuaranteed);
             }
         }
-        
+
         return false;
     }
 
@@ -643,9 +643,11 @@ public class Monster
         if (isHealable) canBeHealed = true;
         else canBeHealed = false;
     }
-    
+
     public void InitializeStatus()
     {
+        ActiveStatusEffects.Clear();
+        ActiveBuffEffects.Clear();
         isShield = false;
         canBeHealed = true;
         canAct = true;
@@ -664,11 +666,11 @@ public class Monster
         var team = BattleManager.Instance.BattleEntryTeam.Contains(self)
             ? BattleManager.Instance.BattleEntryTeam
             : BattleManager.Instance.BattleEnemyTeam;
-        
+
         var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(self)
             ? BattleManager.Instance.BattleEnemyTeam
             : BattleManager.Instance.BattleEntryTeam;
-        
+
         foreach (var monster in team)
         {
             foreach (var passive in monster.PassiveSkills)
@@ -677,18 +679,16 @@ public class Monster
                 {
                     passive.OnAllyDeath(monster, team);
                 }
-                
+
                 if (passive is PoisonEnemiesOnDeath)
                 {
                     passive.OnAllyDeath(monster, enemyTeam);
                 }
-                
+
                 if (passive is ReviveOnDeathChance)
                 {
                     passive.OnAllyDeath(monster, team);
                 }
-
-                return;
             }
         }
     }
@@ -703,7 +703,7 @@ public class Monster
         var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(taunter)
             ? BattleManager.Instance.BattleEnemyTeam
             : BattleManager.Instance.BattleEntryTeam;
-        
+
         int modifiedDamage;
 
         if (isShield)
@@ -713,22 +713,19 @@ public class Monster
         }
 
         else modifiedDamage = damage;
-        
+
         CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(taunter, damage);
         DamagedAnimation?.Invoke(taunter);
+        HpChange?.Invoke(taunter);
 
         if (CurHp <= 0)
         {
             InitializeStatus();
             EventBus.OnMonsterDead?.Invoke(taunter);
             OnAllyDeath(taunter);
-        }
-        else
-        {
-            HpChange?.Invoke(taunter);
         }
     }
 
