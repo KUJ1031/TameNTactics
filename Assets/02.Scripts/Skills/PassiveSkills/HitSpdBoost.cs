@@ -2,29 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 치명타로 맞을시 치명타 확률 30% 상승, 20레벨 40% 상승
-public class CritUpOnCritHit : IPassiveSkill
+// 피격시 스피드 10% 상승, 20레벨 치명타 확률 10% 상승(최대 3스택)
+public class HitSpdBoost : IPassiveSkill
 {
     private int curStack = 0;
     private int maxStack = 3;
-
+    
     public void OnBattleStart(Monster self, List<Monster> monsters)
     {
         curStack = 0;
     }
-    
-    public void OnCritHit(Monster self, bool isCritical)
+
+    public int OnDamaged(Monster self, int damage, Monster actor)
     {
-        if (isCritical)
+        int amount = Mathf.RoundToInt(self.CurSpeed * 0.1f);
+        self.SpeedUpEffect(amount);
+        
+        if (self.Level >= 20 && curStack < maxStack)
         {
-            int amount = self.Level >= 20 ? 40 : 30;
-            self.BattleCritChanceUp(amount);
+            self.BattleCritChanceUp(10);
             curStack++;
         }
+        
+        return damage;
     }
     
     public void OnTurnEnd(Monster self) {}
-    public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
     public void OnAllyDeath(Monster self, List<Monster> team) {}
     public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }
