@@ -12,6 +12,8 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemInfoText;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private InventoryUI inventoryUI; // 인벤토리 UI 참조
+    [SerializeField] private TextMeshProUGUI buyItemText;
+    private Coroutine hideBuyTextCoroutine;
 
     [SerializeField] private Button consumableButton;
     [SerializeField] private Button equipableButton;
@@ -50,13 +52,25 @@ public class ShopUI : MonoBehaviour
     {
         shopItems.Clear();
 
+        var playerItems = PlayerManager.Instance.player.items;
+
         foreach (var data in categoryItems)
         {
+            // 장비/제스처 아이템 중 이미 플레이어가 보유한 경우는 건너뜀
+            bool alreadyOwned = playerItems.Exists(i =>
+                i.data.itemId == data.itemId &&
+                (data.type == ItemType.equipment || data.type == ItemType.gesture)
+            );
+
+            if (alreadyOwned)
+                continue;
+
             shopItems.Add(new ItemInstance(data, 1)); // 기본 수량 1
         }
 
         Refresh();
     }
+
 
     public void Refresh()
     {
@@ -102,30 +116,43 @@ public class ShopUI : MonoBehaviour
 
         if (player.gold >= selectedItem.data.goldValue)
         {
-            player.gold -= selectedItem.data.goldValue;
-            // 기존에 같은 itemName 가진 아이템 찾기
+            // 이미 장비/제스처 아이템을 소지 중인지 체크
             var existing = player.items.Find(i => i.data.itemName == selectedItem.data.itemName);
 
             if (existing != null)
             {
                 if (selectedItem.data.type == ItemType.equipment)
                 {
-                    // 장비 아이템은 최대 1개만 소지 가능
                     warringPopup.SetActive(true);
                     warringPopupText.text = $"{selectedItem.data.itemName}은(는) 이미 소지하고 있습니다.\n 장비 아이템은 1개만 소지할 수 있습니다.";
                     return;
                 }
                 if (selectedItem.data.type == ItemType.gesture)
                 {
-                    // 제스처 아이템은 최대 1개만 소지 가능
                     warringPopup.SetActive(true);
                     warringPopupText.text = $"{selectedItem.data.itemName}은(는) 이미 소지하고 있습니다.\n 제스처 아이템은 1개만 소지할 수 있습니다.";
                     return;
                 }
             }
+
+            // 골드 차감 및 아이템 추가
+            player.gold -= selectedItem.data.goldValue;
             player.AddItem(selectedItem.data, 1);
+            ShowBuyMessage(selectedItem.data.itemName);
 
             Debug.Log($"[구매] {selectedItem.data.itemName}");
+
+            // 장비 또는 제스처 아이템이면 상점에서 제거
+            if (selectedItem.data.type == ItemType.equipment || selectedItem.data.type == ItemType.gesture)
+            {
+                shopItems.Remove(selectedItem);
+                selectedItem = null;
+                Refresh(); // 상점 UI 갱신
+            }
+            else
+            {
+                UpdateButtons();
+            }
 
             UpdateGoldUI();
             inventoryUI.items = player.items;
@@ -134,9 +161,27 @@ public class ShopUI : MonoBehaviour
         else
         {
             warringPopup.SetActive(true);
-            warringPopupText.text = $"골드가 부족합니다.\n 현재 골드 : {selectedItem.data.itemName}";
+            warringPopupText.text = $"골드가 부족합니다.\n 현재 골드 : {player.gold}";
         }
     }
+
+    private void ShowBuyMessage(string itemName)
+    {
+        if (hideBuyTextCoroutine != null)
+            StopCoroutine(hideBuyTextCoroutine);
+
+        buyItemText.text = $"[{itemName}] 아이템을 구매하였습니다.";
+        buyItemText.gameObject.SetActive(true);
+
+        hideBuyTextCoroutine = StartCoroutine(HideBuyMessageAfterDelay(3f));
+    }
+
+    private System.Collections.IEnumerator HideBuyMessageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        buyItemText.gameObject.SetActive(false);
+    }
+
 
     public void CloseUI()
     {

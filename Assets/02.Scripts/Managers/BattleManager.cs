@@ -560,6 +560,25 @@ public class BattleManager : Singleton<BattleManager>
 
         BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
         BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
+
+        bool isDeanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dean");
+        bool isEisenDead = DeadEnemyMonsters.Any(m => m.monsterName == "Eisen");
+        bool isDolanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dolan");
+        if (isDeanDead)
+        {
+            Debug.Log("엘리트 Dean 처치");
+            PlayerManager.Instance.player.playerEliteClearCheck[0] = true;
+        }
+        if (isEisenDead)
+        {
+            Debug.Log("엘리트 Eisen 처치");
+            PlayerManager.Instance.player.playerEliteClearCheck[1] = true;
+        }
+        if (isDolanDead)
+        {
+            Debug.Log("엘리트 Dolan 처치");
+            PlayerManager.Instance.player.playerEliteClearCheck[2] = true;
+        }
     }
 
     // 공격중인 몬스터의 character를 가져오기 위한 메서드

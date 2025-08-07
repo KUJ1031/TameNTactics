@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class GameStart : MonoBehaviour
 {
@@ -61,16 +62,25 @@ public class GameStart : MonoBehaviour
 
     private void OnStartButtonClicked()
     {
-        // 게임 시작 로직
         Debug.Log("게임을 시작합니다.");
-        // 저장한 데이터 전부 삭제
-        string path = Application.persistentDataPath + "/playerData.json";
-        if (System.IO.File.Exists(path))
+
+        // 저장된 playerData 삭제
+        string playerDataPath = Application.persistentDataPath + "/playerData.json";
+        if (File.Exists(playerDataPath))
         {
-            System.IO.File.Delete(path);
-            Debug.Log("기존 저장된 데이터를 삭제했습니다.");
+            File.Delete(playerDataPath);
+            Debug.Log("기존 저장된 playerData 데이터를 삭제했습니다.");
         }
 
+        // 저장된 rayTrigger 데이터 삭제
+        string rayTriggerPath = Application.persistentDataPath + "/ray_trigger_save.json";
+        if (File.Exists(rayTriggerPath))
+        {
+            File.Delete(rayTriggerPath);
+            Debug.Log("기존 저장된 ray_trigger 데이터를 삭제했습니다.");
+        }
+
+        // 씬 전환
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMapScene");
     }
 

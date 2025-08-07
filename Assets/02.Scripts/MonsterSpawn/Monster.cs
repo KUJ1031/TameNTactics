@@ -183,6 +183,18 @@ public class Monster
         GoldReward = monsterData.goldReward + 30 * levelMinusOne;
     }
 
+    public void MaxHpUp(int amount)
+    {
+        MaxHp += amount;
+    }
+
+    public void MaxHpDown(int amount)
+    {
+        MaxHp -= amount;
+        if (MaxHp < 0) MaxHp = 0;
+        if (CurHp > MaxHp) CurHp = MaxHp; // 현재 체력이 최대 체력보다 크면 최대 체력으로 설정
+    }
+
     public void PowerUp(int amount)
     {
         CurAttack += amount;

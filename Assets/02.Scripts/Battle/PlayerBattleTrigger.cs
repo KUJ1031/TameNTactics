@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using Cinemachine;
+using UnityEngine.UI;
 
 public class PlayerBattleTrigger : MonoBehaviour
 {
@@ -37,14 +39,17 @@ public class PlayerBattleTrigger : MonoBehaviour
         //적 팀 배틀메니저로
         BattleManager.Instance.enemyTeam = enemyTeam;
 
-        Destroy(other.gameObject); // 충돌한 적 제거
+        // 배틀씬 진입 연출
+        StartCoroutine(PlayBattleEntryEffectAndLoadScene(other.transform));
 
-        RuntimePlayerSaveManager.Instance.SaveCurrentGameState(PlayerManager.Instance.player); // 현재 플레이어 상태 저장
+        //Destroy(other.gameObject); // 충돌한 적 제거
 
-        SceneManager.sceneLoaded += OnBattleSceneLoaded;
+        //RuntimePlayerSaveManager.Instance.SaveCurrentGameState(PlayerManager.Instance.player); // 현재 플레이어 상태 저장
 
-        //씬이동
-        SceneManager.LoadScene("BattleScene");
+        //SceneManager.sceneLoaded += OnBattleSceneLoaded;
+
+        ////씬이동
+        //SceneManager.LoadScene("BattleScene");
 
     }
 
@@ -52,6 +57,7 @@ public class PlayerBattleTrigger : MonoBehaviour
     {
         if (scene.name == "BattleScene")
         {
+            CameraController.Instance.ResetZoom();
             GameObject attackObj = GameObject.Find("AttackPosition");
             if (attackObj != null)
             {
@@ -75,10 +81,65 @@ public class PlayerBattleTrigger : MonoBehaviour
     private IEnumerator DisableTriggerCoroutine(float time)
     {
         BoxCollider2D collider = GetComponentInChildren<BoxCollider2D>();
-      //  collider.enabled = false;
+        //  collider.enabled = false;
 
         yield return new WaitForSeconds(time);
 
-      //  collider.enabled = true;
+        //  collider.enabled = true;
     }
+
+    #region PlayBattleEffect
+
+    private IEnumerator PlayBattleEntryEffectAndLoadScene(Transform monsterTr)
+    {
+        if (PlayerManager.Instance != null && PlayerManager.Instance.playerController != null)
+            PlayerManager.Instance.playerController.isInputBlocked = true;
+
+        CameraController.Instance.Zoom(2.5f, 0.5f);
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        // 슬로우 모션
+        Time.timeScale = 0.3f;
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        // 페이드 아웃
+        yield return StartCoroutine(FadeOutCoroutine(0.5f));
+        Time.timeScale = 1f;
+
+        RuntimePlayerSaveManager.Instance.SaveCurrentGameState(PlayerManager.Instance.player);
+        Destroy(monsterTr.gameObject);
+
+        SceneManager.sceneLoaded += OnBattleSceneLoaded;
+        SceneManager.LoadScene("BattleScene");
+    }
+
+    #endregion
+
+    #region FadeOut
+
+    private IEnumerator FadeOutCoroutine(float duration = 0.5f)
+    {
+        Image fadeImage = FieldUIManager.Instance.FadePanel.GetComponent<Image>();
+
+        if (fadeImage == null) yield break;
+
+        fadeImage.gameObject.SetActive(true);
+        Color color = fadeImage.color;
+        color.a = 0f;
+        fadeImage.color = color;
+
+        float time = 0f;
+        while (time < duration)
+        {
+            color.a = Mathf.Lerp(0f, 1f, time / duration);
+            fadeImage.color = color;
+            time += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        color.a = 1f;
+        fadeImage.color = color;
+    }
+
+    #endregion
 }

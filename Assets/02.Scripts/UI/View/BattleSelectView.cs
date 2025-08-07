@@ -148,4 +148,14 @@ public class BattleSelectView : MonoBehaviour
     {
         selectMonsterImage.SetActive(false);
     }
+
+    public void HideEmbraceButton()
+    {
+        embraceButton.gameObject.SetActive(false);
+    }
+
+    public void HideRunButton()
+    {
+        runButton.gameObject.SetActive(false);
+    }
 }

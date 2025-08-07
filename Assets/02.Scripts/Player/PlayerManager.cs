@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
     }
 
     private void OnEnable()
@@ -56,11 +57,53 @@ public class PlayerManager : MonoBehaviour
                 {
                     player.AddItem("소형 회복 물약", 1);
                     player.AddItem("대화하기", 1);
+                    SetQuestCleared();
+                    SetEliteCleared();
+                    SetBossCleared();
                     KeyRebinderManager.Instance.SaveCurrentBindingsToPlayer(player);
                 }
 
             }
         }
+    }
+
+    public void SetQuestCleared()
+    {
+        player.playerQuestStartCheck.Add(0, false);
+        player.playerQuestStartCheck.Add(1, false);
+        player.playerQuestStartCheck.Add(2, false);
+        player.playerQuestStartCheck.Add(3, false);
+        player.playerQuestStartCheck.Add(4, false);
+
+        player.playerQuestClearCheck.Add(0, false);
+        player.playerQuestClearCheck.Add(1, false);
+        player.playerQuestClearCheck.Add(2, false);
+        player.playerQuestClearCheck.Add(3, false);
+        player.playerQuestClearCheck.Add(4, false);
+    }
+
+    public void SetEliteCleared()
+    {
+        player.playerEliteStartCheck.Add(0, false);
+        player.playerEliteStartCheck.Add(1, false);
+        player.playerEliteStartCheck.Add(2, false);
+        player.playerEliteStartCheck.Add(3, false);
+        player.playerEliteStartCheck.Add(4, false);
+
+        player.playerEliteClearCheck.Add(0, false);
+        player.playerEliteClearCheck.Add(1, false);
+        player.playerEliteClearCheck.Add(2, false);
+        player.playerEliteClearCheck.Add(3, false);
+        player.playerEliteClearCheck.Add(4, false);
+    }
+
+    public void SetBossCleared()
+    {
+        player.playerBossClearCheck.Add(0, false);
+        player.playerBossClearCheck.Add(1, false);
+        player.playerBossClearCheck.Add(2, false);
+        player.playerBossClearCheck.Add(3, false);
+        player.playerBossClearCheck.Add(4, false);
     }
 
     /// <summary>

@@ -4,7 +4,7 @@ using UnityEngine;
 public class WanderingShopNPCHandler : WanderingShopNPC
 {
     [Header("떠상 등장 관련 설정")]
-    private List<int> appearedTimes = new List<int> { 120, 1560 }; // 게임 분 기준
+    private List<int> appearedTimes = new List<int> { 120, 360, 600, 840, 1080, 1320 };
     public List<Transform> appearedTransform = new List<Transform>(); // 등장할 수 있는 위치들
     public GameObject npcPrefab; // 떠상 NPC 프리팹
 
