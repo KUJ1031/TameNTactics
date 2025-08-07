@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Rendering;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class BattleManager : Singleton<BattleManager>
 {
@@ -143,7 +144,7 @@ public class BattleManager : Singleton<BattleManager>
                 }
             }
         }
-        
+
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
         StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness));
@@ -670,6 +671,10 @@ public class BattleManager : Singleton<BattleManager>
     public IEnumerator ReviveMonsters(Monster actor, Monster reviveMonster, int healAmount)
     {
         yield return new WaitForSeconds(1.5f);
+
+        var team = DeadEntryMonsters.Contains(reviveMonster) ? BattleEntryTeam : BattleEnemyTeam;
+        team.Add(reviveMonster);
+
         actor.ReviveMonster(reviveMonster, healAmount);
     }
 }

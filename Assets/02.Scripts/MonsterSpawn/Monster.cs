@@ -737,5 +737,6 @@ public class Monster
         monster.CurHp += amount;
         if (monster.CurHp >= monster.CurMaxHp) monster.CurHp = monster.CurMaxHp;
         HpChange?.Invoke(monster);
+        EventBus.OnMonsterRevive?.Invoke(monster);
     }
 }
