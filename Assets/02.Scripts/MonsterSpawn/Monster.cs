@@ -687,6 +687,8 @@ public class Monster
                 {
                     passive.OnAllyDeath(monster, team);
                 }
+
+                return;
             }
         }
     }
@@ -721,13 +723,22 @@ public class Monster
         if (CurHp <= 0)
         {
             InitializeStatus();
-            OnAllyDeath(taunter);
-            
             EventBus.OnMonsterDead?.Invoke(taunter);
+            OnAllyDeath(taunter);
         }
         else
         {
             HpChange?.Invoke(taunter);
         }
+    }
+
+    public void ReviveMonster(Monster monster, int amount)
+    {
+        ActiveBuffEffects.Clear();
+        ActiveStatusEffects.Clear();
+        UIManager.Instance.battleUIManager.ReviveGauge(monster);
+        monster.CurHp += amount;
+        if (monster.CurHp >= monster.CurMaxHp) monster.CurHp = monster.CurMaxHp;
+        HpChange?.Invoke(monster);
     }
 }
