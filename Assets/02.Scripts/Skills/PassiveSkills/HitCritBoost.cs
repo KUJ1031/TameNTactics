@@ -18,7 +18,6 @@ public class HitCritBoost : IPassiveSkill
         if (curStack < maxStack)
         {
             int amount = self.Level >= 20 ? 20 : 10;
-            
             self.BattleCritChanceUp(amount);
             curStack++;
         }
@@ -27,6 +26,6 @@ public class HitCritBoost : IPassiveSkill
     }
     
     public void OnTurnEnd(Monster self) {}
-    public void OnAllyDeath(Monster self) {}
+    public void OnAllyDeath(Monster self, List<Monster> team) {}
     public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

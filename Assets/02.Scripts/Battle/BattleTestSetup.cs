@@ -16,6 +16,11 @@ public class BattleTestSetup : MonoBehaviour
 
     private void Start()
     {
+        PlayerManager.Instance.player.playerEliteStartCheck.Clear();
+        PlayerManager.Instance.player.playerEliteStartCheck.Add(0, false);
+        PlayerManager.Instance.player.playerEliteStartCheck.Add(1, false);
+        PlayerManager.Instance.player.playerEliteStartCheck.Add(2, false);
+
         if (PlayerManager.Instance == null || BattleManager.Instance == null)
         {
             Debug.LogError("PlayerManager 또는 BattleManager가 아직 초기화되지 않았습니다.");

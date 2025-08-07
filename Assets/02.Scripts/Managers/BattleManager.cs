@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Rendering;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class BattleManager : Singleton<BattleManager>
 {
@@ -73,7 +74,6 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var monster in BattleEntryTeam)
         {
             monster.InitializeBattleStart();
-            monster.TriggerOnBattleStart(BattleEntryTeam);
             Debug.Log($"Entry Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Entry Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
             Debug.Log($"이름 : {monster.monsterName}\n공격력 : {monster.CurAttack}\n방어력 : {monster.CurDefense}\n치명타확률 : {monster.CurCriticalChance}\n스피드 : {monster.CurSpeed}");
@@ -83,12 +83,25 @@ public class BattleManager : Singleton<BattleManager>
         {
             monster.RecalculateStats();
             monster.InitializeBattleStart();
-            monster.TriggerOnBattleStart(BattleEnemyTeam);
             Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
 
+        PassiveSkillActivate();
         ClearSelections();
+    }
+
+    private void PassiveSkillActivate()
+    {
+        foreach (var monster in BattleEntryTeam)
+        {
+            monster.TriggerOnBattleStart(BattleEntryTeam);
+        }
+
+        foreach (var monster in BattleEnemyTeam)
+        {
+            monster.TriggerOnBattleStart(BattleEnemyTeam);
+        }
     }
 
     // 턴 끝날 때 실행
@@ -112,21 +125,13 @@ public class BattleManager : Singleton<BattleManager>
         int finalDamage = target.TriggerOnDamaged(damage, attacker);
         var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
 
-        if (skillData.targetCount == 1 || skillData.targetCount == 2)
+        if (skillData.targetScope != TargetScope.All &&
+            skillData.targetScope != TargetScope.Self &&
+            skillData.targetScope != TargetScope.None &&
+            skillData.targetCount != 0)
         {
             foreach (var monster in team)
             {
-                foreach (var passive in monster.PassiveSkills)
-                {
-                    if (passive is InterceptDamage)
-                    {
-                        InterceptDamage(monster, skillData, finalDamage, team);
-                        StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness));
-                        BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
-                        return;
-                    }
-                }
-            
                 foreach (var buff in monster.ActiveBuffEffects)
                 {
                     if (buff.Type == BuffEffectType.Taunt)
@@ -139,7 +144,7 @@ public class BattleManager : Singleton<BattleManager>
                 }
             }
         }
-        
+
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
         StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness));
@@ -663,17 +668,13 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    private void InterceptDamage(Monster target, SkillData skillData, int damage, List<Monster> team)
+    public IEnumerator ReviveMonsters(Monster actor, Monster reviveMonster, int healAmount)
     {
-        foreach (var monster in team)
-        {
-            foreach (var passive in monster.PassiveSkills)
-            {
-                if (passive is InterceptDamage interceptDamage)
-                {
-                    interceptDamage.OnDamagedAlly(monster, target, skillData, damage);
-                }
-            }
-        }
+        yield return new WaitForSeconds(1.5f);
+
+        var team = DeadEntryMonsters.Contains(reviveMonster) ? BattleEntryTeam : BattleEnemyTeam;
+        team.Add(reviveMonster);
+
+        actor.ReviveMonster(reviveMonster, healAmount);
     }
 }

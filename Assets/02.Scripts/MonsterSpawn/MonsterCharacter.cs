@@ -20,11 +20,13 @@ public class MonsterCharacter : MonoBehaviour
     private void OnEnable()
     {
         EventBus.OnMonsterDead += OnMonsterDead;
+        EventBus.OnMonsterRevive += OnMonsterRevive;
     }
 
     private void OnDisable()
     {
         EventBus.OnMonsterDead -= OnMonsterDead;
+        EventBus.OnMonsterRevive -= OnMonsterRevive;
     }
 
     private void OnDestroy()
@@ -52,6 +54,19 @@ public class MonsterCharacter : MonoBehaviour
         }
 
         PlayDeath();
+    }
+
+    private void OnMonsterRevive(Monster monster)
+    {
+        if (this.monster != monster) return;
+
+        if (animHandler == null || !animHandler.gameObject.activeInHierarchy)
+        {
+            Debug.LogWarning($"애니메이션 핸들러가 존재하지 않거나 비활성화됨: {gameObject.name}");
+            return;
+        }
+
+        PlayIdle();
     }
 
     public void PlayIdle() => animHandler?.PlayAnimation(PlayerState.IDLE, 0);
