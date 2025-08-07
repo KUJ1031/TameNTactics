@@ -7,7 +7,7 @@ public class ReviveOnDeathChance : IPassiveSkill
 {
     public void OnAllyDeath(Monster self, List<Monster> team)
     {
-        if (Random.value < 1)
+        if (Random.value < 0.5)
         {
             int amount = Mathf.RoundToInt(self.Level >= 20 ? self.CurMaxHp * 0.3f : self.CurMaxHp * 0.5f);
             BattleManager.Instance.StartCoroutine(BattleManager.Instance.ReviveMonsters(self, self, amount));
