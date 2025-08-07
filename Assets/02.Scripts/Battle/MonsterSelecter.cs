@@ -16,14 +16,13 @@ public class MonsterSelecter : MonoBehaviour
     {
         if (isClicked) return;
         
-        if (BattleSystem.Instance.CurrentState is SelectPlayerMonsterState state && !isClicked)
+        if (BattleSystem.Instance.CurrentState is SelectPlayerMonsterState state)
         {
             state.OnMonsterSelected(monster);
         }
 
         if (BattleSystem.Instance.CurrentState is SelectTargetState enemyState && !isClicked)
         {
-            isClicked = true;
             enemyState.OnSelectTargetMonster(monster);
         }
         if (BattleSystem.Instance.CurrentState is SelectItemUseState itemUseState)

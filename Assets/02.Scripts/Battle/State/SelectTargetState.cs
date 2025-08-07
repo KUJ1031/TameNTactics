@@ -26,7 +26,6 @@ public class SelectTargetState : BaseBattleState
         if (!BattleManager.Instance.possibleTargets.Contains(monster))
         {
             Debug.Log("올바른 타겟이 아닙니다.");
-            MonsterSelecter.isClicked = false;
             return;
         }
         //UIManager.Instance.battleUIManager.OffSelectMonsterUI();
