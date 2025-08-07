@@ -176,8 +176,11 @@ public class BattleManager : Singleton<BattleManager>
     // 스킬 고르기
     public void SelectSkill(SkillData skill)
     {
-        if (skill.skillType == SkillType.UltimateSkill && selectedPlayerMonster.Level < 15)
+        if (skill.skillType == SkillType.UltimateSkill)
         {
+            if(selectedPlayerMonster.Level < 15 ||
+               selectedPlayerMonster.CurUltimateCost < selectedPlayerMonster.MaxUltimateCost)
+                
             Debug.Log($"레벨이 낮아 궁극기를 사용할 수 없습니다.");
             return;
         }
