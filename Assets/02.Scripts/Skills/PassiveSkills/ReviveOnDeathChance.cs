@@ -11,6 +11,8 @@ public class ReviveOnDeathChance : IPassiveSkill
         {
             int amount = Mathf.RoundToInt(self.Level >= 20 ? self.CurMaxHp * 0.3f : self.CurMaxHp * 0.5f);
             self.Heal(amount);
+            UIManager.Instance.battleUIManager.ReviveGauge(self);
+            
         }
     }
     

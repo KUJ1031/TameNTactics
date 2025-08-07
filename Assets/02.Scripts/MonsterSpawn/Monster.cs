@@ -369,11 +369,10 @@ public class Monster
 
         if (CurHp <= 0)
         {
-            Debug.Log("Dead");
             InitializeStatus();
-            OnAllyDeath(this);
-            
             EventBus.OnMonsterDead?.Invoke(this);
+            
+            OnAllyDeath(this);
         }
         else
         {
