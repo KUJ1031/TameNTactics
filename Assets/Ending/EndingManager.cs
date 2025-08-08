@@ -13,7 +13,8 @@ public class EndingManager : MonoBehaviour
 
     public Image[] entryMonsetersimages;
 
-    private void Awake()
+    
+    public void output()
     {
         for (int i = 0; i < PlayerManager.Instance.player.entryMonsters.Count; i++)
         {
@@ -27,5 +28,4 @@ public class EndingManager : MonoBehaviour
             }
         }
     }
-
 }
