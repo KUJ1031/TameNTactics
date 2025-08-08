@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EventAlertManager : Singleton<EventAlertManager>
 {
-    public EventAlertPopUp eventAlertPopup;
+    public EventAlertPopup eventAlertPopup;
     public EventAlertSlot alertSlotPrefab; // 알림 슬롯 프리팹
     public Transform alertSlotsParent;
 

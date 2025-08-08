@@ -246,6 +246,7 @@ public class FinalFightManager : Singleton<FinalFightManager>
 
         StartCoroutine(ShakeObject(BossRoomDoor.transform, 0.5f, 0.1f));
         yield return new WaitForSeconds(delay);
+        PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
 
         DialogueManager.Instance.StartDialogue("목수", carpenterImage, 1614);
         Destroy(target);
