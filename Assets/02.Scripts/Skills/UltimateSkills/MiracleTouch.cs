@@ -22,7 +22,7 @@ public class MiracleTouch : ISkillEffect
         {
             if (target.CurHp > 0)
             {
-                BattleManager.Instance.ReviveMonsters(caster, target, target.CurMaxHp);
+                target.Heal(target.CurMaxHp);
                 target.RemoveStatusEffects();
                 if (caster.Level >= 25)
                 {
