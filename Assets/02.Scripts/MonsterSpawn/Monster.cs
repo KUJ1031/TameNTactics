@@ -339,10 +339,6 @@ public class Monster
     //피해받기
     public void TakeDamage(int damage)
     {
-        var team = BattleManager.Instance.BattleEntryTeam.Contains(this)
-            ? BattleManager.Instance.BattleEntryTeam
-            : BattleManager.Instance.BattleEnemyTeam;
-        
         int modifiedDamage;
 
         if (isShield)
@@ -696,5 +692,32 @@ public class Monster
         if (monster.CurHp >= monster.CurMaxHp) monster.CurHp = monster.CurMaxHp;
         HpChange?.Invoke(monster);
         EventBus.OnMonsterRevive?.Invoke(monster);
+    }
+
+    public void ReflectDamage(int damage)
+    {
+        int modifiedDamage;
+
+        if (isShield)
+        {
+            modifiedDamage = 0;
+            isShield = false;
+        }
+
+        else modifiedDamage = damage;
+
+        CurHp -= modifiedDamage;
+        if (CurHp < 0) CurHp = 0;
+
+        DamagePopup?.Invoke(this, modifiedDamage);
+        HpChange?.Invoke(this);
+
+        if (CurHp <= 0)
+        {
+            InitializeStatus();
+            EventBus.OnMonsterDead?.Invoke(this);
+
+            OnAllyDeath(this);
+        }
     }
 }

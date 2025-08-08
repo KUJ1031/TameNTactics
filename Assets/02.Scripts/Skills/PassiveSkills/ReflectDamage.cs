@@ -7,7 +7,7 @@ public class ReflectDamage : IPassiveSkill
     public int OnDamaged(Monster self, int damage, Monster actor)
     {
         int reflectDamage = Mathf.RoundToInt(self.Level >= 20 ? damage * 0.15f : damage * 0.1f);
-        actor.TakeDamage(reflectDamage);
+        actor.ReflectDamage(reflectDamage);
         return damage;
     }
 
