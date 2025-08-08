@@ -19,19 +19,19 @@ MonoBehaviour:
   captureCount: 0
   type: 0
   personality: 0
-  maxHp: 75
+  maxHp: 1
   attack: 12
   defense: 6
   speed: 16
   criticalChance: 9
   maxExp: 20
-  MaxUltimateCost: 10
+  MaxUltimateCost: 2
   expReward: 5
   goldReward: 100
   skills:
-  - {fileID: 11400000, guid: 9ddf6eacc24c2934da4bcb5893da9d33, type: 2}
+  - {fileID: 11400000, guid: 6fe94066213bed948bf0a220bcdfbeaa, type: 2}
   - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
-  - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
+  - {fileID: 11400000, guid: 2ec6c3a9a29bbc54c99ba1389434016c, type: 2}
   spawnArea: 0
   spawnTime: 0
   captureRate: 0

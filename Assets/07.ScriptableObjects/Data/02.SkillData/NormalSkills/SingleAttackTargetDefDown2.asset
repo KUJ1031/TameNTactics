@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
   m_Name: SingleAttackTargetDefDown2
   m_EditorClassIdentifier: 
-  skillType: 0
+  skillType: 1
   passiveSkillList: 0
-  normalSkillList: 0
+  normalSkillList: 15
   ultimateSkillList: 0
-  skillName: 
-  skillPower: 0
+  skillName: "\uD655\uB960 \uBC29\uC5B4\uB825 \uB2E4\uC6B4"
+  skillPower: 1
   skillEffectPrefab: {fileID: 0}
-  targetScope: 0
-  targetCount: 0
+  targetScope: 3
+  targetCount: 1
   icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
-  description: 
+  description: "\uC77C\uC815 \uD655\uB960\uB85C \uC0C1\uB300\uBC29\uC758 \uBC29\uC5B4\uB825\uC744
+    10% \uAC10\uC18C\uC2DC\uD0A8\uB2E4."
   upgradeDescription: 
   damageSound: {fileID: 0}

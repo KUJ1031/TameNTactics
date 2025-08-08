@@ -17,7 +17,7 @@ MonoBehaviour:
   normalSkillList: 6
   ultimateSkillList: 0
   skillName: "\uB354\uBE14 \uC5B4\uD0DD"
-  skillPower: 0.5
+  skillPower: 0.7
   skillEffectPrefab: {fileID: 4748681987041982144, guid: a32195572ef3dc040bdf1d9f52373826, type: 3}
   targetScope: 3
   targetCount: 2

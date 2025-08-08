@@ -24,7 +24,7 @@ public class SelectPlayerMonsterState : BaseBattleState
 
     public void OnMonsterSelected(Monster monster)
     {
-        if (monster.CurHp <= 0 || !monster.canAct) return;
+        if (monster.CurHp <= 0 || !monster.debuffCanAct) return;
         BattleManager.Instance.SelectPlayerMonster(monster);
         if (BattleManager.Instance.BattleEntryTeam.Contains(monster))
         {

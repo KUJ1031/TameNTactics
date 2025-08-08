@@ -16,11 +16,13 @@ MonoBehaviour:
   passiveSkillList: 0
   normalSkillList: 0
   ultimateSkillList: 4
-  skillName: o
-  skillPower: 1.6
+  skillName: "\uC528\uAC8C \uB54C\uB9BC"
+  skillPower: 1.5
+  skillEffectPrefab: {fileID: 0}
   targetScope: 3
   targetCount: 1
   icon: {fileID: 0}
   upgradeIcon: {fileID: 0}
-  description: oooooooo
+  description: "\uBB34\uC870\uAC74 \uC2A4\uD134"
   upgradeDescription: 
+  damageSound: {fileID: 0}

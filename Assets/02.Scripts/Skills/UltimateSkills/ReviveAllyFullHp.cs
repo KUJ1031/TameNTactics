@@ -20,7 +20,7 @@ public class ReviveAllyFullHp : ISkillEffect
 
         foreach (var target in targetCopy)
         {
-            target.Heal(target.MaxHp);
+            target.ReviveMonster(target, target.CurMaxHp);
             if (caster.Level >= 25) target.Shield();
         }
     }
