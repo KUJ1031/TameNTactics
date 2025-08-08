@@ -14,10 +14,22 @@ public class PlayerMenuState : BaseBattleState
         UIManager.Instance.battleUIManager.DisableHoverSelect();
         UIManager.Instance.battleUIManager.IntoBattleMenuSelect();
 
-        if (PlayerManager.Instance.player.playerEliteStartCheck[0] || PlayerManager.Instance.player.playerEliteStartCheck[1] || PlayerManager.Instance.player.playerEliteStartCheck[2])
+        bool isDeanFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Dean");
+        bool isEisenFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Eisen");
+        bool isDolanFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Dolan");
+        bool isBossFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Boss");
+
+        if (isDeanFight || isEisenFight || isDolanFight || isBossFight)
         {
-            UIManager.Instance.battleUIManager.BattleSelectView.HideEmbraceButton();
-            UIManager.Instance.battleUIManager.BattleSelectView.HideRunButton();
+            Debug.Log("보스전에서는 포획 버튼을 사용할 수 없습니다.");
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_false();
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
+        }
+        else
+        {
+            Debug.Log("일반 전투에서는 포획 버튼과 도망가기 버튼을 사용할 수 있습니다.");
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_true();
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_true();
         }
         OnTurnStart();
     }

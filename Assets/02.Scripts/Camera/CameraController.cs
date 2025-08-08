@@ -64,7 +64,7 @@ public class CameraController : Singleton<CameraController>
     {
         switch (scene.name)
         {
-            case "MainMapScene":
+            case "MainMapPuzzleTestScene":
                 CurrentVCam = GameObject.Find("PlayerCamera")?.GetComponent<CinemachineVirtualCamera>();
                 Transform playerTransform = GameObject.Find("Player")?.transform;
                 SetTarget(playerTransform);

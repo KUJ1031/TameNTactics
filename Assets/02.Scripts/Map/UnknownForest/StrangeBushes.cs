@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem;
 
 public class StrangeBushes : MonoBehaviour
 {
@@ -20,8 +23,31 @@ public class StrangeBushes : MonoBehaviour
 
     public List<MonsterData> forestMonsterDataList; // 인스펙터에서 세팅
 
+    [Header("상호작용 키")]
+    public string keySettingName = "Player.Interaction.0"; // 키 설정 이름
+    private ButtonControl interactButton;
+    [Header("UI")]
+    public GameObject interactPromptObj; // UI 오브젝트 (ex: 텍스트가 담긴 오브젝트)
+    public TMP_Text interactPromptText;  // 키 이름을 보여줄 TextMeshPro 텍스트
+
     private void Start()
     {
+        // 키 경로 받아서 ButtonControl 캐싱
+        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path))
+        {
+            var control = InputSystem.FindControl(path);
+            interactButton = control as ButtonControl;
+
+            if (interactButton == null)
+                Debug.LogWarning($"입력 경로 '{path}'에 해당하는 ButtonControl을 찾지 못했습니다.");
+        }
+        else
+        {
+            Debug.LogWarning($"키 설정 '{keySettingName}'이 없습니다.");
+        }
+        if (interactPromptObj != null)
+            interactPromptObj.SetActive(false);
+
         InitializeItemChances();
 
         if (unknownForest == null)
@@ -78,6 +104,14 @@ public class StrangeBushes : MonoBehaviour
             playerInZone = true;
             player = collision.gameObject;
             UnknownForestManager.Instance.currentBush = this;  // 자신을 등록
+            if (interactPromptObj != null)
+            {
+                interactPromptObj.SetActive(true);
+                if (interactButton != null)
+                {
+                    interactPromptText.text = $"[{interactButton.name}] 상호작용";
+                }
+            }
         }
     }
 
@@ -88,6 +122,8 @@ public class StrangeBushes : MonoBehaviour
             playerInZone = false;
             player = null;
             UnknownForestManager.Instance.currentBush = null;  // 자신을 해제
+            if (interactPromptObj != null)
+                interactPromptObj.SetActive(false);
         }
     }
 

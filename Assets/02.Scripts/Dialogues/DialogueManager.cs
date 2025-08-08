@@ -699,37 +699,43 @@ public class DialogueManager : Singleton<DialogueManager>
             case "FightElite_Dean":
                 FinalFightManager.Instance.Fight_Dean();
                 break;
-                case "Disappear_Dean":
+            case "Disappear_Dean":
+                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
                 FadeManager.Instance.FadeOutThenIn(1f,() =>  // 어두울 때 실행
                 {
                     Destroy(FinalFightManager.Instance.deanObj);
                 },
                 () =>  // 밝아질 때 실행
                 {
+                    PlayerManager.Instance.playerController.isInputBlocked = false; // 플레이어 입력 차단 해제
                 });
                 break;
             case "FightElite_Eisen":
                 FinalFightManager.Instance.Fight_Eisen();
                 break;
             case "Disappear_Eisen":
+                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
                 FadeManager.Instance.FadeOutThenIn(1f, () =>  // 어두울 때 실행
                 {
                     Destroy(FinalFightManager.Instance.eisenObj);
                 },
                 () =>  // 밝아질 때 실행
                 {
+                    PlayerManager.Instance.playerController.isInputBlocked = false; // 플레이어 입력 차단 해제
                 });
                 break;
             case "FightElite_Dolan":
                 FinalFightManager.Instance.Fight_Dolan();
                 break;
             case "Disappear_Dolan":
+                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
                 FadeManager.Instance.FadeOutThenIn(1f, () =>  // 어두울 때 실행
                 {
                     Destroy(FinalFightManager.Instance.dolanObj);
                 },
                 () =>  // 밝아질 때 실행
                 {
+                    PlayerManager.Instance.playerController.isInputBlocked = false; // 플레이어 입력 차단 해제
                 });
                 break;
             case "MoveBossRoomInit":
@@ -756,7 +762,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 }
                 break;
             case "Quest_FindCarpenterCleared":
-                EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "끊어진 다리");
+                if (!PlayerManager.Instance.player.playerQuestClearCheck[2]) EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "끊어진 다리");
                 PlayerManager.Instance.player.playerQuestClearCheck[2] = true;
                 PlayerManager.Instance.player.playerQuestStartCheck[2] = false;
                 break;
@@ -773,12 +779,18 @@ public class DialogueManager : Singleton<DialogueManager>
                 StartDialogue("보스", FinalFightManager.Instance.bossImage, 1621);
                 break;
             case "FightBoss":
-                StartDialogue("보스", FinalFightManager.Instance.bossImage, 1630);
+                FinalFightManager.Instance.Fight_Boss();
                 break;
             case "Quest_StolenTreeCleared":
                 EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "빼앗긴 나무");
                 PlayerManager.Instance.player.playerQuestClearCheck[4] = true;
                 PlayerManager.Instance.player.playerQuestStartCheck[4] = false;
+                break;
+            case "Check_Quest_StolenTreeCleared":
+                if (!PlayerManager.Instance.player.playerQuestClearCheck[4])
+                {
+                    StartDialogue("나", FinalFightManager.Instance.fineImage, 1660);
+                }
                 break;
             case "DisappearBoss":
                 FadeManager.Instance.FadeOutThenIn(1f, () =>  // 어두울 때 실행
@@ -823,7 +835,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 Debug.Log("[이벤트] 엔딩 씬으로 이동");
                 break;
             case "BackToBridgeInit":
-                PlayerManager.Instance.playerController.AutoMove(Vector2.left, 1f, 3f, true);
+                PlayerManager.Instance.playerController.AutoMove(Vector2.left, 1f, 5f, true);
 
                 break;
             default:

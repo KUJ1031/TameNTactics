@@ -64,6 +64,9 @@ public class FinalFightManager : Singleton<FinalFightManager>
                 break;
             }
         }
+        if (PlayerManager.Instance.player.playerBossClearCheck[0])
+            DialogueManager.Instance.StartDialogue("보스", bossImage, 1630);
+
     }
 
     bool CheckEliteClears(int count)
@@ -98,9 +101,9 @@ public class FinalFightManager : Singleton<FinalFightManager>
     {
         return index switch
         {
-            0 => dean[0].monsterImage,
-            1 => eisen[0].monsterImage,
-            2 => dolan[0].monsterImage,
+            0 => deanImage,
+            1 => eisenImage,
+            2 => dolanImage,
             _ => null
         };
     }
@@ -116,10 +119,10 @@ public class FinalFightManager : Singleton<FinalFightManager>
         };
     }
 
-    public void Fight_Dean() => StartFight(0, dean);
-    public void Fight_Eisen() => StartFight(1, eisen);
-    public void Fight_Dolan() => StartFight(2, dolan);
-    public void Fight_Boss() => StartFight(-1, boss, 20);
+    public void Fight_Dean() => StartFight(0, dean, 1, 1);
+    public void Fight_Eisen() => StartFight(1, eisen, 1, 1);
+    public void Fight_Dolan() => StartFight(2, dolan, 1, 1);
+    public void Fight_Boss() => StartFight(-1, boss, 1, 1);
 
     private void StartFight(int index, List<MonsterData> teamData, int levelMin = 30, int levelMax = 30)
     {

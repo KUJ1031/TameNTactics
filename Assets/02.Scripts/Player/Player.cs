@@ -48,6 +48,8 @@ public class Player
 
     public SerializableDictionary<int, bool> playerEliteStartCheck = new(); // 스테이지 클리어 체크
     public SerializableDictionary<int, bool> playerEliteClearCheck = new();
+
+    public SerializableDictionary<int, bool> playerBossStartCheck = new(); // 스테이지 클리어 체크
     public SerializableDictionary<int, bool> playerBossClearCheck = new();
 
     public SerializableDictionary<int, bool> playerPuzzleClearCheck = new();

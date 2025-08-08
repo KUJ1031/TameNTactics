@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: Boss
   monsterNumber: 100
   monsterImage: {fileID: 0}
-  encounterCount: 0
+  encounterCount: 5
   captureCount: 0
   type: 4
   personality: 6
@@ -28,7 +28,10 @@ MonoBehaviour:
   MaxUltimateCost: 10
   expReward: 0
   goldReward: 0
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: 0c099ab56652b004c8ae259e1628bc50, type: 2}
+  - {fileID: 11400000, guid: 176efcb45b748cb4ca55511fc177778b, type: 2}
+  - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
   spawnArea: 0
   spawnTime: 0
   captureRate: 0

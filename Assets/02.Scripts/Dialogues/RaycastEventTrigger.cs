@@ -32,12 +32,16 @@ public class RaycastEventTrigger : MonoBehaviour
     {
         Vector2 direction = GetDirectionVector(rayDirectionEnum);
 
-        // 박스 크기 설정 (광선 대신 작은 박스 사용)
+        // 박스 크기 정의
         Vector2 boxSize = (rayDirectionEnum == RayDirection.Left || rayDirectionEnum == RayDirection.Right)
-         ? new Vector2(rayDistance, 2f)
-         : new Vector2(2f, rayDistance);
+            ? new Vector2(rayDistance, 0.2f)
+            : new Vector2(0.2f, rayDistance);
 
-        Collider2D hit = Physics2D.OverlapBox(transform.position, boxSize, 0f, playerLayer);
+        // 박스 중심을 Ray 방향으로 절반만큼 이동
+        Vector2 boxCenter = (Vector2)transform.position + direction * (rayDistance / 2f);
+
+        Collider2D hit = Physics2D.OverlapBox(boxCenter, boxSize, 0f, playerLayer);
+
 
         if (hit != null && hit.CompareTag("Player"))
         {
@@ -118,7 +122,13 @@ public class RaycastEventTrigger : MonoBehaviour
         if (!drawDebugRay) return;
 
         Vector2 direction = GetDirectionVector(rayDirectionEnum);
+        Vector2 boxSize = (rayDirectionEnum == RayDirection.Left || rayDirectionEnum == RayDirection.Right)
+            ? new Vector2(rayDistance, 0.2f)
+            : new Vector2(0.2f, rayDistance);
+
+        Vector2 boxCenter = (Vector2)transform.position + direction * (rayDistance / 2f);
+
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)(direction * rayDistance));
+        Gizmos.DrawWireCube(boxCenter, boxSize);
     }
 }

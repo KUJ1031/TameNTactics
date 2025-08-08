@@ -302,7 +302,7 @@ public class AudioManager : Singleton<AudioManager>
                 nextBGMName = "StartScene";
                 fadeInDuration = 10f;
                 break;
-            case "MainMapScene":
+            case "MainMapPuzzleTestScene":
                 string stage = PlayerManager.Instance.player.playerLastStage;
                 switch (stage)
                 {

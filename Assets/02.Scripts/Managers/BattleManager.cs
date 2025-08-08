@@ -565,6 +565,8 @@ public class BattleManager : Singleton<BattleManager>
         bool isDeanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dean");
         bool isEisenDead = DeadEnemyMonsters.Any(m => m.monsterName == "Eisen");
         bool isDolanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dolan");
+        bool isBossDead = DeadEnemyMonsters.Any(m => m.monsterName == "Boss");
+
         if (isDeanDead)
         {
             Debug.Log("엘리트 Dean 처치");
@@ -579,6 +581,11 @@ public class BattleManager : Singleton<BattleManager>
         {
             Debug.Log("엘리트 Dolan 처치");
             PlayerManager.Instance.player.playerEliteClearCheck[2] = true;
+        }
+        if (isBossDead)
+        {
+            Debug.Log("보스 처치");
+            PlayerManager.Instance.player.playerBossClearCheck[0] = true;
         }
     }
 

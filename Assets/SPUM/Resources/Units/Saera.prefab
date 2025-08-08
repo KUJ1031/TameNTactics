@@ -7292,7 +7292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolSpeed: 1
   chaseSpeed: 6
-  sightRadius: 70
+  sightRadius: 150
 --- !u!114 &-3973222667438530455
 MonoBehaviour:
   m_ObjectHideFlags: 0

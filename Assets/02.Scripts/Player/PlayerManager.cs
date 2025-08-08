@@ -41,7 +41,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "MainMapScene")
+        if (scene.name == "MainMapPuzzleTestScene")
         {
             // 1. 저장된 데이터가 있는지 시도해서 불러옴
             SpawnPlayerCharacter(player);
@@ -99,6 +99,14 @@ public class PlayerManager : MonoBehaviour
 
     public void SetBossCleared()
     {
+
+        player.playerBossStartCheck.Add(0, false);
+        player.playerBossStartCheck.Add(1, false);
+        player.playerBossStartCheck.Add(2, false);
+        player.playerBossStartCheck.Add(3, false);
+        player.playerBossStartCheck.Add(4, false);
+
+
         player.playerBossClearCheck.Add(0, false);
         player.playerBossClearCheck.Add(1, false);
         player.playerBossClearCheck.Add(2, false);
