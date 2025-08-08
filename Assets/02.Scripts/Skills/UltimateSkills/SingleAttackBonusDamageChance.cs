@@ -25,11 +25,11 @@ public class SingleAttackBonusDamageChance : ISkillEffect
             float value = caster.Level >= 25 ? 0.6f : 0.4f;
             
             BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, result.isCritical, result.effectiveness);
+            int amount = Mathf.RoundToInt(result.damage * 0.5f);
             
             if (Random.value < value)
             {
-                int amount = Mathf.RoundToInt(result.damage * 0.5f);
-                target.TakeDamage(amount);
+                BattleManager.Instance.StartCoroutine(BattleManager.Instance.BonusAttack(target, amount));
             }
         }
     }

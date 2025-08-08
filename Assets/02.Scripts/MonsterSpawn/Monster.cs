@@ -54,6 +54,7 @@ public class Monster
     public List<BuffEffect> ActiveBuffEffects { get; private set; } = new();
     public List<IPassiveSkill> PassiveSkills { get; private set; } = new();
 
+    public bool debuffCanAct { get; private set; } = true;
     public bool canAct { get; private set; } = true;
     private int skipTurnCount = 0;
     private bool isShield;
@@ -338,22 +339,6 @@ public class Monster
     //피해받기
     public void TakeDamage(int damage)
     {
-        var team = BattleManager.Instance.BattleEntryTeam.Contains(this)
-            ? BattleManager.Instance.BattleEntryTeam
-            : BattleManager.Instance.BattleEnemyTeam;
-
-        foreach (var monster in team)
-        {
-            foreach (var buff in ActiveBuffEffects)
-            {
-                if (buff.Type == BuffEffectType.Taunt)
-                {
-                    TaunterDamage(monster, damage);
-                    return;
-                }
-            }
-        }
-
         int modifiedDamage;
 
         if (isShield)
@@ -367,7 +352,7 @@ public class Monster
         CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
-        DamagePopup?.Invoke(this, damage);
+        DamagePopup?.Invoke(this, modifiedDamage);
         DamagedAnimation?.Invoke(this);
         HpChange?.Invoke(this);
 
@@ -426,19 +411,22 @@ public class Monster
     {
         List<StatusEffect> expired = new();
 
-        foreach (var effect in ActiveStatusEffects)
+        if (CurHp > 0)
         {
-            effect.OnTurnStart(this);
-
-            if (effect.duration <= 0)
+            foreach (var effect in ActiveStatusEffects)
             {
-                expired.Add(effect);
-            }
-        }
+                effect.OnTurnStart(this);
 
-        foreach (var effect in expired)
-        {
-            ActiveStatusEffects.Remove(effect);
+                if (effect.duration <= 0)
+                {
+                    expired.Add(effect);
+                }
+            }
+
+            foreach (var effect in expired)
+            {
+                ActiveStatusEffects.Remove(effect);
+            }
         }
     }
 
@@ -446,19 +434,22 @@ public class Monster
     {
         List<BuffEffect> expired = new();
 
-        foreach (var effect in ActiveBuffEffects)
+        if (CurHp > 0)
         {
-            effect.OnTurnStart(this);
-
-            if (effect.duration <= 0)
+            foreach (var effect in ActiveBuffEffects)
             {
-                expired.Add(effect);
-            }
-        }
+                effect.OnTurnStart(this);
 
-        foreach (var effect in expired)
-        {
-            ActiveBuffEffects.Remove(effect);
+                if (effect.duration <= 0)
+                {
+                    expired.Add(effect);
+                }
+            }
+
+            foreach (var effect in expired)
+            {
+                ActiveBuffEffects.Remove(effect);
+            }
         }
     }
 
@@ -541,6 +532,7 @@ public class Monster
     public void InitializeUltimateCost()
     {
         CurUltimateCost = 0;
+        UltimateCostChange?.Invoke(this);
     }
 
     // 궁극기 코스트 1개 증가
@@ -581,10 +573,12 @@ public class Monster
     {
         if (isApplied)
         {
-            canAct = false;
+            Debug.Log("여기는 들어옴?");
+            debuffCanAct = false;
+            Debug.Log(debuffCanAct);
         }
 
-        else canAct = true;
+        else debuffCanAct = true;
     }
 
     //즐겨찾기 변경
@@ -611,12 +605,6 @@ public class Monster
         }
     }
 
-    public void InitializeMonsterAct()
-    {
-        canAct = true;
-        skipTurnCount = 0;
-    }
-
     public void EncounterPlus()
     {
         monsterData.encounterCount++;
@@ -624,7 +612,6 @@ public class Monster
 
     public void InitializeBattleStart()
     {
-        InitializeMonsterAct();
         InitializeUltimateCost();
         InitializePassiveSkills();
         InitializeBattleStats();
@@ -650,7 +637,7 @@ public class Monster
         ActiveBuffEffects.Clear();
         isShield = false;
         canBeHealed = true;
-        canAct = true;
+        debuffCanAct = true;
         isImmuneToStatus = false;
         healDuration = 0;
         skipTurnCount = 0;
@@ -698,12 +685,17 @@ public class Monster
         isImmuneToStatus = true;
     }
 
-    public void TaunterDamage(Monster taunter, int damage)
+    public void ReviveMonster(Monster monster, int amount)
     {
-        var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(taunter)
-            ? BattleManager.Instance.BattleEnemyTeam
-            : BattleManager.Instance.BattleEntryTeam;
+        UIManager.Instance.battleUIManager.ReviveGauge(monster);
+        monster.CurHp += amount;
+        if (monster.CurHp >= monster.CurMaxHp) monster.CurHp = monster.CurMaxHp;
+        HpChange?.Invoke(monster);
+        EventBus.OnMonsterRevive?.Invoke(monster);
+    }
 
+    public void ReflectDamage(int damage)
+    {
         int modifiedDamage;
 
         if (isShield)
@@ -717,26 +709,15 @@ public class Monster
         CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
-        DamagePopup?.Invoke(taunter, damage);
-        DamagedAnimation?.Invoke(taunter);
-        HpChange?.Invoke(taunter);
+        DamagePopup?.Invoke(this, modifiedDamage);
+        HpChange?.Invoke(this);
 
         if (CurHp <= 0)
         {
             InitializeStatus();
-            EventBus.OnMonsterDead?.Invoke(taunter);
-            OnAllyDeath(taunter);
-        }
-    }
+            EventBus.OnMonsterDead?.Invoke(this);
 
-    public void ReviveMonster(Monster monster, int amount)
-    {
-        ActiveBuffEffects.Clear();
-        ActiveStatusEffects.Clear();
-        UIManager.Instance.battleUIManager.ReviveGauge(monster);
-        monster.CurHp += amount;
-        if (monster.CurHp >= monster.CurMaxHp) monster.CurHp = monster.CurMaxHp;
-        HpChange?.Invoke(monster);
-        EventBus.OnMonsterRevive?.Invoke(monster);
+            OnAllyDeath(this);
+        }
     }
 }
