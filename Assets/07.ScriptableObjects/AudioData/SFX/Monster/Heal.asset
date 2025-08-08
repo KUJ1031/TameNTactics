@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Heal
   m_EditorClassIdentifier: 
   clipName: Heal
-  clip: {fileID: 0}
+  clip: {fileID: 8300000, guid: 0e6adc80125dafd409eb4f776ab9eeaa, type: 3}
   type: 1
   volume: 1
   loop: 0

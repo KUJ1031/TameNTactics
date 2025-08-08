@@ -15,10 +15,10 @@ MonoBehaviour:
   monsterName: Elona
   monsterNumber: 2
   monsterImage: {fileID: 1921564425, guid: 639ffb60b3036034ab97e94e149a5529, type: 3}
-  encounterCount: 0
+  encounterCount: 13
   captureCount: 0
   type: 0
-  personality: 12
+  personality: 0
   maxHp: 90
   attack: 15
   defense: 9
@@ -29,11 +29,11 @@ MonoBehaviour:
   expReward: 5
   goldReward: 100
   skills:
-  - {fileID: 11400000, guid: 6fe94066213bed948bf0a220bcdfbeaa, type: 2}
-  - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
+  - {fileID: 11400000, guid: 2afa192ff1116e341ae4adf17427eee4, type: 2}
+  - {fileID: 11400000, guid: 5ae91395531acfb49b9b9dc7ed356368, type: 2}
   - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
   spawnArea: 0
   spawnTime: 0
   captureRate: 0
   description: 
-  damageSound: {fileID: 0}
+  damageSound: {fileID: 11400000, guid: 62ee218748d55754b9706e815341cd4b, type: 2}

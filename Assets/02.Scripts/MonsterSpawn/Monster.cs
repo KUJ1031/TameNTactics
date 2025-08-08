@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
@@ -6,11 +7,9 @@ using Random = System.Random;
 [System.Serializable]
 public class Monster
 {
-    [Header("몬스터 정보 데이터")]
-    public MonsterData monsterData;
+    [Header("몬스터 정보 데이터")] public MonsterData monsterData;
 
-    [Header("기본 정보")]
-    public string monsterName;
+    [Header("기본 정보")] public string monsterName;
     public int monsterID;
     public MonsterType type;
     public Personality personality;
@@ -18,7 +17,8 @@ public class Monster
     [field: SerializeField] public bool IsFavorite { get; private set; } = false;
 
     [field: Header("능력치")]
-    [field: SerializeField] public int Level { get; private set; } = 1;
+    [field: SerializeField]
+    public int Level { get; private set; } = 1;
 
     [field: SerializeField] public int MaxHp { get; private set; }
     [field: SerializeField] public int CurHp { get; private set; }
@@ -36,11 +36,12 @@ public class Monster
 
 
     [field: Header("배틀 리워드")]
-    [field: SerializeField] public int ExpReward { get; private set; }
+    [field: SerializeField]
+    public int ExpReward { get; private set; }
+
     [field: SerializeField] public int GoldReward { get; private set; }
 
-    [Header("스킬 정보")]
-    public List<SkillData> skills;
+    [Header("스킬 정보")] public List<SkillData> skills;
 
     // 배틀 중 변경되는 스텟
     public int CurMaxHp { get; private set; }
@@ -58,7 +59,7 @@ public class Monster
     private bool isShield;
     private bool canBeHealed = true;
     private int healDuration = 0;
-    private bool isTaunted;
+    private bool isImmuneToStatus;
 
     public Action<Monster> HpChange;
     public Action<Monster> UltimateCostChange;
@@ -73,6 +74,7 @@ public class Monster
             Debug.LogError("SetMonster: 복사할 sourceMonster가 null입니다.");
             return;
         }
+
         //몬스터 정보 데이터
         monsterData = newMonster.monsterData;
 
@@ -120,7 +122,8 @@ public class Monster
         monsterData = data;
 
         monsterName = data.monsterName;
-        monsterID = PlayerManager.Instance.player.playerGetMonsterCount + 1; //고유 ID는 플레이어가 몬스터를 얻은 횟수로 설정(처음 잡은 몬스터의 ID는 1부터 시작)
+        monsterID = PlayerManager.Instance.player.playerGetMonsterCount +
+                    1; //고유 ID는 플레이어가 몬스터를 얻은 횟수로 설정(처음 잡은 몬스터의 ID는 1부터 시작)
         type = data.type;
         personality = data.personality;
 
@@ -182,6 +185,18 @@ public class Monster
         GoldReward = monsterData.goldReward + 30 * levelMinusOne;
     }
 
+    public void MaxHpUp(int amount)
+    {
+        MaxHp += amount;
+    }
+
+    public void MaxHpDown(int amount)
+    {
+        MaxHp -= amount;
+        if (MaxHp < 0) MaxHp = 0;
+        if (CurHp > MaxHp) CurHp = MaxHp; // 현재 체력이 최대 체력보다 크면 최대 체력으로 설정
+    }
+
     public void PowerUp(int amount)
     {
         CurAttack += amount;
@@ -197,7 +212,7 @@ public class Monster
     {
         CurDefense += amount;
     }
-    
+
     public void BattleDefenseDown(int amount)
     {
         CurDefense -= amount;
@@ -251,9 +266,9 @@ public class Monster
     public void BattleCritChanceUp(int amount)
     {
         CurCriticalChance += amount;
-        if (CriticalChance > 100) CriticalChance = 100;
+        if (CurCriticalChance > 100) CurCriticalChance = 100;
     }
-    
+
     public void BattleCritChanceUpWithLimit(int amount, int maxLimit)
     {
         CurCriticalChance += amount;
@@ -273,14 +288,14 @@ public class Monster
     public void Heal(int amount)
     {
         int modifiedAmount;
-        
+
         if (!canBeHealed)
         {
             modifiedAmount = 0;
         }
-        
+
         else modifiedAmount = amount;
-        
+
         CurHp += modifiedAmount;
         if (CurHp >= CurMaxHp) CurHp = CurMaxHp;
         HpChange?.Invoke(this);
@@ -302,6 +317,7 @@ public class Monster
         if (CurHp > MaxHp) CurHp = MaxHp;
         HpChange?.Invoke(this);
     }
+
     public void HealFull()
     {
         CurHp = MaxHp;
@@ -322,6 +338,22 @@ public class Monster
     //피해받기
     public void TakeDamage(int damage)
     {
+        var team = BattleManager.Instance.BattleEntryTeam.Contains(this)
+            ? BattleManager.Instance.BattleEntryTeam
+            : BattleManager.Instance.BattleEnemyTeam;
+
+        foreach (var monster in team)
+        {
+            foreach (var buff in ActiveBuffEffects)
+            {
+                if (buff.Type == BuffEffectType.Taunt)
+                {
+                    TaunterDamage(monster, damage);
+                    return;
+                }
+            }
+        }
+
         int modifiedDamage;
 
         if (isShield)
@@ -331,35 +363,20 @@ public class Monster
         }
 
         else modifiedDamage = damage;
-        
+
         CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
         DamagePopup?.Invoke(this, damage);
         DamagedAnimation?.Invoke(this);
+        HpChange?.Invoke(this);
 
         if (CurHp <= 0)
         {
             InitializeStatus();
-            
-            foreach (var passive in PassiveSkills)
-            {
-                if (passive is ReviveOnDeathChance reviveOnDeathChance)
-                {
-                    reviveOnDeathChance.OnDeath(this);
-                }
-                if (passive is PoisonEnemiesOnDeath poisonEnemiesOnDeath)
-                {
-                    poisonEnemiesOnDeath.OnDeath(BattleManager.Instance.BattleEnemyTeam);
-                }
-            }
-            
-            OnAllyDeath(this);
             EventBus.OnMonsterDead?.Invoke(this);
-        }
-        else
-        {
-            HpChange?.Invoke(this);
+
+            OnAllyDeath(this);
         }
     }
 
@@ -373,14 +390,11 @@ public class Monster
     // 상태이상 적용
     public void ApplyStatus(StatusEffect effect)
     {
-        foreach (var passive in PassiveSkills)
+        if (isImmuneToStatus)
         {
-            if (passive is StatusEffectImmunity { IsImmuneToStatus: true })
-            {
-                return;
-            }
+            return;
         }
-        
+
         foreach (var existing in ActiveStatusEffects)
         {
             if (existing.Type == effect.Type)
@@ -431,7 +445,7 @@ public class Monster
     public void UpdateBuffEffects()
     {
         List<BuffEffect> expired = new();
-        
+
         foreach (var effect in ActiveBuffEffects)
         {
             effect.OnTurnStart(this);
@@ -468,9 +482,10 @@ public class Monster
             }
         }
     }
-    
-    public void TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill, float effectiveness)
+
+    public IEnumerator TriggerOnAttack(Monster actor, int damage, Monster target, SkillData skill, float effectiveness)
     {
+        yield return new WaitForSeconds(1f);
         foreach (var passive in PassiveSkills)
         {
             passive.OnAttack(actor, damage, target, skill, effectiveness);
@@ -498,21 +513,19 @@ public class Monster
     // 데미지 받을 시 패시브 발동
     public int TriggerOnDamaged(int damage, Monster actor)
     {
-        int modifiedDamage = damage;
-
         foreach (var passive in PassiveSkills)
         {
-            modifiedDamage = passive.OnDamaged(this, modifiedDamage, actor);
+            damage = passive.OnDamaged(this, damage, actor);
         }
 
-        return modifiedDamage;
+        return damage;
     }
 
     // 도망마스터 패시브 있을 시 100 도망 가능
     public bool TryRunAwayWithPassive(out bool isGuaranteed)
     {
         isGuaranteed = false;
-        
+
         foreach (var passive in PassiveSkills)
         {
             if (passive is EscapeMaster escapeMaster)
@@ -520,7 +533,7 @@ public class Monster
                 return escapeMaster.TryEscape(this, ref isGuaranteed);
             }
         }
-        
+
         return false;
     }
 
@@ -630,13 +643,15 @@ public class Monster
         if (isHealable) canBeHealed = true;
         else canBeHealed = false;
     }
-    
+
     public void InitializeStatus()
     {
+        ActiveStatusEffects.Clear();
+        ActiveBuffEffects.Clear();
         isShield = false;
         canBeHealed = true;
         canAct = true;
-        isTaunted = false;
+        isImmuneToStatus = false;
         healDuration = 0;
         skipTurnCount = 0;
     }
@@ -645,12 +660,6 @@ public class Monster
     {
         healDuration += duration - 1;
     }
-    
-    public void Taunt(bool isApplied)
-    {
-        if (isApplied) isTaunted = true;
-        else isTaunted = false;
-    }
 
     private void OnAllyDeath(Monster self)
     {
@@ -658,15 +667,76 @@ public class Monster
             ? BattleManager.Instance.BattleEntryTeam
             : BattleManager.Instance.BattleEnemyTeam;
 
+        var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(self)
+            ? BattleManager.Instance.BattleEnemyTeam
+            : BattleManager.Instance.BattleEntryTeam;
+
         foreach (var monster in team)
         {
             foreach (var passive in monster.PassiveSkills)
             {
                 if (passive is AtkUpOnAllyDeath)
                 {
-                    passive.OnAllyDeath(monster);
+                    passive.OnAllyDeath(monster, team);
+                }
+
+                if (passive is PoisonEnemiesOnDeath)
+                {
+                    passive.OnAllyDeath(monster, enemyTeam);
+                }
+
+                if (passive is ReviveOnDeathChance)
+                {
+                    passive.OnAllyDeath(monster, team);
                 }
             }
         }
+    }
+
+    public void SetImmuneToStatus()
+    {
+        isImmuneToStatus = true;
+    }
+
+    public void TaunterDamage(Monster taunter, int damage)
+    {
+        var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(taunter)
+            ? BattleManager.Instance.BattleEnemyTeam
+            : BattleManager.Instance.BattleEntryTeam;
+
+        int modifiedDamage;
+
+        if (isShield)
+        {
+            modifiedDamage = 0;
+            isShield = false;
+        }
+
+        else modifiedDamage = damage;
+
+        CurHp -= modifiedDamage;
+        if (CurHp < 0) CurHp = 0;
+
+        DamagePopup?.Invoke(taunter, damage);
+        DamagedAnimation?.Invoke(taunter);
+        HpChange?.Invoke(taunter);
+
+        if (CurHp <= 0)
+        {
+            InitializeStatus();
+            EventBus.OnMonsterDead?.Invoke(taunter);
+            OnAllyDeath(taunter);
+        }
+    }
+
+    public void ReviveMonster(Monster monster, int amount)
+    {
+        ActiveBuffEffects.Clear();
+        ActiveStatusEffects.Clear();
+        UIManager.Instance.battleUIManager.ReviveGauge(monster);
+        monster.CurHp += amount;
+        if (monster.CurHp >= monster.CurMaxHp) monster.CurHp = monster.CurMaxHp;
+        HpChange?.Invoke(monster);
+        EventBus.OnMonsterRevive?.Invoke(monster);
     }
 }

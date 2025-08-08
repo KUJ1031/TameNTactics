@@ -13,6 +13,12 @@ public class PlayerMenuState : BaseBattleState
         UIManager.Instance.battleUIManager.BattleSelectView.HideCancelButton();
         UIManager.Instance.battleUIManager.DisableHoverSelect();
         UIManager.Instance.battleUIManager.IntoBattleMenuSelect();
+
+        if (PlayerManager.Instance.player.playerEliteStartCheck[0] || PlayerManager.Instance.player.playerEliteStartCheck[1] || PlayerManager.Instance.player.playerEliteStartCheck[2])
+        {
+            UIManager.Instance.battleUIManager.BattleSelectView.HideEmbraceButton();
+            UIManager.Instance.battleUIManager.BattleSelectView.HideRunButton();
+        }
         OnTurnStart();
     }
 

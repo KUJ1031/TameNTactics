@@ -28,6 +28,17 @@ public class HouseDoor : MonoBehaviour
         if (other.CompareTag("Player") && isInside)
         {
             isInside = false;
+
+            // battleEntry 안에 있는 모든 몬스터가 죽었는지 체크
+            var battleEntry = PlayerManager.Instance.player.battleEntry;
+            bool allDead = battleEntry.Count > 0 && battleEntry.TrueForAll(mon => mon.CurHp <= 0);
+            if (allDead)
+            {
+                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
+                DialogueManager.Instance.StartDialogue("나", PlayerManager.Instance.playerImage[PlayerManager.Instance.player.playerGender], 1550);
+                Debug.Log("모든 전투 엔트리 몬스터가 죽었습니다.");
+            }
+
             if (fadeCoroutine != null)
                 StopCoroutine(fadeCoroutine);
             fadeCoroutine = StartCoroutine(FadeGroups(0f, 1f)); // indoor fade out, outdoor fade in

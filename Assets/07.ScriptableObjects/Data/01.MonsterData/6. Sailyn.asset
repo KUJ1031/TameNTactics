@@ -15,12 +15,12 @@ MonoBehaviour:
   monsterName: Sailyn
   monsterNumber: 6
   monsterImage: {fileID: -1439325331, guid: f1e6272eb42cd2e4094f19b083fd78fc, type: 3}
-  encounterCount: 0
+  encounterCount: 31
   captureCount: 0
-  type: 1
-  personality: 11
+  type: 0
+  personality: 0
   maxHp: 100
-  attack: 14
+  attack: 140
   defense: 13
   speed: 10
   criticalChance: 4
@@ -29,11 +29,11 @@ MonoBehaviour:
   expReward: 5
   goldReward: 100
   skills:
-  - {fileID: 11400000, guid: 6fe94066213bed948bf0a220bcdfbeaa, type: 2}
-  - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
+  - {fileID: 11400000, guid: 88be09269aed8e8488b76034b5c5822f, type: 2}
+  - {fileID: 11400000, guid: 5ae91395531acfb49b9b9dc7ed356368, type: 2}
   - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
   spawnArea: 0
   spawnTime: 0
   captureRate: 0
   description: 
-  damageSound: {fileID: 0}
+  damageSound: {fileID: 11400000, guid: 264d1ecca827df7409b0cf3434f0139a, type: 2}

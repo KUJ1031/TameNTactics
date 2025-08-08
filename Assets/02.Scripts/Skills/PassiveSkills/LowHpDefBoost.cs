@@ -14,8 +14,8 @@ public class LowHpDefBoost : IPassiveSkill
 
         if (isBelowHalf && !isApplied)
         {
-            int amount = Mathf.RoundToInt(self.Level >= 20 ? 0.3f : 0.2f);
-            increaseDef = self.CurDefense * amount;
+            float amount = self.Level >= 20 ? 0.3f : 0.2f;
+            increaseDef = Mathf.RoundToInt(self.CurDefense * amount);
             self.BattleDefenseUp(increaseDef);
             isApplied = true;
         }
@@ -32,6 +32,6 @@ public class LowHpDefBoost : IPassiveSkill
     }
     
     public int OnDamaged(Monster self, int damage, Monster actor) { return damage; }
-    public void OnAllyDeath(Monster self) {}
+    public void OnAllyDeath(Monster self, List<Monster> team) {}
     public void OnAttack(Monster attacker, int damage, Monster target, SkillData skill, float effectiveness) {}
 }

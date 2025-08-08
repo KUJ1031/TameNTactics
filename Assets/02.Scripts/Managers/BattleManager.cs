@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Rendering;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class BattleManager : Singleton<BattleManager>
 {
@@ -31,6 +32,7 @@ public class BattleManager : Singleton<BattleManager>
     public string previousSceneName;
 
     public bool isCoroutineOver = false;
+    public bool isAttacking = false;
 
     // 배틀 시작시 배틀에 나오는 몬스터 찾아서 리스트에 넣어줌
     public void FindSpawnMonsters()
@@ -73,21 +75,34 @@ public class BattleManager : Singleton<BattleManager>
         foreach (var monster in BattleEntryTeam)
         {
             monster.InitializeBattleStart();
-            monster.TriggerOnBattleStart(BattleEntryTeam);
             Debug.Log($"Entry Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Entry Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
+            Debug.Log($"이름 : {monster.monsterName}\n공격력 : {monster.CurAttack}\n방어력 : {monster.CurDefense}\n치명타확률 : {monster.CurCriticalChance}\n스피드 : {monster.CurSpeed}");
         }
 
         foreach (var monster in BattleEnemyTeam)
         {
             monster.RecalculateStats();
             monster.InitializeBattleStart();
-            monster.TriggerOnBattleStart(BattleEnemyTeam);
             Debug.Log($"Enemy Monster의 현재 최대 체력 : {monster.CurMaxHp}");
             Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
 
+        PassiveSkillActivate();
         ClearSelections();
+    }
+
+    private void PassiveSkillActivate()
+    {
+        foreach (var monster in BattleEntryTeam)
+        {
+            monster.TriggerOnBattleStart(BattleEntryTeam);
+        }
+
+        foreach (var monster in BattleEnemyTeam)
+        {
+            monster.TriggerOnBattleStart(BattleEnemyTeam);
+        }
     }
 
     // 턴 끝날 때 실행
@@ -101,6 +116,7 @@ public class BattleManager : Singleton<BattleManager>
             monster.CheckMonsterAction();
         }
 
+        isAttacking = false;
         isCoroutineOver = true;
         BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
     }
@@ -111,37 +127,29 @@ public class BattleManager : Singleton<BattleManager>
         int finalDamage = target.TriggerOnDamaged(damage, attacker);
         var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
 
-        if (skillData.targetCount == 1 || skillData.targetCount == 2)
+        if (skillData.targetScope != TargetScope.All &&
+            skillData.targetScope != TargetScope.Self &&
+            skillData.targetScope != TargetScope.None &&
+            skillData.targetCount != 0)
         {
             foreach (var monster in team)
             {
-                foreach (var passive in monster.PassiveSkills)
-                {
-                    if (passive is InterceptDamage)
-                    {
-                        InterceptDamage(monster, skillData, finalDamage, team);
-                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness);
-                        BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
-                        return;
-                    }
-                }
-            
                 foreach (var buff in monster.ActiveBuffEffects)
                 {
                     if (buff.Type == BuffEffectType.Taunt)
                     {
                         monster.TakeDamage(finalDamage);
-                        attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness);
+                        StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness));
                         BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
                         return;
                     }
                 }
             }
         }
-        
+
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
-        attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness);
+        StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness));
         BattleDialogueManager.Instance.UseSkillDialogue(attacker, target, finalDamage, skillData);
     }
 
@@ -184,31 +192,44 @@ public class BattleManager : Singleton<BattleManager>
         switch (skill.targetScope)
         {
             case TargetScope.Self:
+                isAttacking = true;
                 possibleTargets = new() { selectedPlayerMonster };
                 selectedTargets = new(possibleTargets);
                 StartCoroutine(CompareSpeedAndFight());
-                return;
+                break;
 
             case TargetScope.All:
+                isAttacking = true;
                 possibleTargets = alivePlayer.Concat(aliveEnemy).ToList();
                 selectedTargets = new(possibleTargets);
                 StartCoroutine(CompareSpeedAndFight());
-                return;
+                break;
 
             case TargetScope.EnemyTeam:
                 possibleTargets = aliveEnemy;
+                
+                if (selectedSkill.targetCount == 0)
+                {
+                    isAttacking = true;
+                    selectedTargets = new(possibleTargets);
+                    StartCoroutine(CompareSpeedAndFight());
+                    UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                    UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                    UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
+                    break;
+                }
 
-                if (aliveEnemy.Count == 1)
+                if (possibleTargets.Count == 1)
                 {
                     if (PlayerManager.Instance.player.playerBattleTutorialCheck)
                     {
-                        selectedTargets.Add(aliveEnemy[0]);
+                        isAttacking = true;
+                        selectedTargets.Add(possibleTargets[0]);
                         StartCoroutine(CompareSpeedAndFight());
-
                         UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
                         UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
                         UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
-                        return;
+                        break;
                     }
                 }
 
@@ -217,18 +238,13 @@ public class BattleManager : Singleton<BattleManager>
 
             case TargetScope.PlayerTeam:
                 possibleTargets = alivePlayer;
+                selectedTargets = new(possibleTargets);
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
 
             default:
                 possibleTargets = new();
                 break;
-        }
-
-        if (skill.targetCount == 0)
-        {
-            selectedTargets = new(possibleTargets);
-            StartCoroutine(CompareSpeedAndFight());
         }
     }
 
@@ -251,6 +267,7 @@ public class BattleManager : Singleton<BattleManager>
         if (selectedTargets.Count == selectedSkill.targetCount &&
             selectedTargets.All(t => t.CurHp > 0))
         {
+            MonsterSelecter.isClicked = true;
             UIManager.Instance.battleUIManager.HidePossibleTargets();
             StartCoroutine(CompareSpeedAndFight());
         }
@@ -365,6 +382,7 @@ public class BattleManager : Singleton<BattleManager>
                 }
             }
 
+            yield return new WaitForSeconds(1f);
             yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f, true));
         }
 
@@ -555,6 +573,32 @@ public class BattleManager : Singleton<BattleManager>
 
         BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
         BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
+
+        bool isDeanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dean");
+        bool isEisenDead = DeadEnemyMonsters.Any(m => m.monsterName == "Eisen");
+        bool isDolanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dolan");
+        bool isBossDead = DeadEnemyMonsters.Any(m => m.monsterName == "Boss");
+
+        if (isDeanDead)
+        {
+            Debug.Log("엘리트 Dean 처치");
+            PlayerManager.Instance.player.playerEliteClearCheck[0] = true;
+        }
+        if (isEisenDead)
+        {
+            Debug.Log("엘리트 Eisen 처치");
+            PlayerManager.Instance.player.playerEliteClearCheck[1] = true;
+        }
+        if (isDolanDead)
+        {
+            Debug.Log("엘리트 Dolan 처치");
+            PlayerManager.Instance.player.playerEliteClearCheck[2] = true;
+        }
+        if (isBossDead)
+        {
+            Debug.Log("보스 처치");
+            PlayerManager.Instance.player.playerBossClearCheck[0] = true;
+        }
     }
 
     // 공격중인 몬스터의 character를 가져오기 위한 메서드
@@ -643,17 +687,13 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    private void InterceptDamage(Monster target, SkillData skillData, int damage, List<Monster> team)
+    public IEnumerator ReviveMonsters(Monster actor, Monster reviveMonster, int healAmount)
     {
-        foreach (var monster in team)
-        {
-            foreach (var passive in monster.PassiveSkills)
-            {
-                if (passive is InterceptDamage interceptDamage)
-                {
-                    interceptDamage.OnDamagedAlly(monster, target, skillData, damage);
-                }
-            }
-        }
+        yield return new WaitForSeconds(1.5f);
+
+        var team = DeadEntryMonsters.Contains(reviveMonster) ? BattleEntryTeam : BattleEnemyTeam;
+        team.Add(reviveMonster);
+
+        actor.ReviveMonster(reviveMonster, healAmount);
     }
 }
