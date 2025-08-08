@@ -24,14 +24,21 @@ public class GameTimeFlow : Singleton<GameTimeFlow>
     public Color dayColor = new Color(0, 0, 0, 0);
     public Color nightColor = new Color(0, 0, 0, 0.5f);
 
+    private float visualTimeOffset;
+
     private void Start()
     {
         timer = PlayerManager.Instance.player.playerLastGameTime;
+        visualTimeOffset = dayLengthInSeconds / 2f; // 12시 시작용 offset
     }
 
     private void Update()
     {
         timer += Time.deltaTime;
+
+        float displayTime = (timer + visualTimeOffset) % dayLengthInSeconds;
+        float normalizedTime = displayTime / dayLengthInSeconds;
+
         UpdateTimeDisplay();
         UpdateDayNightOverlay();
     }
@@ -60,7 +67,8 @@ public class GameTimeFlow : Singleton<GameTimeFlow>
     public void UpdateTimeDisplay()
     {
         float secondsPerGameHour = dayLengthInSeconds / 24f;
-        float gameHours = (timer / secondsPerGameHour) % 24f;
+        float visualTimer = (timer + visualTimeOffset) % dayLengthInSeconds;
+        float gameHours = (visualTimer / secondsPerGameHour) % 24f;
 
         int hours24 = Mathf.FloorToInt(gameHours);
         int minutes = Mathf.FloorToInt((gameHours - hours24) * 60f);
@@ -81,16 +89,29 @@ public class GameTimeFlow : Singleton<GameTimeFlow>
         }
     }
 
+
     private void UpdateDayNightOverlay()
     {
-        float percentOfDay = (timer % dayLengthInSeconds) / dayLengthInSeconds;
-        float t = Mathf.Sin((percentOfDay - 0.25f) * Mathf.PI * 2f) * 0.5f + 0.5f;
+        if (overlayImage == null) return;
 
-        if (overlayImage != null)
+        float visualTimer = (timer + visualTimeOffset) % dayLengthInSeconds;
+        float percentOfDay = visualTimer / dayLengthInSeconds;
+
+        float brightness = 0f;
+
+        if (percentOfDay >= 0.2f && percentOfDay <= 0.8f)
         {
-            overlayImage.color = Color.Lerp(nightColor, dayColor, t);
+            float dayProgress = (percentOfDay - 0.2f) / 0.6f;
+            brightness = Mathf.Sin(dayProgress * Mathf.PI);
         }
+
+        float alpha = Mathf.Lerp(0.9f, 0f, brightness);
+        overlayImage.color = new Color(0f, 0f, 0f, alpha);
     }
+
+
+
+
 
     public float GetCurrentTimer() => timer;
 

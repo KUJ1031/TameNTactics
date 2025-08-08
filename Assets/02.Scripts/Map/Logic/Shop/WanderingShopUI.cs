@@ -13,6 +13,8 @@ public class WanderingShopUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemInfoText;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private InventoryUI inventoryUI; // 인벤토리 UI 참조
+    [SerializeField] private TextMeshProUGUI buyItemText;
+    private Coroutine hideBuyTextCoroutine;
 
     [SerializeField] private Button consumableButton;
     [SerializeField] private Button equipableButton;
@@ -125,6 +127,7 @@ public class WanderingShopUI : MonoBehaviour
                 }
             }
             player.AddItem(selectedItem.data, 1);
+            ShowBuyMessage(selectedItem.data.itemName);
 
             Debug.Log($"[구매] {selectedItem.data.itemName}");
 
@@ -137,6 +140,23 @@ public class WanderingShopUI : MonoBehaviour
             warringPopup.SetActive(true);
             warringPopupText.text = $"골드가 부족합니다.\n 현재 골드 : {selectedItem.data.itemName}";
         }
+    }
+
+    private void ShowBuyMessage(string itemName)
+    {
+        if (hideBuyTextCoroutine != null)
+            StopCoroutine(hideBuyTextCoroutine);
+
+        buyItemText.text = $"[{itemName}] 아이템을 구매하였습니다.";
+        buyItemText.gameObject.SetActive(true);
+
+        hideBuyTextCoroutine = StartCoroutine(HideBuyMessageAfterDelay(3f));
+    }
+
+    private System.Collections.IEnumerator HideBuyMessageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        buyItemText.gameObject.SetActive(false);
     }
 
     public void CloseUI()

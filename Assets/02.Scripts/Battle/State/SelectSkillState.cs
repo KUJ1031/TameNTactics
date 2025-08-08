@@ -10,6 +10,7 @@ public class SelectSkillState : BaseBattleState
     {
         Debug.Log("스킬 선택 상태로 진입했습니다. 스킬을 선택하세요.");
         BattleTutorialManager.Instance.InitSkillSelected();
+        BattleManager.Instance.isAttacking = false;
 
         MonsterData monsterCharacter = BattleManager.Instance.selectedPlayerMonster.monsterData;
         UIManager.Instance.battleUIManager.ShowMonsterSkills(monsterCharacter);
@@ -23,20 +24,24 @@ public class SelectSkillState : BaseBattleState
 
         if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log("마우스 클릭 감지됨. 스킬 선택 상태에서 몬스터 변경을 시도합니다.");
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 
             if (hit.collider != null && BattleManager.Instance.BattleEntryTeam
                     .Contains(BattleManager.Instance.selectedPlayerMonster))
             {
+                Debug.Log("몬스터 변경을 시도합니다.");
                 if (hit.collider.TryGetComponent<MonsterCharacter>(out var monsterCharacter))
                 {
+                    Debug.Log($"몬스터 캐릭터 클릭됨: {monsterCharacter.monster.monsterData.monsterName}");
                     Monster clickedMonster = monsterCharacter.monster;
 
                     if (BattleManager.Instance.possibleActPlayerMonsters.Contains(clickedMonster) &&
                         clickedMonster != BattleManager.Instance.selectedPlayerMonster &&
                         !BattleManager.Instance.isAttacking)
                     {
+                        Debug.Log($"선택된 몬스터: {clickedMonster.monsterData.monsterName}");
                         UIManager.Instance.battleUIManager.DeselectMonster(BattleManager.Instance.selectedPlayerMonster);
                         UIManager.Instance.battleUIManager.ShowMonsterSkills(clickedMonster.monsterData);
                         BattleManager.Instance.SelectPlayerMonster(clickedMonster);

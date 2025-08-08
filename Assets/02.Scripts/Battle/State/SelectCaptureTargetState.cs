@@ -109,7 +109,7 @@ public class SelectCaptureTargetState : BaseBattleState
         }
         else
         {
-            if (!BattleTutorialManager.Instance.isBattleEmbraceTutorialEnded)
+            if (!PlayerManager.Instance.player.playerBattleTutorialCheck)
             {
                 battleSystem.ChangeState(new PlayerMenuState(battleSystem));
                 BattleTutorialManager.Instance.tutorialView.ShowEmbracePanel();

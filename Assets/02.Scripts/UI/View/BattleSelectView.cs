@@ -149,13 +149,23 @@ public class BattleSelectView : MonoBehaviour
         selectMonsterImage.SetActive(false);
     }
 
-    public void HideEmbraceButton()
+    public void InteractableEmbraceButton_false()
     {
-        embraceButton.gameObject.SetActive(false);
+        embraceButton.interactable = false;
     }
 
-    public void HideRunButton()
+    public void InteractableEmbraceButton_true()
     {
-        runButton.gameObject.SetActive(false);
+        embraceButton.interactable = true;
+    }
+
+    public void InteractableRunButton_false()
+    {
+        runButton.interactable = false;
+    }
+
+    public void InteractableRunButton_true()
+    {
+        runButton.interactable = true;
     }
 }

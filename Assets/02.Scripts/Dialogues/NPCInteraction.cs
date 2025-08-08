@@ -1,13 +1,22 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+
+[System.Serializable]
+public class SpeakerData
+{
+    public string speakerName;  // 화자 이름 (예: "NPC1", "NPC2")
+    public Sprite speakerSprite; // 해당 화자의 이미지
+}
 
 public class NPCInteraction : MonoBehaviour
 {
     public Sprite npcSprite;           // NPC 이미지
     public string npcName = "이름 없음"; // 말하는 사람 이름
     public int startID;                // 대화 시작 ID
+    public List<SpeakerData> speakers = new();  // 여러 등장인물 이름/이미지 설정
 
     [Header("상호작용 키")]
     public string keySettingName = "Player.Interaction.0"; // 키 설정 이름
@@ -15,8 +24,6 @@ public class NPCInteraction : MonoBehaviour
     private bool isPlayerTouching = false;
     private ButtonControl interactButton;
     private string lastKeyPath = "";
-
-    private PlayerController playerController;
 
     [Header("UI")]
     public GameObject interactPromptObj; // UI 오브젝트 (ex: 텍스트가 담긴 오브젝트)
@@ -115,16 +122,33 @@ public class NPCInteraction : MonoBehaviour
         if (DialogueManager.Instance.isCommunicationEneded)
         {
             PlayerManager.Instance.playerController.isInputBlocked = false;
-            Debug.Log("대화 종료: 입력 차단 해제됨");
+            //Debug.Log("대화 종료: 입력 차단 해제됨");
         }
     }
 
     public void Interact()
     {
-        DialogueManager.Instance.StartDialogue(
-            npcName,    // 대화 트리 ID
-            npcSprite,  // NPC 이미지
-            startID     // 시작 노드 ID
-        );
+        if (speakers != null && speakers.Count > 0)
+        {
+            // 멀티 캐릭터 방식 (speakers 리스트에 따라 처리)
+            string mainSpeaker = speakers[0].speakerName;
+            Sprite mainSprite = speakers[0].speakerSprite;
+
+            DialogueManager.Instance.StartDialogue(
+                mainSpeaker, // 트리 ID (CSV ID도 이 이름과 일치)
+                mainSprite,
+                startID
+            );
+        }
+        else
+        {
+            // 기존 단일 캐릭터 방식
+            DialogueManager.Instance.StartDialogue(
+                npcName,
+                npcSprite,
+                startID
+            );
+        }
     }
+
 }
