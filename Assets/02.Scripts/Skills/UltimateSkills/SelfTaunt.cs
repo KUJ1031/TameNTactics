@@ -23,6 +23,5 @@ public class SelfTaunt : ISkillEffect
         int amount = Mathf.RoundToInt(caster.Level >= 25 ? 3 : 2);
 
         caster.ApplyBuff(new Taunt(amount));
-
     }
 }
