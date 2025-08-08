@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TutorialView : MonoBehaviour
@@ -19,6 +20,12 @@ public class TutorialView : MonoBehaviour
     [SerializeField] private GameObject emphasize_runAwayPanel;
 
     public Guide guide; // 가이드 패널 (추가 필요시)
+
+    private void Awake()
+    {
+        if (PlayerManager.Instance.player.playerBattleTutorialCheck)
+            Destroy(gameObject); // 배틀 튜토리얼이 완료된 경우 이 객체를 제거합니다.
+    }
 
     public void ShowTutorialPanel()
     {

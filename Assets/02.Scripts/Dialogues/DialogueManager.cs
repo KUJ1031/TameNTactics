@@ -679,8 +679,19 @@ public class DialogueManager : Singleton<DialogueManager>
                 Debug.Log("[이벤트] 든든한 갑옷 아이템 획득");
                 break;
             case "Quest_DisappearPinger":
-                Destroy(UnknownForestManager.Instance.npc.gameObject);
-                dialogueUI.npcImage.gameObject.SetActive(false);
+                FadeManager.Instance.FadeOutThenIn(
+    1.5f,
+    () =>  // 어두울 때 실행
+    {
+        Destroy(UnknownForestManager.Instance.npc.gameObject);
+        dialogueUI.npcImage.gameObject.SetActive(false);
+    },
+    () =>  // 밝아질 때 실행
+    {
+        StartDialogue("핑거", currentNPCImage, 771);
+    }
+);
+
                 break;
             case "Quest_FindRegurLetterCleared":
                 EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "레거의 편지");
@@ -700,7 +711,6 @@ public class DialogueManager : Singleton<DialogueManager>
                 FinalFightManager.Instance.Fight_Dean();
                 break;
             case "Disappear_Dean":
-                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
                 FadeManager.Instance.FadeOutThenIn(1f,() =>  // 어두울 때 실행
                 {
                     Destroy(FinalFightManager.Instance.deanObj);
@@ -714,7 +724,6 @@ public class DialogueManager : Singleton<DialogueManager>
                 FinalFightManager.Instance.Fight_Eisen();
                 break;
             case "Disappear_Eisen":
-                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
                 FadeManager.Instance.FadeOutThenIn(1f, () =>  // 어두울 때 실행
                 {
                     Destroy(FinalFightManager.Instance.eisenObj);
@@ -728,7 +737,6 @@ public class DialogueManager : Singleton<DialogueManager>
                 FinalFightManager.Instance.Fight_Dolan();
                 break;
             case "Disappear_Dolan":
-                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
                 FadeManager.Instance.FadeOutThenIn(1f, () =>  // 어두울 때 실행
                 {
                     Destroy(FinalFightManager.Instance.dolanObj);
@@ -772,14 +780,21 @@ public class DialogueManager : Singleton<DialogueManager>
                 QuestEventDispatcher.OnQuestStarted?.Invoke(4);
                 break;
             case "Animation_BoosRoomInitDestroyed":
+                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
                 FinalFightManager.Instance.Animation_BoosRoomInitDestroyed();
                 break;
             case "Animation_RunCarpenter":
-                FinalFightManager.Instance.carpenterObj.gameObject.SetActive(false);
-                StartDialogue("보스", FinalFightManager.Instance.bossImage, 1621);
+                PlayerManager.Instance.playerController.isInputBlocked = true; // 플레이어 입력 차단
+                FinalFightManager.Instance.Animation_RunCarpenter();
+                break;
+            case "Animation_ComeBoss":
+                FinalFightManager.Instance.Animation_ComeBoss();
                 break;
             case "FightBoss":
                 FinalFightManager.Instance.Fight_Boss();
+                break;
+            case "Check_BossRetry":
+                StartDialogue("보스", FinalFightManager.Instance.bossImage, 1624);
                 break;
             case "Quest_StolenTreeCleared":
                 EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestClear, null, "빼앗긴 나무");
@@ -803,8 +818,14 @@ public class DialogueManager : Singleton<DialogueManager>
 });
                 break;
             case "Animation_Come_Fine":
-                FinalFightManager.Instance.fineObj.transform.position = PlayerManager.Instance.playerController.transform.position + new Vector3(1.5f, 0f, 0f);
-                StartDialogue("파인", FinalFightManager.Instance.fineImage, 1641);
+                FadeManager.Instance.FadeOutThenIn(0.05f, () =>  // 어두울 때 실행
+                {
+                    FinalFightManager.Instance.fineObj.transform.position = PlayerManager.Instance.playerController.transform.position + new Vector3(1.5f, 0f, 0f);
+                },
+() =>  // 밝아질 때 실행
+{
+    StartDialogue("파인", FinalFightManager.Instance.fineImage, 1641);
+});
                 break;
             case "Move_Bridge":
                 FadeManager.Instance.FadeOutThenIn(
@@ -836,7 +857,9 @@ public class DialogueManager : Singleton<DialogueManager>
                 break;
             case "BackToBridgeInit":
                 PlayerManager.Instance.playerController.AutoMove(Vector2.left, 1f, 5f, true);
-
+                break;
+            case "GoToBossRoom":
+                PlayerManager.Instance.playerController.AutoMove(Vector2.up, 1f, 2f, true);
                 break;
             default:
                 Debug.LogWarning($"[이벤트] 알 수 없는 이벤트 키: {eventKey}");

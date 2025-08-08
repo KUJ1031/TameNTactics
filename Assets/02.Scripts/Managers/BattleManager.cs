@@ -210,13 +210,17 @@ public class BattleManager : Singleton<BattleManager>
                 
                 if (selectedSkill.targetCount == 0)
                 {
-                    isAttacking = true;
-                    selectedTargets = new(possibleTargets);
-                    StartCoroutine(CompareSpeedAndFight());
-                    UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
-                    UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
-                    UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
-                    break;
+                    if (PlayerManager.Instance.player.playerBattleTutorialCheck)
+                    {
+                        isAttacking = true;
+                        selectedTargets = new(possibleTargets);
+                        StartCoroutine(CompareSpeedAndFight());
+                        UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                        UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                        UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
+                        break;
+                    }
+
                 }
 
                 if (possibleTargets.Count == 1)

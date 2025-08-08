@@ -11,7 +11,7 @@ public class GameSettingUI : FieldMenuBaseUI
 
     private void Awake()
     {
-        if (SceneManager.GetActiveScene().name == "MainMapPuzzleTestScene")
+        if (SceneManager.GetActiveScene().name == "MainMapScene")
         {
             audioSettingButton.onClick.AddListener(OnClickAudioSettingButton);
             keySettingButton.onClick.AddListener(OnClickKeySettingButton);

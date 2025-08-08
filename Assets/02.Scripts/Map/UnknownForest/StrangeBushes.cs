@@ -77,8 +77,8 @@ public class StrangeBushes : MonoBehaviour
         {
             Debug.Log("[StrangeBushes] 레거의 편지 퀘스트가 시작되었습니다. 아이템 드랍 확률을 업데이트합니다.");
             itemDropChances["소형 회복 물약"] = 0.3f;
-            itemDropChances["중형 회복 물약"] = 0.2f;
-            itemDropChances["레거의 편지"] = 0.2f;
+            itemDropChances["레거의 편지"] = 0.25f;
+            itemDropChances["중형 회복 물약"] = 0.15f;
             itemDropChances["대형 회복 물약"] = 0.1f;
             itemDropChances["소형 전체 회복 물약"] = 0.1f;
             itemDropChances["중형 전체 회복 물약"] = 0.05f;
@@ -132,12 +132,12 @@ public class StrangeBushes : MonoBehaviour
         InitializeItemChances();
         float roll = Random.value;
 
-        if (roll < 1f)
+        if (roll < 0.35f)
         {
             DialogueManager.Instance.StartDialogue("나", PlayerManager.Instance.playerImage[PlayerManager.Instance.player.playerGender], 7002);
 
         }
-        else if (roll < 0f)
+        else if (roll < 0.6f)
         {
             Debug.Log("[미지의 숲] 몬스터가 나타났다! 전투 시작!");
             DialogueManager.Instance.StartDialogue("나", PlayerManager.Instance.playerImage[PlayerManager.Instance.player.playerGender], 7003);

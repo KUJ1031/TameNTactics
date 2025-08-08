@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
@@ -38,6 +40,8 @@ public class FinalFightManager : Singleton<FinalFightManager>
         if (player.playerEliteClearCheck[0]) Destroy(deanObj);
         if (player.playerEliteClearCheck[1]) Destroy(eisenObj);
         if (player.playerEliteClearCheck[2]) Destroy(dolanObj);
+        if (player.playerBossClearCheck[0]) Destroy(carpenterObj);
+        if (player.playerQuestClearCheck[4]) Destroy(bossObj);
 
         if (player.battleEntry.Count > 0 && player.battleEntry[0] != null)
         {
@@ -216,7 +220,7 @@ public class FinalFightManager : Singleton<FinalFightManager>
                     }
                 }
 
-                float finalDestroyDelay = 4f + animClipLength / 0.5f;
+                float finalDestroyDelay = 2f + animClipLength / 0.5f;
 
                 // 1초 후 애니메이션 재생
                 StartCoroutine(PlayAndDestroy(newMonster, monsterGo, finalDestroyDelay));
@@ -226,12 +230,53 @@ public class FinalFightManager : Singleton<FinalFightManager>
 
     private IEnumerator PlayAndDestroy(MonsterCharacter monster, GameObject target, float delay)
     {
-        monster.PlayAttack();                // 애니메이션 재생
+        ISkillEffect effect = NormalSkillFactory.GetNormalSkill(monster.monster.skills[1]);
 
-        yield return new WaitForSeconds(delay - 1f); // 애니메이션 길이 대기
+        Vector3 effectPos = target.transform.position + new Vector3(0f, 1.5f, 0f);
+        GameObject effectObj = SkillEffectController.PlayEffect(monster.monster.skills[1], effectPos);
+        if (effectObj != null)
+        {
+            effectObj.transform.localScale *= 4f;
+        }
+
+        monster.PlayAttack();
+        Debug.Log($"애니메이션 재생: {monster.monster.monsterName}의 공격 애니메이션이 재생되었습니다.");
+
+        yield return new WaitForSeconds(1.5f); // 흔들림 기다렸다가
+
+        StartCoroutine(ShakeObject(BossRoomDoor.transform, 0.5f, 0.1f));
+        yield return new WaitForSeconds(delay);
+
         DialogueManager.Instance.StartDialogue("목수", carpenterImage, 1614);
         Destroy(target);
         Destroy(BossRoomDoor);
+    }
+
+
+    private IEnumerator ShakeObject(Transform target, float duration, float magnitude)
+    {
+        Vector3 originalPos = target.position;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float xOffset = Random.Range(-1f, 1f) * magnitude;
+            target.position = new Vector3(originalPos.x + xOffset, originalPos.y, originalPos.z);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        target.position = originalPos; // 원래 위치로 복귀
+    }
+
+    public void Animation_RunCarpenter()
+    {
+        carpenterObj.GetComponent<MovementSequenceController>().StartSequence();
+    }
+
+    public void Animation_ComeBoss()
+    {
+        bossObj.GetComponentInChildren<MovementSequenceController>().StartSequence();
     }
 
 }

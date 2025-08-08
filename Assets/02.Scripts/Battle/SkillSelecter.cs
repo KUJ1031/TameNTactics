@@ -26,6 +26,7 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 
         if (BattleSystem.Instance.CurrentState is SelectSkillState state && !BattleManager.Instance.isAttacking)
         {
+            Debug.Log($"스킬 선택됨: {skillData.skillName} (인덱스: {skillIndex})");
             BattleManager.Instance.selectedSkill = skillData;
             state.OnSelectedSkill(skillData);
         }

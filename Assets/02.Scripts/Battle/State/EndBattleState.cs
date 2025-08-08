@@ -36,7 +36,6 @@ public class EndBattleState : BaseBattleState
         if (PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
             battleSystem.StartCoroutine(EndBattleCoroutine());
-            Debug.Log("배틀 종료 상태로 진입했습니다. 2초 후 메인 맵으로 이동합니다.");
         }
     }
     private IEnumerator EndBattleCoroutine()
@@ -44,6 +43,6 @@ public class EndBattleState : BaseBattleState
         yield return new WaitForSeconds(2f);
 
         BattleDialogueManager.Instance.ClearBattleEndPanel();
-        SceneManager.LoadScene("MainMapPuzzleTestScene");
+        SceneManager.LoadScene("MainMapScene");
     }
 }
