@@ -19,6 +19,7 @@ MonoBehaviour:
   skillName: "\uAE30\uC808\uD55C\uBAAC\uC2A4\uD130\uBD80\uD65C"
   skillPower: 0
   skillEffectPrefab: {fileID: 0}
+  isTargetingDeadMonster: 1
   targetScope: 4
   targetCount: 1
   icon: {fileID: 0}
