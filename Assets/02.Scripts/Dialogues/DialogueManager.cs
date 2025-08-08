@@ -100,7 +100,7 @@ public class DialogueManager : Singleton<DialogueManager>
     /// </summary>
     void ShowNode(DialogueNode node)
     {
-        Debug.Log($"노드 표시: ID {node.ID}, 화자 {node.Speaker}, 텍스트 '{node.Text}'");
+        //Debug.Log($"노드 표시: ID {node.ID}, 화자 {node.Speaker}, 텍스트 '{node.Text}'");
         currentNode = node;
 
         // 이벤트 트리거
