@@ -26,11 +26,14 @@ MonoBehaviour:
   criticalChance: 10
   maxExp: 50
   MaxUltimateCost: 10
-  expReward: 0
-  goldReward: 0
-  skills: []
+  expReward: 20
+  goldReward: 1000
+  skills:
+  - {fileID: 11400000, guid: 7954b3064cc512646899b4bad223ace3, type: 2}
+  - {fileID: 11400000, guid: 7cab3b12cffb263418b783284f4f0b4a, type: 2}
+  - {fileID: 11400000, guid: c46e4a7cc17d3ab48a42eed2a1a961e2, type: 2}
   spawnArea: 0
   spawnTime: 0
   captureRate: 0
-  description: 
+  description: "\uB098\uB294 \uBCF4\uC2A4\uB2E4"
   damageSound: {fileID: 0}

@@ -23,7 +23,8 @@ public static class NormalSkillFactory
         { NormalSkillList.SingleAttackHealLowestAlly, data => new SingleAttackHealLowestAlly(data)},
         { NormalSkillList.SingleAttackChanceCrit, data => new SingleAttackChanceCrit(data)},
         { NormalSkillList.EnemyTeamAttackChanceSpdDown, data => new EnemyTeamAttackChanceSpdDown(data)},
-        { NormalSkillList.EnemyTeamAttackChanceAtkUp, data => new EnemyTeamAttackChanceAtkUp(data)}
+        { NormalSkillList.EnemyTeamAttackChanceAtkUp, data => new EnemyTeamAttackChanceAtkUp(data)},
+        { NormalSkillList.BossDoubleAttack, data => new BossDoubleAttack(data)}
     };
 
     public static ISkillEffect GetNormalSkill(SkillData data)
