@@ -54,6 +54,7 @@ public class Monster
     public List<BuffEffect> ActiveBuffEffects { get; private set; } = new();
     public List<IPassiveSkill> PassiveSkills { get; private set; } = new();
 
+    public bool debuffCanAct { get; private set; } = true;
     public bool canAct { get; private set; } = true;
     private int skipTurnCount = 0;
     private bool isShield;
@@ -541,6 +542,7 @@ public class Monster
     public void InitializeUltimateCost()
     {
         CurUltimateCost = 0;
+        UltimateCostChange?.Invoke(this);
     }
 
     // 궁극기 코스트 1개 증가
@@ -581,10 +583,12 @@ public class Monster
     {
         if (isApplied)
         {
-            canAct = false;
+            Debug.Log("여기는 들어옴?");
+            debuffCanAct = false;
+            Debug.Log(debuffCanAct);
         }
 
-        else canAct = true;
+        else debuffCanAct = true;
     }
 
     //즐겨찾기 변경
@@ -611,12 +615,6 @@ public class Monster
         }
     }
 
-    public void InitializeMonsterAct()
-    {
-        canAct = true;
-        skipTurnCount = 0;
-    }
-
     public void EncounterPlus()
     {
         monsterData.encounterCount++;
@@ -624,7 +622,6 @@ public class Monster
 
     public void InitializeBattleStart()
     {
-        InitializeMonsterAct();
         InitializeUltimateCost();
         InitializePassiveSkills();
         InitializeBattleStats();
@@ -650,7 +647,7 @@ public class Monster
         ActiveBuffEffects.Clear();
         isShield = false;
         canBeHealed = true;
-        canAct = true;
+        debuffCanAct = true;
         isImmuneToStatus = false;
         healDuration = 0;
         skipTurnCount = 0;
