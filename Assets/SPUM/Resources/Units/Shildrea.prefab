@@ -8209,6 +8209,7 @@ GameObject:
   - component: {fileID: 1866065870108852767}
   - component: {fileID: 2371046421970913617}
   - component: {fileID: -4082547031637252364}
+  - component: {fileID: -7658624114918007771}
   m_Layer: 0
   m_Name: Shildrea
   m_TagString: Untagged
@@ -8379,5 +8380,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4da73ce95b796814badc5e102d3df6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7658624114918007771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9222792130823413527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3316a71fa0911fd4c94c1a6b42fe79f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
