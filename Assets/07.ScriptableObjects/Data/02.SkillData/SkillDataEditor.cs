@@ -34,7 +34,8 @@ public class SkillDataEditor : Editor
 
         skillData.targetScope = (TargetScope)EditorGUILayout.EnumPopup("Target Scope", skillData.targetScope);
         skillData.targetCount = EditorGUILayout.IntField("Target Count", skillData.targetCount);
-
+        skillData.isTargetingDeadMonster = EditorGUILayout.Toggle("Target Dead Monster", skillData.isTargetingDeadMonster);
+        
         skillData.icon = (Sprite)EditorGUILayout.ObjectField("Icon", skillData.icon, typeof(Sprite), false);
         skillData.upgradeIcon = (Sprite)EditorGUILayout.ObjectField("Upgrade Icon", skillData.upgradeIcon, typeof(Sprite), false);
 

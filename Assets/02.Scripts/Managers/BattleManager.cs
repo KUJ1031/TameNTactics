@@ -124,7 +124,7 @@ public class BattleManager : Singleton<BattleManager>
     // 데미지 넣기 + 데미지 후 패시브 발동
     public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData, bool isCrit, float effectiveness)
     {
-        int finalDamage = target.TriggerOnDamaged(damage, attacker);
+        int finalDamage = 0;
         var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
 
         if (skillData.targetScope != TargetScope.All &&
@@ -138,6 +138,7 @@ public class BattleManager : Singleton<BattleManager>
                 {
                     if (buff.Type == BuffEffectType.Taunt)
                     {
+                        finalDamage = monster.TriggerOnDamaged(damage, attacker);
                         monster.TakeDamage(finalDamage);
                         StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness));
                         BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
@@ -147,6 +148,7 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
 
+        finalDamage = target.TriggerOnDamaged(damage, attacker);
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
         StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness));
@@ -159,7 +161,7 @@ public class BattleManager : Singleton<BattleManager>
 
         foreach (var monster in BattleEntryTeam)
         {
-            if (monster.canAct && monster.CurHp > 0)
+            if (monster.debuffCanAct && monster.CurHp > 0)
             {
                 possibleActPlayerMonsters.Add(monster);
             }
@@ -169,17 +171,21 @@ public class BattleManager : Singleton<BattleManager>
     // 공격 실행할 몬스터 고르기
     public void SelectPlayerMonster(Monster selectedMonster)
     {
-        if (selectedMonster.CurHp <= 0 || !selectedMonster.canAct) return;
+        if (selectedMonster.CurHp <= 0 || !selectedMonster.debuffCanAct) return;
         selectedPlayerMonster = selectedMonster;
     }
 
     // 스킬 고르기
     public void SelectSkill(SkillData skill)
     {
-        if (skill.skillType == SkillType.UltimateSkill && selectedPlayerMonster.Level < 15)
+        if (skill.skillType == SkillType.UltimateSkill)
         {
-            Debug.Log($"레벨이 낮아 궁극기를 사용할 수 없습니다.");
-            return;
+            if (selectedPlayerMonster.Level < 15 ||
+                selectedPlayerMonster.CurUltimateCost < selectedPlayerMonster.MaxUltimateCost)
+            {
+                Debug.Log($"궁극기를 사용할 수 없습니다.");
+                return;
+            }
         }
 
         selectedSkill = skill;
@@ -190,12 +196,15 @@ public class BattleManager : Singleton<BattleManager>
         var aliveEnemy = BattleEnemyTeam.Where(m => m.CurHp > 0).ToList();
 
         switch (skill.targetScope)
-        {
+        { 
             case TargetScope.Self:
                 isAttacking = true;
                 possibleTargets = new() { selectedPlayerMonster };
                 selectedTargets = new(possibleTargets);
                 StartCoroutine(CompareSpeedAndFight());
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
                 break;
 
             case TargetScope.All:
@@ -203,9 +212,13 @@ public class BattleManager : Singleton<BattleManager>
                 possibleTargets = alivePlayer.Concat(aliveEnemy).ToList();
                 selectedTargets = new(possibleTargets);
                 StartCoroutine(CompareSpeedAndFight());
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
                 break;
 
             case TargetScope.EnemyTeam:
+                
                 possibleTargets = aliveEnemy;
                 
                 if (selectedSkill.targetCount == 0)
@@ -232,18 +245,33 @@ public class BattleManager : Singleton<BattleManager>
                         break;
                     }
                 }
-
+                
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
 
             case TargetScope.PlayerTeam:
+                
+                if (selectedSkill.targetCount == 0)
+                {
+                    possibleTargets = alivePlayer;
+                    isAttacking = true;
+                    selectedTargets = new(possibleTargets);
+                    StartCoroutine(CompareSpeedAndFight());
+                    UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                    UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                    UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
+                    break;
+                }
+                
+                if (selectedSkill.isTargetingDeadMonster)
+                {
+                    possibleTargets = DeadEntryMonsters;
+                    BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
+                    break;
+                }
+                
                 possibleTargets = alivePlayer;
-                selectedTargets = new(possibleTargets);
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
-                break;
-
-            default:
-                possibleTargets = new();
                 break;
         }
     }
@@ -251,7 +279,10 @@ public class BattleManager : Singleton<BattleManager>
     // 타겟이 될 몬스터 고르기
     public void SelectTargetMonster(Monster target)
     {
-        if (target.CurHp <= 0 || !possibleTargets.Contains(target)) return;
+        if (!possibleTargets.Contains(target))
+        {
+            return;
+        }
 
         if (selectedTargets.Contains(target))
         {
@@ -265,7 +296,7 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         if (selectedTargets.Count == selectedSkill.targetCount &&
-            selectedTargets.All(t => t.CurHp > 0))
+            selectedTargets.All(t => t.CurHp >= 0))
         {
             MonsterSelecter.isClicked = true;
             UIManager.Instance.battleUIManager.HidePossibleTargets();
@@ -276,14 +307,28 @@ public class BattleManager : Singleton<BattleManager>
 
 
     // 속도 비교해서 누가 먼저 공격하는지 정함
-    private IEnumerator CompareSpeedAndFight()
+    public IEnumerator CompareSpeedAndFight()
     {
         UIManager.Instance.battleUIManager.DeselectAllMonsters();
         UIManager.Instance.battleUIManager.OnActionComplete();
-        if (enemyChosenAction == null)
-            enemyChosenAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
+        enemyChosenAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
-        bool playerStunned = BattleEntryTeam.All(m => !m.canAct);
+        if (enemyChosenAction == null)
+        {
+            yield return StartCoroutine(ExecuteSkill(selectedPlayerMonster, selectedSkill, selectedTargets));
+            if (IsTeamDead(BattleEnemyTeam))
+            {
+                EndBattle(true);
+                yield break;
+            }
+            
+            yield return StartCoroutine(IncreaseUltCostAllMonsters());
+            EndTurn();
+            ClearSelections();
+            yield break;
+        }
+
+        bool playerStunned = BattleEntryTeam.All(m => !m.debuffCanAct);
         if (playerStunned)
         {
             EnemyAttackAfterPlayerTurn();
@@ -337,7 +382,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         Debug.Log("스킬사용!");
 
-        if (!caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
+        if (!caster.debuffCanAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
 
         MonsterCharacter casterChar = FindMonsterCharacter(caster);
         List<MonsterCharacter> targetChars = new();
@@ -354,9 +399,9 @@ public class BattleManager : Singleton<BattleManager>
             Vector2 attackPos = AttackPosition.transform.position;
 
             casterChar.PlayAttack();
-
             yield return StartCoroutine(MoveToPosition(casterChar, attackPos, 0.3f, false));
             casterChar.PlayIdle();
+
 
             ISkillEffect effect = null;
 
@@ -695,5 +740,11 @@ public class BattleManager : Singleton<BattleManager>
         team.Add(reviveMonster);
 
         actor.ReviveMonster(reviveMonster, healAmount);
+    }
+
+    public IEnumerator BonusAttack(Monster monster, int damage)
+    {
+        yield return new WaitForSeconds(1);
+        monster.TakeDamage(damage);
     }
 }

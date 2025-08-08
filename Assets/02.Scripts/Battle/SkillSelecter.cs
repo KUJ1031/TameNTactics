@@ -57,9 +57,14 @@ public class SkillSelecter : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         if (monster == null || skill == null)
             return false;
 
-        if (skill.skillType == SkillType.UltimateSkill && monster.Level < 15)
-            return false;
-
+        if (skill.skillType == SkillType.UltimateSkill)
+        {
+            if (monster.Level < 15 && monster.CurUltimateCost < monster.MaxUltimateCost)
+            {
+                return false;
+            }
+        }
+        
         return true;
     }
 
