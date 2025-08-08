@@ -19,9 +19,10 @@ MonoBehaviour:
   skillName: "\uB2E8\uC77C\uACF5\uACA9\uC2A4\uD15F\uCD08\uAE30\uD654"
   skillPower: 1.5
   skillEffectPrefab: {fileID: 0}
+  isTargetingDeadMonster: 0
   targetScope: 3
   targetCount: 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 9a17acbcd2911f34c8b54c0e89e571c9, type: 3}
   upgradeIcon: {fileID: 0}
   description: "\uC0C1\uB300 \uC2A4\uD15F \uBC84\uD504 \uCD08\uAE30\uD654"
   upgradeDescription: 
