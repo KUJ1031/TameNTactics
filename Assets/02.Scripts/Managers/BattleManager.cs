@@ -403,9 +403,9 @@ public class BattleManager : Singleton<BattleManager>
             Vector2 attackPos = AttackPosition.transform.position;
 
             casterChar.PlayAttack();
-
             yield return StartCoroutine(MoveToPosition(casterChar, attackPos, 0.3f, false));
             casterChar.PlayIdle();
+
 
             ISkillEffect effect = null;
 
