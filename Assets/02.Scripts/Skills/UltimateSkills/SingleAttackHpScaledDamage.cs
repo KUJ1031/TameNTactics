@@ -21,7 +21,7 @@ public class SingleAttackHpScaledDamage : ISkillEffect
         foreach (var target in targetCopy)
         {
             var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            int damage = caster.Level >= 25 ? (Mathf.RoundToInt(result.damage * 1.5f)) : result.damage;
+            float damage = caster.Level >= 25 ? result.damage * 1.5f : result.damage;
             int finalDamage = Mathf.RoundToInt(damage * ChanceToDamage(caster, target));
             
             BattleManager.Instance.DealDamage(target, finalDamage, caster, this.skillData, result.isCritical, result.effectiveness);

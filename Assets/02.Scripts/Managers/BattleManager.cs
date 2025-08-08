@@ -124,7 +124,7 @@ public class BattleManager : Singleton<BattleManager>
     // 데미지 넣기 + 데미지 후 패시브 발동
     public void DealDamage(Monster target, int damage, Monster attacker, SkillData skillData, bool isCrit, float effectiveness)
     {
-        int finalDamage = target.TriggerOnDamaged(damage, attacker);
+        int finalDamage = 0;
         var team = BattleEntryTeam.Contains(target) ? BattleEntryTeam : BattleEnemyTeam;
 
         if (skillData.targetScope != TargetScope.All &&
@@ -138,6 +138,7 @@ public class BattleManager : Singleton<BattleManager>
                 {
                     if (buff.Type == BuffEffectType.Taunt)
                     {
+                        finalDamage = monster.TriggerOnDamaged(damage, attacker);
                         monster.TakeDamage(finalDamage);
                         StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, monster, skillData, effectiveness));
                         BattleDialogueManager.Instance.UseSkillDialogue(attacker, monster, finalDamage, skillData);
@@ -147,6 +148,7 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
 
+        finalDamage = target.TriggerOnDamaged(damage, attacker);
         target.TakeDamage(finalDamage);
         NotifyReceivedCrit(target, isCrit);
         StartCoroutine(attacker.TriggerOnAttack(attacker, finalDamage, target, skillData, effectiveness));
@@ -200,6 +202,9 @@ public class BattleManager : Singleton<BattleManager>
                 possibleTargets = new() { selectedPlayerMonster };
                 selectedTargets = new(possibleTargets);
                 StartCoroutine(CompareSpeedAndFight());
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
                 break;
 
             case TargetScope.All:
@@ -207,6 +212,9 @@ public class BattleManager : Singleton<BattleManager>
                 possibleTargets = alivePlayer.Concat(aliveEnemy).ToList();
                 selectedTargets = new(possibleTargets);
                 StartCoroutine(CompareSpeedAndFight());
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
                 break;
 
             case TargetScope.EnemyTeam:
@@ -245,6 +253,7 @@ public class BattleManager : Singleton<BattleManager>
                 
                 if (selectedSkill.targetCount == 0)
                 {
+                    possibleTargets = alivePlayer;
                     isAttacking = true;
                     selectedTargets = new(possibleTargets);
                     StartCoroutine(CompareSpeedAndFight());
@@ -270,7 +279,10 @@ public class BattleManager : Singleton<BattleManager>
     // 타겟이 될 몬스터 고르기
     public void SelectTargetMonster(Monster target)
     {
-        if (target.CurHp <= 0 || !possibleTargets.Contains(target)) return;
+        if (!possibleTargets.Contains(target))
+        {
+            return;
+        }
 
         if (selectedTargets.Contains(target))
         {
@@ -284,7 +296,7 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         if (selectedTargets.Count == selectedSkill.targetCount &&
-            selectedTargets.All(t => t.CurHp > 0))
+            selectedTargets.All(t => t.CurHp >= 0))
         {
             MonsterSelecter.isClicked = true;
             UIManager.Instance.battleUIManager.HidePossibleTargets();
@@ -728,5 +740,11 @@ public class BattleManager : Singleton<BattleManager>
         team.Add(reviveMonster);
 
         actor.ReviveMonster(reviveMonster, healAmount);
+    }
+
+    public IEnumerator BonusAttack(Monster monster, int damage)
+    {
+        yield return new WaitForSeconds(1);
+        monster.TakeDamage(damage);
     }
 }

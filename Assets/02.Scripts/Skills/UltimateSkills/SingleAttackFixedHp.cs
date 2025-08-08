@@ -20,10 +20,9 @@ public class SingleAttackFixedHp : ISkillEffect
 
         foreach (var target in targetCopy)
         {
-            float amount = caster.Level >= 25 ? target.CurMaxHp * 0.5f : target.CurMaxHp * 0.4f;
-            int damage = Mathf.RoundToInt(target.CurMaxHp * amount);
+            int damage = Mathf.RoundToInt(caster.Level >= 25 ? target.CurMaxHp * 0.5f : target.CurMaxHp * 0.4f);
             
-            BattleManager.Instance.DealDamage(target, damage, caster, this.skillData, false, 1f);
+            target.TakeDamage(damage);
         }
     }
 }

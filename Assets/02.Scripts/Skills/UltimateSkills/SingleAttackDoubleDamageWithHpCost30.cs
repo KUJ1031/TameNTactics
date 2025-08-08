@@ -26,7 +26,7 @@ public class SingleAttackDoubleDamageWithHpCost30 : ISkillEffect
             
             BattleManager.Instance.DealDamage(target, finalDamage, caster, this.skillData, result.isCritical, result.effectiveness);
             
-            int amount = Mathf.RoundToInt(caster.Level >= 25 ? 0.20f : 0.30f);
+            float amount = caster.Level >= 25 ? 0.20f : 0.30f;
             int hpCost = Mathf.RoundToInt(target.CurMaxHp * amount);
             
             caster.TakeDamage(hpCost);

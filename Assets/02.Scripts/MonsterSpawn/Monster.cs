@@ -342,19 +342,7 @@ public class Monster
         var team = BattleManager.Instance.BattleEntryTeam.Contains(this)
             ? BattleManager.Instance.BattleEntryTeam
             : BattleManager.Instance.BattleEnemyTeam;
-
-        foreach (var monster in team)
-        {
-            foreach (var buff in ActiveBuffEffects)
-            {
-                if (buff.Type == BuffEffectType.Taunt)
-                {
-                    TaunterDamage(monster, damage);
-                    return;
-                }
-            }
-        }
-
+        
         int modifiedDamage;
 
         if (isShield)
@@ -368,7 +356,7 @@ public class Monster
         CurHp -= modifiedDamage;
         if (CurHp < 0) CurHp = 0;
 
-        DamagePopup?.Invoke(this, damage);
+        DamagePopup?.Invoke(this, modifiedDamage);
         DamagedAnimation?.Invoke(this);
         HpChange?.Invoke(this);
 
@@ -427,19 +415,22 @@ public class Monster
     {
         List<StatusEffect> expired = new();
 
-        foreach (var effect in ActiveStatusEffects)
+        if (CurHp > 0)
         {
-            effect.OnTurnStart(this);
-
-            if (effect.duration <= 0)
+            foreach (var effect in ActiveStatusEffects)
             {
-                expired.Add(effect);
-            }
-        }
+                effect.OnTurnStart(this);
 
-        foreach (var effect in expired)
-        {
-            ActiveStatusEffects.Remove(effect);
+                if (effect.duration <= 0)
+                {
+                    expired.Add(effect);
+                }
+            }
+
+            foreach (var effect in expired)
+            {
+                ActiveStatusEffects.Remove(effect);
+            }
         }
     }
 
@@ -447,19 +438,22 @@ public class Monster
     {
         List<BuffEffect> expired = new();
 
-        foreach (var effect in ActiveBuffEffects)
+        if (CurHp > 0)
         {
-            effect.OnTurnStart(this);
-
-            if (effect.duration <= 0)
+            foreach (var effect in ActiveBuffEffects)
             {
-                expired.Add(effect);
-            }
-        }
+                effect.OnTurnStart(this);
 
-        foreach (var effect in expired)
-        {
-            ActiveBuffEffects.Remove(effect);
+                if (effect.duration <= 0)
+                {
+                    expired.Add(effect);
+                }
+            }
+
+            foreach (var effect in expired)
+            {
+                ActiveBuffEffects.Remove(effect);
+            }
         }
     }
 
@@ -695,41 +689,8 @@ public class Monster
         isImmuneToStatus = true;
     }
 
-    public void TaunterDamage(Monster taunter, int damage)
-    {
-        var enemyTeam = BattleManager.Instance.BattleEntryTeam.Contains(taunter)
-            ? BattleManager.Instance.BattleEnemyTeam
-            : BattleManager.Instance.BattleEntryTeam;
-
-        int modifiedDamage;
-
-        if (isShield)
-        {
-            modifiedDamage = 0;
-            isShield = false;
-        }
-
-        else modifiedDamage = damage;
-
-        CurHp -= modifiedDamage;
-        if (CurHp < 0) CurHp = 0;
-
-        DamagePopup?.Invoke(taunter, damage);
-        DamagedAnimation?.Invoke(taunter);
-        HpChange?.Invoke(taunter);
-
-        if (CurHp <= 0)
-        {
-            InitializeStatus();
-            EventBus.OnMonsterDead?.Invoke(taunter);
-            OnAllyDeath(taunter);
-        }
-    }
-
     public void ReviveMonster(Monster monster, int amount)
     {
-        ActiveBuffEffects.Clear();
-        ActiveStatusEffects.Clear();
         UIManager.Instance.battleUIManager.ReviveGauge(monster);
         monster.CurHp += amount;
         if (monster.CurHp >= monster.CurMaxHp) monster.CurHp = monster.CurMaxHp;
