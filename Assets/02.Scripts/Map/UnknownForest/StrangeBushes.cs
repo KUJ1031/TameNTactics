@@ -12,7 +12,7 @@ public class StrangeBushes : MonoBehaviour
 
     public float eventCooldown = 1f;
     private bool isOnCooldown = false;
-    private bool playerInZone = false;
+    internal static bool playerInZone = false;
     private GameObject player;
 
     public float respawnDelay = 30f;

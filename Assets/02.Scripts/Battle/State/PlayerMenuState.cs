@@ -16,8 +16,12 @@ public class PlayerMenuState : BaseBattleState
         
         if (BattleManager.Instance.BattleEntryTeam.All(m => !m.canAct || !m.debuffCanAct))
         {
-            BattleManager.Instance.StartCoroutine(BattleManager.Instance.CompareSpeedAndFight());
-            UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+            if (PlayerManager.Instance.player.playerBattleTutorialCheck)
+            {
+                BattleManager.Instance.StartCoroutine(BattleManager.Instance.CompareSpeedAndFight());
+                UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+            }
+
         }
 
         bool isDeanFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Dean");
@@ -29,6 +33,10 @@ public class PlayerMenuState : BaseBattleState
         {
             Debug.Log("보스전에서는 포획 버튼을 사용할 수 없습니다.");
             UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_false();
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
+        }
+        else if (PlayerManager.Instance.player.playerLastStage == "잊혀진 공간")
+        {
             UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
         }
         else

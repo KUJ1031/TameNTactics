@@ -528,6 +528,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
             case "Quest_Tutorial":
                 PlayerManager.Instance.player.playerQuestStartCheck[0] = true;
+                FieldUIManager.Instance.playerGuideUI.gameObject.SetActive(true);
+                FieldUIManager.Instance.playerGuideUI.ShowCategory("퀘스트");
                 EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "전투의 기본");
                 break;
 
@@ -648,6 +650,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 PlayerManager.Instance.playerController.isInputBlocked = false;
                 EventAlertManager.Instance.SetEventAlert(EventAlertType.QuestStart, null, "레거의 편지");
                 PlayerManager.Instance.player.playerQuestStartCheck[1] = true;
+                UnknownForestManager.Instance.unknownForestUI.gameObject.SetActive(true);
                 QuestEventDispatcher.OnQuestStarted?.Invoke(1);
                 break;
             case "Check_Quest_FindRegurStarted":
@@ -747,10 +750,18 @@ public class DialogueManager : Singleton<DialogueManager>
                 });
                 break;
             case "MoveBossRoomInit":
-                PlayerManager.Instance.playerController.transform.position = FinalFightManager.Instance.bossRoomInitZone.position;
-                break;
-            case "TakeMoveCamBoosRoom":
-                CameraController.Instance.SwitchTo("BossRoomCam", true, false); // 타겟 클리어
+                FadeManager.Instance.FadeOutThenIn(
+1.5f,
+() =>  // 어두울 때 실행
+{
+    PlayerManager.Instance.playerController.transform.position = FinalFightManager.Instance.bossRoomInitZone.position;
+    CameraController.Instance.SwitchTo("BossRoomCam", true, false); // 타겟 클리어
+},
+() =>  // 밝아질 때 실행
+{
+    StartDialogue("목수", FinalFightManager.Instance.carpenterImage, 1602);
+}
+);
                 break;
             case "Check_Quest_StolenTree":
                 if (PlayerManager.Instance.player.playerQuestStartCheck[4])
@@ -758,8 +769,6 @@ public class DialogueManager : Singleton<DialogueManager>
                     bool hasLevel15OrAbove = PlayerManager.Instance.player.battleEntry.Any(monster => monster.Level >= 15);
                     if (!hasLevel15OrAbove)
                     {
-
-                        
                         StartDialogue("나", FinalFightManager.Instance.carpenterImage, 1609);
                     }
                     else
@@ -791,7 +800,9 @@ public class DialogueManager : Singleton<DialogueManager>
                 FinalFightManager.Instance.Animation_ComeBoss();
                 break;
             case "FightBoss":
+                PlayerManager.Instance.player.playerBossStartCheck[0] = true;
                 FinalFightManager.Instance.Fight_Boss();
+                FinalFightUIManager.Instance.ShowBossUI();
                 break;
             case "Check_BossRetry":
                 StartDialogue("보스", FinalFightManager.Instance.bossImage, 1624);
@@ -859,7 +870,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 PlayerManager.Instance.playerController.AutoMove(Vector2.left, 1f, 5f, true);
                 break;
             case "GoToBossRoom":
-                PlayerManager.Instance.playerController.AutoMove(Vector2.up, 1f, 2f, true);
+                PlayerManager.Instance.playerController.AutoMove(Vector2.up, 1f, 3f, false);
                 break;
             default:
                 Debug.LogWarning($"[이벤트] 알 수 없는 이벤트 키: {eventKey}");

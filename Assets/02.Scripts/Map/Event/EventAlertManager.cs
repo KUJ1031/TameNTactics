@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EventAlertManager : Singleton<EventAlertManager>
 {
-    public GameObject eventAlertPopup;
+    public EventAlertPopUp eventAlertPopup;
     public EventAlertSlot alertSlotPrefab; // 알림 슬롯 프리팹
     public Transform alertSlotsParent;
 
@@ -25,7 +25,7 @@ public class EventAlertManager : Singleton<EventAlertManager>
         isDisplaying = true;
 
         // 팝업 부모 활성화
-        eventAlertPopup.SetActive(true);
+        eventAlertPopup.gameObject.SetActive(true);
 
         while (alertQueue.Count > 0)
         {
@@ -34,7 +34,7 @@ public class EventAlertManager : Singleton<EventAlertManager>
         }
 
         // 팝업 부모 비활성화
-        eventAlertPopup.SetActive(false);
+        eventAlertPopup.gameObject.SetActive(false);
         isDisplaying = false;
     }
 
@@ -51,11 +51,13 @@ public class EventAlertManager : Singleton<EventAlertManager>
         switch (request.alertType)
         {
             case EventAlertType.Wanderer_Appear:
+                instance.alertImage.sprite = eventAlertPopup.wandererImage;
                 instance.eventAlertType.text = "[이벤트]";
                 instance.eventAlertText.text = $"맵 어딘가에 <color=#D27905>[떠돌이 상인]</color>이 나타났습니다! (30분)";
                 break;
 
             case EventAlertType.Wanderer_DisAppear:
+                instance.alertImage.sprite = eventAlertPopup.wandererImage;
                 instance.eventAlertType.text = "[이벤트]";
                 instance.eventAlertText.text = "시간이 다 되어 <color=#D27905>[떠돌이 상인]</color>이 사라졌습니다!";
                 break;
@@ -75,14 +77,17 @@ public class EventAlertManager : Singleton<EventAlertManager>
                 instance.eventAlertText.text = $"[<color=#D93333>{request.name}</color>] 아이템을 {request.quantity}개 건네주었습니다.";
                 break;
             case EventAlertType.QuestStart:
+                instance.alertImage.sprite = eventAlertPopup.questImage;
                 instance.eventAlertType.text = "[퀘스트]";
                 instance.eventAlertText.text = $"<color=#D27905>{request.name}</color> 퀘스트가 시작되었습니다!";
                 break;
             case EventAlertType.QuestClear:
+                instance.alertImage.sprite = eventAlertPopup.questImage;
                 instance.eventAlertType.text = "[퀘스트]";
                 instance.eventAlertText.text = $"<color=#D27905>{request.name}</color> 퀘스트가 완료되었습니다!";
                 break;
             case EventAlertType.Save:
+                instance.alertImage.sprite = eventAlertPopup.saveImage;
                 instance.eventAlertType.text = "[저장]";
                 instance.eventAlertText.text = "게임이 저장되었습니다.";
                 break;
