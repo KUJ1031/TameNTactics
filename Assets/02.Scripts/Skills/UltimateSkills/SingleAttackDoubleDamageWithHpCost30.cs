@@ -29,7 +29,7 @@ public class SingleAttackDoubleDamageWithHpCost30 : ISkillEffect
             float amount = caster.Level >= 25 ? 0.20f : 0.30f;
             int hpCost = Mathf.RoundToInt(target.CurMaxHp * amount);
             
-            caster.TakeDamage(hpCost);
+            caster.ReflectDamage(hpCost);
         }
     }
 }
