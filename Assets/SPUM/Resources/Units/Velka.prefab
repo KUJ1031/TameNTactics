@@ -698,6 +698,7 @@ GameObject:
   - component: {fileID: 4523703126822360129}
   - component: {fileID: 8644665022308362155}
   - component: {fileID: 5535312765114899338}
+  - component: {fileID: 8534123131821357331}
   m_Layer: 0
   m_Name: Velka
   m_TagString: Untagged
@@ -868,6 +869,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4da73ce95b796814badc5e102d3df6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8534123131821357331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164407951449651176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3316a71fa0911fd4c94c1a6b42fe79f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1173135477720729470

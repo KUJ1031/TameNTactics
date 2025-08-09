@@ -220,7 +220,7 @@ public class BattleManager : Singleton<BattleManager>
             case TargetScope.EnemyTeam:
                 
                 possibleTargets = aliveEnemy;
-                
+
                 if (selectedSkill.targetCount == 0)
                 {
                     if (PlayerManager.Instance.player.playerBattleTutorialCheck)
@@ -403,9 +403,12 @@ public class BattleManager : Singleton<BattleManager>
             Vector2 attackPos = AttackPosition.transform.position;
 
             casterChar.PlayAttack();
+
             yield return StartCoroutine(MoveToPosition(casterChar, attackPos, 0.3f, false));
             casterChar.PlayIdle();
 
+            var hold = casterChar.GetComponent<PositionHold>();
+            hold?.HoldHere();
 
             ISkillEffect effect = null;
 
@@ -431,7 +434,10 @@ public class BattleManager : Singleton<BattleManager>
                 }
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return null;
+
+            hold?.Release();
+
             yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f, true));
         }
 

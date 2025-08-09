@@ -2239,6 +2239,7 @@ GameObject:
   - component: {fileID: 3781126508967770661}
   - component: {fileID: 4529522711528671748}
   - component: {fileID: 5097410412597811351}
+  - component: {fileID: -7996547053602306368}
   m_Layer: 0
   m_Name: Ruga
   m_TagString: Untagged
@@ -2409,6 +2410,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4da73ce95b796814badc5e102d3df6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7996547053602306368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841138415318189012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3316a71fa0911fd4c94c1a6b42fe79f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4037531381514316950
