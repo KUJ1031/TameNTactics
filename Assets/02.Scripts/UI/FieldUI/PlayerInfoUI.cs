@@ -9,9 +9,9 @@ public class PlayerInfoUI : FieldMenuBaseUI
     [SerializeField] private Image PlayerImage;
     [SerializeField] private TextMeshProUGUI PlayerNameText;
     [SerializeField] private TextMeshProUGUI PlayTimeText;
-    [SerializeField] private TextMeshProUGUI BastMonsterText;
+    [SerializeField] private TextMeshProUGUI CatchMonsterText;
     [SerializeField] private TextMeshProUGUI EquipItemText;
-    [SerializeField] private TextMeshProUGUI atherText;
+    [SerializeField] private TextMeshProUGUI CurrenAreaText;
     [SerializeField] private Button closeMenuButton;
     private void Awake()
     {
@@ -25,11 +25,12 @@ public class PlayerInfoUI : FieldMenuBaseUI
 
     private void OnEnable()
     {
+
         var player = PlayerManager.Instance.player;
         PlayerImage.sprite = PlayerManager.Instance.playerImage[player.playerGender];
         PlayerNameText.text = player.playerName;
-        //PlayTimeText.text = $"플레이 시간: {PlayerManager.Instance.player.playTime}분";
-        //BastMonsterText.text = $"최애 몬스터: {PlayerManager.Instance.player.favoriteMonster?.monsterName ?? "없음"}";
+        CatchMonsterText.text = $"{player.ownedMonsters.Count}명";
+        CurrenAreaText.text = $"{player.playerLastStage}";
         EquipItemText.text = (player.playerEquipment.Count > 0 && player.playerEquipment[0]?.data != null) ? $"<color=#FF4444>{player.playerEquipment[0].data.itemName}</color> ({player.playerEquipment[0].data.description})" : "<color=#888888>없음</color>";
     }
 }

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class EndingManager : MonoBehaviour
 {
     public Image EntryMonster1;
@@ -13,7 +12,11 @@ public class EndingManager : MonoBehaviour
 
     public Image[] entryMonsetersimages;
 
-    
+    private void Start()
+    {
+        Time.timeScale = 1f; // 게임 시간 정지
+    }
+
     public void output()
     {
         for (int i = 0; i < PlayerManager.Instance.player.entryMonsters.Count; i++)
