@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem;
 
 public class StrangeBushes : MonoBehaviour
 {
 
     public float eventCooldown = 1f;
     private bool isOnCooldown = false;
-    private bool playerInZone = false;
+    internal static bool playerInZone = false;
     private GameObject player;
 
     public float respawnDelay = 30f;
@@ -20,8 +23,31 @@ public class StrangeBushes : MonoBehaviour
 
     public List<MonsterData> forestMonsterDataList; // 인스펙터에서 세팅
 
+    [Header("상호작용 키")]
+    public string keySettingName = "Player.Interaction.0"; // 키 설정 이름
+    private ButtonControl interactButton;
+    [Header("UI")]
+    public GameObject interactPromptObj; // UI 오브젝트 (ex: 텍스트가 담긴 오브젝트)
+    public TMP_Text interactPromptText;  // 키 이름을 보여줄 TextMeshPro 텍스트
+
     private void Start()
     {
+        // 키 경로 받아서 ButtonControl 캐싱
+        if (PlayerManager.Instance.player.playerKeySetting.TryGetValue(keySettingName, out string path))
+        {
+            var control = InputSystem.FindControl(path);
+            interactButton = control as ButtonControl;
+
+            if (interactButton == null)
+                Debug.LogWarning($"입력 경로 '{path}'에 해당하는 ButtonControl을 찾지 못했습니다.");
+        }
+        else
+        {
+            Debug.LogWarning($"키 설정 '{keySettingName}'이 없습니다.");
+        }
+        if (interactPromptObj != null)
+            interactPromptObj.SetActive(false);
+
         InitializeItemChances();
 
         if (unknownForest == null)
@@ -51,8 +77,8 @@ public class StrangeBushes : MonoBehaviour
         {
             Debug.Log("[StrangeBushes] 레거의 편지 퀘스트가 시작되었습니다. 아이템 드랍 확률을 업데이트합니다.");
             itemDropChances["소형 회복 물약"] = 0.3f;
-            itemDropChances["중형 회복 물약"] = 0.2f;
-            itemDropChances["레거의 편지"] = 0.2f;
+            itemDropChances["레거의 편지"] = 0.25f;
+            itemDropChances["중형 회복 물약"] = 0.15f;
             itemDropChances["대형 회복 물약"] = 0.1f;
             itemDropChances["소형 전체 회복 물약"] = 0.1f;
             itemDropChances["중형 전체 회복 물약"] = 0.05f;
@@ -78,6 +104,14 @@ public class StrangeBushes : MonoBehaviour
             playerInZone = true;
             player = collision.gameObject;
             UnknownForestManager.Instance.currentBush = this;  // 자신을 등록
+            if (interactPromptObj != null)
+            {
+                interactPromptObj.SetActive(true);
+                if (interactButton != null)
+                {
+                    interactPromptText.text = $"[{interactButton.name}] 상호작용";
+                }
+            }
         }
     }
 
@@ -88,6 +122,8 @@ public class StrangeBushes : MonoBehaviour
             playerInZone = false;
             player = null;
             UnknownForestManager.Instance.currentBush = null;  // 자신을 해제
+            if (interactPromptObj != null)
+                interactPromptObj.SetActive(false);
         }
     }
 
@@ -96,12 +132,12 @@ public class StrangeBushes : MonoBehaviour
         InitializeItemChances();
         float roll = Random.value;
 
-        if (roll < 1f)
+        if (roll < 0.35f)
         {
             DialogueManager.Instance.StartDialogue("나", PlayerManager.Instance.playerImage[PlayerManager.Instance.player.playerGender], 7002);
 
         }
-        else if (roll < 0f)
+        else if (roll < 0.6f)
         {
             Debug.Log("[미지의 숲] 몬스터가 나타났다! 전투 시작!");
             DialogueManager.Instance.StartDialogue("나", PlayerManager.Instance.playerImage[PlayerManager.Instance.player.playerGender], 7003);

@@ -81,6 +81,16 @@ public class PlayerGuideUI : FieldMenuBaseUI
                 }
             },
             {
+                "퀘스트", new List<GuidePage>
+                {
+                    new GuidePage("퀘스트란", guideImages[2], "플레이어는 진행 도중, NPC로부터 퀘스트를 수주할 수 있습니다."),
+                    new GuidePage("수주 중", guideImages[3], "수주 중인 퀘스트는 [퀘스트] 칸을 눌러 확인 가능합니다."),
+                    new GuidePage("미수주", null, "현재 수주 가능한 퀘스트는 [미수주] 칸을 눌러 확인할 수 있으며,\n 해당 퀘스트를 수주할 수 있는 힌트를 알 수 있습니다."),
+                    new GuidePage("완료됨", null, "특정 퀘스트를 완료하면, 다음 퀘스트가 열립니다."),
+                    new GuidePage("진로", null, "앞으로 무엇을 해야할 지 헷갈린다면, 퀘스트창을 열어 확인하면 도움이 될 것입니다.")
+                }
+            },
+            {
                 "엔트리", new List<GuidePage>
                 {
                     new GuidePage("등록", null, "보유 몬스터 중 최대 5명까지\n현재 엔트리에 등록시켜둘 수 있습니다.\n이들은 전투 발생 시 당신의 명령에 따라 전투에 임합니다."),
@@ -122,8 +132,7 @@ public class PlayerGuideUI : FieldMenuBaseUI
                 {
                     new GuidePage("NPC", null, "필드에는 플레이어와 상호작용할 수 있는 NPC들이\n존재합니다. 몬스터와는 달리 테두리가 파랗습니다."),
                     new GuidePage("대화 시도", null, "상호작용 키(F)를 통해 NPC와 상호작용할 수 있습니다."),
-                    new GuidePage("퀘스트", null, "NPC와의 대화 도중 퀘스트가 발생할 수 있습니다.\n수락할 수도 있고, 거절할 수도 있습니다."),
-                    new GuidePage("보상?", null, "퀘스트를 잘 수행한다면 좋은 일이 생길 지도 모릅니다. ...그리고 선택지만 잘 골라도 행운이 생길 지도..?"),
+                    new GuidePage("보상?", null, "NPC의 대화를 잘 들어준다면, 좋은 일이 생길 지도 모릅니다..."),
                 }
             },
             {

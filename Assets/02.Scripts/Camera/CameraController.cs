@@ -346,7 +346,7 @@ public class CameraController : Singleton<CameraController>
 
         if (!canPlayerMove)
         {
-            StartCoroutine(UnblockPlayerInputAfterDelay(3f));
+            StartCoroutine(UnblockPlayerInputAfterDelay(2f));
         }
     }
 

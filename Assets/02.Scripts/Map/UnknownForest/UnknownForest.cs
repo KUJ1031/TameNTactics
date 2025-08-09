@@ -13,6 +13,8 @@ public class UnknownForest : MonoBehaviour
 
     private List<Vector2> spawnedPositions = new();
 
+    private Queue<GameObject> bushPool = new();
+
     private void Start()
     {
         SpawnRandomBushes();
@@ -75,15 +77,51 @@ public class UnknownForest : MonoBehaviour
 
     private void SpawnBushAt(Vector2 position)
     {
-        GameObject bush = Instantiate(strangeBushesPrefab, position, Quaternion.identity, this.transform);
+        GameObject bush;
+
+        if (bushPool.Count > 0)
+        {
+            bush = bushPool.Dequeue();
+            bush.transform.position = position;
+            bush.SetActive(true);
+        }
+        else
+        {
+            bush = Instantiate(strangeBushesPrefab, position, Quaternion.identity, this.transform);
+        }
+
         spawnedPositions.Add(position);
     }
 
     public void RequestBushRespawn(Vector2 oldPos, float delay)
     {
-        // 현재 위치 제거 (없으면 무시)
         spawnedPositions.Remove(oldPos);
+
+        // 여기서 기존 덤불 오브젝트를 풀에 등록
+        var bush = FindBushByPosition(oldPos);
+        if (bush != null)
+        {
+            bush.SetActive(false);
+            bushPool.Enqueue(bush);
+        }
+
         StartCoroutine(RespawnBushAfterDelay(delay));
+    }
+
+    private GameObject FindBushByPosition(Vector2 position)
+    {
+        foreach (Transform child in transform)
+        {
+            if (!child.gameObject.activeSelf) continue;
+
+            Vector2 bushPos = child.position;
+            if (Vector2.Distance(position, bushPos) < 0.1f)
+            {
+                return child.gameObject;
+            }
+        }
+
+        return null;
     }
 
     private IEnumerator RespawnBushAfterDelay(float delay)
