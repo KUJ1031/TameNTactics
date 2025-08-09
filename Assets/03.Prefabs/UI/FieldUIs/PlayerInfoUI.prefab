@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC88B\uC544\uD558\uB294 \uBAAC\uC2A4\uD130 : "
+  m_text: "\uD3EC\uC12D\uD55C \uBAAC\uC2A4\uD130 \uC218 :"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
   m_sharedMaterial: {fileID: 1808668386612340283, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
@@ -637,9 +637,9 @@ MonoBehaviour:
   PlayerImage: {fileID: 2890206921261799460}
   PlayerNameText: {fileID: 3973896973016581216}
   PlayTimeText: {fileID: 5925181454444246507}
-  BastMonsterText: {fileID: 6531641816665306053}
+  CatchMonsterText: {fileID: 6531641816665306053}
   EquipItemText: {fileID: 3981100100380125630}
-  atherText: {fileID: 7474777443917093987}
+  CurrenAreaText: {fileID: 7474777443917093987}
   closeMenuButton: {fileID: 0}
 --- !u!1 &3049074704692277375
 GameObject:
@@ -1971,7 +1971,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAE30\uD0C0 : "
+  m_text: "\uD604\uC7AC \uC9C0\uC5ED : "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}
   m_sharedMaterial: {fileID: 1808668386612340283, guid: 6bd8c2e3e16297f4982f55b89489c416, type: 2}

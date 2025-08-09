@@ -88,6 +88,60 @@ public class FadeManager : Singleton<FadeManager>
         yield return Fade(1f, 0f, onComplete);
     }
 
+    public void FadeOutWhiteWithSlow(
+        float targetTimeScale = 0.1f,
+        float slowDuration = 3.5f,
+        System.Action onFadeMid = null,    // 페이드 중간 시점 호출
+        System.Action onFadeComplete = null // 페이드 완료 후 호출
+    )
+    {
+        if (fadeImage != null)
+            fadeImage.color = new Color(1f, 1f, 1f, fadeImage.color.a); // 흰색 설정
+
+        if (currentFadeCoroutine != null) StopCoroutine(currentFadeCoroutine);
+        currentFadeCoroutine = StartCoroutine(FadeOutWhiteSlowRoutine(targetTimeScale, slowDuration, onFadeMid, onFadeComplete));
+    }
+
+    private IEnumerator FadeOutWhiteSlowRoutine(
+        float targetTimeScale,
+        float slowDuration,
+        System.Action onFadeMid,
+        System.Action onFadeComplete
+    )
+    {
+        float startScale = Time.timeScale;
+        float elapsed = 0f;
+
+        // 흰색 페이드 아웃 시작
+        Coroutine fadeCoroutine = StartCoroutine(Fade(0f, 1f, null));
+
+        bool midCalled = false;
+
+        while (elapsed < slowDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            Time.timeScale = Mathf.Lerp(startScale, targetTimeScale, elapsed / slowDuration);
+
+            if (!midCalled && elapsed >= slowDuration * 0.5f)
+            {
+                midCalled = true;
+                onFadeMid?.Invoke();
+            }
+
+            yield return null;
+        }
+
+        Time.timeScale = targetTimeScale;
+
+        yield return fadeCoroutine;
+
+        onFadeComplete?.Invoke();
+    }
+
+
+
+
+
     private IEnumerator Fade(float start, float end, System.Action onComplete)
     {
         fadeImage.gameObject.SetActive(true); // 항상 켜기

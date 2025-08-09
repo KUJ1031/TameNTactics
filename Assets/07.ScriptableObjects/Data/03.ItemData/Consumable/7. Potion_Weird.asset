@@ -18,7 +18,7 @@ MonoBehaviour:
   maxStack: 99
   type: 1
   description: "\uBAAC\uC2A4\uD130\uC758 \uCCB4\uB825\uC744 \uC804\uBD80 \uD68C\uBCF5\uC2DC\uD0A8\uB2E4."
-  goldValue: 0
+  goldValue: 5000
   itemEffects:
   - type: 2
     value: 999

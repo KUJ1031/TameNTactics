@@ -1,12 +1,12 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using System.Collections.Generic;
-using System.Collections;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Unity.VisualScripting;
-using System;
-using System.Linq;
 
 
 public class DialogueManager : Singleton<DialogueManager>
@@ -545,6 +545,7 @@ public class DialogueManager : Singleton<DialogueManager>
                         PlayerManager.Instance.player.AddBattleEntry(kairen);
                     }
                     });
+                PlayerManager.Instance.player.battleEntry[0].SetLevel(5); // 카이렌 레벨 1로 설정
                 BattleTutorialManager.Instance.AddMemberKairen();
                 BattleManager.Instance.BattleEntryTeam.Add(kairen);
                 BattleManager.Instance.StartBattle();
@@ -864,7 +865,18 @@ public class DialogueManager : Singleton<DialogueManager>
                 break;
             case "GoToEndingScene":
                 PlayerManager.Instance.playerController.AutoMove(Vector2.right, 3f, 3f, true);
-                Debug.Log("[이벤트] 엔딩 씬으로 이동");
+                FadeManager.Instance.FadeOutWhiteWithSlow(
+    0.1f, 3.5f,
+    onFadeMid: () =>
+    {
+
+    },
+    onFadeComplete: () =>
+    {
+        Debug.Log("페이드 완료 후 - 씬 전환 가능");
+        SceneManager.LoadScene("EndingScene");
+    }
+);
                 break;
             case "BackToBridgeInit":
                 PlayerManager.Instance.playerController.AutoMove(Vector2.left, 1f, 5f, true);
