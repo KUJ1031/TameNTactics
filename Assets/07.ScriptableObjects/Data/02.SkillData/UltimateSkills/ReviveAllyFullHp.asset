@@ -18,7 +18,7 @@ MonoBehaviour:
   ultimateSkillList: 19
   skillName: "\uAE30\uC808\uD55C\uBAAC\uC2A4\uD130\uBD80\uD65C"
   skillPower: 0
-  skillEffectPrefab: {fileID: 0}
+  skillEffectPrefab: {fileID: 4748681987041982144, guid: ce8a28713ac19b540b2383f1b5cd36c8, type: 3}
   isTargetingDeadMonster: 1
   targetScope: 4
   targetCount: 1
