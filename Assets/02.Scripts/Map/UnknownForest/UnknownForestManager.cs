@@ -5,7 +5,10 @@ using UnityEngine;
 public class UnknownForestManager : Singleton<UnknownForestManager>
 {
     public UnknownForest unknownForest;
-    public StrangeBushes currentBush;  // 현재 플레이어가 닿은 수풀
+    public MapLogicGuideUI unknownForestUI;
+    public StrangeBushes currentBush;  // 현재 플레이어가 닿은 수
+
+
     public Sprite npcSprite;
     public GameObject npc;
     public Transform playerRespawnTransporm;

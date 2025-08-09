@@ -1714,6 +1714,7 @@ GameObject:
   - component: {fileID: 49467931620738410}
   - component: {fileID: 7189334920423512688}
   - component: {fileID: -6208144442265886644}
+  - component: {fileID: 126331396831279276}
   m_Layer: 0
   m_Name: Brio
   m_TagString: Untagged
@@ -1884,6 +1885,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4da73ce95b796814badc5e102d3df6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &126331396831279276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455988087870966316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3316a71fa0911fd4c94c1a6b42fe79f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4648557904071184385

@@ -99,6 +99,14 @@ public class PlayerManager : MonoBehaviour
 
     public void SetBossCleared()
     {
+
+        player.playerBossStartCheck.Add(0, false);
+        player.playerBossStartCheck.Add(1, false);
+        player.playerBossStartCheck.Add(2, false);
+        player.playerBossStartCheck.Add(3, false);
+        player.playerBossStartCheck.Add(4, false);
+
+
         player.playerBossClearCheck.Add(0, false);
         player.playerBossClearCheck.Add(1, false);
         player.playerBossClearCheck.Add(2, false);

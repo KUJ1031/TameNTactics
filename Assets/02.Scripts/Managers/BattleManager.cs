@@ -220,16 +220,20 @@ public class BattleManager : Singleton<BattleManager>
             case TargetScope.EnemyTeam:
                 
                 possibleTargets = aliveEnemy;
-                
+
                 if (selectedSkill.targetCount == 0)
                 {
-                    isAttacking = true;
-                    selectedTargets = new(possibleTargets);
-                    StartCoroutine(CompareSpeedAndFight());
-                    UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
-                    UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
-                    UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
-                    break;
+                    if (PlayerManager.Instance.player.playerBattleTutorialCheck)
+                    {
+                        isAttacking = true;
+                        selectedTargets = new(possibleTargets);
+                        StartCoroutine(CompareSpeedAndFight());
+                        UIManager.Instance.battleUIManager.BattleSelectView.HideSkillPanel();
+                        UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
+                        UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
+                        break;
+                    }
+
                 }
 
                 if (possibleTargets.Count == 1)
@@ -403,6 +407,9 @@ public class BattleManager : Singleton<BattleManager>
             yield return StartCoroutine(MoveToPosition(casterChar, attackPos, 0.3f, false));
             casterChar.PlayIdle();
 
+            var hold = casterChar.GetComponent<PositionHold>();
+            hold?.HoldHere();
+
             ISkillEffect effect = null;
 
             if (skill.skillType == SkillType.UltimateSkill)
@@ -427,7 +434,10 @@ public class BattleManager : Singleton<BattleManager>
                 }
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return null;
+
+            hold?.Release();
+
             yield return StartCoroutine(MoveToPosition(casterChar, originalPos, 0.3f, true));
         }
 

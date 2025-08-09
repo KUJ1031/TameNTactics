@@ -32,15 +32,18 @@ public class RaycastEventTrigger : MonoBehaviour
     {
         Vector2 direction = GetDirectionVector(rayDirectionEnum);
 
-        // 박스 크기 설정 (광선 대신 작은 박스 사용)
-        Vector2 boxSize = new Vector2(1f, 10f); // 조절 가능
+        // 박스 크기 정의
+        Vector2 boxSize = (rayDirectionEnum == RayDirection.Left || rayDirectionEnum == RayDirection.Right)
+            ? new Vector2(rayDistance, 0.2f)
+            : new Vector2(0.2f, rayDistance);
 
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxSize, 0f, direction, rayDistance, playerLayer);
+        // 박스 중심을 Ray 방향으로 절반만큼 이동
+        Vector2 boxCenter = (Vector2)transform.position + direction * (rayDistance / 2f);
 
-        if (drawDebugRay)
-            Debug.DrawRay(transform.position, direction * rayDistance, Color.red);
+        Collider2D hit = Physics2D.OverlapBox(boxCenter, boxSize, 0f, playerLayer);
 
-        if (hit.collider != null && hit.collider.CompareTag("Player"))
+
+        if (hit != null && hit.CompareTag("Player"))
         {
             if (!playerInRay)
             {
@@ -48,7 +51,7 @@ public class RaycastEventTrigger : MonoBehaviour
 
                 if (!hasTriggered || canRepeat)
                 {
-                    TriggerDialogue(hit.collider.gameObject);
+                    TriggerDialogue(hit.gameObject);
                 }
             }
         }
@@ -119,7 +122,13 @@ public class RaycastEventTrigger : MonoBehaviour
         if (!drawDebugRay) return;
 
         Vector2 direction = GetDirectionVector(rayDirectionEnum);
+        Vector2 boxSize = (rayDirectionEnum == RayDirection.Left || rayDirectionEnum == RayDirection.Right)
+            ? new Vector2(rayDistance, 0.2f)
+            : new Vector2(0.2f, rayDistance);
+
+        Vector2 boxCenter = (Vector2)transform.position + direction * (rayDistance / 2f);
+
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)(direction * rayDistance));
+        Gizmos.DrawWireCube(boxCenter, boxSize);
     }
 }
