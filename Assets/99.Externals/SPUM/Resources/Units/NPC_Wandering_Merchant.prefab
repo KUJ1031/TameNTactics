@@ -312,7 +312,7 @@ RectTransform:
   m_GameObject: {fileID: 830064142996793167}
   m_LocalRotation: {x: 0, y: 0.008726558, z: 0, w: 0.999962}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 1.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4482242682184924445}
@@ -7678,6 +7678,7 @@ MonoBehaviour:
   npcSprite: {fileID: 639626571, guid: d2fb0cefff3d9ea459211cd66b34e452, type: 3}
   npcName: "\uB5A0\uB3CC\uC774 \uC0C1\uC778"
   startID: 1300
+  speakers: []
   keySettingName: Player.Interaction.0
   interactPromptObj: {fileID: 3050546255010148725}
   interactPromptText: {fileID: 8620260408504834532}

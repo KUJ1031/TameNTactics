@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
@@ -45,7 +44,7 @@ public class FinalFightManager : Singleton<FinalFightManager>
 
         if (player.battleEntry.Count > 0 && player.battleEntry[0] != null)
         {
-            player.battleEntry[0].AddExp(300000);
+           // player.battleEntry[0].AddExp(300000);
         }
 
         StartCoroutine(WaitUntilDialogueLoadedAndStart());
@@ -68,7 +67,7 @@ public class FinalFightManager : Singleton<FinalFightManager>
                 break;
             }
         }
-        if (PlayerManager.Instance.player.playerBossClearCheck[0])
+        if (PlayerManager.Instance.player.playerBossClearCheck[0] && !PlayerManager.Instance.player.playerQuestClearCheck[4])
             DialogueManager.Instance.StartDialogue("보스", bossImage, 1630);
 
     }
@@ -123,10 +122,10 @@ public class FinalFightManager : Singleton<FinalFightManager>
         };
     }
 
-    public void Fight_Dean() => StartFight(0, dean, 1, 1);
-    public void Fight_Eisen() => StartFight(1, eisen, 1, 1);
-    public void Fight_Dolan() => StartFight(2, dolan, 1, 1);
-    public void Fight_Boss() => StartFight(-1, boss, 1, 1);
+    public void Fight_Dean() => StartFight(0, dean, 14, 14);
+    public void Fight_Eisen() => StartFight(1, eisen, 15, 15);
+    public void Fight_Dolan() => StartFight(2, dolan, 16, 16);
+    public void Fight_Boss() => StartFight(-1, boss, 20, 20);
 
     private void StartFight(int index, List<MonsterData> teamData, int levelMin = 30, int levelMax = 30)
     {

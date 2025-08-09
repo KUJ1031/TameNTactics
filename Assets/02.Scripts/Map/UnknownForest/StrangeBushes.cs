@@ -186,7 +186,7 @@ public class StrangeBushes : MonoBehaviour
 
     public void TryBattle()
     {
-        var generator = new UnknownForestEnemyTeamGenerator(forestMonsterDataList, 9, 14);
+        var generator = new UnknownForestEnemyTeamGenerator(forestMonsterDataList, 8, 12);
         var enemyTeam = generator.GenerateRandomTeam(Random.Range(1, 4));
 
         Debug.Log($"[StrangeBushes] 몬스터 {enemyTeam.Count}마리 등장!");
