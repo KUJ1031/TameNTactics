@@ -18,10 +18,11 @@ MonoBehaviour:
   ultimateSkillList: 16
   skillName: "\uD300\uC804\uCCB4\uCCB4\uB82510%\uC529\uD68C\uBCF53\uD134"
   skillPower: 0
-  skillEffectPrefab: {fileID: 0}
+  skillEffectPrefab: {fileID: 4748681987041982144, guid: 476d7e99bf5da3440a67db0596a4176e, type: 3}
+  isTargetingDeadMonster: 0
   targetScope: 4
   targetCount: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: b2e690d6d2f2f5d48b26446028becd66, type: 3}
   upgradeIcon: {fileID: 0}
   description: "\uD300 \uC804\uCCB4 \uCCB4\uB82510%\uC529 \uD68C\uBCF5 3\uD134"
   upgradeDescription: 

@@ -706,7 +706,7 @@ MonoBehaviour:
   enemyMonsters:
   - {fileID: 11400000, guid: 5f8dbfab7fd7cba439f171f705689fab, type: 2}
   - {fileID: 11400000, guid: d08c100a9835f7d4db09ce215a1b7858, type: 2}
-  - {fileID: 11400000, guid: e21a936d50d19fc41b640991eb8e5a41, type: 2}
+  - {fileID: 11400000, guid: 07fbdb89eb5ed314eaa6229b5c7624f5, type: 2}
   spawner: {fileID: 1824030546}
   attackPosition: {fileID: 651284892}
 --- !u!4 &10992082
@@ -17037,6 +17037,7 @@ MonoBehaviour:
   selectedSkill: {fileID: 0}
   previousSceneName: 
   isCoroutineOver: 0
+  isAttacking: 0
 --- !u!4 &1612562603
 Transform:
   m_ObjectHideFlags: 0

@@ -6021,6 +6021,7 @@ GameObject:
   - component: {fileID: 7033751244391117686}
   - component: {fileID: 8209025521191543615}
   - component: {fileID: -7909186659277900466}
+  - component: {fileID: -710946476281534003}
   m_Layer: 0
   m_Name: Elona
   m_TagString: Untagged
@@ -6191,6 +6192,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4da73ce95b796814badc5e102d3df6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-710946476281534003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986492547618298753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3316a71fa0911fd4c94c1a6b42fe79f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5148319971272137594
