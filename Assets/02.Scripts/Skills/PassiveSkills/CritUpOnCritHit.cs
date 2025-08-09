@@ -15,7 +15,7 @@ public class CritUpOnCritHit : IPassiveSkill
     
     public void OnCritHit(Monster self, bool isCritical)
     {
-        if (isCritical)
+        if (isCritical && curStack < maxStack)
         {
             int amount = self.Level >= 20 ? 40 : 30;
             self.BattleCritChanceUp(amount);
