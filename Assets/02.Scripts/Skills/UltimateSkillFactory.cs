@@ -29,7 +29,8 @@ public static class UltimateSkillFactory
         { UltimateSkillList.SingleAttackDoubleDamageIfTargetHpOver80, data => new SingleAttackDoubleDamageIfTargetHpOver80(data)},
         { UltimateSkillList.SingleAttackHpScaledDamage, data => new SingleAttackHpScaledDamage(data)},
         { UltimateSkillList.SingleAttackFixedHp, data => new SingleAttackFixedHp(data)},
-        { UltimateSkillList.SelfTaunt, data => new SelfTaunt(data)}
+        { UltimateSkillList.SelfTaunt, data => new SelfTaunt(data)},
+        { UltimateSkillList.BossEnemyTeamDoubleAttack, data => new BossEnemyTeamDoubleAttack(data)}
     };
 
     public static ISkillEffect GetUltimateSkill(SkillData data)

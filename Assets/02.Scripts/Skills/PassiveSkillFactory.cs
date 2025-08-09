@@ -30,7 +30,8 @@ public static class PassiveSkillFactory
         { PassiveSkillList.PoisonEnemiesOnDeath, () => new PoisonEnemiesOnDeath()},
         { PassiveSkillList.CleanseSelfOnUlt, () => new CleanseSelfOnUlt()},
         { PassiveSkillList.LowHpDefBoost, () => new LowHpDefBoost()},
-        { PassiveSkillList.HitSpdBoost, () => new HitSpdBoost()}
+        { PassiveSkillList.HitSpdBoost, () => new HitSpdBoost()},
+        { PassiveSkillList.EnemyTeamDamageTurnEnd, () => new EnemyTeamDamageTurnEnd()}
     };
 
     public static IPassiveSkill GetPassiveSkill(PassiveSkillList list)

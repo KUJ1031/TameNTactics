@@ -34,7 +34,8 @@ public enum PassiveSkillList
     PoisonEnemiesOnDeath, // 쓰러졌을때 상대 몬스터 전체에게 2턴 중독 부여, 20레벨 4턴 부여
     CleanseSelfOnUlt, // 궁극기 사용시 모든 상태이상 제거, 20레벨 공격력 10% 증가
     LowHpDefBoost, // 체력 50% 이하일때 방어력 20% 상승, 20레벨 30% 상승
-    HitSpdBoost // 피격시 스피드 10% 상승, 20레벨 치명타 확률 10% 상승(최대 3스택)
+    HitSpdBoost, // 피격시 스피드 10% 상승, 20레벨 치명타 확률 10% 상승(최대 3스택)
+    EnemyTeamDamageTurnEnd // 턴 종료시 적 몬스터 전체 데미지(체력의 10%)
 }
 
 public enum NormalSkillList
@@ -59,7 +60,7 @@ public enum NormalSkillList
     SingleAttackChanceCrit, // 기본 공격 해금시 50% 확률로 치명타 적용
     EnemyTeamAttackChanceSpdDown, // 전체 공격 해금시 15% 확률로 적 스피드 10% 감소
     EnemyTeamAttackChanceAtkUp, // 전체 공격 해금시 10% 확률로 공격자 공격력 10% 상승
-
+    BossDoubleAttack // 단일 더블 데미지 70% 2번 때림(보스용)
 }
 
 public enum UltimateSkillList
@@ -90,6 +91,7 @@ public enum UltimateSkillList
     SingleAttackHpScaledDamage, // 단일 공격 타겟 체력에따라 공격력이 달라짐, 25레벨 데미지 1.5배 증가 공격력 달라지는 데미지 배수 올라감
     SingleAttackFixedHp, // 단일공격 타겟 최대체력의 30% 고정 데미지, 25레벨 40% 고정 데미지
     SelfTaunt, // 도발 2턴 동안 모든 공격 대신 맞음, 25레벨 3턴 도발 실드 추가
+    BossEnemyTeamDoubleAttack // 전체 공격 더블 데미지(데미지의 70%) 보스용
 }
 
 public enum TargetScope
