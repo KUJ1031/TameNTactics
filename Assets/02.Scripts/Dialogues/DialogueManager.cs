@@ -546,6 +546,7 @@ public class DialogueManager : Singleton<DialogueManager>
                     }
                     });
                 PlayerManager.Instance.player.battleEntry[0].SetLevel(5); // 카이렌 레벨 1로 설정
+                PlayerManager.Instance.player.battleEntry[0].RecalculateStats(); // 스탯 재계산
                 BattleTutorialManager.Instance.AddMemberKairen();
                 BattleManager.Instance.BattleEntryTeam.Add(kairen);
                 BattleManager.Instance.StartBattle();
