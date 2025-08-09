@@ -106,9 +106,17 @@ public class ShopUI_Sell : MonoBehaviour
 
     private void OnSell()
     {
-        var equipment = PlayerManager.Instance.player.playerEquipment;
-
         if (selectedItem == null) return;
+
+        // 제스처 아이템 판매 불가
+        if (selectedItem.data.type == ItemType.gesture)
+        {
+            warringPopup.SetActive(true);
+            warringPopupText.text = "제스처 아이템은 판매할 수 없습니다.";
+            return;
+        }
+
+        var equipment = PlayerManager.Instance.player.playerEquipment;
         if (equipment.Count > 0 && equipment[0] != null)
         {
             if (selectedItem.data.itemId == equipment[0].data.itemId)
@@ -117,7 +125,6 @@ public class ShopUI_Sell : MonoBehaviour
                 warringPopupText.text = "장착 중인 아이템은 판매할 수 없습니다.";
                 return;
             }
-
         }
 
         var player = PlayerManager.Instance.player;
@@ -136,6 +143,7 @@ public class ShopUI_Sell : MonoBehaviour
         inventoryUI.Refresh();
         Refresh();
     }
+
 
     private void ShowSellMessage(string itemName)
     {
