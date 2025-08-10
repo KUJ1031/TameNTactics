@@ -847,6 +847,7 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         PlayerManager.Instance.playerController.transform.position = FinalFightManager.Instance.bridgeInitZone.position;
         FinalFightManager.Instance.fineObj.transform.position = FinalFightManager.Instance.fineTransform.position;
+        FinalFightManager.Instance.restoredBridge.gameObject.SetActive(true); // 복원된 다리 활성화
     },
     () =>  // 밝아질 때 실행
     {

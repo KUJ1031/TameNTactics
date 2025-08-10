@@ -105,9 +105,9 @@ public class EntryUI : FieldMenuBaseUI
         bool isUnLock = monster.Level >= nuLockLevel;
         bool isUpgrade = monster.Level >= upgradeLevel;
 
-        iconUI.sprite = isUpgrade ? skill.upgradeIcon : skill.icon;
+        iconUI.sprite = skill.icon;
         nameUI.text = skill.skillName;
-        infoUI.text = isUpgrade ? skill.upgradeDescription : skill.description;
+        infoUI.text = skill.description;
 
         if (lockObj != null)
             lockObj.SetActive(!isUnLock);

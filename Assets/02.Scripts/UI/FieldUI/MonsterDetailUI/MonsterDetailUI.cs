@@ -102,10 +102,6 @@ public class MonsterDetailUI : FieldMenuBaseUI
             $"{monster.Speed} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.speed)})</color>" : $"{monster.Speed}";
         monsterCriticalText.text = player.GetTotalEffectBonus(ItemEffectType.criticalChance) > 0 ?
             $"{monster.CriticalChance} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.criticalChance)})</color>" : $"{monster.CriticalChance}";
-
-        monsterCaughtDateText.text = monster.CaughtDate.ToString();
-        monsterCaughtLocationText.text = monster.CaughtLocation;
-        monsterTimeTogetherText.text = monster.TimeTogether.ToString();
         monsterStoryText.text = monster.monsterData.description;
     }
 
@@ -132,9 +128,9 @@ public class MonsterDetailUI : FieldMenuBaseUI
         bool isUnLock = monster.Level >= nuLockLevel;
         bool isUpgrade = monster.Level >= upgradeLevel;
 
-        iconUI.sprite = isUpgrade ? skill.upgradeIcon : skill.icon;
-        nameUI.text = skill.name;
-        infoUI.text = isUpgrade ? skill.upgradeDescription : skill.description;
+        iconUI.sprite = skill.icon;
+        nameUI.text = skill.skillName;
+        infoUI.text = skill.description;
 
         if (lockObj != null)
             lockObj.SetActive(!isUnLock);

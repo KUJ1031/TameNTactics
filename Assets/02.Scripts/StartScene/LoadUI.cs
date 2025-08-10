@@ -76,7 +76,7 @@ public class LoadUI : MonoBehaviour
             playerLastGameTimeText.text = $"마지막 게임 시간 : {timeString}";
 
             // 골드 설정
-            goldText.text = $"골드 : {loadedPlayer.gold}";
+            goldText.text = $"골드 : {loadedPlayer.gold}" + "<color=#d1b11e> G</color>";
 
             // 플레이어 이미지 설정 (예시로 기본 이미지 사용)
             Debug.Log($"플레이어 성별 : {loadedPlayer.playerGender}");
@@ -116,8 +116,11 @@ public class LoadUI : MonoBehaviour
 
     public static string GetGameTimeFormatted(float playerLastGameTime, float dayLengthInSeconds)
     {
+        float visualTimeOffset = dayLengthInSeconds / 2f; // 정오 시작용 오프셋 추가
+        float visualTime = (playerLastGameTime + visualTimeOffset) % dayLengthInSeconds;
+
         float secondsPerGameHour = dayLengthInSeconds / 24f;
-        float gameHours = (playerLastGameTime / secondsPerGameHour) % 24f;
+        float gameHours = (visualTime / secondsPerGameHour) % 24f;
 
         int hours24 = Mathf.FloorToInt(gameHours);
         int minutes = Mathf.FloorToInt((gameHours - hours24) * 60f);
