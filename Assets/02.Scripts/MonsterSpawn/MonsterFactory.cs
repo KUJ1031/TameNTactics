@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
@@ -53,6 +54,7 @@ public class MonsterFactory : MonoBehaviour
     }
 
     //몬스터 스폰
+
     public void SpawnAllMonsters()
     {
         if (monsterDataList != null && monsterDataList.Count > 0)
@@ -91,7 +93,44 @@ public class MonsterFactory : MonoBehaviour
                 {
                     mover.SetMoveArea(GetComponentInChildren<BoxCollider2D>());
                 }
+
+                // **콜라이더 비활성화 코루틴 시작**
+                StartCoroutine(DisableColliderTemporarily(monsterGo, 2f));
             }
+        }
+    }
+
+    private IEnumerator DisableColliderTemporarily(GameObject monsterObj, float duration)
+    {
+        Collider2D col2D = monsterObj.GetComponent<Collider2D>();
+        if (col2D != null)
+        {
+            col2D.enabled = false;
+
+            // 투명도 낮추기 (알파 0.5f)
+            SetSpriteAlpha(monsterObj, 0.5f);
+
+            yield return new WaitForSeconds(duration);
+
+            col2D.enabled = true;
+
+            // 투명도 원상복구 (알파 1f)
+            SetSpriteAlpha(monsterObj, 1f);
+        }
+        else
+        {
+            Debug.LogWarning($"{monsterObj.name}에 Collider2D가 없습니다.");
+        }
+    }
+
+    private void SetSpriteAlpha(GameObject obj, float alpha)
+    {
+        SpriteRenderer[] sprites = obj.GetComponentsInChildren<SpriteRenderer>();
+        foreach (var sprite in sprites)
+        {
+            Color c = sprite.color;
+            c.a = alpha;
+            sprite.color = c;
         }
     }
 

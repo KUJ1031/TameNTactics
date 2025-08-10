@@ -103,20 +103,31 @@ public class MonsterMover : MonoBehaviour
 
         switch (monsterData.personality)
         {
+            case Personality.Bold:
             case Personality.Energetic:
+            case Personality.Responsible:
+            case Personality.Passionate:
+            case Personality.Proactive:
+
                 if (isPlayerInSight)
                     MoveToward(player.position, chaseSpeed); // 추격
                 else
                     Patrol(); // 순찰
                 break;
 
-            case Personality.Thorough:
+            case Personality.Devoted:
+            case Personality.Cautious:
+            case Personality.Emotional:
+            case Personality.Altruistic:
                 if (isEscaping)
                     MoveToward(escapeTarget, chaseSpeed); // 도망
                 else
                     Patrol(); // 순찰
                 break;
 
+            case Personality.Thorough:
+            case Personality.Decisive:
+            case Personality.Cynical:
             case Personality.Sociable:
                 Patrol(); // 평범한 몬스터는 무조건 순찰
                 break;

@@ -326,7 +326,6 @@ public class Monster
     public void HealFull()
     {
         CurHp = MaxHp;
-        HpChange?.Invoke(this);
     }
 
     public void SpeedDownEffect(int amount)
