@@ -186,7 +186,7 @@ public class Monster
         Defense = monsterData.defense + 3 * levelMinusOne;
         Speed = monsterData.speed + 3 * levelMinusOne;
         MaxExp = monsterData.maxExp + 25 * levelMinusOne;
-        ExpReward = monsterData.expReward + 25 * levelMinusOne;
+        ExpReward = monsterData.expReward + 20 * levelMinusOne;
         GoldReward = monsterData.goldReward + 100 * levelMinusOne;
     }
 
