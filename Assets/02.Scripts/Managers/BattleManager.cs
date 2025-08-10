@@ -506,10 +506,32 @@ public class BattleManager : Singleton<BattleManager>
         PlayerManager.Instance.player.AddGold(totalGold);
 
         foreach (var monster in BattleEntryTeam.Where(m => m.CurHp > 0))
-            monster.AddExp(totalExp);
+        {
+            var (before, after) = monster.AddExp(totalExp);
+            if (after > before)
+            {
+                EventAlertManager.AddPendingAlert(
+                    EventAlertType.LevelUp,
+                    null,
+                    monster.monsterName,
+                    after
+                );
+            }
+        }
 
         foreach (var monster in BenchMonsters.Where(m => m.CurHp > 0))
-            monster.AddExp(getBenchExp);
+        {
+            var (before, after) = monster.AddExp(totalExp);
+            if (after > before)
+            {
+                EventAlertManager.Instance.SetEventAlert(
+                    EventAlertType.LevelUp,
+                    null,                // 아이템 데이터 필요 없음
+                    monster.monsterName,        // 몬스터 이름
+                    after                // 레벨업 후 레벨
+                );
+            }
+        }
 
         return (totalExp, totalGold);
     }
@@ -764,7 +786,7 @@ public class BattleManager : Singleton<BattleManager>
         int amount = Mathf.RoundToInt(result.damage * 0.7f);
         
         DealDamage(target, amount, caster, skillData, result.isCritical, result.effectiveness);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         DealDamage(target, amount, caster, skillData, result.isCritical, result.effectiveness);
     }
 }
