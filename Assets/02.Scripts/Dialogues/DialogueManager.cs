@@ -804,7 +804,7 @@ public class DialogueManager : Singleton<DialogueManager>
             case "FightBoss":
                 PlayerManager.Instance.player.playerBossStartCheck[0] = true;
                 FinalFightManager.Instance.Fight_Boss();
-                FinalFightUIManager.Instance.ShowBossUI();
+               // FinalFightUIManager.Instance.ShowBossUI();
                 break;
             case "Check_BossRetry":
                 StartDialogue("보스", FinalFightManager.Instance.bossImage, 1624);

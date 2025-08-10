@@ -10,17 +10,6 @@ public class FinalFightUIManager : Singleton<FinalFightUIManager>
 
     private void Start()
     {
-        if (PlayerManager.Instance.player.playerEliteStartCheck[0] && !PlayerManager.Instance.player.playerEliteClearCheck[0])
-        {
-            Debug.Log("FinalFightManager: 딘과의 전투 시작");
-            ShowEliteUI();
-        }
-        else if (PlayerManager.Instance.player.playerBossStartCheck[0])
-        {
-            Debug.Log("FinalFightManager: 보스와의 전투 시작");
-            ShowBossUI();
-        }
-
     }
     public void ShowEliteUI()
     {

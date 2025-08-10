@@ -5,6 +5,9 @@ public class PlayerMenuState : BaseBattleState
 {
     public PlayerMenuState(BattleSystem system) : base(system) { }
 
+    bool isEliteInitialized = false;
+    bool isBossInitialized = false;
+
     public override void Enter()
     {
         Debug.Log("플레이어 메뉴 상태로 진입했습니다. 행동을 선택하세요.");
@@ -22,18 +25,6 @@ public class PlayerMenuState : BaseBattleState
                 UIManager.Instance.battleUIManager.BattleSelectView.HideSelectPanel();
             }
 
-        }
-
-        bool isDeanFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Dean");
-        bool isEisenFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Eisen");
-        bool isDolanFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Dolan");
-        bool isBossFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Boss");
-
-        if (isDeanFight || isEisenFight || isDolanFight || isBossFight)
-        {
-            Debug.Log("보스전에서는 포획 버튼을 사용할 수 없습니다.");
-            UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_false();
-            UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
         }
         else if (PlayerManager.Instance.player.playerLastStage == "잊혀진 공간")
         {

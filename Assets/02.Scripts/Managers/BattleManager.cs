@@ -87,6 +87,29 @@ public class BattleManager : Singleton<BattleManager>
             Debug.Log($"Enemy Monster의 현재 최대 궁극기 게이지 : {monster.MaxUltimateCost}");
         }
 
+
+        bool isDeanFight = enemyTeam.Any(m => m.monsterName == "Dean");
+        bool isEisenFight = enemyTeam.Any(m => m.monsterName == "Eisen");
+        bool isDolanFight = enemyTeam.Any(m => m.monsterName == "Dolan");
+        bool isBossFight = enemyTeam.Any(m => m.monsterName == "Boss");
+
+
+        if (isDeanFight || isEisenFight || isDolanFight || isBossFight)
+        {
+            Debug.Log("보스전에서는 포획 버튼을 사용할 수 없습니다.");
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_false();
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
+
+            if (isDeanFight)
+            {
+                FinalFightUIManager.Instance.ShowEliteUI();
+            }
+            else if (isBossFight)
+            {
+                FinalFightUIManager.Instance.ShowBossUI();
+            }
+        }
+
         PassiveSkillActivate();
         ClearSelections();
     }
@@ -117,7 +140,22 @@ public class BattleManager : Singleton<BattleManager>
 
         isAttacking = false;
         isCoroutineOver = true;
-        BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+
+        if (BattleEntryTeam.Count == 0)
+        {
+            EndBattle(true);
+        }
+
+        else if (BattleEnemyTeam.Count == 0)
+        {
+            EndBattle(false);
+        }
+        else
+        {
+            BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
+        }
+
+           
     }
 
     // 데미지 넣기 + 데미지 후 패시브 발동
