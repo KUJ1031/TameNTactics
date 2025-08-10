@@ -9,6 +9,7 @@ public class SkillView : MonoBehaviour
     [SerializeField] private Image skillSlot1;
     [SerializeField] private Image skillSlot2;
     [SerializeField] private Transform skillPanel;
+    [SerializeField] private Transform skillLockPanel;
     [SerializeField] private Transform activeSkillTooltipPanel;
     [SerializeField] private Transform passiveSkillTooltipPanel;
 
@@ -17,30 +18,52 @@ public class SkillView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI passiveSkillName;
     [SerializeField] private TextMeshProUGUI passiveSkillDescription;
 
-    public void ShowSkillList(List<SkillData> skills)
+    public void ShowSkillList(int level, List<SkillData> skills)
     {
-        // 1번 슬롯
-        if (skills.Count >= 2 && skills[1] != null)
+        if (skills == null || skills.Count == 0)
         {
-            var selectSlot = skillSlot1.GetComponent<SkillSelecter>();
-            skillSlot1.sprite = skills[1].icon;
-            selectSlot.skillIndex = 1;
-        }
-        else if (skills[1] == null)
-        {
-            skillSlot1.sprite = null;
+            skillPanel.gameObject.SetActive(false);
+            return;
         }
 
-        // 2번 슬롯
-        if (skills.Count >= 3 && skills[2] != null)
+        int normalSkillIdx = skills.FindIndex(s => s != null && s.skillType == SkillType.NormalSkill);
+        int ultSkillIdx = skills.FindIndex(s => s != null && s.skillType == SkillType.UltimateSkill);
+
+        // 일반 스킬 슬롯
+        var normalSlotSelecter = skillSlot1.GetComponent<SkillSelecter>();
+        if (normalSkillIdx >= 0 && skills[normalSkillIdx].icon != null)
         {
-            var selectSlot = skillSlot2.GetComponent<SkillSelecter>();
-            skillSlot2.sprite = skills[2].icon;
-            selectSlot.skillIndex = 2;
+            skillSlot1.sprite = skills[normalSkillIdx].icon;
+            if (normalSlotSelecter != null) normalSlotSelecter.skillIndex = normalSkillIdx;
+            skillSlot1.enabled = true;
         }
-        else if (skills[2] == null)
+        else
+        {
+            skillSlot1.sprite = null;
+            if (normalSlotSelecter != null) normalSlotSelecter.skillIndex = -1;
+            skillSlot1.enabled = false;
+        }
+
+        // 궁극기 스킬 슬롯
+        bool ultUnlocked = level >= 15;
+        var ultSlotSelecter = skillSlot2.GetComponent<SkillSelecter>();
+
+        if (ultSkillIdx >= 0 && skills[ultSkillIdx].icon != null)
+        {
+            skillSlot2.sprite = skills[ultSkillIdx].icon;
+            if (ultSlotSelecter != null) ultSlotSelecter.skillIndex = ultSkillIdx;
+            skillSlot2.enabled = true;
+        }
+        else
         {
             skillSlot2.sprite = null;
+            if (ultSlotSelecter != null) ultSlotSelecter.skillIndex = -1;
+            skillSlot2.enabled = false;
+        }
+
+        if (skillLockPanel != null)
+        {
+            skillLockPanel.gameObject.SetActive(!ultUnlocked);
         }
 
         skillPanel.gameObject.SetActive(true);

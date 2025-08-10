@@ -39,7 +39,7 @@ public class PassiveSkillSelecter : MonoBehaviour, IPointerEnterHandler, IPointe
     {
         if (passiveSkillData == null) return;
 
-        UIManager.Instance.battleUIManager.SkillView.ShowPassiveSkillTooltip(passiveSkillData.name, passiveSkillData.description);
+        UIManager.Instance.battleUIManager.SkillView.ShowPassiveSkillTooltip(passiveSkillData.skillName, passiveSkillData.description);
     }
 
     public void OnPointerExit(PointerEventData eventData)
