@@ -19,12 +19,7 @@ public class BossDoubleAttack : ISkillEffect
 
         foreach (var target in targetCopy)
         {
-            var result = DamageCalculator.CalculateDamage(caster, target, skillData);
-            int amount = Mathf.RoundToInt(result.damage * 0.7f);
-            BattleManager.Instance.DealDamage(
-                target, amount, caster, skillData, result.isCritical, result.effectiveness);
-            BattleManager.Instance.DealDamage(
-                target, amount, caster, skillData, result.isCritical, result.effectiveness);
+            BattleManager.Instance.StartCoroutine(BattleManager.Instance.BossAttack(target, caster, skillData));
         }
     }
 }
