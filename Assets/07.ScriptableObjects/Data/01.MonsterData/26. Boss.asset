@@ -26,8 +26,8 @@ MonoBehaviour:
   criticalChance: 10
   maxExp: 50
   MaxUltimateCost: 10
-  expReward: 20
-  goldReward: 1000
+  expReward: 50
+  goldReward: 5000
   skills:
   - {fileID: 11400000, guid: 7954b3064cc512646899b4bad223ace3, type: 2}
   - {fileID: 11400000, guid: 7cab3b12cffb263418b783284f4f0b4a, type: 2}
