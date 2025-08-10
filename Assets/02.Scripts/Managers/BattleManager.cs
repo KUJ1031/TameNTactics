@@ -160,7 +160,7 @@ public class BattleManager : Singleton<BattleManager>
 
         foreach (var monster in BattleEntryTeam)
         {
-            if (monster.debuffCanAct && monster.CurHp > 0)
+            if (monster.debuffCanAct && monster.canAct && monster.CurHp > 0)
             {
                 possibleActPlayerMonsters.Add(monster);
             }
@@ -170,7 +170,7 @@ public class BattleManager : Singleton<BattleManager>
     // 공격 실행할 몬스터 고르기
     public void SelectPlayerMonster(Monster selectedMonster)
     {
-        if (selectedMonster.CurHp <= 0 || !selectedMonster.debuffCanAct) return;
+        if (selectedMonster.CurHp <= 0 || !selectedMonster.debuffCanAct || !selectedMonster.canAct) return;
         selectedPlayerMonster = selectedMonster;
     }
 
@@ -331,7 +331,8 @@ public class BattleManager : Singleton<BattleManager>
             yield break;
         }
 
-        bool playerStunned = BattleEntryTeam.All(m => !m.debuffCanAct);
+        bool playerStunned = BattleEntryTeam.All(m => !m.debuffCanAct || !m.canAct);
+        
         if (playerStunned)
         {
             EnemyAttackAfterPlayerTurn();
@@ -385,7 +386,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         Debug.Log("스킬사용!");
 
-        if (!caster.debuffCanAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
+        if (!caster.debuffCanAct || !caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
 
         MonsterCharacter casterChar = FindMonsterCharacter(caster);
         List<MonsterCharacter> targetChars = new();
