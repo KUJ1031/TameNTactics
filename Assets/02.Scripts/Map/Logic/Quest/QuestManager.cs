@@ -20,8 +20,8 @@ public class QuestManager : Singleton<QuestManager>
 
         AddQuest(new QuestData(
             "[레거의 편지]", "편지를 찾아야 한다.",
-            "미지의 숲 앞에 있는 NPC인 [핑거]를 찾아가자.",
-            "미지의 숲에 들어가려는 찰나, 핑거가 부탁해왔다.\n\"동생의 편지를 찾아줘.\"\n\n그의 편지는 어디에 있는걸까?\n...미지의 수풀 속을 잘 찾아보면 나올지도..?",
+            "미지의 숲 밑 잊혀진 공간 앞에 있는 NPC인 [핑거]를 찾아가자.",
+            "잊혀진 공간에 들어가려는 찰나, 핑거가 부탁해왔다.\n\"동생의 편지를 찾아줘.\"\n\n그의 편지는 어디에 있는걸까?\n...수풀 속을 잘 찾아보면 나올지도..?",
             QuestStatus.NotStarted,
             questUI.defaultquestImage[1],
             0 // [전투의 기본] 완료 필요
@@ -48,7 +48,7 @@ public class QuestManager : Singleton<QuestManager>
         AddQuest(new QuestData(
             "[빼앗긴 나무]", "보스를 토벌하자.",
             "길을 막아서는 엘리트 몬스터들을 무찌르자.",
-            "드디어 목수를 찾아냈다!\n그런데... 기껏 베어놓은 나무를 뺏길 위기에 처해있다.\n\"저 녀석이 내 나무를 가져가려고 해!!\"\n\n보스를 퇴치하고, 목수를 데려가 다리를 재건해야 한다.",
+            "드디어 목수를 찾아냈다!\n그런데... 어째서인지 수상한 공간에 갇혀있다..\n\"제발 구해줘! 뭐든지 해줄테니까!\"\n\n보스를 퇴치하고, 목수를 데려가 다리를 재건해야 한다.\n문을 부수기 위해선, Lv 15 이상 동료가 필요할 듯하다...",
             QuestStatus.NotStarted,
             questUI.defaultquestImage[4],
             2 // [끊어진 다리] 완료 필요

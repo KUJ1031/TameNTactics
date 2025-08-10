@@ -24,7 +24,7 @@ public static class EnemyAIController
         // 1. 궁극기 사용 가능한 몬스터가 있다면 우선
         foreach (var enemy in actors)
         {
-            if (enemy.CurHp <= 0 || !enemy.debuffCanAct) continue;
+            if (enemy.CurHp <= 0 || !enemy.debuffCanAct || !enemy.canAct) continue;
 
             var ultimateSkill = enemy.skills.FirstOrDefault(s => s.skillType == SkillType.UltimateSkill);
             bool maxUltCost = enemy.CurUltimateCost >= enemy.MaxUltimateCost;
@@ -54,7 +54,7 @@ public static class EnemyAIController
         // 2. 상성 유리한 대상이 있다면 NormalSkill 사용
         foreach (var enemy in actors)
         {
-            if (enemy.CurHp <= 0 || !enemy.debuffCanAct) continue;
+            if (enemy.CurHp <= 0 || !enemy.debuffCanAct || !enemy.canAct) continue;
 
             bool hasAdvantage = targetMonsters.Any(player =>
                 player.CurHp > 0 &&
@@ -122,7 +122,7 @@ public static class EnemyAIController
     {
         // 1. 체력 50% 이하 중 가장 낮은 몬스터
         var lowHp = targetMonsters
-            .Where(m => m.CurHp > 0 && m.CurHp / m.MaxHp <= 0.5f)
+            .Where(m => m.CurHp > 0 && m.CurHp / m.CurMaxHp <= 0.5f)
             .OrderBy(m => m.CurHp)
             .ToList();
 

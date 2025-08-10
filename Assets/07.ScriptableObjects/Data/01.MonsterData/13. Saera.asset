@@ -15,8 +15,8 @@ MonoBehaviour:
   monsterName: Saera
   monsterNumber: 13
   monsterImage: {fileID: -705123731, guid: 279046310c68860439f929142fa3236a, type: 3}
-  encounterCount: 10
-  captureCount: 5
+  encounterCount: 11
+  captureCount: 6
   type: 2
   personality: 6
   maxHp: 90
@@ -26,14 +26,15 @@ MonoBehaviour:
   criticalChance: 5
   maxExp: 20
   MaxUltimateCost: 10
-  expReward: 5
-  goldReward: 100
+  expReward: 10
+  goldReward: 500
   skills:
-  - {fileID: 11400000, guid: 6fe94066213bed948bf0a220bcdfbeaa, type: 2}
-  - {fileID: 11400000, guid: 44234f39fae01834a8a54c95580db141, type: 2}
-  - {fileID: 11400000, guid: 6bcc546c9dc60814fa3774452fad235d, type: 2}
+  - {fileID: 11400000, guid: 0555aed2fc1d8484a9a14a7588117011, type: 2}
+  - {fileID: 11400000, guid: 59343da64293bf34291f910e9611c059, type: 2}
+  - {fileID: 11400000, guid: ec7265bc76cc7ff4f9bc476b333fd21c, type: 2}
   spawnArea: 0
   spawnTime: 0
   captureRate: 0
-  description: 
+  description: " \"\uC7A0\uAE50, \uC804\uD22C \uC804\uC5D0 \uD5C8\uBE0C\uD2F0 \uD55C
+    \uC794?\""
   damageSound: {fileID: 11400000, guid: bea1e8857547f44488de20d81b80ce00, type: 2}

@@ -148,8 +148,9 @@ public class Monster
     }
 
     //경험치 얻기
-    public void AddExp(int expAmount)
+    public (int beforeLevel, int afterLevel) AddExp(int expAmount)
     {
+        int beforeLevel = Level;
         CurExp += expAmount;
 
         while (CurExp >= MaxExp && Level < 30)
@@ -159,6 +160,9 @@ public class Monster
             RecalculateStats();
             CurHp = MaxHp; // 레벨업 시 체력 회복
         }
+
+        int afterLevel = Level;
+        return (beforeLevel, afterLevel);
     }
 
     // 배틀 시작 전 사용!
@@ -182,8 +186,8 @@ public class Monster
         Defense = monsterData.defense + 3 * levelMinusOne;
         Speed = monsterData.speed + 3 * levelMinusOne;
         MaxExp = monsterData.maxExp + 25 * levelMinusOne;
-        ExpReward = monsterData.expReward + 25 * levelMinusOne;
-        GoldReward = monsterData.goldReward + 30 * levelMinusOne;
+        ExpReward = monsterData.expReward + 20 * levelMinusOne;
+        GoldReward = monsterData.goldReward + 100 * levelMinusOne;
     }
 
     public void MaxHpUp(int amount)
@@ -322,7 +326,6 @@ public class Monster
     public void HealFull()
     {
         CurHp = MaxHp;
-        HpChange?.Invoke(this);
     }
 
     public void SpeedDownEffect(int amount)

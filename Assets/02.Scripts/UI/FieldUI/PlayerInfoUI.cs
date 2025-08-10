@@ -30,7 +30,7 @@ public class PlayerInfoUI : FieldMenuBaseUI
         PlayerImage.sprite = PlayerManager.Instance.playerImage[player.playerGender];
         PlayerNameText.text = player.playerName;
         CatchMonsterText.text = $"{player.ownedMonsters.Count}명";
-        CurrenAreaText.text = $"{player.playerLastStage}";
+        CurrenAreaText.text = $"{player.gold}" + "<color=#d1b11e> G</color>";
         EquipItemText.text = (player.playerEquipment.Count > 0 && player.playerEquipment[0]?.data != null) ? $"<color=#FF4444>{player.playerEquipment[0].data.itemName}</color> ({player.playerEquipment[0].data.description})" : "<color=#888888>없음</color>";
     }
 }

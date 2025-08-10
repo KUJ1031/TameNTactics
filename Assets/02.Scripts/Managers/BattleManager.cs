@@ -160,7 +160,7 @@ public class BattleManager : Singleton<BattleManager>
 
         foreach (var monster in BattleEntryTeam)
         {
-            if (monster.debuffCanAct && monster.CurHp > 0)
+            if (monster.debuffCanAct && monster.canAct && monster.CurHp > 0)
             {
                 possibleActPlayerMonsters.Add(monster);
             }
@@ -170,7 +170,7 @@ public class BattleManager : Singleton<BattleManager>
     // 공격 실행할 몬스터 고르기
     public void SelectPlayerMonster(Monster selectedMonster)
     {
-        if (selectedMonster.CurHp <= 0 || !selectedMonster.debuffCanAct) return;
+        if (selectedMonster.CurHp <= 0 || !selectedMonster.debuffCanAct || !selectedMonster.canAct) return;
         selectedPlayerMonster = selectedMonster;
     }
 
@@ -195,7 +195,7 @@ public class BattleManager : Singleton<BattleManager>
         var aliveEnemy = BattleEnemyTeam.Where(m => m.CurHp > 0).ToList();
 
         switch (skill.targetScope)
-        { 
+        {
             case TargetScope.Self:
                 isAttacking = true;
                 possibleTargets = new() { selectedPlayerMonster };
@@ -217,7 +217,7 @@ public class BattleManager : Singleton<BattleManager>
                 break;
 
             case TargetScope.EnemyTeam:
-                
+
                 possibleTargets = aliveEnemy;
 
                 if (selectedSkill.targetCount == 0)
@@ -248,12 +248,12 @@ public class BattleManager : Singleton<BattleManager>
                         break;
                     }
                 }
-                
+
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
 
             case TargetScope.PlayerTeam:
-                
+
                 if (selectedSkill.targetCount == 0)
                 {
                     possibleTargets = alivePlayer;
@@ -265,14 +265,14 @@ public class BattleManager : Singleton<BattleManager>
                     UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
                     break;
                 }
-                
+
                 if (selectedSkill.isTargetingDeadMonster)
                 {
                     possibleTargets = DeadEntryMonsters;
                     BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                     break;
                 }
-                
+
                 possibleTargets = alivePlayer;
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
@@ -324,14 +324,15 @@ public class BattleManager : Singleton<BattleManager>
                 EndBattle(true);
                 yield break;
             }
-            
+
             yield return StartCoroutine(IncreaseUltCostAllMonsters());
             EndTurn();
             ClearSelections();
             yield break;
         }
 
-        bool playerStunned = BattleEntryTeam.All(m => !m.debuffCanAct);
+        bool playerStunned = BattleEntryTeam.All(m => !m.debuffCanAct || !m.canAct);
+        
         if (playerStunned)
         {
             EnemyAttackAfterPlayerTurn();
@@ -385,7 +386,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         Debug.Log("스킬사용!");
 
-        if (!caster.debuffCanAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
+        if (!caster.debuffCanAct || !caster.canAct || caster.CurHp <= 0 || targets == null || targets.Count == 0) yield break;
 
         MonsterCharacter casterChar = FindMonsterCharacter(caster);
         List<MonsterCharacter> targetChars = new();
@@ -505,10 +506,32 @@ public class BattleManager : Singleton<BattleManager>
         PlayerManager.Instance.player.AddGold(totalGold);
 
         foreach (var monster in BattleEntryTeam.Where(m => m.CurHp > 0))
-            monster.AddExp(totalExp);
+        {
+            var (before, after) = monster.AddExp(totalExp);
+            if (after > before)
+            {
+                EventAlertManager.AddPendingAlert(
+                    EventAlertType.LevelUp,
+                    null,
+                    monster.monsterName,
+                    after
+                );
+            }
+        }
 
         foreach (var monster in BenchMonsters.Where(m => m.CurHp > 0))
-            monster.AddExp(getBenchExp);
+        {
+            var (before, after) = monster.AddExp(totalExp);
+            if (after > before)
+            {
+                EventAlertManager.Instance.SetEventAlert(
+                    EventAlertType.LevelUp,
+                    null,                // 아이템 데이터 필요 없음
+                    monster.monsterName,        // 몬스터 이름
+                    after                // 레벨업 후 레벨
+                );
+            }
+        }
 
         return (totalExp, totalGold);
     }
@@ -622,8 +645,8 @@ public class BattleManager : Singleton<BattleManager>
 
     public void CheckDeadMonster()
     {
-        DeadEntryMonsters = BattleEntryTeam.Where(m => m.CurHp <= 0).ToList();
-        DeadEnemyMonsters = BattleEnemyTeam.Where(m => m.CurHp <= 0).ToList();
+        DeadEntryMonsters.AddRange(BattleEntryTeam.Where(m => m.CurHp <= 0));
+        DeadEnemyMonsters.AddRange(BattleEnemyTeam.Where(m => m.CurHp <= 0));
 
         BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
         BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
@@ -755,5 +778,15 @@ public class BattleManager : Singleton<BattleManager>
     {
         yield return new WaitForSeconds(1);
         monster.TakeDamage(damage);
+    }
+
+    public IEnumerator BossAttack(Monster target, Monster caster, SkillData skillData)
+    {
+        var result = DamageCalculator.CalculateDamage(caster, target, skillData);
+        int amount = Mathf.RoundToInt(result.damage * 0.7f);
+        
+        DealDamage(target, amount, caster, skillData, result.isCritical, result.effectiveness);
+        yield return new WaitForSeconds(0.5f);
+        DealDamage(target, amount, caster, skillData, result.isCritical, result.effectiveness);
     }
 }

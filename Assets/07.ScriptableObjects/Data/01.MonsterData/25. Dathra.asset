@@ -18,7 +18,7 @@ MonoBehaviour:
   encounterCount: 0
   captureCount: 8
   type: 4
-  personality: 0
+  personality: 11
   maxHp: 75
   attack: 13
   defense: 5
@@ -26,14 +26,15 @@ MonoBehaviour:
   criticalChance: 10
   maxExp: 20
   MaxUltimateCost: 10
-  expReward: 5
-  goldReward: 100
+  expReward: 10
+  goldReward: 500
   skills:
-  - {fileID: 11400000, guid: 3488434079dd59544b6143eda6038558, type: 2}
-  - {fileID: 11400000, guid: d1b1249c23fb2e144ab9bdfe7390fc3d, type: 2}
-  - {fileID: 11400000, guid: 43461d3d351e6554aa855ba9c74b2a15, type: 2}
+  - {fileID: 11400000, guid: 261dff50365475546b2431557fd2dba8, type: 2}
+  - {fileID: 11400000, guid: 9dae6f8e8744fb841b6013103bad5572, type: 2}
+  - {fileID: 11400000, guid: 8e4e8045ce3c7bc45b4fa325bae27657, type: 2}
   spawnArea: 0
   spawnTime: 0
   captureRate: 0
-  description: 
+  description: "\"\uACC4\uC0B0 \uC644\uB8CC. \uC2E4\uD589 \uC911\u2026 \uADFC\uB370
+    \uBC15\uC790\uB294 \uD2C0\uB838\uB124?\""
   damageSound: {fileID: 11400000, guid: 7bad304df06161d488c81536c8447dd0, type: 2}

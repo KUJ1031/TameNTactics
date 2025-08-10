@@ -32,6 +32,8 @@ public class FinalFightManager : Singleton<FinalFightManager>
     public Transform bossRoomInitZone;
     public Transform bridgeInitZone;
     public Transform fineTransform;
+
+    public GameObject restoredBridge;
     private void Start()
     {
         var player = PlayerManager.Instance.player;
@@ -39,12 +41,16 @@ public class FinalFightManager : Singleton<FinalFightManager>
         if (player.playerEliteClearCheck[0]) Destroy(deanObj);
         if (player.playerEliteClearCheck[1]) Destroy(eisenObj);
         if (player.playerEliteClearCheck[2]) Destroy(dolanObj);
-        if (player.playerBossClearCheck[0]) Destroy(carpenterObj);
-        if (player.playerQuestClearCheck[4]) Destroy(bossObj);
+        if (player.playerBossClearCheck[0])
+        {
+            Destroy(carpenterObj);
+            restoredBridge.gameObject.SetActive(true);
+        }
+            if (player.playerQuestClearCheck[4])Destroy(bossObj);
 
         if (player.battleEntry.Count > 0 && player.battleEntry[0] != null)
         {
-           // player.battleEntry[0].AddExp(300000);
+          //  player.battleEntry[0].AddExp(300000);
         }
 
         StartCoroutine(WaitUntilDialogueLoadedAndStart());
