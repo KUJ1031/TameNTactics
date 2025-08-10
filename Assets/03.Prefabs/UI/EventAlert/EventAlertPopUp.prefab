@@ -93,7 +93,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &820250791876534046
 RectTransform:
   m_ObjectHideFlags: 0
@@ -129,6 +129,7 @@ MonoBehaviour:
   wandererImage: {fileID: 639626571, guid: d2fb0cefff3d9ea459211cd66b34e452, type: 3}
   questImage: {fileID: 21300000, guid: 279bacabd32c24f57bd49044012a31a1, type: 3}
   saveImage: {fileID: 21300000, guid: 9e79440f8a7ac4d988018064745c1461, type: 3}
+  levelUpImage: {fileID: 21300000, guid: 72aede1ba300d438c93584e2edd5edf9, type: 3}
 --- !u!1 &3733379544010910688
 GameObject:
   m_ObjectHideFlags: 0

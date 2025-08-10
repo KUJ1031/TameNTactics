@@ -70,7 +70,7 @@ public class EntryUI : FieldMenuBaseUI
 
         monsterNameText.text = monster.monsterName;
         monsterTypeText.text = monster.monsterData.type.ToString();
-        monsterPersonalityText.text = monster.monsterData.personality.ToString();
+        monsterPersonalityText.text = monster.monsterData.personality.ToKorean();
 
         monsterAttackText.text = player.GetTotalEffectBonus(ItemEffectType.attack) > 0 ?
             $"{monster.Attack} <color=red>({PlayerManager.Instance.player.playerEquipment[0].data.itemName} +{PlayerManager.Instance.player.GetTotalEffectBonus(ItemEffectType.attack)})</color>" : $"{monster.Attack}";
@@ -106,7 +106,7 @@ public class EntryUI : FieldMenuBaseUI
         bool isUpgrade = monster.Level >= upgradeLevel;
 
         iconUI.sprite = isUpgrade ? skill.upgradeIcon : skill.icon;
-        nameUI.text = skill.name;
+        nameUI.text = skill.skillName;
         infoUI.text = isUpgrade ? skill.upgradeDescription : skill.description;
 
         if (lockObj != null)

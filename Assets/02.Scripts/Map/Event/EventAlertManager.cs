@@ -9,8 +9,24 @@ public class EventAlertManager : Singleton<EventAlertManager>
     public Transform alertSlotsParent;
 
     private Queue<EventAlertRequest> alertQueue = new Queue<EventAlertRequest>();
+    public static List<EventAlertRequest> pendingAlerts = new List<EventAlertRequest>();
+
     private bool isDisplaying = false;
 
+    void Start()
+    {
+        // 씬 전환 후 대기 중인 알림 실행
+        foreach (var request in pendingAlerts)
+        {
+            Instance.SetEventAlert(
+                request.alertType,
+                request.itemData,
+                request.name,
+                request.quantity
+            );
+        }
+        pendingAlerts.Clear();
+    }
     public void SetEventAlert(EventAlertType alertType, ItemData itemData = null, string name = null, int quantity = 0)
     {
         EventAlertRequest request = new EventAlertRequest(alertType, itemData, name, quantity);
@@ -91,6 +107,12 @@ public class EventAlertManager : Singleton<EventAlertManager>
                 instance.eventAlertType.text = "[저장]";
                 instance.eventAlertText.text = "게임이 저장되었습니다.";
                 break;
+            case EventAlertType.LevelUp:
+                instance.alertImage.sprite = eventAlertPopup.levelUpImage; // 레벨업 전용 아이콘
+                instance.eventAlertType.text = "[레벨업]";
+                instance.eventAlertText.text =
+                    $"<color=#3ED90D>{request.name}</color>이(가) {request.quantity}레벨이 되었습니다!";
+                break;
         }
 
         Vector2 startPos = new Vector2(rect.anchoredPosition.x, 200);
@@ -126,6 +148,11 @@ public class EventAlertManager : Singleton<EventAlertManager>
         Destroy(instance.gameObject);
     }
 
+    public static void AddPendingAlert(EventAlertType alertType, ItemData itemData = null, string name = null, int quantity = 0)
+    {
+        pendingAlerts.Add(new EventAlertRequest(alertType, itemData, name, quantity));
+    }
+
 }
 
 public class EventAlertRequest
@@ -153,5 +180,6 @@ public enum EventAlertType
     SendItem,
     QuestStart,
     QuestClear,
-    Save
+    Save,
+    LevelUp
 }

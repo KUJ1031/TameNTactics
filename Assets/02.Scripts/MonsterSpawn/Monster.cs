@@ -148,8 +148,9 @@ public class Monster
     }
 
     //경험치 얻기
-    public void AddExp(int expAmount)
+    public (int beforeLevel, int afterLevel) AddExp(int expAmount)
     {
+        int beforeLevel = Level;
         CurExp += expAmount;
 
         while (CurExp >= MaxExp && Level < 30)
@@ -159,6 +160,9 @@ public class Monster
             RecalculateStats();
             CurHp = MaxHp; // 레벨업 시 체력 회복
         }
+
+        int afterLevel = Level;
+        return (beforeLevel, afterLevel);
     }
 
     // 배틀 시작 전 사용!
