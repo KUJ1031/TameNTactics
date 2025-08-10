@@ -187,7 +187,7 @@ public class Monster
         Speed = monsterData.speed + 3 * levelMinusOne;
         MaxExp = monsterData.maxExp + 25 * levelMinusOne;
         ExpReward = monsterData.expReward + 25 * levelMinusOne;
-        GoldReward = monsterData.goldReward + 30 * levelMinusOne;
+        GoldReward = monsterData.goldReward + 100 * levelMinusOne;
     }
 
     public void MaxHpUp(int amount)
