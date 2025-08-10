@@ -40,12 +40,15 @@ public class FieldUIManager : MonoBehaviour
     //메뉴열기
     public void OpenUI<T>() where T : FieldMenuBaseUI
     {
-        BaseUI.SetActive(false);
-        LeftMenuUI.SetActive(true);
-        foreach (FieldMenuBaseUI ui in uiList)
+        if (PlayerManager.Instance.player.playerBattleTutorialCheck)
         {
-            if (ui is T) ui.Open();
-            else ui.Close();
+            BaseUI.SetActive(false);
+            LeftMenuUI.SetActive(true);
+            foreach (FieldMenuBaseUI ui in uiList)
+            {
+                if (ui is T) ui.Open();
+                else ui.Close();
+            }
         }
     }
 

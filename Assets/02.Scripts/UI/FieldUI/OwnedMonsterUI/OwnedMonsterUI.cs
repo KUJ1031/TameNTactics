@@ -107,7 +107,7 @@ public class OwnedMonsterUI : FieldMenuBaseUI
         monsterImage.sprite = monster.monsterData.monsterImage;
         monsterNameText.text = monster.monsterName;
         monsterTypeText.text = monster.type.ToString();
-        monsterPersonalityText.text = monster.personality.ToString();
+        monsterPersonalityText.text = monster.personality.ToKorean();
         monsterSkill1Text.text = monster.skills[0].skillName;
         monsterSkill2Text.text = monster.skills[1].skillName;
         monsterSkill3Text.text = monster.skills[2].skillName;
