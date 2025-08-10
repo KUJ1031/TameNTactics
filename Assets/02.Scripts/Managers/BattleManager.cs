@@ -195,7 +195,7 @@ public class BattleManager : Singleton<BattleManager>
         var aliveEnemy = BattleEnemyTeam.Where(m => m.CurHp > 0).ToList();
 
         switch (skill.targetScope)
-        { 
+        {
             case TargetScope.Self:
                 isAttacking = true;
                 possibleTargets = new() { selectedPlayerMonster };
@@ -217,7 +217,7 @@ public class BattleManager : Singleton<BattleManager>
                 break;
 
             case TargetScope.EnemyTeam:
-                
+
                 possibleTargets = aliveEnemy;
 
                 if (selectedSkill.targetCount == 0)
@@ -248,12 +248,12 @@ public class BattleManager : Singleton<BattleManager>
                         break;
                     }
                 }
-                
+
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
 
             case TargetScope.PlayerTeam:
-                
+
                 if (selectedSkill.targetCount == 0)
                 {
                     possibleTargets = alivePlayer;
@@ -265,14 +265,14 @@ public class BattleManager : Singleton<BattleManager>
                     UIManager.Instance.battleUIManager.SkillView.HideActiveSkillTooltip();
                     break;
                 }
-                
+
                 if (selectedSkill.isTargetingDeadMonster)
                 {
                     possibleTargets = DeadEntryMonsters;
                     BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                     break;
                 }
-                
+
                 possibleTargets = alivePlayer;
                 BattleSystem.Instance.ChangeState(new SelectTargetState(BattleSystem.Instance));
                 break;
@@ -324,7 +324,7 @@ public class BattleManager : Singleton<BattleManager>
                 EndBattle(true);
                 yield break;
             }
-            
+
             yield return StartCoroutine(IncreaseUltCostAllMonsters());
             EndTurn();
             ClearSelections();
@@ -505,34 +505,10 @@ public class BattleManager : Singleton<BattleManager>
         PlayerManager.Instance.player.AddGold(totalGold);
 
         foreach (var monster in BattleEntryTeam.Where(m => m.CurHp > 0))
-        {
-            var (before, after) = monster.AddExp(totalExp);
-            if (after > before)
-            {
-                EventAlertManager.AddPendingAlert(
-                    EventAlertType.LevelUp,
-                    null,
-                    monster.monsterName,
-                    after
-                );
-            }
-        }
-
+            monster.AddExp(totalExp);
 
         foreach (var monster in BenchMonsters.Where(m => m.CurHp > 0))
-        {
-            var (before, after) = monster.AddExp(totalExp);
-            if (after > before)
-            {
-                EventAlertManager.Instance.SetEventAlert(
-                    EventAlertType.LevelUp,
-                    null,                // 아이템 데이터 필요 없음
-                    monster.monsterName,        // 몬스터 이름
-                    after                // 레벨업 후 레벨
-                );
-            }
-        }
-
+            monster.AddExp(getBenchExp);
 
         return (totalExp, totalGold);
     }
@@ -646,8 +622,8 @@ public class BattleManager : Singleton<BattleManager>
 
     public void CheckDeadMonster()
     {
-        DeadEntryMonsters = BattleEntryTeam.Where(m => m.CurHp <= 0).ToList();
-        DeadEnemyMonsters = BattleEnemyTeam.Where(m => m.CurHp <= 0).ToList();
+        DeadEntryMonsters.AddRange(BattleEntryTeam.Where(m => m.CurHp <= 0));
+        DeadEnemyMonsters.AddRange(BattleEnemyTeam.Where(m => m.CurHp <= 0));
 
         BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
         BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
