@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
   m_Name: SingleAttackTargetAtkDown
   m_EditorClassIdentifier: 
+  skillID: 46
   skillType: 1
   passiveSkillList: 0
   normalSkillList: 14
@@ -19,6 +20,7 @@ MonoBehaviour:
   skillName: "\uB450\uB835\uB2E4 \uB098\uC758 \uB2A5\uB825"
   skillPower: 1
   skillEffectPrefab: {fileID: 4748681987041982144, guid: bfc9027c0c512794ba07c0f42e5d3266, type: 3}
+  isTargetingDeadMonster: 0
   targetScope: 3
   targetCount: 1
   icon: {fileID: 21300000, guid: 97da9381b782a01479882be9a9a18c96, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
   m_Name: SingleAttackChanceDefUp
   m_EditorClassIdentifier: 
+  skillID: 38
   skillType: 1
   passiveSkillList: 0
   normalSkillList: 10
@@ -19,6 +20,7 @@ MonoBehaviour:
   skillName: "\uACF5\uACA9\uC740 \uCD5C\uC120\uC758 \uBC29\uC5B4"
   skillPower: 1
   skillEffectPrefab: {fileID: 4748681987041982144, guid: 49f8bc9fbaacee144a7de203076ea7db, type: 3}
+  isTargetingDeadMonster: 0
   targetScope: 3
   targetCount: 1
   icon: {fileID: 21300000, guid: 47e693d9b888a5b46b56a30cf65571ba, type: 3}

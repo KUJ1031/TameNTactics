@@ -106,6 +106,7 @@ public enum TargetScope
 [CreateAssetMenu(fileName = "New Skill Data", menuName = "Skill Data")]
 public class SkillData : ScriptableObject
 {
+    public int skillID;
     public SkillType skillType;
     public PassiveSkillList passiveSkillList;
     public NormalSkillList normalSkillList;

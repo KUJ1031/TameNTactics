@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
   m_Name: SingleAttackHealLowestAlly
   m_EditorClassIdentifier: 
+  skillID: 44
   skillType: 1
   passiveSkillList: 0
   normalSkillList: 16
@@ -19,6 +20,7 @@ MonoBehaviour:
   skillName: "\uACF5\uD68C\uD569\uC77C"
   skillPower: 1
   skillEffectPrefab: {fileID: 4748681987041982144, guid: fdb373e4f6d8c594b9c5e75954c290cf, type: 3}
+  isTargetingDeadMonster: 0
   targetScope: 3
   targetCount: 1
   icon: {fileID: 21300000, guid: ec0b5b7096c2b9e4fb26492db6f938a5, type: 3}
