@@ -86,7 +86,7 @@ public class NPCInteraction : MonoBehaviour
             interactPromptText.text = $"[{interactButton.displayName}] 상호작용";
         }
 
-        if (interactButton != null && interactButton.wasPressedThisFrame)
+        if (interactButton != null && interactButton.wasPressedThisFrame && !PlayerManager.Instance.playerController.isInputBlocked)
         {
             HandleInteraction();
         }
