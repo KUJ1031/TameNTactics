@@ -17,9 +17,9 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: a8776341f295f4de2a9bdb7baf69adde, type: 3}
   maxStack: 99
   type: 1
-  description: "\uBAA8\uB4E0 \uBAAC\uC2A4\uD130\uC758 \uCCB4\uB825\uC744 40\uB9CC\uD07C
+  description: "\uBAA8\uB4E0 \uBAAC\uC2A4\uD130\uC758 \uCCB4\uB825\uC744 140\uB9CC\uD07C
     \uD68C\uBCF5\uC2DC\uD0A8\uB2E4."
   goldValue: 2000
   itemEffects:
   - type: 7
-    value: 40
+    value: 140
