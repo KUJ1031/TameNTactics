@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
   m_Name: FireStorm
   m_EditorClassIdentifier: 
+  skillID: 61
   skillType: 2
   passiveSkillList: 0
   normalSkillList: 0
