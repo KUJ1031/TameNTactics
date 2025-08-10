@@ -757,4 +757,14 @@ public class BattleManager : Singleton<BattleManager>
         yield return new WaitForSeconds(1);
         monster.TakeDamage(damage);
     }
+
+    public IEnumerator BossAttack(Monster target, Monster caster, SkillData skillData)
+    {
+        var result = DamageCalculator.CalculateDamage(caster, target, skillData);
+        int amount = Mathf.RoundToInt(result.damage * 0.7f);
+        
+        DealDamage(target, amount, caster, skillData, result.isCritical, result.effectiveness);
+        yield return new WaitForSeconds(1);
+        DealDamage(target, amount, caster, skillData, result.isCritical, result.effectiveness);
+    }
 }
