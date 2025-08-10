@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
@@ -723,4 +724,156 @@ public class Monster
             OnAllyDeath(this);
         }
     }
+
+    public MonsterSaveData ToSaveData()
+    {
+        var sd = new MonsterSaveData();
+        sd.monsterNumber = monsterData != null ? monsterData.monsterNumber : -1;
+        sd.monsterID = this.monsterID;
+        sd.level = this.Level;
+        sd.curHp = this.CurHp;
+        sd.curExp = this.CurExp;
+        sd.curUltimateCost = this.CurUltimateCost;
+        sd.isFavorite = this.IsFavorite;
+        sd.caughtDate = this.CaughtDate;
+        sd.timeTogether = this.TimeTogether;
+        sd.caughtLocation = this.CaughtLocation ?? "";
+
+        // 스킬은 SkillData에 skillNumber가 있다고 가정
+        if (skills != null)
+            sd.skillIDs = skills.Where(s => s != null).Select(s => s.skillID).ToList();
+        else
+            sd.skillIDs = new List<int>();
+
+        return sd;
+    }
+
+    // DTO -> Monster 재구성 (Monster 내부 static 팩토리)
+    public static Monster CreateFromSaveData(MonsterSaveData sd, MonsterDatabase mdb = null, SkillDatabase sdb = null)
+    {
+        var m = new Monster();
+
+        // 1) MonsterData 찾기: 우선 MonsterDatabase(권장) -> 없으면 Resources fallback
+        MonsterData md = null;
+        if (mdb != null) md = mdb.GetByNumber(sd.monsterNumber);
+        if (md == null)
+        {
+            // Resources 경로에 MonsterData들이 있다면 검색
+            var all = Resources.LoadAll<MonsterData>("Monsters"); // 폴더명 예시
+            md = all.FirstOrDefault(x => x.monsterNumber == sd.monsterNumber);
+        }
+
+        if (md == null)
+        {
+            Debug.LogWarning($"[Load] MonsterData not found for number {sd.monsterNumber}. Creating partial Monster.");
+        }
+
+        // 2) MonsterData 기반 기본값 채우기 (있으면)
+        if (md != null)
+        {
+            m.monsterData = md;
+            m.monsterName = md.monsterName;
+            m.type = md.type;
+            m.personality = md.personality;
+            m.MaxHp = md.maxHp;
+            m.Attack = md.attack;
+            m.Defense = md.defense;
+            m.Speed = md.speed;
+            m.CriticalChance = md.criticalChance;
+            m.MaxExp = md.maxExp;
+            m.MaxUltimateCost = md.MaxUltimateCost;
+            m.ExpReward = md.expReward;
+            m.GoldReward = md.goldReward;
+
+            // 기본 스킬은 MonsterData의 스킬 복사 (나중에 덮어쓸 수 있음)
+            m.skills = md.skills != null ? new List<SkillData>(md.skills) : new List<SkillData>();
+        }
+
+        // 3) 저장된 값으로 덮어쓰기
+        m.Level = sd.level;
+        m.CurHp = sd.curHp;
+        m.CurExp = sd.curExp;
+        m.CurUltimateCost = sd.curUltimateCost;
+        m.monsterID = sd.monsterID;
+        m.IsFavorite = sd.isFavorite;
+        m.CaughtDate = sd.caughtDate;
+        m.TimeTogether = sd.timeTogether;
+        m.CaughtLocation = sd.caughtLocation ?? "";
+
+        // 4) 스킬 재연결 (SkillDatabase 권장, 아니면 Resources 탐색)
+        if (sd.skillIDs != null && sd.skillIDs.Count > 0)
+        {
+            var resolvedSkills = new List<SkillData>();
+            if (sdb != null)
+            {
+                foreach (var id in sd.skillIDs)
+                {
+                    var sk = sdb.GetByNumber(id);
+                    if (sk != null) resolvedSkills.Add(sk);
+                }
+            }
+            else
+            {
+                var allSkills = Resources.LoadAll<SkillData>("Skills");
+                foreach (var id in sd.skillIDs)
+                {
+                    var sk = allSkills.FirstOrDefault(s => s.skillID == id);
+                    if (sk != null) resolvedSkills.Add(sk);
+                }
+            }
+            if (resolvedSkills.Count > 0) m.skills = resolvedSkills;
+        }
+
+        // 5) 런타임 전용 필드 초기화 (이벤트, 상태 리스트 등)
+        m.InitializeRuntimeStateAfterLoad();
+
+        return m;
+    }
+
+    // 런타임 필드 초기화 (Monster 내부에 추가)
+    private void InitializeRuntimeStateAfterLoad()
+    {
+        CurMaxHp = MaxHp;
+        CurAttack = Attack;
+        CurDefense = Defense;
+        CurSpeed = Speed;
+        CurCriticalChance = CriticalChance;
+
+        ActiveStatusEffects = new List<StatusEffect>();
+        ActiveBuffEffects = new List<BuffEffect>();
+        PassiveSkills = new List<IPassiveSkill>();
+
+        debuffCanAct = true;
+        canAct = true;
+        skipTurnCount = 0;
+        isShield = false;
+        canBeHealed = true;
+        healDuration = 0;
+        isImmuneToStatus = false;
+
+        // 델리게이트는 null로 초기화, 필요시 로드 후 연결(예: UI 연결)
+        HpChange = null;
+        UltimateCostChange = null;
+        DamagePopup = null;
+        DamagedAnimation = null;
+    }
+
+}
+
+[System.Serializable]
+public class MonsterSaveData
+{
+    public int monsterNumber;    // MonsterData.monsterNumber (ScriptableObject 식별자)
+    public int monsterID;        // 플레이어 내 고유 ID (플레이 중 부여되는 값)
+    public int level;
+    public int curHp;
+    public int curExp;
+    public int curUltimateCost;
+    public bool isFavorite;
+    public float caughtDate;
+    public float timeTogether;
+    public string caughtLocation;
+
+    // 스킬은 고유 ID 리스트로 저장 (SkillData 에 skillNumber 필요)
+    public List<int> skillIDs = new();
 }
