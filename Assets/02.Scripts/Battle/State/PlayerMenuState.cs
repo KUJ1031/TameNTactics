@@ -13,7 +13,12 @@ public class PlayerMenuState : BaseBattleState
         UIManager.Instance.battleUIManager.BattleSelectView.HideCancelButton();
         UIManager.Instance.battleUIManager.DisableHoverSelect();
         UIManager.Instance.battleUIManager.IntoBattleMenuSelect();
-        
+
+        bool isDeanFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Dean");
+        bool isEisenFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Eisen");
+        bool isDolanFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Dolan");
+        bool isBossFight = BattleManager.Instance.enemyTeam.Any(m => m.monsterName == "Boss");
+
         if (BattleManager.Instance.BattleEntryTeam.All(m => !m.canAct || !m.debuffCanAct))
         {
             if (PlayerManager.Instance.player.playerBattleTutorialCheck)
@@ -25,6 +30,16 @@ public class PlayerMenuState : BaseBattleState
         }
         else if (PlayerManager.Instance.player.playerLastStage == "잊혀진 공간")
         {
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
+        }
+        else if (isDeanFight)
+        {
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_false();
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
+        }
+        else if (isBossFight)
+        {
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_false();
             UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
         }
         else
