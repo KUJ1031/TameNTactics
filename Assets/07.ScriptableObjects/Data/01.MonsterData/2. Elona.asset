@@ -15,8 +15,8 @@ MonoBehaviour:
   monsterName: Elona
   monsterNumber: 2
   monsterImage: {fileID: 1921564425, guid: 639ffb60b3036034ab97e94e149a5529, type: 3}
-  encounterCount: 0
-  captureCount: 0
+  encounterCount: 45
+  captureCount: 1
   type: 0
   personality: 1
   maxHp: 90
@@ -25,7 +25,7 @@ MonoBehaviour:
   speed: 13
   criticalChance: 7
   maxExp: 20
-  MaxUltimateCost: 6
+  MaxUltimateCost: 8
   expReward: 10
   goldReward: 500
   skills:

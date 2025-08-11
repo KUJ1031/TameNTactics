@@ -144,12 +144,12 @@ public class BattleManager : Singleton<BattleManager>
 
         if (BattleEntryTeam.Count == 0 || BattleEntryTeam.All(m => m.CurHp <= 0))
         {
-            EndBattle(true);
+            EndBattle(false);
         }
 
         else if (BattleEnemyTeam.Count == 0 || BattleEnemyTeam.All(m => m.CurHp <= 0))
         {
-            EndBattle(false);
+            EndBattle(true);
         }
         else
         {
