@@ -328,14 +328,14 @@ TreeID,ID,Speaker,Text,Choice1,Choice1Next,Choice2,Choice2Next,Choice3,Choice3Ne
 ,,,,,,,,,,,,
 나,1550,나,...모든 몬스터들을 치료해줘야 해.,,,,,,,-1,HideNpcSprite,"ReInit_HealingShop,ShowNpcSprite"
 ,,,,,,,,,,,,
-목수,1599,나,...,,,,,,,,Check_Quest_StolenTree,
-목수,1600,목수,젠장..! 당장 이 문을 열어!!!,,,,,,,1601,,
+목수,1599,나,...,,,,,,,1600,Check_Quest_StolenTree,
+목수,1600,목수,젠장..! 당장 이 문을 열어!!!,,,,,,,1601,Check_Quest_StolenTree,
 목수,1601,목수,...대체 뭣 때문에 이러는거야!!!,,,,,,,-1,,"Quest_FindCarpenterCleared,MoveBossRoomInit"
-목수,1601,나,...,,,,,,,,Check_Quest_StolenTree,
-목수,1602,목수,...젠장.,,,,,,,1603,,
-목수,1603,목수,...어이! 밖에 누가 있으면 좀 구해줘!,,,,,,,1604,,
-목수,1604,목수,뭐든지 해줄테니까!!! 제발!,,,,,,,1605,,
-목수,1605,나,(이 안에 목수가 갇혀있는 듯하다.),,,,,,,-1,,"TakeMoveCamPlayer,Quest_StolenTree"
+목수,1602,나,...,,,,,,,1603,Check_Quest_StolenTree,
+목수,1603,목수,...젠장.,,,,,,,1604,,
+목수,1604,목수,...어이! 밖에 누가 있으면 좀 구해줘!,,,,,,,1605,,
+목수,1605,목수,뭐든지 해줄테니까!!! 제발!,,,,,,,1606,,
+목수,1606,나,(이 안에 목수가 갇혀있는 듯하다.),,,,,,,-1,,"TakeMoveCamPlayer,Quest_StolenTree"
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
@@ -358,8 +358,8 @@ TreeID,ID,Speaker,Text,Choice1,Choice1Next,Choice2,Choice2Next,Choice3,Choice3Ne
 보스,1625,보스,내 즐거움을 방해한 대가...,,,,,,,1626,Animation_ComeBoss,
 보스,1626,보스,"네가 대신, 치뤄야 할 것이다.",,,,,,,-1,,FightBoss
 ,,,,,,,,,,,,
-나,1657,나,(이젠 아무도 없는 듯하다....),,,,,,,1658,,
-나,1658,나,(인기척이 전혀 느껴지지 않는다...),,,,,,,-1,,
+나,1637,나,(이젠 아무도 없는 듯하다....),,,,,,,1638,,
+나,1638,나,(인기척이 전혀 느껴지지 않는다...),,,,,,,-1,,
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
 보스,1630,보스,...,,,,,,,1631,"TakeMoveCamPlayer,PlayerInputBloc",
