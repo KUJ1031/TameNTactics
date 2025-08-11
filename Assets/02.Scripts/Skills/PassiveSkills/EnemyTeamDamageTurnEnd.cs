@@ -7,8 +7,8 @@ public class EnemyTeamDamageTurnEnd : IPassiveSkill
     public void OnTurnEnd(Monster self)
     {
         var team = BattleManager.Instance.BattleEntryTeam.Contains(self)
-            ? BattleManager.Instance.BattleEntryTeam
-            : BattleManager.Instance.BattleEnemyTeam;
+            ? BattleManager.Instance.BattleEnemyTeam
+            : BattleManager.Instance.BattleEntryTeam;
 
         foreach (var monster in team)
         {
