@@ -157,7 +157,7 @@ public class BattleManager : Singleton<BattleManager>
             BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
         }
 
-           
+
     }
 
     // 데미지 넣기 + 데미지 후 패시브 발동
@@ -354,6 +354,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         UIManager.Instance.battleUIManager.DeselectAllMonsters();
         UIManager.Instance.battleUIManager.OnActionComplete();
+        UIManager.Instance.battleUIManager.BattleSelectView.OffAllHighLight();
         enemyChosenAction = EnemyAIController.DecideAction(BattleEnemyTeam, BattleEntryTeam);
 
         if (enemyChosenAction == null)
@@ -372,7 +373,7 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         bool playerStunned = BattleEntryTeam.All(m => !m.debuffCanAct || !m.canAct);
-        
+
         if (playerStunned)
         {
             EnemyAttackAfterPlayerTurn();
@@ -530,7 +531,7 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
 
-       // RuntimePlayerSaveManager.Instance.SaveBattleGameState(PlayerManager.Instance.player);
+        // RuntimePlayerSaveManager.Instance.SaveBattleGameState(PlayerManager.Instance.player);
 
         Debug.Log($"{target.monsterName}를 포획했습니다!");
     }
@@ -825,7 +826,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         var result = DamageCalculator.CalculateDamage(caster, target, skillData);
         int amount = Mathf.RoundToInt(result.damage * 0.7f);
-        
+
         DealDamage(target, amount, caster, skillData, result.isCritical, result.effectiveness);
         yield return new WaitForSeconds(0.5f);
         DealDamage(target, amount, caster, skillData, result.isCritical, result.effectiveness);
