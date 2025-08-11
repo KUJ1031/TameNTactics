@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: Saera
   monsterNumber: 13
   monsterImage: {fileID: -705123731, guid: 279046310c68860439f929142fa3236a, type: 3}
-  encounterCount: 11
+  encounterCount: 12
   captureCount: 6
   type: 2
   personality: 6
@@ -25,7 +25,7 @@ MonoBehaviour:
   speed: 11
   criticalChance: 5
   maxExp: 20
-  MaxUltimateCost: 10
+  MaxUltimateCost: 6
   expReward: 10
   goldReward: 500
   skills:
