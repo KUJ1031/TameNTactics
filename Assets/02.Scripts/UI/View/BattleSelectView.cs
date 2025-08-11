@@ -130,8 +130,13 @@ public class BattleSelectView : MonoBehaviour
 
     public void SetMonsterInfo(GameObject panel, Monster monster)
     {
+        TextMeshProUGUI hpText = panel.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI ultimateText = panel.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
+
         Image monsterType = panel.transform.GetChild(2).GetComponent<Image>();
-        TextMeshProUGUI levelText = panel.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
+
+        TextMeshProUGUI nameText = panel.transform.GetChild(3).GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI levelText = panel.transform.GetChild(4).GetComponentInChildren<TextMeshProUGUI>();
 
         if (monsterTypeIconDB == null)
         {
@@ -142,7 +147,10 @@ public class BattleSelectView : MonoBehaviour
 
         if (icon != null)
         {
+            hpText.text = $"{monster.CurHp} / {monster.CurMaxHp}";
+            ultimateText.text = $"{monster.CurUltimateCost} / {monster.MaxUltimateCost}";
             monsterType.sprite = icon;
+            nameText.text = $"{monster.monsterName}";
             levelText.text = $"Lv {monster.Level}";
         }
     }
