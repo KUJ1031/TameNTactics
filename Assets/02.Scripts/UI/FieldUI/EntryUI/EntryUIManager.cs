@@ -119,13 +119,16 @@ public class EntryUIManager : Singleton<EntryUIManager>
         slot.transform.SetParent(dropTarget);
         slot.transform.SetSiblingIndex(GetInsertIndex(dropTarget, screenPos));
 
-        if (dropTarget != startDragPernt&& BenchParent.childCount>0)
+        if (dropTarget != startDragPernt)
         {
             if (startDragPernt == BenchParent)
-                PlayerManager.Instance.player.SwapBattleToBench(slot.GetMonster(),moveTarget.GetMonster());
-
+            {
+                PlayerManager.Instance.player.SwapBattleToBench(moveTarget.GetMonster(), slot.GetMonster());
+            }
             if (startDragPernt == BattleParent)
-                PlayerManager.Instance.player.SwapBattleToBench(moveTarget.GetMonster(),slot.GetMonster());
+            {
+                PlayerManager.Instance.player.SwapBattleToBench(slot.GetMonster(), moveTarget.GetMonster());
+            }
         }
         ClearPlaceholder();
         slot.SetDragVisual(false);
