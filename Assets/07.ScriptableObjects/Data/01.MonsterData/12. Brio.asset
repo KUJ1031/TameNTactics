@@ -15,8 +15,8 @@ MonoBehaviour:
   monsterName: Brio
   monsterNumber: 12
   monsterImage: {fileID: -1047355641, guid: 5e826d0858406f7429e7988c09ace0f2, type: 3}
-  encounterCount: 16
-  captureCount: 8
+  encounterCount: 0
+  captureCount: 0
   type: 2
   personality: 11
   maxHp: 100

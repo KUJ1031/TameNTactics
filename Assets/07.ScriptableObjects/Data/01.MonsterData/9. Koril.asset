@@ -15,8 +15,8 @@ MonoBehaviour:
   monsterName: Koril
   monsterNumber: 9
   monsterImage: {fileID: -1936169382, guid: 42af21fac554f8d4bb75ef28c613d669, type: 3}
-  encounterCount: 1
-  captureCount: 1
+  encounterCount: 0
+  captureCount: 0
   type: 1
   personality: 8
   maxHp: 100
