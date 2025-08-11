@@ -107,6 +107,7 @@ public class BattleManager : Singleton<BattleManager>
             else if (isBossFight)
             {
                 FinalFightUIManager.Instance.ShowBossUI();
+                FinalFightUIManager.Instance.ShowBossMapUI();
             }
         }
 
@@ -528,7 +529,7 @@ public class BattleManager : Singleton<BattleManager>
             }
         }
 
-        RuntimePlayerSaveManager.Instance.SaveBattleGameState(PlayerManager.Instance.player);
+       // RuntimePlayerSaveManager.Instance.SaveBattleGameState(PlayerManager.Instance.player);
 
         Debug.Log($"{target.monsterName}를 포획했습니다!");
     }
