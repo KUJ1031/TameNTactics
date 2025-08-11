@@ -99,7 +99,7 @@ public class GameTimeFlow : Singleton<GameTimeFlow>
 
         float brightness = 0f;
 
-        if (percentOfDay >= 0.2f && percentOfDay <= 0.8f)
+        if (percentOfDay >= 0.1f && percentOfDay <= 0.9f)
         {
             float dayProgress = (percentOfDay - 0.2f) / 0.6f;
             brightness = Mathf.Sin(dayProgress * Mathf.PI);
