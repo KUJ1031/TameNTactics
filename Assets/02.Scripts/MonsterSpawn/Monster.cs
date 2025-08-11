@@ -183,6 +183,7 @@ public class Monster
 
         MaxHp = monsterData.maxHp + 12 * levelMinusOne;
         CurHp = MaxHp;
+        CurMaxHp = MaxHp;
         Attack = monsterData.attack + 3 * levelMinusOne;
         Defense = monsterData.defense + 3 * levelMinusOne;
         Speed = monsterData.speed + 3 * levelMinusOne;
@@ -413,13 +414,13 @@ public class Monster
     public void UpdateStatusEffects()
     {
         List<StatusEffect> expired = new();
-        
+
         if (CurHp <= 0) return;
 
         if (CurHp > 0)
         {
             if (ActiveStatusEffects.Count == 0) return;
-            
+
             foreach (var effect in ActiveStatusEffects)
             {
                 effect.OnTurnStart(this);
@@ -440,13 +441,13 @@ public class Monster
     public void UpdateBuffEffects()
     {
         List<BuffEffect> expired = new();
-        
+
         if (CurHp <= 0) return;
 
         if (CurHp > 0)
         {
             if (ActiveBuffEffects.Count == 0) return;
-            
+
             foreach (var effect in ActiveBuffEffects)
             {
                 effect.OnTurnStart(this);
@@ -740,8 +741,15 @@ public class Monster
         sd.monsterNumber = monsterData != null ? monsterData.monsterNumber : -1;
         sd.monsterID = this.monsterID;
         sd.level = this.Level;
+        sd.maxHp = this.MaxHp;
         sd.curHp = this.CurHp;
+        sd.maxExp = this.MaxExp;
         sd.curExp = this.CurExp;
+        sd.attack = this.Attack;
+        sd.defense = this.Defense;
+        sd.speed = this.Speed;
+        sd.criticalChance = this.CriticalChance;
+        sd.maxUltimateCost = this.MaxUltimateCost;
         sd.curUltimateCost = this.CurUltimateCost;
         sd.isFavorite = this.IsFavorite;
         sd.caughtDate = this.CaughtDate;
@@ -800,8 +808,15 @@ public class Monster
 
         // 3) 저장된 값으로 덮어쓰기
         m.Level = sd.level;
+        m.MaxHp = sd.maxHp;
         m.CurHp = sd.curHp;
+        m.MaxExp = sd.maxExp;
         m.CurExp = sd.curExp;
+        m.Attack = sd.attack;
+        m.Defense = sd.defense;
+        m.Speed = sd.speed;
+        m.CriticalChance = sd.criticalChance;
+        m.MaxUltimateCost = sd.maxUltimateCost;
         m.CurUltimateCost = sd.curUltimateCost;
         m.monsterID = sd.monsterID;
         m.IsFavorite = sd.isFavorite;
@@ -875,8 +890,15 @@ public class MonsterSaveData
     public int monsterNumber;    // MonsterData.monsterNumber (ScriptableObject 식별자)
     public int monsterID;        // 플레이어 내 고유 ID (플레이 중 부여되는 값)
     public int level;
+    public int maxHp;
     public int curHp;
+    public int maxExp;
     public int curExp;
+    public int attack;
+    public int defense;
+    public int speed;
+    public int criticalChance;
+    public int maxUltimateCost;
     public int curUltimateCost;
     public bool isFavorite;
     public float caughtDate;
