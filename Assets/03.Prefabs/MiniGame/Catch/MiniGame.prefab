@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5661138780416658706
 RectTransform:
   m_ObjectHideFlags: 0
@@ -55,6 +55,12 @@ MonoBehaviour:
   spawner: {fileID: 5713367438706486729}
   ranges: []
   playerInputAsset: {fileID: -944628639613478452, guid: c63559c45af8f6a418f54908a1529e08, type: 3}
+  appropriatePercent: 50
+  appropriateColor: {r: 1, g: 0.53396225, b: 0.9297752, a: 1}
+  defaultPercent: 30
+  defaultColor: {r: 0, g: 1, b: 0.19607843, a: 1}
+  notAppropriatePercent: 10
+  notAppropriateColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &3625768040835903701
 GameObject:
   m_ObjectHideFlags: 0

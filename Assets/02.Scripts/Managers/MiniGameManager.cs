@@ -17,7 +17,20 @@ public class MiniGameManager : Singleton<MiniGameManager>
 
     public InputActionAsset playerInputAsset; // 에디터에서 Input Action Asset을 연결
 
+    [Header("알맞은 제스처")]
+    [SerializeField] private float appropriatePercent = 50f;
+    [SerializeField] private Color appropriateColor = new(255f, 88f, 230f, 255f);
+    [SerializeField] private string appropriateMassage = "호감을 보이는것 같다.";
+    [Header("기본 제스처")]
+    [SerializeField] private float defaultPercent = 30f;
+    [SerializeField] private Color defaultColor = new(0, 255f, 50f, 255f);
+    [SerializeField] private string defaultMassage = "관심이 없어보인다.";
+    [Header("잘못된 제스처")]
+    [SerializeField] private float notAppropriatePercent = 10f;
+    [SerializeField] private Color notAppropriateColor = new(255f, 0, 0, 255f);
+    [SerializeField] private string notAppropriateMassage = "좋아하지 않는 것 같다.";
 
+    BattleDialogueManager dialogue;
     private Action<bool, Monster> resultCallback;
     private Monster returnMonster;
 
@@ -29,6 +42,7 @@ public class MiniGameManager : Singleton<MiniGameManager>
     private Player player;
     private void Start()
     {
+        dialogue = BattleDialogueManager.Instance;
         gameObject.SetActive(false);
         DataComparer();
         player = PlayerManager.Instance.player;
@@ -86,6 +100,7 @@ public class MiniGameManager : Singleton<MiniGameManager>
         float range;
         float hpPercent;
 
+
         hpPercent = (float)targetMonster.CurHp / targetMonster.CurMaxHp;
 
         if (!player.playerBattleTutorialCheck)
@@ -96,14 +111,29 @@ public class MiniGameManager : Singleton<MiniGameManager>
         else
         {
             speed = 1 - (hpPercent * 0.9f);
-            //range = 30;
             range = GetRange(gesture.itemName, targetMonster.personality);
-            Debug.Log($"GetRange: {gesture.itemName}, {targetMonster.personality} = {range}");
         }
 
         SetSuccessRanges(range);
         rotatePoint.SetRotateSpeed(speed);
         rotatePoint.SetRanges(ranges);
+        Color color;
+        if (range > defaultPercent)
+        {
+            color = appropriateColor;
+            dialogue.BattleDialogueAppend(appropriateMassage);
+        }
+        else if (range == defaultPercent)
+        {
+            color = defaultColor;
+            dialogue.BattleDialogueAppend(defaultMassage);
+        }
+        else
+        {
+            color = notAppropriateColor;
+            dialogue.BattleDialogueAppend(notAppropriateMassage);
+        }
+        spawner.SetSuccessColor(color);
         spawner.SpawnRanges(ranges);
 
         returnMonster = targetMonster;
@@ -114,9 +144,10 @@ public class MiniGameManager : Singleton<MiniGameManager>
     {
         if (personalityRule.TryGetValue((a, b), out float result))
         {
+
             return result;
         }
-        return 30f; // 일치하는 규칙이 없을 경우 반환할 값
+        return defaultPercent; // 일치하는 규칙이 없을 경우 반환할 값
     }
 
     private void DataComparer()
@@ -124,48 +155,48 @@ public class MiniGameManager : Singleton<MiniGameManager>
         personalityRule = new Dictionary<(string A, Personality B), float>
         {
              //Persuading
-            { ("Persuading", Personality.Thorough), 50f },
-            { ("Persuading", Personality.Decisive), 50f },
-            { ("Persuading", Personality.Responsible), 50f },
+            { ("Persuading", Personality.Thorough), appropriatePercent },
+            { ("Persuading", Personality.Decisive), appropriatePercent },
+            { ("Persuading", Personality.Responsible), appropriatePercent },
 
-            { ("Persuading", Personality.Bold), 10f },
-            { ("Persuading", Personality.Energetic), 10f },
-            { ("Persuading", Personality.Proactive), 10f },
+            { ("Persuading", Personality.Bold), notAppropriatePercent },
+            { ("Persuading", Personality.Energetic), notAppropriatePercent },
+            { ("Persuading", Personality.Proactive), notAppropriatePercent },
 
             //Scolding
-            { ("Scolding", Personality.Bold), 50f },
-            { ("Scolding", Personality.Passionate), 50f },
+            { ("Scolding", Personality.Bold), appropriatePercent },
+            { ("Scolding", Personality.Passionate), appropriatePercent },
 
-            { ("Scolding", Personality.Devoted), 10f },
-            { ("Scolding", Personality.Decisive), 10f },
+            { ("Scolding", Personality.Devoted), notAppropriatePercent },
+            { ("Scolding", Personality.Decisive), notAppropriatePercent },
              
             //Boasting
-            { ("Boasting", Personality.Proactive), 50f },
+            { ("Boasting", Personality.Proactive), appropriatePercent },
 
-            { ("Boasting", Personality.Thorough), 10f },
-            { ("Boasting", Personality.Emotional), 10f },
-            { ("Boasting", Personality.Altruistic), 10f },
+            { ("Boasting", Personality.Thorough), notAppropriatePercent },
+            { ("Boasting", Personality.Emotional), notAppropriatePercent },
+            { ("Boasting", Personality.Altruistic), notAppropriatePercent },
              
             //Ignoring
-            { ("Ignoring", Personality.Cautious), 50f },
-            { ("Ignoring", Personality.Cynical), 50f },
+            { ("Ignoring", Personality.Cautious), appropriatePercent },
+            { ("Ignoring", Personality.Cynical), appropriatePercent },
 
-            { ("Ignoring", Personality.Passionate), 10f },
-            { ("Ignoring", Personality.Sociable), 10f },
+            { ("Ignoring", Personality.Passionate), notAppropriatePercent },
+            { ("Ignoring", Personality.Sociable), notAppropriatePercent },
             
             //Complimenting
-            { ("Complimenting", Personality.Devoted), 50f },
-            { ("Complimenting", Personality.Emotional), 50f },
-            { ("Complimenting", Personality.Altruistic), 50f },
+            { ("Complimenting", Personality.Devoted), appropriatePercent },
+            { ("Complimenting", Personality.Emotional), appropriatePercent },
+            { ("Complimenting", Personality.Altruistic), appropriatePercent },
 
-            { ("Complimenting", Personality.Cynical), 10f },
+            { ("Complimenting", Personality.Cynical), notAppropriatePercent },
 
             //Joking
-            { ("Joking", Personality.Energetic), 50f },
-            { ("Joking", Personality.Sociable), 50f },
+            { ("Joking", Personality.Energetic), appropriatePercent },
+            { ("Joking", Personality.Sociable), appropriatePercent },
 
-            { ("Joking", Personality.Cautious), 10f },
-            { ("Joking", Personality.Responsible), 10f },
+            { ("Joking", Personality.Cautious), notAppropriatePercent    },
+            { ("Joking", Personality.Responsible), notAppropriatePercent },
         };
     }
 }
