@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
   m_Name: AllyTypeBoost
   m_EditorClassIdentifier: 
+  skillID: 2
   skillType: 0
   passiveSkillList: 1
   normalSkillList: 0
   ultimateSkillList: 0
   skillName: "\uBD80\uC2A4\uD2B8!"
-  skillPower: 1
+  skillPower: 0
   skillEffectPrefab: {fileID: 0}
   isTargetingDeadMonster: 0
   targetScope: 4

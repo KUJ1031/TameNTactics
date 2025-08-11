@@ -115,11 +115,11 @@ public class BattleUIManager : MonoBehaviour
         DisableHoverSelect();
     }
 
-    public void ShowMonsterSkills(MonsterData monsterData)
+    public void ShowMonsterSkills(Monster monster)
     {
-        if (monsterData == null || monsterData.skills == null) return;
+        if (monster == null || monster.skills == null) return;
 
-        skillView.ShowSkillList(monsterData.skills);
+        skillView.ShowSkillList(monster.Level, monster.skills);
     }
 
 
@@ -159,7 +159,7 @@ public class BattleUIManager : MonoBehaviour
 
             foreach (SkillData skill in monsterSkill)
             {
-                if (skill.skillType == SkillType.PassiveSkill)
+                if (monster.Level >= 5 && skill.skillType == SkillType.PassiveSkill)
                 {
                     GameObject passiveIconObject = battleInfoView.InitializePassiveIcon(skill.icon);
                     PassiveSkillSelecter selecter = passiveIconObject.GetComponent<PassiveSkillSelecter>();

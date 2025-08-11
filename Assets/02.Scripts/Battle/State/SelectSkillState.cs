@@ -5,15 +5,15 @@ using UnityEngine;
 public class SelectSkillState : BaseBattleState
 {
     public SelectSkillState(BattleSystem system) : base(system) { }
-    
+
     public override void Enter()
     {
         Debug.Log("스킬 선택 상태로 진입했습니다. 스킬을 선택하세요.");
         BattleTutorialManager.Instance.InitSkillSelected();
         BattleManager.Instance.isAttacking = false;
 
-        MonsterData monsterCharacter = BattleManager.Instance.selectedPlayerMonster.monsterData;
-        UIManager.Instance.battleUIManager.ShowMonsterSkills(monsterCharacter);
+        Monster monster = BattleManager.Instance.selectedPlayerMonster;
+        UIManager.Instance.battleUIManager.ShowMonsterSkills(monster);
     }
 
     public override void Execute()
@@ -43,7 +43,7 @@ public class SelectSkillState : BaseBattleState
                     {
                         Debug.Log($"선택된 몬스터: {clickedMonster.monsterData.monsterName}");
                         UIManager.Instance.battleUIManager.DeselectMonster(BattleManager.Instance.selectedPlayerMonster);
-                        UIManager.Instance.battleUIManager.ShowMonsterSkills(clickedMonster.monsterData);
+                        UIManager.Instance.battleUIManager.ShowMonsterSkills(clickedMonster);
                         BattleManager.Instance.SelectPlayerMonster(clickedMonster);
                         Debug.Log($"몬스터 변경됨: {clickedMonster.monsterData.monsterName}");
                     }
