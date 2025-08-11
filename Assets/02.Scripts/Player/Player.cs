@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
@@ -15,7 +16,7 @@ public class Player
     [Header("전투 출전 몬스터 (최대 3)")]
     public List<Monster> battleEntry = new();
 
-    [Header("벤치 몬스터")]//(entryMonsters-battleEntry)
+    [Header("벤치 몬스터")]
     public List<Monster> benchEntry = new();
 
     public int maxEntryCount = 5;
@@ -212,26 +213,47 @@ public class Player
     //battleEntry에 추가
     public void AddBattleEntry(Monster monster)
     {
-        if (!CheckMonster(monster)) return ;
-        if (battleEntry.Contains(monster)) return ;
-        if (!entryMonsters.Contains(monster)) return ;
-        if (battleEntry.Count >= maxBattleCount) {
+        if (!CheckMonster(monster)) return;
+        if (battleEntry.Contains(monster)) return;
+        if (!entryMonsters.Contains(monster)) return;
+        if (battleEntry.Count >= maxBattleCount)
+        {
             MoveToBenchEntry(battleEntry[battleEntry.Count - 1]);
-        } 
+
+        }
         benchEntry.Remove(monster);
         battleEntry.Add(monster);
     }
 
     // battleEntry -> benchEntry 이동
-    public void MoveToBenchEntry(Monster monster) { 
-    
-        if (!CheckMonster(monster)) return ;
-        if (!battleEntry.Remove(monster)) return ;
+    public void MoveToBenchEntry(Monster monster)
+    {
+
+        if (!CheckMonster(monster)) return;
+        if (!battleEntry.Remove(monster)) return;
         benchEntry.Add(monster);
         Debug.Log(monster.monsterName + "이 벤치로 이동");
     }
 
+    //밴치와 배틀 엔트리를 스왑합니다
+    public void SwapBattleToBench(Monster battleMonster, Monster benchMonster)
+    {
+        if (!CheckMonster(battleMonster) || !CheckMonster(benchMonster)) return;
+        if (!battleEntry.Contains(battleMonster) || !benchEntry.Contains(benchMonster)) return;
 
+        int battleIndex = battleEntry.IndexOf(battleMonster);
+        int benchIndex = benchEntry.IndexOf(benchMonster);
+
+        if (battleIndex == -1 || benchIndex == -1) return;
+
+        battleEntry.RemoveAt(battleIndex);
+        benchEntry.RemoveAt(benchIndex);
+
+        battleEntry.Insert(battleIndex, benchMonster);
+        benchEntry.Insert(benchIndex, battleMonster);
+
+        Debug.Log($"{battleMonster.monsterName}와 {benchMonster.monsterName}이(가) 서로 위치를 교환했습니다.");
+    }
 
     //전체 엔트리 초기화
     public void ClearEntry()
