@@ -138,7 +138,7 @@ public class WanderingShopUI : MonoBehaviour
         else
         {
             warringPopup.SetActive(true);
-            warringPopupText.text = $"골드가 부족합니다.\n 현재 골드 : {selectedItem.data.itemName}";
+            warringPopupText.text = $"골드가 부족합니다.\n 현재 골드 : {player.gold}";
         }
     }
 

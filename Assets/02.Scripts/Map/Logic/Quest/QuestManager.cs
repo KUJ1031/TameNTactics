@@ -30,7 +30,7 @@ public class QuestManager : Singleton<QuestManager>
         AddQuest(new QuestData(
             "[끊어진 다리]", "목수는 어디에?",
             "끊어진 다리 앞에 있는 NPC인 [파인]을 찾아가자.",
-            "길을 연결해주는 다리가 끊어져 있다...\nNPC의 말에 따르면, 어떤 다리든 수리할 수 있는 목수가 있다고 하는데...어디에 있는걸까?\n\n초보 사냥터 위쪽에 잠겨있는 장소가 수상하다...",
+            "길을 연결해주는 다리가 끊어져 있다...\nNPC의 말에 따르면, 어떤 다리든 수리할 수 있는 목수가 있다고 하는데...어디에 있는걸까?\n\n파인의 말에 따르면 위쪽 언덕으로 갔다고 하던데...",
             QuestStatus.NotStarted,
             questUI.defaultquestImage[2],
             0 // [전투의 기본] 완료 필요
