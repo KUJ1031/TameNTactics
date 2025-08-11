@@ -379,7 +379,7 @@ public class BattleUIManager : MonoBehaviour
         {
             foreach (var item in player.gestureItems)
             {
-                GameObject behaviorButton = Instantiate(behaviorButtonPrefab, embraceView.BehaviorPanel.transform);
+                GameObject behaviorButton = Instantiate(behaviorButtonPrefab, embraceView.BehaviorButtonContent.transform);
                 behaviorButton.GetComponentInChildren<TextMeshProUGUI>().text = item.data.itemName;
 
                 Button button = behaviorButton.GetComponent<Button>();

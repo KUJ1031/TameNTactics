@@ -9,8 +9,10 @@ public class EmbraceView : MonoBehaviour
     [SerializeField] private GameObject failMessage;
     [SerializeField] private TextMeshProUGUI guideText;
     [SerializeField] private GameObject behaviorPanel;
+    [SerializeField] private GameObject behaviorButtonContent;
 
     public GameObject BehaviorPanel { get { return behaviorPanel; } }
+    public GameObject BehaviorButtonContent { get { return behaviorButtonContent; } }
 
     private Coroutine currentCoroutine;
 
