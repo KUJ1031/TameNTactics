@@ -14,18 +14,12 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     [SerializeField] private Image ExpBar;
     [SerializeField] private Outline outline;
 
-    [Header("드래그용")]
-    [SerializeField] private RectTransform rect;
-    [SerializeField] private CanvasGroup canvasGroup;
-
-    private Transform canvas;
-    private Transform previousParent;
-
     private Monster monster;
+    private CanvasGroup canvasGroup;
 
     private void Awake()
     {
-        canvas = GetComponentInParent<Canvas>().transform;
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
     public void Init(Monster monster)
@@ -39,7 +33,7 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         monsterLevel.text = $"Lv.{monster.Level}";
         monsterHP.text = $"{monster.CurHp}/{monster.MaxHp}";
         monsterExp.text = $"{monster.CurExp}/{monster.MaxExp}";
-        monsterExp.color = (float)monster.CurExp/monster.MaxExp*100f > 60f ? Color.black : Color.white;
+        monsterExp.color = (float)monster.CurExp / monster.MaxExp * 100f > 60f ? Color.black : Color.white;
         HPBar.fillAmount = (float)monster.CurHp / monster.MaxHp;
         ExpBar.fillAmount = (float)monster.CurExp / monster.MaxExp;
     }
@@ -67,60 +61,89 @@ public class EntrySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     //드래그 시작
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //드래그 가능한지 확인
-        if (monster == null)
-        {
-            eventData.pointerDrag = null;
-            return;
-        }
-
-        //시작 부모 저장(드롭할 곳이 없을경우 돌아가기 위함)
-        previousParent = transform.parent;
-        
-        //부모를 맨 위 캔버스로 지정후 맨 아래 요소로(다른 요소보다 앞으로 오기위해)
-        transform.SetParent(canvas);
-        transform.SetAsLastSibling();
-
-        //반투명 및 클릭 막기
-        canvasGroup.alpha = 0.6f;
-        canvasGroup.blocksRaycasts = false;
-
-        EntryUIManager.Instance.CreatePlaceholder(previousParent, transform.GetSiblingIndex());
+        EntryUIManager.Instance.StartDrag(this);
     }
 
     //드래그 중
     public void OnDrag(PointerEventData eventData)
     {
-        //슬롯의 위치를 마우스로
-        rect.position = eventData.position;
-
-        EntryUIManager.Instance.UpdatePlaceholderPosition(eventData.position);
+        EntryUIManager.Instance.UpdateDrag(eventData.position);
     }
 
     //드래그 끝
     public void OnEndDrag(PointerEventData eventData)
     {
-        //반투명 및 클릭 막기 초기화
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
-
-        //드랍 될 부모 판단
-        Transform dropTarget = EntryUIManager.Instance.GetDropTarget(eventData.position);
-        if (dropTarget != null)
-        {
-            int insertIndex = EntryUIManager.Instance.GetInsertIndex(dropTarget, eventData.position);
-            transform.SetParent(dropTarget);
-            transform.SetSiblingIndex(insertIndex);
-
-            //드랍 되었을 때 처리
-            EntryUIManager.Instance.OnDrop(this, dropTarget, eventData.position, previousParent);
-        }
-        else
-        {
-            transform.SetParent(previousParent);
-            rect.position = previousParent.GetComponent<RectTransform>().position;
-        }
-
-        EntryUIManager.Instance.ClearPlaceholder();
+        EntryUIManager.Instance.EndDrag(this, eventData.position);
     }
+
+    //드래그중 슬롯 반투명 및 클릭방지
+    public void SetDragVisual(bool isDragging)
+    {
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = isDragging ? 0.6f : 1f;
+            canvasGroup.blocksRaycasts = !isDragging;
+        }
+    }
+
+
+    ////드래그 시작
+    //public void OnBeginDrag(PointerEventData eventData)
+    //{
+    //    //드래그 가능한지 확인
+    //    if (monster == null)
+    //    {
+    //        eventData.pointerDrag = null;
+    //        return;
+    //    }
+
+    //    //시작 부모 저장(드롭할 곳이 없을경우 돌아가기 위함)
+    //    previousParent = transform.parent;
+
+    //    //부모를 맨 위 캔버스로 지정후 맨 아래 요소로(다른 요소보다 앞으로 오기위해)
+    //    transform.SetParent(canvas);
+    //    transform.SetAsLastSibling();
+
+    //    //반투명 및 클릭 막기
+    //    canvasGroup.alpha = 0.6f;
+    //    canvasGroup.blocksRaycasts = false;
+
+    //    EntryUIManager.Instance.CreatePlaceholder(previousParent, transform.GetSiblingIndex());
+    //}
+
+    ////드래그 중
+    //public void OnDrag(PointerEventData eventData)
+    //{
+    //    //슬롯의 위치를 마우스로
+    //    rect.position = eventData.position;
+
+    //    EntryUIManager.Instance.UpdatePlaceholderPosition(eventData.position);
+    //}
+
+    ////드래그 끝
+    //public void OnEndDrag(PointerEventData eventData)
+    //{
+    //    //반투명 및 클릭 막기 초기화
+    //    canvasGroup.alpha = 1f;
+    //    canvasGroup.blocksRaycasts = true;
+
+    //    //드랍 될 부모 판단
+    //    Transform dropTarget = EntryUIManager.Instance.GetDropTarget(eventData.position);
+    //    if (dropTarget != null)
+    //    {
+    //        int insertIndex = EntryUIManager.Instance.GetInsertIndex(dropTarget, eventData.position);
+    //        transform.SetParent(dropTarget);
+    //        transform.SetSiblingIndex(insertIndex);
+
+    //        //드랍 되었을 때 처리
+    //        EntryUIManager.Instance.OnDrop(this, dropTarget, eventData.position, previousParent);
+    //    }
+    //    else
+    //    {
+    //        transform.SetParent(previousParent);
+    //        rect.position = previousParent.GetComponent<RectTransform>().position;
+    //    }
+
+    //    EntryUIManager.Instance.ClearPlaceholder();
+    //}
 }
