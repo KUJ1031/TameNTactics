@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SuccessRangeSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject successRangePrefab;
     [SerializeField] private GameObject backGroundPrefab;
     [SerializeField] private RectTransform parent;
+    private Color successColor = Color.white;
 
     private void Start()
     {
@@ -28,8 +30,14 @@ public class SuccessRangeSpawner : MonoBehaviour
         foreach (RotationRange range in ranges)
         {
             GameObject go = Instantiate(successRangePrefab, parent);
+            go.GetComponent<Image>().color = successColor;
             SuccessRangeVisual visual = go.GetComponent<SuccessRangeVisual>();
             visual.SetRange(range);
         }
+    }
+
+    public void SetSuccessColor(Color color)
+    {
+        successColor = color;
     }
 }
