@@ -649,6 +649,7 @@ public class Monster
         isShield = false;
         canBeHealed = true;
         debuffCanAct = true;
+        canAct = true;
         isImmuneToStatus = false;
         healDuration = 0;
         skipTurnCount = 0;
