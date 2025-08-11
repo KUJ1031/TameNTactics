@@ -16,7 +16,7 @@ MonoBehaviour:
   monsterNumber: 1
   monsterImage: {fileID: 883383662, guid: 55c32e3b849964642b7a878c7e02b2d2, type: 3}
   encounterCount: 1
-  captureCount: 9
+  captureCount: 10
   type: 0
   personality: 0
   maxHp: 80
@@ -25,7 +25,7 @@ MonoBehaviour:
   speed: 15
   criticalChance: 7
   maxExp: 20
-  MaxUltimateCost: 1
+  MaxUltimateCost: 6
   expReward: 10
   goldReward: 500
   skills:

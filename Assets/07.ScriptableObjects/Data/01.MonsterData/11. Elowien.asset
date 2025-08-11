@@ -25,7 +25,7 @@ MonoBehaviour:
   speed: 15
   criticalChance: 8
   maxExp: 20
-  MaxUltimateCost: 10
+  MaxUltimateCost: 6
   expReward: 10
   goldReward: 500
   skills:
