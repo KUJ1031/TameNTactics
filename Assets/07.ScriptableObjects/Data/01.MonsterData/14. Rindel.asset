@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: Rindel
   monsterNumber: 14
   monsterImage: {fileID: 1168346334, guid: 5ad8c208bdb954c44ae6d2e9430a59b8, type: 3}
-  encounterCount: 0
+  encounterCount: 8
   captureCount: 0
   type: 2
   personality: 0
@@ -25,7 +25,7 @@ MonoBehaviour:
   speed: 7
   criticalChance: 3
   maxExp: 20
-  MaxUltimateCost: 6
+  MaxUltimateCost: 8
   expReward: 10
   goldReward: 500
   skills:
