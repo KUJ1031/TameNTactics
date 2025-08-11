@@ -328,8 +328,8 @@ TreeID,ID,Speaker,Text,Choice1,Choice1Next,Choice2,Choice2Next,Choice3,Choice3Ne
 ,,,,,,,,,,,,
 나,1550,나,...모든 몬스터들을 치료해줘야 해.,,,,,,,-1,HideNpcSprite,"ReInit_HealingShop,ShowNpcSprite"
 ,,,,,,,,,,,,
-목수,1599,나,...,,,,,,,,Check_Quest_StolenTree,
-목수,1600,목수,젠장..! 당장 이 문을 열어!!!,,,,,,,1601,,
+목수,1599,나,...,,,,,,,1600,Check_Quest_StolenTree,
+목수,1600,목수,젠장..! 당장 이 문을 열어!!!,,,,,,,1601,Check_Quest_StolenTree,
 목수,1601,목수,...대체 뭣 때문에 이러는거야!!!,,,,,,,-1,,"Quest_FindCarpenterCleared,MoveBossRoomInit"
 목수,1601,나,...,,,,,,,,Check_Quest_StolenTree,
 목수,1602,목수,...젠장.,,,,,,,1603,,
