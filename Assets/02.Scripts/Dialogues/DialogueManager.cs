@@ -769,7 +769,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 if (PlayerManager.Instance.player.playerQuestStartCheck[4])
                 {
                     bool hasLevel15OrAbove = PlayerManager.Instance.player.battleEntry.Any(monster => monster.Level >= 15);
-                    if (!hasLevel15OrAbove && PlayerManager.Instance.player.playerBossClearCheck[0])
+                    if (hasLevel15OrAbove && PlayerManager.Instance.player.playerBossClearCheck[0])
                     {
                         StartDialogue("나", FinalFightManager.Instance.carpenterImage, 1637);
                     }
