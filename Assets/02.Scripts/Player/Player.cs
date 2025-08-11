@@ -67,10 +67,12 @@ public class Player
     public bool AddOwnedMonster(Monster monster)
     {
         if (!CheckMonster(monster)) return false;
-
-        ownedMonsters.Add(monster);
-        monster.monsterData.captureCount++;
         playerGetMonsterCount++;
+        monster.monsterData.captureCount++;
+        monster.SetMonsterData(monster.monsterData); // 몬스터 데이터 초기화
+        ownedMonsters.Add(monster);
+
+
         return true;
     }
 
