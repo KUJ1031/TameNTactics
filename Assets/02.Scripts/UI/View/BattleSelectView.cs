@@ -20,6 +20,9 @@ public class BattleSelectView : MonoBehaviour
     [SerializeField] private Canvas gaugeCanvas;
     [SerializeField] private Canvas battleSelectCanvas;
 
+    [SerializeField] private GameObject allyHighLight;
+    [SerializeField] private GameObject enemyHighLight;
+
     [SerializeField] private MonsterTypeIconDB monsterTypeIconDB;
 
     public Canvas GaugeCanvas { get { return gaugeCanvas; } }
@@ -167,5 +170,23 @@ public class BattleSelectView : MonoBehaviour
     public void InteractableRunButton_true()
     {
         runButton.interactable = true;
+    }
+
+    public void OnAllyHighLight()
+    {
+        allyHighLight.SetActive(true);
+        enemyHighLight.SetActive(false);
+    }
+
+    public void OnEnemyHighLight()
+    {
+        enemyHighLight.SetActive(true);
+        allyHighLight.SetActive(false);
+    }
+
+    public void OffAllHighLight()
+    {
+        allyHighLight.SetActive(false);
+        enemyHighLight.SetActive(false);
     }
 }
