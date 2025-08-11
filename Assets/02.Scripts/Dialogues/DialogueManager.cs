@@ -761,7 +761,7 @@ public class DialogueManager : Singleton<DialogueManager>
 },
 () =>  // 밝아질 때 실행
 {
-    StartDialogue("목수", FinalFightManager.Instance.carpenterImage, 1602);
+    StartDialogue("목수", FinalFightManager.Instance.carpenterImage, 1603);
 }
 );
                 break;
@@ -771,7 +771,7 @@ public class DialogueManager : Singleton<DialogueManager>
                     bool hasLevel15OrAbove = PlayerManager.Instance.player.battleEntry.Any(monster => monster.Level >= 15);
                     if (!hasLevel15OrAbove && PlayerManager.Instance.player.playerBossClearCheck[0])
                     {
-                        StartDialogue("나", FinalFightManager.Instance.carpenterImage, 1657);
+                        StartDialogue("나", FinalFightManager.Instance.carpenterImage, 1637);
                     }
                     else if (!hasLevel15OrAbove)
                     {
