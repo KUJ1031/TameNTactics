@@ -200,13 +200,14 @@ public class BattleUIManager : MonoBehaviour
 
         if (gaugeHolder == null || gaugeHolder.gauge == null) return;
 
-        float hpRatio = (float)monster.CurHp / monster.CurMaxHp;
-        StartCoroutine(UpdateHpGaugeCoroutine(gaugeHolder.gauge, hpRatio));
+        StartCoroutine(UpdateHpGaugeCoroutine(gaugeHolder.gauge, monster));
     }
 
-    private IEnumerator UpdateHpGaugeCoroutine(GameObject gauge, float targetRatio)
+    private IEnumerator UpdateHpGaugeCoroutine(GameObject gauge, Monster monster)
     {
         Image hpBar = gauge.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+
+        TextMeshProUGUI hpText = gauge.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
 
         if (hpBar == null) yield break;
 
@@ -214,10 +215,16 @@ public class BattleUIManager : MonoBehaviour
         float elapsed = 0f;
         float startValue = hpBar.fillAmount;
 
+        int curHp = monster.CurHp;
+        int curMaxHp = monster.CurMaxHp;
+        float targetRatio = (float)curHp / curMaxHp;
+
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             hpBar.fillAmount = Mathf.Lerp(startValue, targetRatio, elapsed / duration);
+
+            hpText.text = $"{curHp} / {curMaxHp}";
             yield return null;
         }
 
@@ -252,9 +259,12 @@ public class BattleUIManager : MonoBehaviour
 
         var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
 
+        TextMeshProUGUI ultimateText = gaugeHolder.gauge.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
+
         if (gaugeHolder == null || gaugeHolder.gauge == null) return;
 
         float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
+        ultimateText.text = $"{monster.CurUltimateCost} / {monster.MaxUltimateCost}";
         battleSelectView.SetUltimateGauge(gaugeHolder.gauge, ultimateRatio);
     }
 
@@ -269,11 +279,8 @@ public class BattleUIManager : MonoBehaviour
 
         if (gaugeHolder != null && gaugeHolder.gauge != null)
         {
-            //Destroy(gaugeHolder.gauge);
             gaugeHolder.gauge.SetActive(false);
         }
-
-        //allMonsterCharacters.Remove(mc);
     }
 
     // 몬스터 부활 시 게이지 활성화

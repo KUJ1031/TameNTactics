@@ -11,6 +11,7 @@ public class PlayerMenuState : BaseBattleState
         BattleTutorialManager.Instance.InitialBattle();
         MonsterSelecter.isClicked = false;
         UIManager.Instance.battleUIManager.BattleSelectView.HideCancelButton();
+        UIManager.Instance.battleUIManager.BattleSelectView.OffAllHighLight();
         UIManager.Instance.battleUIManager.DisableHoverSelect();
         UIManager.Instance.battleUIManager.IntoBattleMenuSelect();
 

@@ -20,9 +20,9 @@ MonoBehaviour:
   type: 1
   personality: 6
   maxHp: 90
-  attack: 16
-  defense: 7
-  speed: 12
+  attack: 23
+  defense: 12
+  speed: 15
   criticalChance: 8
   maxExp: 20
   MaxUltimateCost: 8

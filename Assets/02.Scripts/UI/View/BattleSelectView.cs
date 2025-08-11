@@ -20,6 +20,9 @@ public class BattleSelectView : MonoBehaviour
     [SerializeField] private Canvas gaugeCanvas;
     [SerializeField] private Canvas battleSelectCanvas;
 
+    [SerializeField] private GameObject allyHighLight;
+    [SerializeField] private GameObject enemyHighLight;
+
     [SerializeField] private MonsterTypeIconDB monsterTypeIconDB;
 
     public Canvas GaugeCanvas { get { return gaugeCanvas; } }
@@ -127,8 +130,13 @@ public class BattleSelectView : MonoBehaviour
 
     public void SetMonsterInfo(GameObject panel, Monster monster)
     {
+        TextMeshProUGUI hpText = panel.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI ultimateText = panel.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
+
         Image monsterType = panel.transform.GetChild(2).GetComponent<Image>();
-        TextMeshProUGUI levelText = panel.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
+
+        TextMeshProUGUI nameText = panel.transform.GetChild(3).GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI levelText = panel.transform.GetChild(4).GetComponentInChildren<TextMeshProUGUI>();
 
         if (monsterTypeIconDB == null)
         {
@@ -139,7 +147,10 @@ public class BattleSelectView : MonoBehaviour
 
         if (icon != null)
         {
+            hpText.text = $"{monster.CurHp} / {monster.CurMaxHp}";
+            ultimateText.text = $"{monster.CurUltimateCost} / {monster.MaxUltimateCost}";
             monsterType.sprite = icon;
+            nameText.text = $"{monster.monsterName}";
             levelText.text = $"Lv {monster.Level}";
         }
     }
@@ -167,5 +178,23 @@ public class BattleSelectView : MonoBehaviour
     public void InteractableRunButton_true()
     {
         runButton.interactable = true;
+    }
+
+    public void OnAllyHighLight()
+    {
+        allyHighLight.SetActive(true);
+        enemyHighLight.SetActive(false);
+    }
+
+    public void OnEnemyHighLight()
+    {
+        enemyHighLight.SetActive(true);
+        allyHighLight.SetActive(false);
+    }
+
+    public void OffAllHighLight()
+    {
+        allyHighLight.SetActive(false);
+        enemyHighLight.SetActive(false);
     }
 }
