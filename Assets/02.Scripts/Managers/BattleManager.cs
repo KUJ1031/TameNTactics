@@ -143,21 +143,12 @@ public class BattleManager : Singleton<BattleManager>
         isAttacking = false;
         isCoroutineOver = true;
 
-        if (BattleEntryTeam.Count == 0 || BattleEntryTeam.All(m => m.CurHp <= 0))
-        {
-            EndBattle(false);
-        }
-
-        else if (BattleEnemyTeam.Count == 0 || BattleEnemyTeam.All(m => m.CurHp <= 0))
-        {
-            EndBattle(true);
-        }
-        else
+        CheckDeadMonster();
+        
+        if (BattleEntryTeam.Count > 0 || BattleEnemyTeam.Count > 0)
         {
             BattleSystem.Instance.ChangeState(new PlayerMenuState(BattleSystem.Instance));
         }
-
-
     }
 
     // 데미지 넣기 + 데미지 후 패시브 발동
@@ -692,7 +683,7 @@ public class BattleManager : Singleton<BattleManager>
 
         BattleEnemyTeam.RemoveAll(m => m.CurHp <= 0);
         BattleEntryTeam.RemoveAll(m => m.CurHp <= 0);
-
+        
         bool isDeanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dean");
         bool isEisenDead = DeadEnemyMonsters.Any(m => m.monsterName == "Eisen");
         bool isDolanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dolan");
@@ -718,6 +709,8 @@ public class BattleManager : Singleton<BattleManager>
             Debug.Log("보스 처치");
             PlayerManager.Instance.player.playerBossClearCheck[0] = true;
         }
+        
+        if (BattleEnemyTeam.Count <= 0 || BattleEntryTeam.Count <= 0) EndBattle(true);
     }
 
     // 공격중인 몬스터의 character를 가져오기 위한 메서드
