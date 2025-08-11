@@ -20,8 +20,8 @@ MonoBehaviour:
   type: 4
   personality: 7
   maxHp: 85
-  attack: 14
-  defense: 8
+  attack: 25
+  defense: 21
   speed: 14
   criticalChance: 9
   maxExp: 20

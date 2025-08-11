@@ -17,7 +17,7 @@ MonoBehaviour:
   passiveSkillList: 0
   normalSkillList: 0
   ultimateSkillList: 21
-  skillName: "\uC6B0\uB9AC\uD300\uD55C\uBA85\uC2A4\uD15F\uC5C5"
+  skillName: "\uC601\uD63C \uC8FC\uC785"
   skillPower: 0
   skillEffectPrefab: {fileID: 4748681987041982144, guid: 2a760388b77eedb48bed77993ba9b154, type: 3}
   isTargetingDeadMonster: 0
@@ -25,6 +25,7 @@ MonoBehaviour:
   targetCount: 1
   icon: {fileID: 21300000, guid: d8ecc375821bb94479da5674eb56cd6a, type: 3}
   upgradeIcon: {fileID: 0}
-  description: "\uC62C\uC2A4\uD15F20%\uC0C1\uC2B9"
+  description: "\uC6B0\uB9AC \uD300 \uC911 \uD55C \uBA85\uC744 \uC120\uD0DD\uD574
+    \uBAA8\uB4E0 \uC2A4\uD0EF\uC744 20% \uC0C1\uC2B9\uC2DC\uD0A8\uB2E4."
   upgradeDescription: 
   damageSound: {fileID: 0}
