@@ -24,9 +24,9 @@ public class FlareStrike : ISkillEffect
             BattleManager.Instance.DealDamage(
                 target, result.damage, caster, skillData, result.isCritical, result.effectiveness);
 
-            if (Random.value < 0.2f && caster.Level >= 10)
+            if (Random.value < 1 && caster.Level >= 10)
             {
-                target.ApplyStatus(new Burn(2));
+                target.ApplyStatus(new Burn(10));
             }
         }
     }

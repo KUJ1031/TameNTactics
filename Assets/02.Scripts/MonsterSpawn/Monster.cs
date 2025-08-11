@@ -362,7 +362,6 @@ public class Monster
 
         if (CurHp <= 0)
         {
-            InitializeStatus();
             EventBus.OnMonsterDead?.Invoke(this);
 
             OnAllyDeath(this);
@@ -414,9 +413,13 @@ public class Monster
     public void UpdateStatusEffects()
     {
         List<StatusEffect> expired = new();
+        
+        if (CurHp <= 0) return;
 
         if (CurHp > 0)
         {
+            if (ActiveStatusEffects.Count == 0) return;
+            
             foreach (var effect in ActiveStatusEffects)
             {
                 effect.OnTurnStart(this);
@@ -437,9 +440,13 @@ public class Monster
     public void UpdateBuffEffects()
     {
         List<BuffEffect> expired = new();
+        
+        if (CurHp <= 0) return;
 
         if (CurHp > 0)
         {
+            if (ActiveBuffEffects.Count == 0) return;
+            
             foreach (var effect in ActiveBuffEffects)
             {
                 effect.OnTurnStart(this);
@@ -696,6 +703,7 @@ public class Monster
         if (monster.CurHp >= monster.CurMaxHp) monster.CurHp = monster.CurMaxHp;
         HpChange?.Invoke(monster);
         EventBus.OnMonsterRevive?.Invoke(monster);
+        InitializeStatus();
     }
 
     public void ReflectDamage(int damage)

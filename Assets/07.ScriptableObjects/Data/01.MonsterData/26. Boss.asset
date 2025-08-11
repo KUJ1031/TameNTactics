@@ -20,12 +20,12 @@ MonoBehaviour:
   type: 4
   personality: 6
   maxHp: 200
-  attack: 15
-  defense: 15
-  speed: 15
+  attack: 25
+  defense: 25
+  speed: 25
   criticalChance: 10
   maxExp: 50
-  MaxUltimateCost: 6
+  MaxUltimateCost: 8
   expReward: 50
   goldReward: 5000
   skills:
@@ -35,5 +35,5 @@ MonoBehaviour:
   spawnArea: 0
   spawnTime: 0
   captureRate: 0
-  description: "\uB098\uB294 \uBCF4\uC2A4\uB2E4"
+  description: "\uBCF4\uC2A4."
   damageSound: {fileID: 0}

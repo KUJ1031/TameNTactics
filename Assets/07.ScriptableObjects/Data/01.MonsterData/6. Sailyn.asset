@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: Sailyn
   monsterNumber: 6
   monsterImage: {fileID: -1439325331, guid: f1e6272eb42cd2e4094f19b083fd78fc, type: 3}
-  encounterCount: 63
+  encounterCount: 71
   captureCount: 0
   type: 1
   personality: 5
@@ -25,7 +25,7 @@ MonoBehaviour:
   speed: 10
   criticalChance: 4
   maxExp: 20
-  MaxUltimateCost: 6
+  MaxUltimateCost: 8
   expReward: 10
   goldReward: 500
   skills:
