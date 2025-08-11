@@ -141,12 +141,12 @@ public class BattleManager : Singleton<BattleManager>
         isAttacking = false;
         isCoroutineOver = true;
 
-        if (BattleEntryTeam.Count == 0)
+        if (BattleEntryTeam.Count == 0 || BattleEntryTeam.All(m => m.CurHp <= 0))
         {
             EndBattle(true);
         }
 
-        else if (BattleEnemyTeam.Count == 0)
+        else if (BattleEnemyTeam.Count == 0 || BattleEnemyTeam.All(m => m.CurHp <= 0))
         {
             EndBattle(false);
         }
