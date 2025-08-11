@@ -7,17 +7,22 @@ public class FinalFightUIManager : Singleton<FinalFightUIManager>
     [SerializeField] private GameObject eliteUI;
     [SerializeField] private GameObject bossUI;
     [SerializeField] private GameObject bossmapUI;
-
-
-    private void Start()
-    {
-    }
+    [SerializeField] private GameObject mainmapUI;
     public void ShowEliteUI()
     {
         if (eliteUI != null)
         {
             eliteUI.gameObject.SetActive(true);
             Debug.Log("Elite UI is shown.");
+        }
+    }
+
+    public void HideEliteUI()
+    {
+        if (eliteUI != null)
+        {
+            eliteUI.gameObject.SetActive(false);
+            Debug.Log("Elite UI is hidden.");
         }
     }
     public void ShowBossUI()
@@ -38,13 +43,32 @@ public class FinalFightUIManager : Singleton<FinalFightUIManager>
         }
     }
 
-    public void HideEliteUI()
+    public void HideBossMapUI()
     {
-        if (eliteUI != null)
+        if (bossUI != null)
         {
-            eliteUI.gameObject.SetActive(false);
-            Debug.Log("Elite UI is hidden.");
+            bossmapUI.gameObject.SetActive(false);
+            Debug.Log("Boss UI is hidden.");
         }
     }
+
+    public void ShowMainMapUI()
+    {
+        if (mainmapUI != null)
+        {
+            mainmapUI.gameObject.SetActive(true);
+            Debug.Log("Main Map UI is shown.");
+        }
+    }
+
+    public void HideMainMapUI()
+    {
+        if (mainmapUI != null)
+        {
+            mainmapUI.gameObject.SetActive(false);
+            Debug.Log("Main Map UI is hidden.");
+        }
+    }
+
 
 }

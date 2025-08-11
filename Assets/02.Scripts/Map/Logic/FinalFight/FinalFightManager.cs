@@ -53,10 +53,10 @@ public class FinalFightManager : Singleton<FinalFightManager>
 
         if (player.battleEntry.Count > 0 && player.battleEntry[0] != null)
         {
-            //player.battleEntry[0].AddExp(300000);
-            //player.battleEntry[0].RecalculateStats();
-            //player.battleEntry[1].AddExp(300000);
-            //player.battleEntry[1].RecalculateStats();
+            player.battleEntry[0].AddExp(300000);
+            player.battleEntry[0].RecalculateStats();
+            player.battleEntry[1].AddExp(300000);
+            player.battleEntry[1].RecalculateStats();
         }
 
         StartCoroutine(WaitUntilDialogueLoadedAndStart());

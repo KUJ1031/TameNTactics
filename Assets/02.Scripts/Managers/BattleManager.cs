@@ -108,6 +108,7 @@ public class BattleManager : Singleton<BattleManager>
             {
                 FinalFightUIManager.Instance.ShowBossUI();
                 FinalFightUIManager.Instance.ShowBossMapUI();
+                FinalFightUIManager.Instance.HideMainMapUI();
             }
         }
 
