@@ -28,16 +28,15 @@ public class PlayerMenuState : BaseBattleState
             }
 
         }
-        else if (PlayerManager.Instance.player.playerLastStage == "잊혀진 공간")
+        bool isOnlyRunDisabled = PlayerManager.Instance.player.playerLastStage == "잊혀진 공간";
+        bool isFullyDisabled = isDeanFight || isEisenFight || isDolanFight || isBossFight;
+
+        if (isOnlyRunDisabled)
         {
+            UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_true();
             UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
         }
-        else if (isDeanFight)
-        {
-            UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_false();
-            UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();
-        }
-        else if (isBossFight)
+        else if (isFullyDisabled)
         {
             UIManager.Instance.battleUIManager.BattleSelectView.InteractableEmbraceButton_false();
             UIManager.Instance.battleUIManager.BattleSelectView.InteractableRunButton_false();

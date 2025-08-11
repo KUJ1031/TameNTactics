@@ -46,12 +46,17 @@ public class FinalFightManager : Singleton<FinalFightManager>
             Destroy(carpenterObj);
             restoredBridge.gameObject.SetActive(true);
         }
-            if (player.playerQuestClearCheck[4])Destroy(bossObj);
+        if (player.playerQuestClearCheck[4])
+        {
+            Destroy(bossObj);
+        }
 
         if (player.battleEntry.Count > 0 && player.battleEntry[0] != null)
         {
-            //player.battleEntry[0].AddExp(300000);
-            //player.battleEntry[0].RecalculateStats();
+            player.battleEntry[0].AddExp(300000);
+            player.battleEntry[0].RecalculateStats();
+            player.battleEntry[1].AddExp(300000);
+            player.battleEntry[1].RecalculateStats();
         }
 
         StartCoroutine(WaitUntilDialogueLoadedAndStart());
@@ -129,10 +134,10 @@ public class FinalFightManager : Singleton<FinalFightManager>
         };
     }
 
-    public void Fight_Dean() => StartFight(0, dean, 14, 14);
-    public void Fight_Eisen() => StartFight(1, eisen, 15, 15);
-    public void Fight_Dolan() => StartFight(2, dolan, 16, 16);
-    public void Fight_Boss() => StartFight(-1, boss, 20, 20);
+    public void Fight_Dean() => StartFight(0, dean, 15, 15);
+    public void Fight_Eisen() => StartFight(1, eisen, 16, 16);
+    public void Fight_Dolan() => StartFight(2, dolan, 17, 17);
+    public void Fight_Boss() => StartFight(-1, boss, 22, 22);
 
     private void StartFight(int index, List<MonsterData> teamData, int levelMin = 30, int levelMax = 30)
     {
@@ -142,7 +147,7 @@ public class FinalFightManager : Singleton<FinalFightManager>
         }
 
         var generator = new UnknownForestEnemyTeamGenerator(teamData, levelMin, levelMax);
-        var enemyTeam = generator.GenerateRandomTeam(Random.Range(1, 1));
+        var enemyTeam = generator.GenerateFixedTeam();
 
         BattleManager.Instance.enemyTeam = enemyTeam;
         RuntimePlayerSaveManager.Instance.SaveCurrentGameState(PlayerManager.Instance.player);

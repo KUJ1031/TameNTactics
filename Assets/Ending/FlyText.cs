@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FlyText : MonoBehaviour
@@ -35,7 +36,17 @@ public class FlyText : MonoBehaviour
             rectTransform.anchoredPosition = Vector2.Lerp(startPosition, endPosition, t);
             yield return null;
         }
-
-        gameObject.SetActive(false);
+        FadeManager.Instance.FadeOutThenIn(
+        1.5f,
+        () =>  // 어두울 때 실행
+        {
+            gameObject.SetActive(false);
+            SceneManager.LoadScene("MainMapScene");
+        },
+        () =>  // 밝아질 때 실행
+        {
+            
+        });
+       
     }
 }
