@@ -25,6 +25,9 @@ public class EntryUIManager : Singleton<EntryUIManager>
     private const int BATTLE_SLOT_COUNT = 3;
     private const int BENCH_SLOT_COUNT = 2;
     private bool movedVisual = false;
+
+    private Player p = PlayerManager.Instance.player;
+
     public void SetEntryUISlots()
     {
         ClearAllSlots();
@@ -37,7 +40,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
 
     private void SetSlots()
     {
-        Player p = PlayerManager.Instance.player;
+
         MakeSlotsForParent(BattleParent, p.battleEntry, battleEntrySlots, BATTLE_SLOT_COUNT);
         MakeSlotsForParent(BenchParent, p.benchEntry, benchEntrySlots, BENCH_SLOT_COUNT);
     }
@@ -119,15 +122,15 @@ public class EntryUIManager : Singleton<EntryUIManager>
         slot.transform.SetParent(dropTarget);
         slot.transform.SetSiblingIndex(GetInsertIndex(dropTarget, screenPos));
 
-        if (dropTarget != startDragPernt)
+        if (dropTarget != startDragPernt && p.benchEntry.Count > 0)
         {
             if (startDragPernt == BenchParent)
             {
-                PlayerManager.Instance.player.SwapBattleToBench(moveTarget.GetMonster(), slot.GetMonster());
+                p.SwapBattleToBench(moveTarget.GetMonster(), slot.GetMonster());
             }
             if (startDragPernt == BattleParent)
             {
-                PlayerManager.Instance.player.SwapBattleToBench(slot.GetMonster(), moveTarget.GetMonster());
+                p.SwapBattleToBench(slot.GetMonster(), moveTarget.GetMonster());
             }
         }
         ClearPlaceholder();
@@ -247,12 +250,18 @@ public class EntryUIManager : Singleton<EntryUIManager>
     //부모 판단
     private Transform GetDropTarget(Vector2 pointerPosition)
     {
-        if (IsPointerInYRange(BattleParent, pointerPosition))
+        if (p.benchEntry.Count == 0)
+        {
             return BattleParent;
+        }
+        else
+        {
+            if (IsPointerInYRange(BattleParent, pointerPosition))
+                return BattleParent;
 
-        if (IsPointerInYRange(BenchParent, pointerPosition))
-            return BenchParent;
-
+            if (IsPointerInYRange(BenchParent, pointerPosition))
+                return BenchParent;
+        }
         return startDragPernt;
     }
 
