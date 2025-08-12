@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
+  m_Name: 23. Krad
+  m_EditorClassIdentifier: 
+  monsterName: Krad
+  monsterNumber: 23
+  monsterImage: {fileID: -941359654, guid: 43767c490a3e5b14181797590e013136, type: 3}
+  encounterCount: 0
+  captureCount: 0
+  type: 4
+  personality: 9
+  maxHp: 85
+  attack: 13
+  defense: 9
+  speed: 12
+  criticalChance: 6
+  maxExp: 20
+  MaxUltimateCost: 8
+  expReward: 10
+  goldReward: 500
+  skills:
+  - {fileID: 11400000, guid: 9ddf6eacc24c2934da4bcb5893da9d33, type: 2}
+  - {fileID: 11400000, guid: 5fa6ae59029060443ba03c43fb93a9cc, type: 2}
+  - {fileID: 11400000, guid: b27f150b3ee4e074e8ad2831429a694a, type: 2}
+  spawnArea: 0
+  spawnTime: 0
+  captureRate: 0
+  description: "\"\uADDC\uCE59 \uC5B4\uAE30\uBA74 \uC548 \uB3FC\u2026 \uACE0\uC591\uC774
+    \uBE7C\uACE0.\""
+  damageSound: {fileID: 11400000, guid: 26c3f59d226965143b479cf63d09a78d, type: 2}

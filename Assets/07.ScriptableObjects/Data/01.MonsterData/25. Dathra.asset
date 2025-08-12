@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
+  m_Name: 25. Dathra
+  m_EditorClassIdentifier: 
+  monsterName: Dathra
+  monsterNumber: 25
+  monsterImage: {fileID: 1594685187, guid: 9ac7d263136cbd340bc4f9721b770120, type: 3}
+  encounterCount: 0
+  captureCount: 0
+  type: 4
+  personality: 11
+  maxHp: 75
+  attack: 13
+  defense: 5
+  speed: 16
+  criticalChance: 10
+  maxExp: 20
+  MaxUltimateCost: 8
+  expReward: 10
+  goldReward: 500
+  skills:
+  - {fileID: 11400000, guid: 261dff50365475546b2431557fd2dba8, type: 2}
+  - {fileID: 11400000, guid: 9dae6f8e8744fb841b6013103bad5572, type: 2}
+  - {fileID: 11400000, guid: 8e4e8045ce3c7bc45b4fa325bae27657, type: 2}
+  spawnArea: 0
+  spawnTime: 0
+  captureRate: 0
+  description: "\"\uACC4\uC0B0 \uC644\uB8CC. \uC2E4\uD589 \uC911\u2026 \uADFC\uB370
+    \uBC15\uC790\uB294 \uD2C0\uB838\uB124?\""
+  damageSound: {fileID: 11400000, guid: 7bad304df06161d488c81536c8447dd0, type: 2}

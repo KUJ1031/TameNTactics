@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
+  m_Name: SingleAttackChanceHpUp
+  m_EditorClassIdentifier: 
+  skillID: 40
+  skillType: 1
+  passiveSkillList: 0
+  normalSkillList: 12
+  ultimateSkillList: 0
+  skillName: "\uC0DD\uBA85\uB825 \uBD84\uCD9C"
+  skillPower: 1
+  skillEffectPrefab: {fileID: 4748681987041982144, guid: 476d7e99bf5da3440a67db0596a4176e, type: 3}
+  isTargetingDeadMonster: 0
+  targetScope: 3
+  targetCount: 1
+  icon: {fileID: 21300000, guid: dcc3a87c75247754bbe304be0a09f9e0, type: 3}
+  upgradeIcon: {fileID: 0}
+  description: "\uC77C\uC815 \uD655\uB960\uB85C \uC2DC\uC804\uC790\uC758 \uCD5C\uB300
+    \uCCB4\uB825\uC774 10% \uC0C1\uC2B9\uD55C\uB2E4."
+  upgradeDescription: 
+  damageSound: {fileID: 0}

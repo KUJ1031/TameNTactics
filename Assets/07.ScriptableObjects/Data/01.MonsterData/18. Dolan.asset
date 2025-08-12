@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
+  m_Name: 18. Dolan
+  m_EditorClassIdentifier: 
+  monsterName: Dolan
+  monsterNumber: 18
+  monsterImage: {fileID: -1636088935, guid: a29a52a732566fb44be83e20d530cbf0, type: 3}
+  encounterCount: 0
+  captureCount: 0
+  type: 3
+  personality: 4
+  maxHp: 80
+  attack: 30
+  defense: 26
+  speed: 13
+  criticalChance: 7
+  maxExp: 20
+  MaxUltimateCost: 8
+  expReward: 10
+  goldReward: 500
+  skills:
+  - {fileID: 11400000, guid: f193beddd16f49d40b51750164668411, type: 2}
+  - {fileID: 11400000, guid: 7026261a047be6d4197933509fcf3d82, type: 2}
+  - {fileID: 11400000, guid: e8ce2bab8df8e0447863f2b39576845c, type: 2}
+  spawnArea: 0
+  spawnTime: 0
+  captureRate: 0
+  description: "\"\uB9D0\uBCF4\uB2E8\u2026 \uC8FC\uBA39\uC774 \uBE60\uB974\uB2C8\uAE4C.\""
+  damageSound: {fileID: 11400000, guid: d9212ce8f9923764ca717d2baf6b8067, type: 2}

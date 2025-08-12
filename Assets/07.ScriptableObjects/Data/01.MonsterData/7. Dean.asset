@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
+  m_Name: 7. Dean
+  m_EditorClassIdentifier: 
+  monsterName: Dean
+  monsterNumber: 7
+  monsterImage: {fileID: 834645391, guid: 8490b868454264e49a7b0f5fe8746143, type: 3}
+  encounterCount: 0
+  captureCount: 0
+  type: 1
+  personality: 6
+  maxHp: 90
+  attack: 23
+  defense: 12
+  speed: 15
+  criticalChance: 8
+  maxExp: 20
+  MaxUltimateCost: 8
+  expReward: 10
+  goldReward: 500
+  skills:
+  - {fileID: 11400000, guid: 54fc827d29b9a1449aba17d3a168759e, type: 2}
+  - {fileID: 11400000, guid: 0a61d43e47f80ea4880eaca61230bacb, type: 2}
+  - {fileID: 11400000, guid: b1247a0474be9f34b8be1c51c4d5e604, type: 2}
+  spawnArea: 0
+  spawnTime: 0
+  captureRate: 0
+  description: "\"\uBE44 \uC624\uB294 \uB0A0, \uADF8\uB0E5\u2026 \uC88B\uC796\uC544.\""
+  damageSound: {fileID: 11400000, guid: c1214cd06796c344cb6cb6bcad20fb46, type: 2}

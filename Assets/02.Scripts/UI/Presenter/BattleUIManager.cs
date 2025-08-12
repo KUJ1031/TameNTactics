@@ -1,0 +1,408 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class BattleUIManager : MonoBehaviour
+{
+    [SerializeField] private BattleSelectView battleSelectView;
+    [SerializeField] private BattleInfoView battleInfoView;
+    [SerializeField] private SkillView skillView;
+    [SerializeField] private BattleInventoryUI inventoryView;
+    [SerializeField] private EmbraceView embraceView;
+
+    public EmbraceView EmbraceView { get { return embraceView; } }
+    public BattleSelectView BattleSelectView { get { return battleSelectView; } }
+    public BattleInfoView BattleInfoView { get { return battleInfoView; } }
+    public SkillView SkillView { get { return skillView; } }
+
+    public BattleInventoryUI InventoryView { get { return inventoryView; } }
+    public bool CanHoverSelect { get; private set; } = false;
+    public List<Monster> CurrentHoverTarget { get; private set; }
+
+    [SerializeField] private BattleUIButtonHandler battleUIButtonHandler;
+
+    [SerializeField] private DamagePopup damagePopupPrefab;
+    [SerializeField] private GameObject possibleTargetPrefab;
+    [SerializeField] private GameObject behaviorButtonPrefab;
+
+    [Header("포섭하기 미니게임")]
+    [SerializeField] private GameObject miniGamePrefab;
+
+    public GameObject MiniGamePrefab { get { return miniGamePrefab; } }
+
+    private List<GameObject> IndicatorList = new();
+    private List<MonsterCharacter> allMonsterCharacters = new();
+    private List<GameObject> behaviorButtons = new();
+
+    private void Update()
+    {
+        foreach (var character in allMonsterCharacters)
+        {
+            if (character == null) continue;
+
+            var gaugeHolder = character.GetComponent<MonsterGaugeHolder>();
+            if (gaugeHolder == null || gaugeHolder.gauge == null) continue;
+
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(character.transform.position);
+            RectTransform canvasRect = battleSelectView.GaugeCanvas.GetComponent<RectTransform>();
+
+            RectTransform gaugeRectTr = gaugeHolder.gauge.GetComponent<RectTransform>();
+
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPoint))
+            {
+                gaugeRectTr.transform.localPosition = localPoint;
+            }
+        }
+    }
+
+    public void EnableHoverSelect(List<Monster> monsters)
+    {
+        CanHoverSelect = true;
+        CurrentHoverTarget = monsters;
+    }
+
+    public void DisableHoverSelect(List<Monster> monsters)
+    {
+        CanHoverSelect = false;
+        CurrentHoverTarget = null;
+    }
+
+    public void DisableHoverSelect()
+    {
+        CanHoverSelect = false;
+        CurrentHoverTarget = null;
+    }
+
+    private void OnEnable()
+    {
+        EventBus.OnMonsterDead -= RemoveGauge;
+        EventBus.OnMonsterDead += RemoveGauge;
+    }
+
+    private void OnDisable()
+    {
+        EventBus.OnMonsterDead -= RemoveGauge;
+        foreach (var mc in allMonsterCharacters)
+        {
+            mc.monster.DamagePopup -= OnMonsterDamaged;
+        }
+    }
+
+    public void OnAttackButtonClick()
+    {
+        EnableHoverSelect(BattleManager.Instance.possibleActPlayerMonsters);
+        battleSelectView.HideSelectPanel();
+    }
+
+    public void IntoBattleMenuSelect()
+    {
+        battleSelectView.HideSkillPanel();
+    }
+
+    public void OnEmbraceButtonClick()
+    {
+        EnableHoverSelect(BattleManager.Instance.BattleEnemyTeam);
+    }
+
+    public void OnActionComplete()
+    {
+        DisableHoverSelect();
+    }
+
+    public void ShowMonsterSkills(Monster monster)
+    {
+        if (monster == null || monster.skills == null) return;
+
+        skillView.ShowSkillList(monster.Level, monster.skills);
+    }
+
+
+    // 배틀씬 진입 시 몬스터 체력, 궁극기 게이지 세팅
+    public void SettingMonsterInfo(Transform ally, Transform enemy)
+    {
+        allMonsterCharacters.Clear();
+
+        MonsterCharacter[] allyChildren = ally.GetComponentsInChildren<MonsterCharacter>();
+        MonsterCharacter[] enemyChildren = enemy.GetComponentsInChildren<MonsterCharacter>();
+
+        allMonsterCharacters.AddRange(allyChildren);
+        allMonsterCharacters.AddRange(enemyChildren);
+
+        foreach (var mon in allMonsterCharacters)
+        {
+            mon.monster.DamagePopup += OnMonsterDamaged;
+
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(mon.transform.position);
+            GameObject gauge = battleSelectView.InitiateInfo(screenPos);
+
+            float hpRatio = (float)mon.monster.CurHp / mon.monster.CurMaxHp;
+
+            battleSelectView.SetHpGauge(gauge, hpRatio);
+            battleSelectView.SetMonsterInfo(gauge, mon.monster);
+
+            mon.gameObject.AddComponent<MonsterGaugeHolder>().InitGauge(gauge);
+        }
+    }
+
+    public void SettingMonsterPassive(List<Monster> allys)
+    {
+        for (int i = 0; i < allys.Count; i++)
+        {
+            Monster monster = allys[i];
+            List<SkillData> monsterSkill = monster.skills;
+
+            foreach (SkillData skill in monsterSkill)
+            {
+                if (monster.Level >= 5 && skill.skillType == SkillType.PassiveSkill)
+                {
+                    GameObject passiveIconObject = battleInfoView.InitializePassiveIcon(skill.icon);
+                    PassiveSkillSelecter selecter = passiveIconObject.GetComponent<PassiveSkillSelecter>();
+
+                    if (selecter != null)
+                    {
+                        selecter.InitializePassiveSkill(i);
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+
+    public void SettingMonsterSelecter(Transform ally, Transform enemy)
+    {
+        foreach (var mon in allMonsterCharacters)
+        {
+            var selectImage = battleSelectView.InitiateSelectImage(mon.transform);
+
+            var hoverHandler = mon.GetComponent<MonsterHoverHandler>();
+
+            if (hoverHandler != null)
+            {
+                hoverHandler.SetUp(selectImage);
+            }
+        }
+    }
+
+    public void UpdateHpGauge(Monster monster)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+
+        if (mc == null) return;
+
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+
+        if (gaugeHolder == null || gaugeHolder.gauge == null) return;
+
+        StartCoroutine(UpdateHpGaugeCoroutine(gaugeHolder.gauge, monster));
+    }
+
+    private IEnumerator UpdateHpGaugeCoroutine(GameObject gauge, Monster monster)
+    {
+        Image hpBar = gauge.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+
+        TextMeshProUGUI hpText = gauge.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
+
+        if (hpBar == null) yield break;
+
+        float duration = 0.5f;
+        float elapsed = 0f;
+        float startValue = hpBar.fillAmount;
+
+        int curHp = monster.CurHp;
+        int curMaxHp = monster.CurMaxHp;
+        float targetRatio = (float)curHp / curMaxHp;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            hpBar.fillAmount = Mathf.Lerp(startValue, targetRatio, elapsed / duration);
+
+            hpText.text = $"{curHp} / {curMaxHp}";
+            yield return null;
+        }
+
+        hpBar.fillAmount = targetRatio;
+    }
+
+    public IEnumerator WaitHpBarAnimationDone(Monster monster)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+
+        if (mc == null) yield break;
+
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+        if (gaugeHolder == null || gaugeHolder.gauge == null) yield break;
+
+        Image hpBar = gaugeHolder.gauge.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+        if (hpBar == null) yield break;
+
+        float targetRatio = Mathf.Clamp01((float)monster.CurHp / monster.CurMaxHp);
+
+        while (Mathf.Abs(hpBar.fillAmount - targetRatio) > 0.01f)
+        {
+            yield return null;
+        }
+    }
+
+    public void UpdateUltimateGauge(Monster monster)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+
+        if (mc == null) return;
+
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+
+        TextMeshProUGUI ultimateText = gaugeHolder.gauge.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
+
+        if (gaugeHolder == null || gaugeHolder.gauge == null) return;
+
+        float ultimateRatio = (float)monster.CurUltimateCost / monster.MaxUltimateCost;
+        ultimateText.text = $"{monster.CurUltimateCost} / {monster.MaxUltimateCost}";
+        battleSelectView.SetUltimateGauge(gaugeHolder.gauge, ultimateRatio);
+    }
+
+    // 몬스터 사망 시 게이지 제거
+    public void RemoveGauge(Monster monster)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+
+        if (mc == null) return;
+
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+
+        if (gaugeHolder != null && gaugeHolder.gauge != null)
+        {
+            gaugeHolder.gauge.SetActive(false);
+        }
+    }
+
+    // 몬스터 부활 시 게이지 활성화
+    public void ReviveGauge(Monster monster)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+
+        if (mc == null) return;
+
+        var gaugeHolder = mc.GetComponent<MonsterGaugeHolder>();
+
+        if (gaugeHolder != null && gaugeHolder.gauge != null)
+        {
+            gaugeHolder.gauge.SetActive(true);
+        }
+    }
+
+    private MonsterCharacter FindMonsterCharacter(Monster monster)
+    {
+        foreach (var mc in allMonsterCharacters)
+        {
+            if (mc.monster == monster)
+            {
+                return mc;
+            }
+        }
+        return null;
+    }
+
+    public void BattlePanelWhenWin(int exp, int gold)
+    {
+        battleInfoView.ShowVictoryPanel(exp, gold);
+    }
+
+    public void BattlePanelWhenDefeat()
+    {
+        battleInfoView.ShowDefeatPanel();
+    }
+
+    public void DeselectAllMonsters()
+    {
+        foreach (var mc in allMonsterCharacters)
+        {
+            if (mc == null) continue;
+
+            var hoverHandler = mc.GetComponent<MonsterHoverHandler>();
+
+            if (hoverHandler != null)
+            {
+                hoverHandler.Deselect();
+            }
+        }
+    }
+
+    public void DeselectMonster(Monster target)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(target);
+
+        if (mc == null) return;
+
+        var hoverHandler = mc.GetComponent<MonsterHoverHandler>();
+        if (hoverHandler != null)
+        {
+            hoverHandler.Deselect();
+        }
+    }
+
+    private void OnMonsterDamaged(Monster monster, int damage)
+    {
+        MonsterCharacter mc = FindMonsterCharacter(monster);
+        if (mc == null) return;
+
+        Vector3 spawnPos = mc.transform.position + Vector3.up * 1.5f;
+
+        DamagePopup popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
+        popup.SetUp(damage);
+    }
+
+    public void ShowPossibleTargets(MonsterCharacter possibleTarget)
+    {
+        Vector3 spawnPos = possibleTarget.transform.position + Vector3.up * 1.8f;
+        GameObject indicator = Instantiate(possibleTargetPrefab, spawnPos, Quaternion.identity);
+
+        indicator.transform.SetParent(possibleTarget.transform);
+        IndicatorList.Add(indicator);
+    }
+
+    public void HidePossibleTargets()
+    {
+        foreach (var indicator in IndicatorList)
+        {
+            Destroy(indicator);
+        }
+
+        IndicatorList.Clear();
+    }
+
+    public void ShowBehaviorMenu(Player player, Action<string> onGestureSelected)
+    {
+        player.UpdateCategorizedItemLists();
+
+        if (behaviorButtons.Count == 0)
+        {
+            foreach (var item in player.gestureItems)
+            {
+                GameObject behaviorButton = Instantiate(behaviorButtonPrefab, embraceView.BehaviorButtonContent.transform);
+                behaviorButton.GetComponentInChildren<TextMeshProUGUI>().text = item.data.itemName;
+
+                Button button = behaviorButton.GetComponent<Button>();
+                var capturedItem = item;
+
+                behaviorButtons.Add(behaviorButton);
+
+                button.onClick.AddListener(() => onGestureSelected?.Invoke(capturedItem.data.itemName));
+            }
+        }
+
+        embraceView.ShowBehaviorPanel();
+    }
+
+    public void ShowSettingMenu()
+    {
+        battleInfoView.ShowSettingPanel();
+    }
+}

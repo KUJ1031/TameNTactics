@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf3fb2fa2b300a47858727a4988fb84, type: 3}
+  m_Name: MonsterTypeIconDB
+  m_EditorClassIdentifier: 
+  iconList:
+  - {fileID: 11400000, guid: 0ee4132776d56de4ca7bd26514353c87, type: 2}
+  - {fileID: 11400000, guid: 57c111d98c7ae9043ad74214e5d4b403, type: 2}
+  - {fileID: 11400000, guid: 59d1e7db1873795468819c7e91d56ad4, type: 2}
+  - {fileID: 11400000, guid: 5054568323e3615488a3486ff5265cc7, type: 2}
+  - {fileID: 11400000, guid: 27559bdffbb08314e8fdd3ea43699089, type: 2}

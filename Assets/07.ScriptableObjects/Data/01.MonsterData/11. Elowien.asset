@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
+  m_Name: 11. Elowien
+  m_EditorClassIdentifier: 
+  monsterName: Elowien
+  monsterNumber: 11
+  monsterImage: {fileID: -215888988, guid: 2e6fe15f804e2ce4aa216352a8e2e14d, type: 3}
+  encounterCount: 0
+  captureCount: 0
+  type: 2
+  personality: 10
+  maxHp: 80
+  attack: 13
+  defense: 7
+  speed: 15
+  criticalChance: 8
+  maxExp: 20
+  MaxUltimateCost: 8
+  expReward: 10
+  goldReward: 500
+  skills:
+  - {fileID: 11400000, guid: c7f9afe7d2f1c614b89f410768c05475, type: 2}
+  - {fileID: 11400000, guid: cda709c8ac4cfdb41a6155cd29e77570, type: 2}
+  - {fileID: 11400000, guid: 43461d3d351e6554aa855ba9c74b2a15, type: 2}
+  spawnArea: 0
+  spawnTime: 0
+  captureRate: 0
+  description: " \"\uB098\uBB34\uAC00 \uB9D0\uD574\uC92C\uC5B4. \uB10C \uAD1C\uCC2E\uC744
+    \uAC70\uB77C\uACE0.\""
+  damageSound: {fileID: 11400000, guid: 9db1acbb9fc7200439367e619cf34db9, type: 2}

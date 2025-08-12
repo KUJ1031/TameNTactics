@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
+  m_Name: 1. Kairen
+  m_EditorClassIdentifier: 
+  monsterName: Kairen
+  monsterNumber: 1
+  monsterImage: {fileID: 883383662, guid: 55c32e3b849964642b7a878c7e02b2d2, type: 3}
+  encounterCount: 1
+  captureCount: 1
+  type: 0
+  personality: 0
+  maxHp: 80
+  attack: 12
+  defense: 6
+  speed: 15
+  criticalChance: 7
+  maxExp: 20
+  MaxUltimateCost: 8
+  expReward: 10
+  goldReward: 500
+  skills:
+  - {fileID: 11400000, guid: 88be09269aed8e8488b76034b5c5822f, type: 2}
+  - {fileID: 11400000, guid: 176efcb45b748cb4ca55511fc177778b, type: 2}
+  - {fileID: 11400000, guid: c40e76dc4b9151c4092c95098e09ba82, type: 2}
+  spawnArea: 0
+  spawnTime: 19
+  captureRate: 0
+  description: "\"\uB0B4\uAC00 \uC55E\uC7A5\uC124\uAC8C. \uBD88\uAE38\uC740 \uB098\uD55C\uD14C
+    \uB9E1\uACA8!\""
+  damageSound: {fileID: 11400000, guid: 2220ec91f4140fb4e8753215a34083a7, type: 2}

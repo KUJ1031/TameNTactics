@@ -1,0 +1,135 @@
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class OwnedMonsterUIManager : Singleton<OwnedMonsterUIManager> 
+{
+    [SerializeField] private OwnedMonsterUI ownedMonsterUI;
+    [SerializeField] private Transform ownedParent;             //owned슬롯이 만들어질 위치
+    [SerializeField] private GameObject ownedMonsterSlotPrefab; //owned슬롯 프리팹
+
+    private List<OwnedMonsterSlotUI> ownedSlotUIList = new();     //만들어진 owned슬롯들
+    private OwnedMonsterSlotUI selectedSlot;                      //선택된 owned슬롯
+
+
+    private void Start()
+    {
+        RefreshOwnedMonsterUI();
+    }
+
+    //Owned몬스터 목록 새로고침
+    public void RefreshOwnedMonsterUI()
+    {
+        List<Monster> sortedMonsters = GetSortedOwnedMonsters();
+        Monster prevSelectedMonster = selectedSlot?.GetMonster();
+
+        EnsureSlotCount(sortedMonsters.Count);
+        UpdateSlotData(sortedMonsters);
+
+        //선택된 슬롯 유지
+        selectedSlot = null;
+        if (prevSelectedMonster != null && sortedMonsters.Contains(prevSelectedMonster))
+        {
+            foreach (var slot in ownedSlotUIList)
+            {
+                if (slot.GetMonster() == prevSelectedMonster)
+                {
+                    selectedSlot = slot;
+                    selectedSlot.SetSelected(true);
+                    //OwnedMonsterUI.SetSimpleMonsterInfoUI(prevSelectedMonster);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            ownedMonsterUI.SetLogoVisibility(true);
+        }
+    }
+
+    //몬스터 정렬
+    private List<Monster> GetSortedOwnedMonsters()
+    {
+        List<Monster> ownedMonsters = PlayerManager.Instance.player.ownedMonsters;
+        List<Monster> entry = PlayerManager.Instance.player.entryMonsters;
+
+        return ownedMonsters
+            .OrderByDescending(mon => entry.Contains(mon))  // 엔트리 우선
+            .ThenByDescending(mon => mon.IsFavorite)        // 즐겨찾기 우선
+            .ThenBy(mon => mon.monsterName)                 // 이름 오름차순
+            .ToList();
+    }
+
+    //슬롯생성
+    private void EnsureSlotCount(int requiredCount)
+    {
+        while (ownedSlotUIList.Count < requiredCount)
+        {
+            GameObject go = Instantiate(ownedMonsterSlotPrefab, ownedParent);
+            var slot = go.GetComponent<OwnedMonsterSlotUI>();
+            ownedSlotUIList.Add(slot);
+        }
+    }
+
+    //슬롯에 데이터넣기
+    private void UpdateSlotData(List<Monster> monsters)
+    {
+        for (int i = 0; i < ownedSlotUIList.Count; i++)
+        {
+            if (i < monsters.Count)
+            {
+                ownedSlotUIList[i].gameObject.SetActive(true);
+                ownedSlotUIList[i].Setup(monsters[i]);
+            }
+            else
+            {
+                ownedSlotUIList[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    //몬스터 슬롯 선택
+    public void SelectMonsterSlot(OwnedMonsterSlotUI slot)
+    {
+        //중복선택시
+        if (selectedSlot == slot)
+        {
+            ownedMonsterUI.SetLogoVisibility(true);
+            selectedSlot.SetSelected(false);
+            selectedSlot = null;
+            return;
+        }
+
+        //이전 선택 해제
+        if (selectedSlot != null)
+            selectedSlot.SetSelected(false);
+
+        //새 선택 적용
+        selectedSlot = slot;
+        selectedSlot.SetSelected(true);
+
+        //OwnedMonsterUI 세팅
+        Monster monster = selectedSlot.GetMonster();
+        ownedMonsterUI.SetSimpleMonsterInfoUI(monster);
+        ownedMonsterUI.SetSimpleMonsterInfoUIButtons(monster);
+    }
+
+    //슬롯 마크 갱신
+    public void RefreshSlotFor(Monster monster)
+    {
+        foreach (var slot in ownedSlotUIList)
+        {
+            if (slot.GetMonster() == monster)
+            {
+                slot.RefreshSlot(monster);
+                break;
+            }
+        }
+    }
+
+    //선택 슬롯 비우기
+    public void ClearSelectedSlot()
+    {
+        selectedSlot = null;
+    }
+}

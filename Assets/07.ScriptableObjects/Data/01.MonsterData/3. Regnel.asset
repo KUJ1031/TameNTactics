@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fad5018a26a652449f368b4ddbd0b4c, type: 3}
+  m_Name: 3. Regnel
+  m_EditorClassIdentifier: 
+  monsterName: Regnel
+  monsterNumber: 3
+  monsterImage: {fileID: 1750338008, guid: 9724b38298a053443aad7cb325030d06, type: 3}
+  encounterCount: 0
+  captureCount: 0
+  type: 0
+  personality: 2
+  maxHp: 95
+  attack: 13
+  defense: 11
+  speed: 10
+  criticalChance: 4
+  maxExp: 20
+  MaxUltimateCost: 8
+  expReward: 10
+  goldReward: 500
+  skills:
+  - {fileID: 11400000, guid: 1e5e5055a56e90640ad582607200a99f, type: 2}
+  - {fileID: 11400000, guid: c60ffe49ad290c941adf50f38b02e80e, type: 2}
+  - {fileID: 11400000, guid: b76e8eef5fb1a2642b13ef69cf621481, type: 2}
+  spawnArea: 0
+  spawnTime: 0
+  captureRate: 0
+  description: " \"\uB0B4 \uBB34\uAE30? \uCD5C\uACE0\uC758 \uAC78\uB85C \uB9CC\uB4E4\uC5C8\uC9C0!\""
+  damageSound: {fileID: 11400000, guid: 854cdc55abcee8a43a4bf6ae0837752e, type: 2}

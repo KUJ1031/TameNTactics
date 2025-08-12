@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
+  m_Name: SingleAttackFixedHp
+  m_EditorClassIdentifier: 
+  skillID: 74
+  skillType: 2
+  passiveSkillList: 0
+  normalSkillList: 0
+  ultimateSkillList: 24
+  skillName: "\uC601\uD63C \uC808\uB2E8"
+  skillPower: 0
+  skillEffectPrefab: {fileID: 4748681987041982144, guid: 49f8bc9fbaacee144a7de203076ea7db, type: 3}
+  isTargetingDeadMonster: 0
+  targetScope: 3
+  targetCount: 1
+  icon: {fileID: 21300000, guid: 980a382d59ff24a41b95c0379de7a4e8, type: 3}
+  upgradeIcon: {fileID: 0}
+  description: "\uD0C0\uAC9F\uC758 \uCD5C\uB300 \uCCB4\uB825\uC758 30%\uC758 \uACE0\uC815
+    \uB370\uBBF8\uC9C0\uB97C \uC785\uD78C\uB2E4."
+  upgradeDescription: 
+  damageSound: {fileID: 0}

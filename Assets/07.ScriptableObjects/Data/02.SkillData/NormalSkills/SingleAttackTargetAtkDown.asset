@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473f35a557b963e4798e238b23e0b50e, type: 3}
+  m_Name: SingleAttackTargetAtkDown
+  m_EditorClassIdentifier: 
+  skillID: 46
+  skillType: 1
+  passiveSkillList: 0
+  normalSkillList: 14
+  ultimateSkillList: 0
+  skillName: "\uC57D\uD654 \uD0C0\uACA9"
+  skillPower: 1
+  skillEffectPrefab: {fileID: 4748681987041982144, guid: bfc9027c0c512794ba07c0f42e5d3266, type: 3}
+  isTargetingDeadMonster: 0
+  targetScope: 3
+  targetCount: 1
+  icon: {fileID: 21300000, guid: 97da9381b782a01479882be9a9a18c96, type: 3}
+  upgradeIcon: {fileID: 0}
+  description: "\uC77C\uC815 \uD655\uB960\uB85C \uC0C1\uB300\uBC29\uC758 \uACF5\uACA9\uB825\uC744
+    10% \uAC10\uC18C\uC2DC\uD0A8\uB2E4."
+  upgradeDescription: 
+  damageSound: {fileID: 0}
