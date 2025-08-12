@@ -1049,6 +1049,10 @@ PrefabInstance:
       propertyPath: appropriateColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9044590600504159713, guid: 505f5ebe8cc94734c9897eeae5d3e8b4, type: 3}
+      propertyPath: appropriatePercent
+      value: 70
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
