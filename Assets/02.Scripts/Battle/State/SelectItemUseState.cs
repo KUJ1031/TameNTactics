@@ -60,8 +60,7 @@ public class SelectItemUseState : BaseBattleState
 
     public void OnTargetSelected(Monster target)
     {
-        UIManager.Instance.battleUIManager.DisableHoverSelect(BattleManager.Instance.possibleTargets);
-        UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
+
         BattleTutorialManager.Instance.EndInventoryTutorial();
         if (target == null || target.CurHp <= 0)
         {
@@ -73,7 +72,13 @@ public class SelectItemUseState : BaseBattleState
             Debug.LogWarning("아군 몬스터만 치료할 수 있습니다.");
             return;
         }
-
+        if (target.CurHp >= target.MaxHp)
+        {
+            Debug.LogWarning($"{target.monsterName}의 체력이 이미 가득 찼습니다.");
+            return;
+        }
+        UIManager.Instance.battleUIManager.DisableHoverSelect(BattleManager.Instance.possibleTargets);
+        UIManager.Instance.battleUIManager.BattleSelectView.HideBeHaviorPanel();
         UIManager.Instance.battleUIManager.DeselectMonster(target);
 
 

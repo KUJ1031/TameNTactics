@@ -689,17 +689,17 @@ public class BattleManager : Singleton<BattleManager>
         bool isDolanDead = DeadEnemyMonsters.Any(m => m.monsterName == "Dolan");
         bool isBossDead = DeadEnemyMonsters.Any(m => m.monsterName == "Boss");
 
-        if (isDeanDead)
+        if (isDeanDead && BattleEnemyTeam.Count <= 0)
         {
             Debug.Log("엘리트 Dean 처치");
             PlayerManager.Instance.player.playerEliteClearCheck[0] = true;
         }
-        if (isEisenDead)
+        if (isEisenDead && BattleEnemyTeam.Count <= 0)
         {
             Debug.Log("엘리트 Eisen 처치");
             PlayerManager.Instance.player.playerEliteClearCheck[1] = true;
         }
-        if (isDolanDead)
+        if (isDolanDead && BattleEnemyTeam.Count <= 0)
         {
             Debug.Log("엘리트 Dolan 처치");
             PlayerManager.Instance.player.playerEliteClearCheck[2] = true;

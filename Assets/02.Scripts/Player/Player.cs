@@ -68,10 +68,19 @@ public class Player
     public bool AddOwnedMonster(Monster monster)
     {
         if (!CheckMonster(monster)) return false;
+        playerGetMonsterCount++;
+        monster.monsterData.captureCount++;
+
+        int beforeLevel = monster.Level;
+
+        monster.SetMonsterData(monster.monsterData); // 몬스터 데이터 초기화
+
+        monster.SetLevel(beforeLevel);
+        monster.RecalculateStats(); // 레벨에 따른 능력치 재계산
 
         ownedMonsters.Add(monster);
-        monster.monsterData.captureCount++;
-        playerGetMonsterCount++;
+
+
         return true;
     }
 
