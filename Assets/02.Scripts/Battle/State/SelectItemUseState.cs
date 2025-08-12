@@ -75,6 +75,7 @@ public class SelectItemUseState : BaseBattleState
         if (target.CurHp >= target.MaxHp)
         {
             Debug.LogWarning($"{target.monsterName}의 체력이 이미 가득 찼습니다.");
+            battleSystem.ChangeState(new InventoryState(battleSystem));
             return;
         }
         UIManager.Instance.battleUIManager.DisableHoverSelect(BattleManager.Instance.possibleTargets);
