@@ -16,7 +16,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
 
     private EntrySlotUI selectedSlot;
     private GameObject placeholder; // 드래그 중 예상 위치
-    private Transform startDragPernt; // 드래그 시작 부모
+    private Transform startDragParent; // 드래그 시작 부모
     private EntrySlotUI draggedSlot;
     private EntrySlotUI moveTarget;//엔트리 이동되는 슬롯
 
@@ -24,10 +24,15 @@ public class EntryUIManager : Singleton<EntryUIManager>
 
     private const int BATTLE_SLOT_COUNT = 3;
     private const int BENCH_SLOT_COUNT = 2;
-    private bool movedVisual = false;
 
-    private Player p = PlayerManager.Instance.player;
-
+    private Player p;
+    protected override void Awake()
+    {
+        base.Awake();
+        p = PlayerManager.Instance.player;
+        
+    }
+    
     public void SetEntryUISlots()
     {
         ClearAllSlots();
@@ -96,13 +101,13 @@ public class EntryUIManager : Singleton<EntryUIManager>
     public void StartDrag(EntrySlotUI slot)
     {
         draggedSlot = slot;
-        startDragPernt = slot.transform.parent;
+        startDragParent = slot.transform.parent;
         slot.SetDragVisual(true);
         slot.transform.SetParent(canvas.transform);
         slot.transform.SetAsLastSibling();
 
-        CreatePlaceholder(startDragPernt, slot.transform.GetSiblingIndex());
-        lastPlaceholderParent = startDragPernt;
+        CreatePlaceholder(startDragParent, slot.transform.GetSiblingIndex());
+        lastPlaceholderParent = startDragParent;
     }
 
     public void UpdateDrag(Vector2 screenPos)
@@ -122,13 +127,13 @@ public class EntryUIManager : Singleton<EntryUIManager>
         slot.transform.SetParent(dropTarget);
         slot.transform.SetSiblingIndex(GetInsertIndex(dropTarget, screenPos));
 
-        if (dropTarget != startDragPernt && p.benchEntry.Count > 0)
+        if (dropTarget != startDragParent && p.benchEntry.Count > 0)
         {
-            if (startDragPernt == BenchParent)
+            if (startDragParent == BenchParent)
             {
                 p.SwapBattleToBench(moveTarget.GetMonster(), slot.GetMonster());
             }
-            if (startDragPernt == BattleParent)
+            if (startDragParent == BattleParent)
             {
                 p.SwapBattleToBench(slot.GetMonster(), moveTarget.GetMonster());
             }
@@ -136,7 +141,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
         ClearPlaceholder();
         slot.SetDragVisual(false);
         draggedSlot = null;
-        startDragPernt = null;
+        startDragParent = null;
         lastPlaceholderParent = null;
     }
 
@@ -262,7 +267,7 @@ public class EntryUIManager : Singleton<EntryUIManager>
             if (IsPointerInYRange(BenchParent, pointerPosition))
                 return BenchParent;
         }
-        return startDragPernt;
+        return startDragParent;
     }
 
     //객체의 y안에 포인터가 있는지 확인
