@@ -216,6 +216,26 @@
 </details>
 
 <details>
+<summary>민동현</summary>
+
+### - Input System을 이용한 플레이어 키 셋팅
+
+**구상**
+- 새 Input System을 활용해 플레이어가 직접 게임 내 조작 키를 런타임에 변경할 수 있는 시스템을 구현.
+- Unity Input System의 `InputActionAsset`을 기반으로 액션맵 및 액션별 기본 키맵을 설정.
+- 키 변경 UI를 제작하여 플레이어가 원하는 키를 실시간으로 입력받아 바인딩을 변경하도록 구현.
+- 직접 키 입력을 감지하는 기존 방식에서 벗어나, Input System의 `PerformInteractiveRebinding()` API와 커스텀 필드를 활용해 안정적이고 직관적인 리바인딩 흐름을 구축.
+- 리셋 기능도 구현하여 언제든 기본 설정으로 복구할 수 있도록 지원.
+- UI와 연동해 현재 바인딩 상태를 텍스트로 표시하며, 변경 완료 및 미입력 상태에 따른 알림 UI를 구현.
+
+**해결**
+- 플레이어가 자신의 조작 취향에 맞게 키를 자유롭게 변경할 수 있어 편의성이 크게 향상.
+- 저장된 바인딩 정보를 PlayerPrefs에 관리해 설정을 영구 저장 및 복원할 수 있게 되어 사용자 경험이 개선되.
+- UI와 로직이 분리되고 명확한 역할 분담을 통해 코드 구조가 간결하고 이해하기 간편.
+
+</details>
+
+<details>
 <summary>김건형</summary>
 
 ### - ObjectPooling을 사용한 AudioManager
@@ -311,8 +331,8 @@
 | 이름   | 태그   | 담당 내용                                                         | 블로그                                      | 깃허브                                   |
 |--------|--------|------------------------------------------------------------------|---------------------------------------------|-----------------------------------------|
 | 김웅진 | 팀장   | - JSON을 통한 직렬화 및 역직렬화<br>- CSV, Addressable NPC 상호작용 기능<br>- 맵 내 퍼즐 및 퀘스트 로직<br>- 스토리 구상 및 NPC 대사 작성 | [블로그](https://thsusekdnlt1.tistory.com/) | [GitHub](https://github.com/KUJ1031/) |
-| 반장훈 | 부팀장 | - 배틀 UI MVP 구성<br>- 배틀UI 매니저 관리<br>- 배틀 전반적인 오류, 버그 디버깅<br>- 프로젝트 일부 버그 디버깅       | [블로그](https://velog.io/@janghoon333/series) | [GitHub](https://github.com/spirit-B)  |
-| 민동현 | 팀원   |                                                                  | [블로그](https://infobox4626.tistory.com/)   | [GitHub](https://infobox4626.tistory.com/) |
+| 반장훈 | 부팀장 | - 배틀 UI MVP 구성<br>- 배틀UI 매니저 관리<br>- 배틀 전반적인 오류, 버그 디버깅<br>- 프로젝트 일부 버그 디버깅       | [블로그](https://velog.io/@janghoon333/series) | [GitHub](https://tinaro.tistory.com/)  |
+| 민동현 | 팀원   | - 플레이어 Entry 관리<br>- Audio 데이터 및 재생 관리전반적인 필드 UI디자인및 기능타일맵을 활용한 맵 구성 | [블로그](https://tinaro.tistory.com/)   | [GitHub](https://tinaro.tistory.com/) |
 | 김건형 | 팀원   | - 플레이어 Entry 관리<br>- Audio 데이터 및 재생 관리<br>- 전반적인 필드 UI 디자인 및 기능<br>- 타일맵을 활용한 맵 구성 | [블로그](https://tinaro.tistory.com/)        | [GitHub](https://github.com/KGH1125)  |
 | 서원   | 팀원   | - BattleManager 관련 로직 구상 및 작성<br>- FSM(유한상태머신) 구상 및 작성<br>- 팩토리 패턴을 활용한 스킬 생성 로직  | [블로그](https://velog.io/@smjwnaya1102/posts) | [GitHub](https://github.com/Won0001)  |
 
